@@ -15,3 +15,8 @@ steps:
     yarn install
     yarn build
   displayName: 'yarn install and build'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/build'
+    ArtifactName: '$(Build.BuildId)'
+    publishLocation: 'Container'
