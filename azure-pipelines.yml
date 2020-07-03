@@ -9,7 +9,6 @@ steps:
   inputs:
     versionSpec: '12.x'
   displayName: 'Install Node.js'
-
 - script: |
     npm install -g yarn
     yarn install
@@ -17,12 +16,13 @@ steps:
   displayName: 'yarn install and build'
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: ‘$(Build.SourcesDirectory)/build’
-    archiveType: ‘zip’
-    archiveFile: ‘$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name).zip’
+    rootFolderOrFile: '$(Build.SourcesDirectory)/build'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(Build.Repository.Name)'
+    ArtifactName: 'drop'
     publishLocation: 'Container'
