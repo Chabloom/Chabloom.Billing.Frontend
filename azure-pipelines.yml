@@ -15,8 +15,14 @@ steps:
     yarn install
     yarn build
   displayName: 'yarn install and build'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: ‘$(Build.SourcesDirectory)/build’
+    archiveType: ‘zip’
+    archiveFile: ‘$(Build.ArtifactStagingDirectory)/$(Build.Repository.Name).zip’
+    replaceExistingArchive: true
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/build'
-    ArtifactName: '$(Build.BuildId)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: '$(Build.Repository.Name)'
     publishLocation: 'Container'
