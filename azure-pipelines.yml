@@ -12,6 +12,7 @@ steps:
 
 - script: |
     npm install -g yarn
+    yarn set version berry
     yarn install
     yarn build
   displayName: 'yarn install and build'
