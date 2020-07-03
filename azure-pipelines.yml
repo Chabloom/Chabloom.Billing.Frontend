@@ -11,7 +11,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g yarn@berry
+    npm install -g yarn
     yarn install
     yarn build
   displayName: 'yarn install and build'
