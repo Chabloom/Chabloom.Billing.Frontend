@@ -1,6 +1,6 @@
 import React from "react";
-import {AccountsApi} from "../api/apis";
-import {AccountViewModel} from "../api/models";
+import {AccountsApi} from "../../api/apis";
+import {AccountViewModel} from "../../api/models";
 
 export const Profile: React.FC = () => {
     const accountId = '16b64388-730d-442c-a516-08d81f94f8b7';

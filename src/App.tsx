@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {Profile} from "./customer/Profile";
+import {Profile} from "./components/customer/Profile";
 
 function App() {
     return (
