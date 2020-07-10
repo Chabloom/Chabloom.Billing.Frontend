@@ -13,32 +13,32 @@
 
 /**
  * @export
- * @interface AccountViewModel
+ * @interface TransactionViewModel
  */
-export interface AccountViewModel {
+export interface TransactionViewModel {
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof TransactionViewModel
      */
     id?: string;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof TransactionViewModel
      */
-    name: string;
+    externalId: string;
+    /**
+     * @type {number}
+     * @memberof TransactionViewModel
+     */
+    amount: number;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof TransactionViewModel
      */
-    primaryAddress: string;
+    timestamp: string;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof TransactionViewModel
      */
-    paymentSchedule: string;
-    /**
-     * @type {boolean}
-     * @memberof AccountViewModel
-     */
-    enabled: boolean;
+    bill: string;
 }

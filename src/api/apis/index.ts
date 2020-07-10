@@ -1,2 +1,5 @@
 export * from './AccountsApi';
-export * from './AddressesApi';
+export * from './BillsApi';
+export * from './PartitionsApi';
+export * from './PaymentSchedulesApi';
+export * from './TransactionsApi';

@@ -13,17 +13,22 @@
 
 /**
  * @export
- * @interface AddressViewModel
+ * @interface PartitionViewModel
  */
-export interface AddressViewModel {
+export interface PartitionViewModel {
     /**
      * @type {string}
-     * @memberof AddressViewModel
+     * @memberof PartitionViewModel
      */
     id?: string;
     /**
      * @type {string}
-     * @memberof AddressViewModel
+     * @memberof PartitionViewModel
      */
     name: string;
+    /**
+     * @type {boolean}
+     * @memberof PartitionViewModel
+     */
+    enabled: boolean;
 }

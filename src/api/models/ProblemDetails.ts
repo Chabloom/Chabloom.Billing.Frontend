@@ -13,32 +13,33 @@
 
 /**
  * @export
- * @interface AccountViewModel
+ * @interface ProblemDetails
  */
-export interface AccountViewModel {
+export interface ProblemDetails {
+    [key: string]: object | any;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof ProblemDetails
      */
-    id?: string;
+    type?: string | null;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof ProblemDetails
      */
-    name: string;
+    title?: string | null;
+    /**
+     * @type {number}
+     * @memberof ProblemDetails
+     */
+    status?: number | null;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof ProblemDetails
      */
-    primaryAddress: string;
+    detail?: string | null;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof ProblemDetails
      */
-    paymentSchedule: string;
-    /**
-     * @type {boolean}
-     * @memberof AccountViewModel
-     */
-    enabled: boolean;
+    instance?: string | null;
 }

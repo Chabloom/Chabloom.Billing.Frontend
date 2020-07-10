@@ -13,32 +13,27 @@
 
 /**
  * @export
- * @interface AccountViewModel
+ * @interface BillViewModel
  */
-export interface AccountViewModel {
+export interface BillViewModel {
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof BillViewModel
      */
     id?: string;
     /**
-     * @type {string}
-     * @memberof AccountViewModel
-     */
-    name: string;
-    /**
-     * @type {string}
-     * @memberof AccountViewModel
-     */
-    primaryAddress: string;
-    /**
-     * @type {string}
-     * @memberof AccountViewModel
-     */
-    paymentSchedule: string;
-    /**
      * @type {boolean}
-     * @memberof AccountViewModel
+     * @memberof BillViewModel
      */
-    enabled: boolean;
+    completed: boolean;
+    /**
+     * @type {string}
+     * @memberof BillViewModel
+     */
+    dueDate: string;
+    /**
+     * @type {string}
+     * @memberof BillViewModel
+     */
+    account: string;
 }

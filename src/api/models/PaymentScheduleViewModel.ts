@@ -13,32 +13,32 @@
 
 /**
  * @export
- * @interface AccountViewModel
+ * @interface PaymentScheduleViewModel
  */
-export interface AccountViewModel {
+export interface PaymentScheduleViewModel {
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof PaymentScheduleViewModel
      */
     id?: string;
     /**
      * @type {string}
-     * @memberof AccountViewModel
+     * @memberof PaymentScheduleViewModel
      */
     name: string;
     /**
-     * @type {string}
-     * @memberof AccountViewModel
+     * @type {number}
+     * @memberof PaymentScheduleViewModel
      */
-    primaryAddress: string;
+    amount: number;
     /**
-     * @type {string}
-     * @memberof AccountViewModel
+     * @type {number}
+     * @memberof PaymentScheduleViewModel
      */
-    paymentSchedule: string;
+    dayDue: number;
     /**
-     * @type {boolean}
-     * @memberof AccountViewModel
+     * @type {number}
+     * @memberof PaymentScheduleViewModel
      */
-    enabled: boolean;
+    interval: number;
 }

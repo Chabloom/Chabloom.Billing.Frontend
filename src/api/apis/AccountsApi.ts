@@ -15,11 +15,8 @@ import { Observable } from 'rxjs';
 import { BaseAPI, HttpHeaders, throwIfNullOrUndefined, encodeURI, OperationOpts, RawAjaxResponse } from '../runtime';
 import {
     AccountViewModel,
+    ProblemDetails,
 } from '../models';
-
-export interface ApiAccountsIdDeleteRequest {
-    id: string;
-}
 
 export interface ApiAccountsIdGetRequest {
     id: string;
@@ -47,19 +44,6 @@ export class AccountsApi extends BaseAPI {
         return this.request<Array<AccountViewModel>>({
             url: '/api/Accounts',
             method: 'GET',
-        }, opts?.responseOpts);
-    };
-
-    /**
-     */
-    apiAccountsIdDelete({ id }: ApiAccountsIdDeleteRequest): Observable<AccountViewModel>
-    apiAccountsIdDelete({ id }: ApiAccountsIdDeleteRequest, opts?: OperationOpts): Observable<RawAjaxResponse<AccountViewModel>>
-    apiAccountsIdDelete({ id }: ApiAccountsIdDeleteRequest, opts?: OperationOpts): Observable<AccountViewModel | RawAjaxResponse<AccountViewModel>> {
-        throwIfNullOrUndefined(id, 'id', 'apiAccountsIdDelete');
-
-        return this.request<AccountViewModel>({
-            url: '/api/Accounts/{id}'.replace('{id}', encodeURI(id)),
-            method: 'DELETE',
         }, opts?.responseOpts);
     };
 
