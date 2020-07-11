@@ -1,14 +1,12 @@
 apis\AccountsApi.ts
 apis\BillsApi.ts
 apis\PartitionsApi.ts
-apis\PaymentSchedulesApi.ts
 apis\TransactionsApi.ts
 apis\index.ts
 index.ts
 models\AccountViewModel.ts
 models\BillViewModel.ts
 models\PartitionViewModel.ts
-models\PaymentScheduleViewModel.ts
 models\ProblemDetails.ts
 models\TransactionViewModel.ts
 models\index.ts
