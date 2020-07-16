@@ -1,12 +1,15 @@
 import React from "react";
 
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
 import {PartitionsApi} from "../api/apis";
 import {PartitionViewModel} from "../api/models";
+import PartitionDetails from "./PartitionDetails";
 
 const Partitions: React.FC = () => {
     const [partitions, setPartitions] = React.useState<PartitionViewModel[]>();
+    const [dialogPartition, setDialogPartition] = React.useState<PartitionViewModel>();
+    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
     // Attempt to load Partitions until successful
     if (partitions === undefined) {
@@ -28,6 +31,7 @@ const Partitions: React.FC = () => {
                     <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell>Enabled</TableCell>
+                        <TableCell/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -35,10 +39,18 @@ const Partitions: React.FC = () => {
                         <TableRow key={partition.id}>
                             <TableCell>{partition.name}</TableCell>
                             <TableCell>{partition.enabled ? "True" : "False"}</TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" color="primary" onClick={() => {
+                                    setDialogPartition(partition);
+                                    setDialogOpen(true);
+                                }}>Details</Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            {dialogPartition !== undefined &&
+            <PartitionDetails open={dialogOpen} partition={dialogPartition} close={() => setDialogOpen(false)}/>}
         </TableContainer>
     );
 };

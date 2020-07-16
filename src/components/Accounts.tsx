@@ -1,12 +1,15 @@
 import React from "react";
 
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
 import {AccountsApi} from "../api/apis";
 import {AccountViewModel} from "../api/models";
+import AccountDetails from "./AccountDetails";
 
 const Accounts: React.FC = () => {
     const [accounts, setAccounts] = React.useState<AccountViewModel[]>();
+    const [dialogAccount, setDialogAccount] = React.useState<AccountViewModel>();
+    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
     // Attempt to load accounts until successful
     if (accounts === undefined) {
@@ -28,6 +31,7 @@ const Accounts: React.FC = () => {
                     <TableRow>
                         <TableCell>Account Name</TableCell>
                         <TableCell>Primary Address</TableCell>
+                        <TableCell/>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -35,10 +39,18 @@ const Accounts: React.FC = () => {
                         <TableRow key={account.id}>
                             <TableCell>{account.name}</TableCell>
                             <TableCell>{account.primaryAddress}</TableCell>
+                            <TableCell align="right">
+                                <Button variant="contained" color="primary" onClick={() => {
+                                    setDialogAccount(account);
+                                    setDialogOpen(true);
+                                }}>Details</Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+            {dialogAccount !== undefined &&
+            <AccountDetails open={dialogOpen} account={dialogAccount} close={() => setDialogOpen(false)}/>}
         </TableContainer>
     );
 };
