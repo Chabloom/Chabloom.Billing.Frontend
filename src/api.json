@@ -1148,6 +1148,14 @@
             },
             "nullable": true
           },
+          "bills": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
           "partition": {
             "type": "string",
             "format": "uuid"

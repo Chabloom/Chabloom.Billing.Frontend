@@ -42,6 +42,11 @@ export interface AccountViewModel {
      */
     paymentSchedules?: Array<string> | null;
     /**
+     * @type {Array<string>}
+     * @memberof AccountViewModel
+     */
+    bills?: Array<string> | null;
+    /**
      * @type {string}
      * @memberof AccountViewModel
      */
