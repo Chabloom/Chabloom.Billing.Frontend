@@ -22,10 +22,10 @@ export interface BillViewModel {
      */
     id?: string;
     /**
-     * @type {boolean}
+     * @type {number}
      * @memberof BillViewModel
      */
-    completed: boolean;
+    amount: number;
     /**
      * @type {string}
      * @memberof BillViewModel
@@ -36,4 +36,9 @@ export interface BillViewModel {
      * @memberof BillViewModel
      */
     account: string;
+    /**
+     * @type {Array<string>}
+     * @memberof BillViewModel
+     */
+    transactions?: Array<string> | null;
 }

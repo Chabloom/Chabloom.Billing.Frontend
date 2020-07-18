@@ -22,15 +22,15 @@ export interface TransactionViewModel {
      */
     id?: string;
     /**
-     * @type {string}
-     * @memberof TransactionViewModel
-     */
-    externalId: string;
-    /**
      * @type {number}
      * @memberof TransactionViewModel
      */
     amount: number;
+    /**
+     * @type {string}
+     * @memberof TransactionViewModel
+     */
+    referenceId: string;
     /**
      * @type {string}
      * @memberof TransactionViewModel

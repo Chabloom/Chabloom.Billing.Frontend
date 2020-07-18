@@ -31,4 +31,9 @@ export interface PartitionViewModel {
      * @memberof PartitionViewModel
      */
     enabled: boolean;
+    /**
+     * @type {Array<string>}
+     * @memberof PartitionViewModel
+     */
+    accounts?: Array<string> | null;
 }

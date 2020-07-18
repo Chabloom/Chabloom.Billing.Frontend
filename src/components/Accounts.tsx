@@ -39,6 +39,7 @@ const Accounts: React.FC = () => {
                         <TableRow key={account.id}>
                             <TableCell>{account.name}</TableCell>
                             <TableCell>{account.primaryAddress}</TableCell>
+                            <TableCell>{account.enabled ? "True" : "False"}</TableCell>
                             <TableCell align="right">
                                 <Button variant="contained" color="primary" onClick={() => {
                                     setDialogAccount(account);

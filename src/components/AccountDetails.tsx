@@ -39,8 +39,6 @@ const AccountDetails: React.FC<Props> = (props) => {
                                onChange={(event => props.account.name = event.target.value)}/>
                     <TextField label={"Primary Address"} defaultValue={props.account.primaryAddress}
                                onChange={(event => props.account.primaryAddress = event.target.value)}/>
-                    <TextField label={"Name"} defaultValue={props.account.name}
-                               onChange={(event => props.account.name = event.target.value)}/>
                     <FormControlLabel
                         control={
                             <Switch
