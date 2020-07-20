@@ -2,8 +2,8 @@ import React from "react";
 
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
-import {PartitionsApi} from "../api/apis";
-import {PartitionViewModel} from "../api/models";
+import {PartitionsApi} from "../../api/apis";
+import {PartitionViewModel} from "../../api/models";
 import PartitionDetails from "./PartitionDetails";
 
 const Partitions: React.FC = () => {

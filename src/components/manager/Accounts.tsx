@@ -2,8 +2,8 @@ import React from "react";
 
 import {Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
-import {AccountsApi} from "../api/apis";
-import {AccountViewModel} from "../api/models";
+import {AccountsApi} from "../../api/apis";
+import {AccountViewModel} from "../../api/models";
 import AccountDetails from "./AccountDetails";
 
 const Accounts: React.FC = () => {

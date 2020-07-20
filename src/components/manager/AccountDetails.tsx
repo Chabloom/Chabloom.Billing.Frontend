@@ -14,35 +14,37 @@ import {
     TextField
 } from "@material-ui/core";
 
-import {ApiPartitionsIdPutRequest, PartitionsApi} from "../api/apis";
-import {PartitionViewModel} from "../api/models";
+import {ApiAccountsIdPutRequest, AccountsApi} from "../../api/apis";
+import {AccountViewModel} from "../../api/models";
 
 interface Props {
     open: boolean,
-    partition: PartitionViewModel,
+    account: AccountViewModel,
     close: CallableFunction,
 }
 
-const PartitionDetails: React.FC<Props> = (props) => {
+const AccountDetails: React.FC<Props> = (props) => {
     let [saving, setSaving] = React.useState<boolean>(false);
 
     return (
         <Dialog open={props.open} onClose={() => props.close()}>
-            <DialogTitle>{`Partition ${props.partition.name}`}</DialogTitle>
+            <DialogTitle>{`Account ${props.account.name}`}</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    View and change properties for partition {props.partition.name}
+                    View and change properties for account {props.account.name}
                 </DialogContentText>
                 <FormGroup>
-                    <TextField label={"Id"} defaultValue={props.partition.id} disabled={true}/>
-                    <TextField label={"Name"} defaultValue={props.partition.name}
-                               onChange={(event => props.partition.name = event.target.value)}/>
+                    <TextField label={"Id"} defaultValue={props.account.id} disabled={true}/>
+                    <TextField label={"Name"} defaultValue={props.account.name}
+                               onChange={(event => props.account.name = event.target.value)}/>
+                    <TextField label={"Primary Address"} defaultValue={props.account.primaryAddress}
+                               onChange={(event => props.account.primaryAddress = event.target.value)}/>
                     <FormControlLabel
                         control={
                             <Switch
-                                checked={props.partition.enabled}
+                                checked={props.account.enabled}
                                 color="primary"
-                                onChange={(event => props.partition.enabled = event.target.checked)}/>
+                                onChange={(event => props.account.enabled = event.target.checked)}/>
                         }
                         label="Enabled"/>
                 </FormGroup>
@@ -52,13 +54,13 @@ const PartitionDetails: React.FC<Props> = (props) => {
                     Cancel
                 </Button>
                 <Button color="primary" disabled={saving} onClick={() => {
-                    const partitionsApi = new PartitionsApi();
+                    const accountsApi = new AccountsApi();
                     const request = {
-                        id: props.partition.id,
-                        partitionViewModel: props.partition,
-                    } as ApiPartitionsIdPutRequest;
+                        id: props.account.id,
+                        accountViewModel: props.account,
+                    } as ApiAccountsIdPutRequest;
                     setSaving(true);
-                    partitionsApi.apiPartitionsIdPut(request)
+                    accountsApi.apiAccountsIdPut(request)
                         .subscribe({
                             error(err) {
                                 console.log(err);
@@ -78,4 +80,4 @@ const PartitionDetails: React.FC<Props> = (props) => {
     );
 }
 
-export default PartitionDetails;
+export default AccountDetails;

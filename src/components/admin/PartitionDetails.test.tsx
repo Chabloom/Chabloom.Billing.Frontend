@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import PartitionDetails from "./PartitionDetails";
-import {PartitionViewModel} from "../api/models";
+import {PartitionViewModel} from "../../api/models";
 
 test('Render PartitionDetails component', () => {
     let partition = {

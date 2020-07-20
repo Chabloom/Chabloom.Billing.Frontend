@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import AccountDetails from "./AccountDetails";
-import {AccountViewModel} from "../api/models";
+import {AccountViewModel} from "../../api/models";
 
 test('Render AccountDetails component', () => {
     let account = {
