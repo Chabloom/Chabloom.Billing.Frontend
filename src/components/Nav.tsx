@@ -68,6 +68,13 @@ const Nav: React.FC = (props) => {
                 <Toolbar/>
                 <div className={classes.drawerContainer}>
                     <List>
+                        <ListItem button key="Account" component={NavLink} to="/account">
+                            <ListItemIcon><AccountCircle/></ListItemIcon>
+                            <ListItemText primary="Account"/>
+                        </ListItem>
+                    </List>
+                    <Divider/>
+                    <List>
                         <ListItem button key="Accounts" component={NavLink} to="/accounts">
                             <ListItemIcon><AccountCircle/></ListItemIcon>
                             <ListItemText primary="Accounts"/>
