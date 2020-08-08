@@ -20,7 +20,6 @@ import {
 import {AccountsApi, BillsApi, PaymentSchedulesApi} from "../../api/apis";
 import {AccountViewModel, BillViewModel, PaymentScheduleViewModel} from "../../api/models";
 import {makeStyles} from "@material-ui/core/styles";
-import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 
 interface Props {
     accountId: string,
@@ -52,9 +51,6 @@ const Account: React.FC<Props> = (props) => {
     const [open, setOpen] = React.useState<boolean>(false);
 
     const classes = useStyles();
-
-    const stripe = useStripe();
-    const elements = useElements();
 
     // Attempt to load account until successful
     if (account === undefined) {
@@ -173,23 +169,6 @@ const Account: React.FC<Props> = (props) => {
                 <DialogContentText>
                     Input your payment information below to pay your bill online
                 </DialogContentText>
-                {stripe &&
-                <CardElement
-                    options={{
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
-                                },
-                            },
-                            invalid: {
-                                color: '#9e2146',
-                            },
-                        },
-                    }}
-                />}
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => {
@@ -197,42 +176,7 @@ const Account: React.FC<Props> = (props) => {
                 }} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={async () => {
-                    if (!stripe || !elements) {
-                        // Stripe.js has not yet loaded.
-                        // Make sure to disable form submission until Stripe.js has loaded.
-                        return;
-                    }
-
-                    const element = elements.getElement(CardElement);
-                    if (element === null) {
-                        return;
-                    }
-
-                    const result = await stripe.confirmCardPayment('pi_1H6g1lB2z6MUftpdHS9aUo8H_secret_xCvMuDcyMGUTYtUd8ZZcDE6dS', {
-                        payment_method: {
-                            card: element,
-                            billing_details: {
-                                name: account?.name
-                            },
-                        }
-                    });
-
-                    if (result.error) {
-                        // Show error to your customer (e.g., insufficient funds)
-                        console.log(result.error.message);
-                    } else {
-                        // The payment has been processed!
-                        if (result.paymentIntent?.status === 'succeeded') {
-                            console.log(result.paymentIntent);
-                            // Show a success message to your customer
-                            // There's a risk of the customer closing the window before callback
-                            // execution. Set up a webhook or plugin to listen for the
-                            // payment_intent.succeeded event that handles any business critical
-                            // post-payment actions.
-                        }
-                    }
-                }} color="primary" autoFocus>
+                <Button onClick={async () => {}} color="primary" autoFocus>
                     Submit
                 </Button>
             </DialogActions>
