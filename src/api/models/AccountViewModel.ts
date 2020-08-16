@@ -32,23 +32,13 @@ export interface AccountViewModel {
      */
     primaryAddress: string;
     /**
-     * @type {boolean}
+     * @type {string}
      * @memberof AccountViewModel
      */
-    enabled: boolean;
-    /**
-     * @type {Array<string>}
-     * @memberof AccountViewModel
-     */
-    paymentSchedules?: Array<string> | null;
-    /**
-     * @type {Array<string>}
-     * @memberof AccountViewModel
-     */
-    bills?: Array<string> | null;
+    externalId: string;
     /**
      * @type {string}
      * @memberof AccountViewModel
      */
-    partition?: string;
+    owner?: string | null;
 }

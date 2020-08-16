@@ -482,10 +482,10 @@
         }
       }
     },
-    "/api/Partitions": {
+    "/api/BillSchedules": {
       "get": {
         "tags": [
-          "Partitions"
+          "BillSchedules"
         ],
         "responses": {
           "200": {
@@ -495,7 +495,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PartitionViewModel"
+                    "$ref": "#/components/schemas/BillScheduleViewModel"
                   }
                 }
               }
@@ -525,23 +525,23 @@
       },
       "post": {
         "tags": [
-          "Partitions"
+          "BillSchedules"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             }
           }
@@ -552,7 +552,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartitionViewModel"
+                  "$ref": "#/components/schemas/BillScheduleViewModel"
                 }
               }
             }
@@ -590,10 +590,10 @@
         }
       }
     },
-    "/api/Partitions/{id}": {
+    "/api/BillSchedules/{id}": {
       "get": {
         "tags": [
-          "Partitions"
+          "BillSchedules"
         ],
         "parameters": [
           {
@@ -612,7 +612,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PartitionViewModel"
+                  "$ref": "#/components/schemas/BillScheduleViewModel"
                 }
               }
             }
@@ -641,7 +641,7 @@
       },
       "put": {
         "tags": [
-          "Partitions"
+          "BillSchedules"
         ],
         "parameters": [
           {
@@ -658,255 +658,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/PartitionViewModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Success"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/PaymentSchedules": {
-      "get": {
-        "tags": [
-          "PaymentSchedules"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PaymentScheduleViewModel"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "PaymentSchedules"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentScheduleViewModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/PaymentSchedules/{id}": {
-      "get": {
-        "tags": [
-          "PaymentSchedules"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentScheduleViewModel"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "PaymentSchedules"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PaymentScheduleViewModel"
+                "$ref": "#/components/schemas/BillScheduleViewModel"
               }
             }
           }
@@ -1121,7 +883,7 @@
     "schemas": {
       "AccountViewModel": {
         "required": [
-          "enabled",
+          "externalId",
           "name",
           "primaryAddress"
         ],
@@ -1137,28 +899,12 @@
           "primaryAddress": {
             "type": "string"
           },
-          "enabled": {
-            "type": "boolean"
+          "externalId": {
+            "type": "string"
           },
-          "paymentSchedules": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
-          },
-          "bills": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
-          },
-          "partition": {
+          "owner": {
             "type": "string",
-            "format": "uuid"
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1195,42 +941,8 @@
       },
       "BillViewModel": {
         "required": [
-          "account",
           "amount",
-          "dueDate"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "amount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "dueDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "account": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "transactions": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "PartitionViewModel": {
-        "required": [
-          "enabled",
+          "dueDate",
           "name"
         ],
         "type": "object",
@@ -1242,23 +954,27 @@
           "name": {
             "type": "string"
           },
-          "enabled": {
-            "type": "boolean"
+          "amount": {
+            "type": "number",
+            "format": "double"
           },
-          "accounts": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
+          "dueDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "account": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "billSchedule": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
       },
-      "PaymentScheduleViewModel": {
+      "BillScheduleViewModel": {
         "required": [
-          "account",
           "amount",
           "dayDue",
           "enabled",
@@ -1275,8 +991,8 @@
             "type": "string"
           },
           "amount": {
-            "type": "integer",
-            "format": "int32"
+            "type": "number",
+            "format": "double"
           },
           "dayDue": {
             "type": "integer",
@@ -1299,9 +1015,8 @@
       "TransactionViewModel": {
         "required": [
           "amount",
-          "bill",
-          "referenceId",
-          "timestamp"
+          "externalId",
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -1309,16 +1024,19 @@
             "type": "string",
             "format": "uuid"
           },
-          "amount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "referenceId": {
+          "name": {
             "type": "string"
           },
-          "timestamp": {
+          "externalId": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "account": {
             "type": "string",
-            "format": "date-time"
+            "format": "uuid"
           },
           "bill": {
             "type": "string",
@@ -1326,6 +1044,18 @@
           }
         },
         "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://localhost:44303/connect/authorize",
+            "tokenUrl": "https://localhost:44303/connect/token",
+            "scopes": { }
+          }
+        }
       }
     }
   }

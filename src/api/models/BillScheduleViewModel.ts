@@ -13,42 +13,42 @@
 
 /**
  * @export
- * @interface PaymentScheduleViewModel
+ * @interface BillScheduleViewModel
  */
-export interface PaymentScheduleViewModel {
+export interface BillScheduleViewModel {
     /**
      * @type {string}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     id?: string;
     /**
      * @type {string}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     name: string;
     /**
      * @type {number}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     amount: number;
     /**
      * @type {number}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     dayDue: number;
     /**
      * @type {number}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     monthInterval: number;
     /**
      * @type {boolean}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
     enabled: boolean;
     /**
      * @type {string}
-     * @memberof PaymentScheduleViewModel
+     * @memberof BillScheduleViewModel
      */
-    account: string;
+    account?: string;
 }

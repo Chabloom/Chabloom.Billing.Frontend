@@ -22,6 +22,16 @@ export interface TransactionViewModel {
      */
     id?: string;
     /**
+     * @type {string}
+     * @memberof TransactionViewModel
+     */
+    name: string;
+    /**
+     * @type {string}
+     * @memberof TransactionViewModel
+     */
+    externalId: string;
+    /**
      * @type {number}
      * @memberof TransactionViewModel
      */
@@ -30,15 +40,10 @@ export interface TransactionViewModel {
      * @type {string}
      * @memberof TransactionViewModel
      */
-    referenceId: string;
+    account?: string;
     /**
      * @type {string}
      * @memberof TransactionViewModel
      */
-    timestamp: string;
-    /**
-     * @type {string}
-     * @memberof TransactionViewModel
-     */
-    bill: string;
+    bill?: string;
 }

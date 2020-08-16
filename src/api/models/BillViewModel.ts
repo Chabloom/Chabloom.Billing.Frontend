@@ -22,6 +22,11 @@ export interface BillViewModel {
      */
     id?: string;
     /**
+     * @type {string}
+     * @memberof BillViewModel
+     */
+    name: string;
+    /**
      * @type {number}
      * @memberof BillViewModel
      */
@@ -35,10 +40,10 @@ export interface BillViewModel {
      * @type {string}
      * @memberof BillViewModel
      */
-    account: string;
+    account?: string;
     /**
-     * @type {Array<string>}
+     * @type {string}
      * @memberof BillViewModel
      */
-    transactions?: Array<string> | null;
+    billSchedule?: string;
 }
