@@ -5,29 +5,29 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import Accounts from "./components/manager/Accounts";
 import Nav from "./components/Nav";
-import Partitions from "./components/admin/Partitions";
-import Account from "./components/customer/Account";
+import AuthCallback from "./components/auth/AuthCallback";
+import AuthLogout from "./components/auth/AuthLogout";
+import AuthSilentRenew from "./components/auth/AuthSilentRenew";
+import AuthLogoutCallback from "./components/auth/AuthLogoutCallback";
+import AuthRoute from "./components/auth/AuthRoute";
+import {AuthProvider} from "./components/auth/AuthService";
 
 const App: React.FC = () => {
     return (
-        <Router>
-            <Nav>
-                <Switch>
-                    <Route path="/account">
-                        <Account accountId={"f74d0e69-34c9-41fd-a401-7efcef46ede8"}/>
-                    </Route>
-                    <Route path="/accounts">
-                        <Accounts/>
-                    </Route>
-                    <Route path="/partitions">
-                        <Partitions/>
-                    </Route>
-                    <Route path="/">
-                        <Accounts/>
-                    </Route>
-                </Switch>
-            </Nav>
-        </Router>
+        <AuthProvider>
+            <Router>
+                <Nav>
+                    <Switch>
+                        <Route exact={true} path="/signin-oidc" component={AuthCallback}/>
+                        <Route exact={true} path="/logout" component={AuthLogout}/>
+                        <Route exact={true} path="/logout/callback" component={AuthLogoutCallback}/>
+                        <Route exact={true} path="/silentrenew" component={AuthSilentRenew}/>
+                        <AuthRoute path="/accounts" component={Accounts}/>
+                        <AuthRoute path="/" component={Accounts}/>
+                    </Switch>
+                </Nav>
+            </Router>
+        </AuthProvider>
     );
 }
 
