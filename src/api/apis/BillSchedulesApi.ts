@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,11 +12,15 @@
  * Do not edit the class manually.
  */
 
-import { Observable } from 'rxjs';
-import { BaseAPI, HttpHeaders, throwIfNullOrUndefined, encodeURI, OperationOpts, RawAjaxResponse } from '../runtime';
+
+import * as runtime from '../runtime';
 import {
     BillScheduleViewModel,
+    BillScheduleViewModelFromJSON,
+    BillScheduleViewModelToJSON,
     ProblemDetails,
+    ProblemDetailsFromJSON,
+    ProblemDetailsToJSON,
 } from '../models';
 
 export interface ApiBillSchedulesIdGetRequest {
@@ -32,69 +37,117 @@ export interface ApiBillSchedulesPostRequest {
 }
 
 /**
- * no description
+ * 
  */
-export class BillSchedulesApi extends BaseAPI {
+export class BillSchedulesApi extends runtime.BaseAPI {
 
     /**
      */
-    apiBillSchedulesGet(): Observable<Array<BillScheduleViewModel>>
-    apiBillSchedulesGet(opts?: OperationOpts): Observable<RawAjaxResponse<Array<BillScheduleViewModel>>>
-    apiBillSchedulesGet(opts?: OperationOpts): Observable<Array<BillScheduleViewModel> | RawAjaxResponse<Array<BillScheduleViewModel>>> {
-        return this.request<Array<BillScheduleViewModel>>({
-            url: '/api/BillSchedules',
+    async apiBillSchedulesGetRaw(): Promise<runtime.ApiResponse<Array<BillScheduleViewModel>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/BillSchedules`,
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BillScheduleViewModelFromJSON));
+    }
 
     /**
      */
-    apiBillSchedulesIdGet({ id }: ApiBillSchedulesIdGetRequest): Observable<BillScheduleViewModel>
-    apiBillSchedulesIdGet({ id }: ApiBillSchedulesIdGetRequest, opts?: OperationOpts): Observable<RawAjaxResponse<BillScheduleViewModel>>
-    apiBillSchedulesIdGet({ id }: ApiBillSchedulesIdGetRequest, opts?: OperationOpts): Observable<BillScheduleViewModel | RawAjaxResponse<BillScheduleViewModel>> {
-        throwIfNullOrUndefined(id, 'id', 'apiBillSchedulesIdGet');
+    async apiBillSchedulesGet(): Promise<Array<BillScheduleViewModel>> {
+        const response = await this.apiBillSchedulesGetRaw();
+        return await response.value();
+    }
 
-        return this.request<BillScheduleViewModel>({
-            url: '/api/BillSchedules/{id}'.replace('{id}', encodeURI(id)),
+    /**
+     */
+    async apiBillSchedulesIdGetRaw(requestParameters: ApiBillSchedulesIdGetRequest): Promise<runtime.ApiResponse<BillScheduleViewModel>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiBillSchedulesIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/BillSchedules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BillScheduleViewModelFromJSON(jsonValue));
+    }
 
     /**
      */
-    apiBillSchedulesIdPut({ id, billScheduleViewModel }: ApiBillSchedulesIdPutRequest): Observable<void>
-    apiBillSchedulesIdPut({ id, billScheduleViewModel }: ApiBillSchedulesIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>>
-    apiBillSchedulesIdPut({ id, billScheduleViewModel }: ApiBillSchedulesIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>> {
-        throwIfNullOrUndefined(id, 'id', 'apiBillSchedulesIdPut');
+    async apiBillSchedulesIdGet(requestParameters: ApiBillSchedulesIdGetRequest): Promise<BillScheduleViewModel> {
+        const response = await this.apiBillSchedulesIdGetRaw(requestParameters);
+        return await response.value();
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiBillSchedulesIdPutRaw(requestParameters: ApiBillSchedulesIdPutRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiBillSchedulesIdPut.');
+        }
 
-        return this.request<void>({
-            url: '/api/BillSchedules/{id}'.replace('{id}', encodeURI(id)),
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/BillSchedules/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
-            headers,
-            body: billScheduleViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: BillScheduleViewModelToJSON(requestParameters.billScheduleViewModel),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
 
     /**
      */
-    apiBillSchedulesPost({ billScheduleViewModel }: ApiBillSchedulesPostRequest): Observable<BillScheduleViewModel>
-    apiBillSchedulesPost({ billScheduleViewModel }: ApiBillSchedulesPostRequest, opts?: OperationOpts): Observable<RawAjaxResponse<BillScheduleViewModel>>
-    apiBillSchedulesPost({ billScheduleViewModel }: ApiBillSchedulesPostRequest, opts?: OperationOpts): Observable<BillScheduleViewModel | RawAjaxResponse<BillScheduleViewModel>> {
+    async apiBillSchedulesIdPut(requestParameters: ApiBillSchedulesIdPutRequest): Promise<void> {
+        await this.apiBillSchedulesIdPutRaw(requestParameters);
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiBillSchedulesPostRaw(requestParameters: ApiBillSchedulesPostRequest): Promise<runtime.ApiResponse<BillScheduleViewModel>> {
+        const queryParameters: any = {};
 
-        return this.request<BillScheduleViewModel>({
-            url: '/api/BillSchedules',
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/BillSchedules`,
             method: 'POST',
-            headers,
-            body: billScheduleViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: BillScheduleViewModelToJSON(requestParameters.billScheduleViewModel),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BillScheduleViewModelFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiBillSchedulesPost(requestParameters: ApiBillSchedulesPostRequest): Promise<BillScheduleViewModel> {
+        const response = await this.apiBillSchedulesPostRaw(requestParameters);
+        return await response.value();
+    }
 
 }

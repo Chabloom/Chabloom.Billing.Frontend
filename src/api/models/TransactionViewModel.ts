@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,39 +12,86 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
+ * 
  * @export
  * @interface TransactionViewModel
  */
 export interface TransactionViewModel {
     /**
+     * 
      * @type {string}
      * @memberof TransactionViewModel
      */
     id?: string;
     /**
+     * 
      * @type {string}
      * @memberof TransactionViewModel
      */
     name: string;
     /**
+     * 
      * @type {string}
      * @memberof TransactionViewModel
      */
     externalId: string;
     /**
+     * 
      * @type {number}
      * @memberof TransactionViewModel
      */
     amount: number;
     /**
+     * 
      * @type {string}
      * @memberof TransactionViewModel
      */
     account?: string;
     /**
+     * 
      * @type {string}
      * @memberof TransactionViewModel
      */
     bill?: string;
 }
+
+export function TransactionViewModelFromJSON(json: any): TransactionViewModel {
+    return TransactionViewModelFromJSONTyped(json, false);
+}
+
+export function TransactionViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransactionViewModel {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'externalId': json['externalId'],
+        'amount': json['amount'],
+        'account': !exists(json, 'account') ? undefined : json['account'],
+        'bill': !exists(json, 'bill') ? undefined : json['bill'],
+    };
+}
+
+export function TransactionViewModelToJSON(value?: TransactionViewModel | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'name': value.name,
+        'externalId': value.externalId,
+        'amount': value.amount,
+        'account': value.account,
+        'bill': value.bill,
+    };
+}
+
+

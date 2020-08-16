@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,39 +12,86 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
+ * 
  * @export
  * @interface BillViewModel
  */
 export interface BillViewModel {
     /**
+     * 
      * @type {string}
      * @memberof BillViewModel
      */
     id?: string;
     /**
+     * 
      * @type {string}
      * @memberof BillViewModel
      */
     name: string;
     /**
+     * 
      * @type {number}
      * @memberof BillViewModel
      */
     amount: number;
     /**
-     * @type {string}
+     * 
+     * @type {Date}
      * @memberof BillViewModel
      */
-    dueDate: string;
+    dueDate: Date;
     /**
+     * 
      * @type {string}
      * @memberof BillViewModel
      */
     account?: string;
     /**
+     * 
      * @type {string}
      * @memberof BillViewModel
      */
     billSchedule?: string;
 }
+
+export function BillViewModelFromJSON(json: any): BillViewModel {
+    return BillViewModelFromJSONTyped(json, false);
+}
+
+export function BillViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): BillViewModel {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'amount': json['amount'],
+        'dueDate': (new Date(json['dueDate'])),
+        'account': !exists(json, 'account') ? undefined : json['account'],
+        'billSchedule': !exists(json, 'billSchedule') ? undefined : json['billSchedule'],
+    };
+}
+
+export function BillViewModelToJSON(value?: BillViewModel | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'name': value.name,
+        'amount': value.amount,
+        'dueDate': (value.dueDate.toISOString()),
+        'account': value.account,
+        'billSchedule': value.billSchedule,
+    };
+}
+
+

@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,11 +12,15 @@
  * Do not edit the class manually.
  */
 
-import { Observable } from 'rxjs';
-import { BaseAPI, HttpHeaders, throwIfNullOrUndefined, encodeURI, OperationOpts, RawAjaxResponse } from '../runtime';
+
+import * as runtime from '../runtime';
 import {
     AccountViewModel,
+    AccountViewModelFromJSON,
+    AccountViewModelToJSON,
     ProblemDetails,
+    ProblemDetailsFromJSON,
+    ProblemDetailsToJSON,
 } from '../models';
 
 export interface ApiAccountsIdGetRequest {
@@ -32,69 +37,117 @@ export interface ApiAccountsPostRequest {
 }
 
 /**
- * no description
+ * 
  */
-export class AccountsApi extends BaseAPI {
+export class AccountsApi extends runtime.BaseAPI {
 
     /**
      */
-    apiAccountsGet(): Observable<Array<AccountViewModel>>
-    apiAccountsGet(opts?: OperationOpts): Observable<RawAjaxResponse<Array<AccountViewModel>>>
-    apiAccountsGet(opts?: OperationOpts): Observable<Array<AccountViewModel> | RawAjaxResponse<Array<AccountViewModel>>> {
-        return this.request<Array<AccountViewModel>>({
-            url: '/api/Accounts',
+    async apiAccountsGetRaw(): Promise<runtime.ApiResponse<Array<AccountViewModel>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Accounts`,
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AccountViewModelFromJSON));
+    }
 
     /**
      */
-    apiAccountsIdGet({ id }: ApiAccountsIdGetRequest): Observable<AccountViewModel>
-    apiAccountsIdGet({ id }: ApiAccountsIdGetRequest, opts?: OperationOpts): Observable<RawAjaxResponse<AccountViewModel>>
-    apiAccountsIdGet({ id }: ApiAccountsIdGetRequest, opts?: OperationOpts): Observable<AccountViewModel | RawAjaxResponse<AccountViewModel>> {
-        throwIfNullOrUndefined(id, 'id', 'apiAccountsIdGet');
+    async apiAccountsGet(): Promise<Array<AccountViewModel>> {
+        const response = await this.apiAccountsGetRaw();
+        return await response.value();
+    }
 
-        return this.request<AccountViewModel>({
-            url: '/api/Accounts/{id}'.replace('{id}', encodeURI(id)),
+    /**
+     */
+    async apiAccountsIdGetRaw(requestParameters: ApiAccountsIdGetRequest): Promise<runtime.ApiResponse<AccountViewModel>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiAccountsIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccountViewModelFromJSON(jsonValue));
+    }
 
     /**
      */
-    apiAccountsIdPut({ id, accountViewModel }: ApiAccountsIdPutRequest): Observable<void>
-    apiAccountsIdPut({ id, accountViewModel }: ApiAccountsIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>>
-    apiAccountsIdPut({ id, accountViewModel }: ApiAccountsIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>> {
-        throwIfNullOrUndefined(id, 'id', 'apiAccountsIdPut');
+    async apiAccountsIdGet(requestParameters: ApiAccountsIdGetRequest): Promise<AccountViewModel> {
+        const response = await this.apiAccountsIdGetRaw(requestParameters);
+        return await response.value();
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiAccountsIdPutRaw(requestParameters: ApiAccountsIdPutRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiAccountsIdPut.');
+        }
 
-        return this.request<void>({
-            url: '/api/Accounts/{id}'.replace('{id}', encodeURI(id)),
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Accounts/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
-            headers,
-            body: accountViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: AccountViewModelToJSON(requestParameters.accountViewModel),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
 
     /**
      */
-    apiAccountsPost({ accountViewModel }: ApiAccountsPostRequest): Observable<AccountViewModel>
-    apiAccountsPost({ accountViewModel }: ApiAccountsPostRequest, opts?: OperationOpts): Observable<RawAjaxResponse<AccountViewModel>>
-    apiAccountsPost({ accountViewModel }: ApiAccountsPostRequest, opts?: OperationOpts): Observable<AccountViewModel | RawAjaxResponse<AccountViewModel>> {
+    async apiAccountsIdPut(requestParameters: ApiAccountsIdPutRequest): Promise<void> {
+        await this.apiAccountsIdPutRaw(requestParameters);
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiAccountsPostRaw(requestParameters: ApiAccountsPostRequest): Promise<runtime.ApiResponse<AccountViewModel>> {
+        const queryParameters: any = {};
 
-        return this.request<AccountViewModel>({
-            url: '/api/Accounts',
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Accounts`,
             method: 'POST',
-            headers,
-            body: accountViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: AccountViewModelToJSON(requestParameters.accountViewModel),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccountViewModelFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiAccountsPost(requestParameters: ApiAccountsPostRequest): Promise<AccountViewModel> {
+        const response = await this.apiAccountsPostRaw(requestParameters);
+        return await response.value();
+    }
 
 }

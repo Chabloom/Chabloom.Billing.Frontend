@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,11 +12,15 @@
  * Do not edit the class manually.
  */
 
-import { Observable } from 'rxjs';
-import { BaseAPI, HttpHeaders, throwIfNullOrUndefined, encodeURI, OperationOpts, RawAjaxResponse } from '../runtime';
+
+import * as runtime from '../runtime';
 import {
     ProblemDetails,
+    ProblemDetailsFromJSON,
+    ProblemDetailsToJSON,
     TransactionViewModel,
+    TransactionViewModelFromJSON,
+    TransactionViewModelToJSON,
 } from '../models';
 
 export interface ApiTransactionsIdGetRequest {
@@ -27,50 +32,87 @@ export interface ApiTransactionsPostRequest {
 }
 
 /**
- * no description
+ * 
  */
-export class TransactionsApi extends BaseAPI {
+export class TransactionsApi extends runtime.BaseAPI {
 
     /**
      */
-    apiTransactionsGet(): Observable<Array<TransactionViewModel>>
-    apiTransactionsGet(opts?: OperationOpts): Observable<RawAjaxResponse<Array<TransactionViewModel>>>
-    apiTransactionsGet(opts?: OperationOpts): Observable<Array<TransactionViewModel> | RawAjaxResponse<Array<TransactionViewModel>>> {
-        return this.request<Array<TransactionViewModel>>({
-            url: '/api/Transactions',
+    async apiTransactionsGetRaw(): Promise<runtime.ApiResponse<Array<TransactionViewModel>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Transactions`,
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TransactionViewModelFromJSON));
+    }
 
     /**
      */
-    apiTransactionsIdGet({ id }: ApiTransactionsIdGetRequest): Observable<TransactionViewModel>
-    apiTransactionsIdGet({ id }: ApiTransactionsIdGetRequest, opts?: OperationOpts): Observable<RawAjaxResponse<TransactionViewModel>>
-    apiTransactionsIdGet({ id }: ApiTransactionsIdGetRequest, opts?: OperationOpts): Observable<TransactionViewModel | RawAjaxResponse<TransactionViewModel>> {
-        throwIfNullOrUndefined(id, 'id', 'apiTransactionsIdGet');
+    async apiTransactionsGet(): Promise<Array<TransactionViewModel>> {
+        const response = await this.apiTransactionsGetRaw();
+        return await response.value();
+    }
 
-        return this.request<TransactionViewModel>({
-            url: '/api/Transactions/{id}'.replace('{id}', encodeURI(id)),
+    /**
+     */
+    async apiTransactionsIdGetRaw(requestParameters: ApiTransactionsIdGetRequest): Promise<runtime.ApiResponse<TransactionViewModel>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTransactionsIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Transactions/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionViewModelFromJSON(jsonValue));
+    }
 
     /**
      */
-    apiTransactionsPost({ transactionViewModel }: ApiTransactionsPostRequest): Observable<TransactionViewModel>
-    apiTransactionsPost({ transactionViewModel }: ApiTransactionsPostRequest, opts?: OperationOpts): Observable<RawAjaxResponse<TransactionViewModel>>
-    apiTransactionsPost({ transactionViewModel }: ApiTransactionsPostRequest, opts?: OperationOpts): Observable<TransactionViewModel | RawAjaxResponse<TransactionViewModel>> {
+    async apiTransactionsIdGet(requestParameters: ApiTransactionsIdGetRequest): Promise<TransactionViewModel> {
+        const response = await this.apiTransactionsIdGetRaw(requestParameters);
+        return await response.value();
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiTransactionsPostRaw(requestParameters: ApiTransactionsPostRequest): Promise<runtime.ApiResponse<TransactionViewModel>> {
+        const queryParameters: any = {};
 
-        return this.request<TransactionViewModel>({
-            url: '/api/Transactions',
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Transactions`,
             method: 'POST',
-            headers,
-            body: transactionViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: TransactionViewModelToJSON(requestParameters.transactionViewModel),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TransactionViewModelFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiTransactionsPost(requestParameters: ApiTransactionsPostRequest): Promise<TransactionViewModel> {
+        const response = await this.apiTransactionsPostRaw(requestParameters);
+        return await response.value();
+    }
 
 }

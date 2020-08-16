@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,11 +12,15 @@
  * Do not edit the class manually.
  */
 
-import { Observable } from 'rxjs';
-import { BaseAPI, HttpHeaders, throwIfNullOrUndefined, encodeURI, OperationOpts, RawAjaxResponse } from '../runtime';
+
+import * as runtime from '../runtime';
 import {
     BillViewModel,
+    BillViewModelFromJSON,
+    BillViewModelToJSON,
     ProblemDetails,
+    ProblemDetailsFromJSON,
+    ProblemDetailsToJSON,
 } from '../models';
 
 export interface ApiBillsIdGetRequest {
@@ -32,69 +37,117 @@ export interface ApiBillsPostRequest {
 }
 
 /**
- * no description
+ * 
  */
-export class BillsApi extends BaseAPI {
+export class BillsApi extends runtime.BaseAPI {
 
     /**
      */
-    apiBillsGet(): Observable<Array<BillViewModel>>
-    apiBillsGet(opts?: OperationOpts): Observable<RawAjaxResponse<Array<BillViewModel>>>
-    apiBillsGet(opts?: OperationOpts): Observable<Array<BillViewModel> | RawAjaxResponse<Array<BillViewModel>>> {
-        return this.request<Array<BillViewModel>>({
-            url: '/api/Bills',
+    async apiBillsGetRaw(): Promise<runtime.ApiResponse<Array<BillViewModel>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Bills`,
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BillViewModelFromJSON));
+    }
 
     /**
      */
-    apiBillsIdGet({ id }: ApiBillsIdGetRequest): Observable<BillViewModel>
-    apiBillsIdGet({ id }: ApiBillsIdGetRequest, opts?: OperationOpts): Observable<RawAjaxResponse<BillViewModel>>
-    apiBillsIdGet({ id }: ApiBillsIdGetRequest, opts?: OperationOpts): Observable<BillViewModel | RawAjaxResponse<BillViewModel>> {
-        throwIfNullOrUndefined(id, 'id', 'apiBillsIdGet');
+    async apiBillsGet(): Promise<Array<BillViewModel>> {
+        const response = await this.apiBillsGetRaw();
+        return await response.value();
+    }
 
-        return this.request<BillViewModel>({
-            url: '/api/Bills/{id}'.replace('{id}', encodeURI(id)),
+    /**
+     */
+    async apiBillsIdGetRaw(requestParameters: ApiBillsIdGetRequest): Promise<runtime.ApiResponse<BillViewModel>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiBillsIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/api/Bills/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BillViewModelFromJSON(jsonValue));
+    }
 
     /**
      */
-    apiBillsIdPut({ id, billViewModel }: ApiBillsIdPutRequest): Observable<void>
-    apiBillsIdPut({ id, billViewModel }: ApiBillsIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>>
-    apiBillsIdPut({ id, billViewModel }: ApiBillsIdPutRequest, opts?: OperationOpts): Observable<void | RawAjaxResponse<void>> {
-        throwIfNullOrUndefined(id, 'id', 'apiBillsIdPut');
+    async apiBillsIdGet(requestParameters: ApiBillsIdGetRequest): Promise<BillViewModel> {
+        const response = await this.apiBillsIdGetRaw(requestParameters);
+        return await response.value();
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiBillsIdPutRaw(requestParameters: ApiBillsIdPutRequest): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiBillsIdPut.');
+        }
 
-        return this.request<void>({
-            url: '/api/Bills/{id}'.replace('{id}', encodeURI(id)),
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Bills/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'PUT',
-            headers,
-            body: billViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: BillViewModelToJSON(requestParameters.billViewModel),
+        });
+
+        return new runtime.VoidApiResponse(response);
+    }
 
     /**
      */
-    apiBillsPost({ billViewModel }: ApiBillsPostRequest): Observable<BillViewModel>
-    apiBillsPost({ billViewModel }: ApiBillsPostRequest, opts?: OperationOpts): Observable<RawAjaxResponse<BillViewModel>>
-    apiBillsPost({ billViewModel }: ApiBillsPostRequest, opts?: OperationOpts): Observable<BillViewModel | RawAjaxResponse<BillViewModel>> {
+    async apiBillsIdPut(requestParameters: ApiBillsIdPutRequest): Promise<void> {
+        await this.apiBillsIdPutRaw(requestParameters);
+    }
 
-        const headers: HttpHeaders = {
-            'Content-Type': 'application/json',
-        };
+    /**
+     */
+    async apiBillsPostRaw(requestParameters: ApiBillsPostRequest): Promise<runtime.ApiResponse<BillViewModel>> {
+        const queryParameters: any = {};
 
-        return this.request<BillViewModel>({
-            url: '/api/Bills',
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const response = await this.request({
+            path: `/api/Bills`,
             method: 'POST',
-            headers,
-            body: billViewModel,
-        }, opts?.responseOpts);
-    };
+            headers: headerParameters,
+            query: queryParameters,
+            body: BillViewModelToJSON(requestParameters.billViewModel),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BillViewModelFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiBillsPost(requestParameters: ApiBillsPostRequest): Promise<BillViewModel> {
+        const response = await this.apiBillsPostRaw(requestParameters);
+        return await response.value();
+    }
 
 }

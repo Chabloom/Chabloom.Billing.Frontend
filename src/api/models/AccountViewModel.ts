@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,34 +12,78 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
+ * 
  * @export
  * @interface AccountViewModel
  */
 export interface AccountViewModel {
     /**
+     * 
      * @type {string}
      * @memberof AccountViewModel
      */
     id?: string;
     /**
+     * 
      * @type {string}
      * @memberof AccountViewModel
      */
     name: string;
     /**
+     * 
      * @type {string}
      * @memberof AccountViewModel
      */
     primaryAddress: string;
     /**
+     * 
      * @type {string}
      * @memberof AccountViewModel
      */
     externalId: string;
     /**
+     * 
      * @type {string}
      * @memberof AccountViewModel
      */
     owner?: string | null;
 }
+
+export function AccountViewModelFromJSON(json: any): AccountViewModel {
+    return AccountViewModelFromJSONTyped(json, false);
+}
+
+export function AccountViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccountViewModel {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'primaryAddress': json['primaryAddress'],
+        'externalId': json['externalId'],
+        'owner': !exists(json, 'owner') ? undefined : json['owner'],
+    };
+}
+
+export function AccountViewModelToJSON(value?: AccountViewModel | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'name': value.name,
+        'primaryAddress': value.primaryAddress,
+        'externalId': value.externalId,
+        'owner': value.owner,
+    };
+}
+
+

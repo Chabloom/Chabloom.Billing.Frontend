@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -11,44 +12,94 @@
  * Do not edit the class manually.
  */
 
+import { exists, mapValues } from '../runtime';
 /**
+ * 
  * @export
  * @interface BillScheduleViewModel
  */
 export interface BillScheduleViewModel {
     /**
+     * 
      * @type {string}
      * @memberof BillScheduleViewModel
      */
     id?: string;
     /**
+     * 
      * @type {string}
      * @memberof BillScheduleViewModel
      */
     name: string;
     /**
+     * 
      * @type {number}
      * @memberof BillScheduleViewModel
      */
     amount: number;
     /**
+     * 
      * @type {number}
      * @memberof BillScheduleViewModel
      */
     dayDue: number;
     /**
+     * 
      * @type {number}
      * @memberof BillScheduleViewModel
      */
     monthInterval: number;
     /**
+     * 
      * @type {boolean}
      * @memberof BillScheduleViewModel
      */
     enabled: boolean;
     /**
+     * 
      * @type {string}
      * @memberof BillScheduleViewModel
      */
     account?: string;
 }
+
+export function BillScheduleViewModelFromJSON(json: any): BillScheduleViewModel {
+    return BillScheduleViewModelFromJSONTyped(json, false);
+}
+
+export function BillScheduleViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): BillScheduleViewModel {
+    if ((json === undefined) || (json === null)) {
+        return json;
+    }
+    return {
+        
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'name': json['name'],
+        'amount': json['amount'],
+        'dayDue': json['dayDue'],
+        'monthInterval': json['monthInterval'],
+        'enabled': json['enabled'],
+        'account': !exists(json, 'account') ? undefined : json['account'],
+    };
+}
+
+export function BillScheduleViewModelToJSON(value?: BillScheduleViewModel | null): any {
+    if (value === undefined) {
+        return undefined;
+    }
+    if (value === null) {
+        return null;
+    }
+    return {
+        
+        'id': value.id,
+        'name': value.name,
+        'amount': value.amount,
+        'dayDue': value.dayDue,
+        'monthInterval': value.monthInterval,
+        'enabled': value.enabled,
+        'account': value.account,
+    };
+}
+
+
