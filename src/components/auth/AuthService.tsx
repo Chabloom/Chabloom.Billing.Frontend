@@ -1,25 +1,24 @@
 import {UserManager, UserManagerSettings, WebStorageStateStore} from "oidc-client";
 import React from "react";
 
+export const AuthSettings: UserManagerSettings = {
+    authority:"https://localhost:44334",
+    client_id:"Chabloom.Payments.Frontend",
+    redirect_uri:"http://localhost:3000/signin-oidc",
+    post_logout_redirect_uri:"http://localhost:3000/logout/callback",
+    response_type:"code",
+    scope:"Chabloom.PaymentsAPI openid profile",
+    filterProtocolClaims: true,
+    loadUserInfo: true,
+    userStore: new WebStorageStateStore({store: window.sessionStorage})
+};
+
 class AuthService {
-    settings: UserManagerSettings;
     userManager: UserManager;
 
     constructor() {
-        this.settings = {
-            authority: 'https://localhost:44303',
-            client_id: 'Chabloom.Payments.Frontend',
-            redirect_uri: 'http://localhost:3001/signin-oidc',
-            post_logout_redirect_uri: 'http://localhost:3001/',
-            response_type: "code",
-            scope: "Accounts.Read Accounts.Write",
-            filterProtocolClaims: true,
-            loadUserInfo: true,
-            userStore: new WebStorageStateStore({store: window.sessionStorage})
-        };
-
         // Set up the user manager
-        this.userManager = new UserManager(this.settings);
+        this.userManager = new UserManager(AuthSettings);
         // Add user loaded callback
         this.userManager.events.addUserLoaded((user) => {
             if (window.location.href.indexOf("signin-oidc") !== -1) {
@@ -65,11 +64,11 @@ class AuthService {
     };
 
     isAuthenticated = () => {
-        if (!this.settings.authority ||
-            !this.settings.client_id) {
+        if (!AuthSettings.authority ||
+            !AuthSettings.client_id) {
             return false;
         }
-        const key = `oidc.user:${this.settings.authority}:${this.settings.client_id}`;
+        const key = `oidc.user:${AuthSettings.authority}:${AuthSettings.client_id}`;
         const item = sessionStorage.getItem(key);
         if (!item) {
             return false;

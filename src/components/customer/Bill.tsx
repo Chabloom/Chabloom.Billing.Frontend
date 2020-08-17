@@ -18,11 +18,7 @@ const Bill: React.FC<Props> = (props) => {
         const billsApi = new BillsApi();
         // Get the customer bill information
         billsApi.apiBillsIdGet({id: props.billId})
-            .subscribe({
-                next(value) {
-                    setBill(value)
-                }
-            })
+            .then(value => setBill(value));
     }
 
     return (

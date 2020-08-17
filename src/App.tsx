@@ -3,31 +3,36 @@ import './App.css';
 
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import Accounts from "./components/manager/Accounts";
+import {UserManager} from "oidc-client";
+import {OidcSettings} from "./oidc/settings";
+
 import Nav from "./components/Nav";
-import AuthCallback from "./components/auth/AuthCallback";
-import AuthLogout from "./components/auth/AuthLogout";
-import AuthSilentRenew from "./components/auth/AuthSilentRenew";
-import AuthLogoutCallback from "./components/auth/AuthLogoutCallback";
-import AuthRoute from "./components/auth/AuthRoute";
-import {AuthProvider} from "./components/auth/AuthService";
+import Accounts from "./components/manager/Accounts";
+import OidcSignInCallback from "./components/oidc/OidcSignInCallback";
+import OidcSignOutCallback from "./components/oidc/OidcSignOutCallback";
+
+const userManager = new UserManager(OidcSettings);
 
 const App: React.FC = () => {
     return (
-        <AuthProvider>
-            <Router>
-                <Nav>
-                    <Switch>
-                        <Route exact={true} path="/signin-oidc" component={AuthCallback}/>
-                        <Route exact={true} path="/logout" component={AuthLogout}/>
-                        <Route exact={true} path="/logout/callback" component={AuthLogoutCallback}/>
-                        <Route exact={true} path="/silentrenew" component={AuthSilentRenew}/>
-                        <AuthRoute path="/accounts" component={Accounts}/>
-                        <AuthRoute path="/" component={Accounts}/>
-                    </Switch>
-                </Nav>
-            </Router>
-        </AuthProvider>
+        <Router>
+            <Nav>
+                <Switch>
+                    <Route exact={true} path="/signin-oidc">
+                        <OidcSignInCallback userManager={userManager}/>
+                    </Route>
+                    <Route exact={true} path="/signout-oidc">
+                        <OidcSignOutCallback userManager={userManager}/>
+                    </Route>
+                    <Route path="/accounts">
+                        <Accounts userManager={userManager}/>
+                    </Route>
+                    <Route path="/">
+                        <Accounts userManager={userManager}/>
+                    </Route>
+                </Switch>
+            </Nav>
+        </Router>
     );
 }
 

@@ -16,11 +16,15 @@ import {
 
 import {ApiAccountsIdPutRequest, AccountsApi} from "../../api/apis";
 import {AccountViewModel} from "../../api/models";
+import {Configuration} from "../../api/runtime";
+import {UserManager} from "oidc-client";
+import {AuthSettings} from "../auth/AuthService";
 
 interface Props {
     open: boolean,
     account: AccountViewModel,
     close: CallableFunction,
+    userManager: UserManager,
 }
 
 const AccountDetails: React.FC<Props> = (props) => {
@@ -39,14 +43,6 @@ const AccountDetails: React.FC<Props> = (props) => {
                                onChange={(event => props.account.name = event.target.value)}/>
                     <TextField label={"Primary Address"} defaultValue={props.account.primaryAddress}
                                onChange={(event => props.account.primaryAddress = event.target.value)}/>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={props.account.enabled}
-                                color="primary"
-                                onChange={(event => props.account.enabled = event.target.checked)}/>
-                        }
-                        label="Enabled"/>
                 </FormGroup>
             </DialogContent>
             <DialogActions>
@@ -54,22 +50,25 @@ const AccountDetails: React.FC<Props> = (props) => {
                     Cancel
                 </Button>
                 <Button color="primary" disabled={saving} onClick={() => {
-                    const accountsApi = new AccountsApi();
-                    const request = {
-                        id: props.account.id,
-                        accountViewModel: props.account,
-                    } as ApiAccountsIdPutRequest;
-                    setSaving(true);
-                    accountsApi.apiAccountsIdPut(request)
-                        .subscribe({
-                            error(err) {
-                                console.log(err);
-                                setSaving(false);
-                            },
-                            complete() {
-                                props.close();
-                                setSaving(false);
-                            },
+                    props.userManager.getUser()
+                        .then(value => {
+                                // Get an instance of accounts API
+                                const headers = {
+                                    'Authorization': `Bearer ${value?.access_token}`
+                                }
+                                const accountsApi = new AccountsApi(new Configuration({basePath: 'https://localhost:44334', headers: headers}));
+                                const request = {
+                                    id: props.account.id,
+                                    accountViewModel: props.account,
+                                } as ApiAccountsIdPutRequest;
+                                setSaving(true);
+                                accountsApi.apiAccountsIdPut(request)
+                                    .catch(reason => {
+                                        console.log(reason);
+                                        setSaving(false);
+                                    })
+                                    .then(value => props.close())
+                                    .finally(() => setSaving(false));
                         });
                 }} autoFocus>
                     Save

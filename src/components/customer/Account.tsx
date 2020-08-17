@@ -17,9 +17,11 @@ import {
     Typography
 } from "@material-ui/core";
 
-import {AccountsApi, BillsApi, PaymentSchedulesApi} from "../../api/apis";
-import {AccountViewModel, BillViewModel, PaymentScheduleViewModel} from "../../api/models";
+import {AccountsApi, BillsApi, BillSchedulesApi} from "../../api/apis";
+import {AccountViewModel, BillViewModel, BillScheduleViewModel} from "../../api/models";
 import {makeStyles} from "@material-ui/core/styles";
+import {Configuration, ConfigurationParameters} from "../../api";
+import {AuthConsumer} from "../auth/AuthService";
 
 interface Props {
     accountId: string,
@@ -46,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Account: React.FC<Props> = (props) => {
     const [account, setAccount] = React.useState<AccountViewModel>();
-    const [paymentSchedule, setPaymentSchedule] = React.useState<PaymentScheduleViewModel>();
+    const [billSchedule, setBillSchedule] = React.useState<BillScheduleViewModel>();
     const [bill, setBill] = React.useState<BillViewModel>();
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -55,40 +57,10 @@ const Account: React.FC<Props> = (props) => {
     // Attempt to load account until successful
     if (account === undefined) {
         // Get an instance of accounts API
-        const accountsApi = new AccountsApi();
+        const accountsApi = new AccountsApi(new Configuration({apiKey: ""}));
         // Get the customer account information
         accountsApi.apiAccountsIdGet({id: props.accountId})
-            .subscribe({
-                next(value) {
-                    setAccount(value);
-                    if (value.paymentSchedules !== null &&
-                        value.paymentSchedules !== undefined &&
-                        value.paymentSchedules.length > 0) {
-                        console.log("Payment schedules:");
-                        console.log(value.paymentSchedules);
-                        const paymentSchedulesApi = new PaymentSchedulesApi();
-                        paymentSchedulesApi.apiPaymentSchedulesIdGet({id: value.paymentSchedules[0]})
-                            .subscribe({
-                                next(value) {
-                                    setPaymentSchedule(value)
-                                }
-                            })
-                    }
-                    if (value.bills !== null &&
-                        value.bills !== undefined &&
-                        value.bills.length > 0) {
-                        console.log("Bills:");
-                        console.log(value.bills);
-                        const billsApi = new BillsApi();
-                        billsApi.apiBillsIdGet({id: value.bills[0]})
-                            .subscribe({
-                                next(value) {
-                                    setBill(value)
-                                }
-                            })
-                    }
-                },
-            });
+            .then(value => setAccount(value));
     }
 
     let accountInfo = null;
@@ -118,15 +90,15 @@ const Account: React.FC<Props> = (props) => {
     }
 
     let paymentInfo = null;
-    if (paymentSchedule !== undefined) {
+    if (billSchedule !== undefined) {
         paymentInfo = (
             <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                    <Typography variant="h4">{paymentSchedule.name}</Typography>
+                    <Typography variant="h4">{billSchedule.name}</Typography>
                     <FormGroup>
-                        <TextField disabled fullWidth label="Amount" defaultValue={paymentSchedule.amount}/>
-                        <TextField disabled fullWidth label="Day Due" defaultValue={paymentSchedule.dayDue}/>
-                        <TextField disabled fullWidth label="Interval" defaultValue={paymentSchedule.monthInterval}/>
+                        <TextField disabled fullWidth label="Amount" defaultValue={billSchedule.amount}/>
+                        <TextField disabled fullWidth label="Day Due" defaultValue={billSchedule.dayDue}/>
+                        <TextField disabled fullWidth label="Interval" defaultValue={billSchedule.monthInterval}/>
                     </FormGroup>
                 </Paper>
             </Grid>
@@ -184,12 +156,12 @@ const Account: React.FC<Props> = (props) => {
     );
 
     return (
-        <Grid container spacing={3}>
-            {accountInfo}
-            {paymentInfo}
-            {billInfo}
-            {transactionInfo}
-        </Grid>
+            <Grid container spacing={3}>
+                {accountInfo}
+                {paymentInfo}
+                {billInfo}
+                {transactionInfo}
+            </Grid>
     );
 };
 
