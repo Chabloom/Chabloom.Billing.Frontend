@@ -32,9 +32,56 @@ export interface ApiTransactionsPostRequest {
 }
 
 /**
+ * TransactionsApi - interface
+ * 
+ * @export
+ * @interface TransactionsApiInterface
+ */
+export interface TransactionsApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionsApiInterface
+     */
+    apiTransactionsGetRaw(): Promise<runtime.ApiResponse<Array<TransactionViewModel>>>;
+
+    /**
+     */
+    apiTransactionsGet(): Promise<Array<TransactionViewModel>>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionsApiInterface
+     */
+    apiTransactionsIdGetRaw(requestParameters: ApiTransactionsIdGetRequest): Promise<runtime.ApiResponse<TransactionViewModel>>;
+
+    /**
+     */
+    apiTransactionsIdGet(requestParameters: ApiTransactionsIdGetRequest): Promise<TransactionViewModel>;
+
+    /**
+     * 
+     * @param {TransactionViewModel} [transactionViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof TransactionsApiInterface
+     */
+    apiTransactionsPostRaw(requestParameters: ApiTransactionsPostRequest): Promise<runtime.ApiResponse<TransactionViewModel>>;
+
+    /**
+     */
+    apiTransactionsPost(requestParameters: ApiTransactionsPostRequest): Promise<TransactionViewModel>;
+
+}
+
+/**
  * 
  */
-export class TransactionsApi extends runtime.BaseAPI {
+export class TransactionsApi extends runtime.BaseAPI implements TransactionsApiInterface {
 
     /**
      */

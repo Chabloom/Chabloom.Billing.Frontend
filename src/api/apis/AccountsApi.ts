@@ -37,9 +37,70 @@ export interface ApiAccountsPostRequest {
 }
 
 /**
+ * AccountsApi - interface
+ * 
+ * @export
+ * @interface AccountsApiInterface
+ */
+export interface AccountsApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountsApiInterface
+     */
+    apiAccountsGetRaw(): Promise<runtime.ApiResponse<Array<AccountViewModel>>>;
+
+    /**
+     */
+    apiAccountsGet(): Promise<Array<AccountViewModel>>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountsApiInterface
+     */
+    apiAccountsIdGetRaw(requestParameters: ApiAccountsIdGetRequest): Promise<runtime.ApiResponse<AccountViewModel>>;
+
+    /**
+     */
+    apiAccountsIdGet(requestParameters: ApiAccountsIdGetRequest): Promise<AccountViewModel>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {AccountViewModel} [accountViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountsApiInterface
+     */
+    apiAccountsIdPutRaw(requestParameters: ApiAccountsIdPutRequest): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     */
+    apiAccountsIdPut(requestParameters: ApiAccountsIdPutRequest): Promise<void>;
+
+    /**
+     * 
+     * @param {AccountViewModel} [accountViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AccountsApiInterface
+     */
+    apiAccountsPostRaw(requestParameters: ApiAccountsPostRequest): Promise<runtime.ApiResponse<AccountViewModel>>;
+
+    /**
+     */
+    apiAccountsPost(requestParameters: ApiAccountsPostRequest): Promise<AccountViewModel>;
+
+}
+
+/**
  * 
  */
-export class AccountsApi extends runtime.BaseAPI {
+export class AccountsApi extends runtime.BaseAPI implements AccountsApiInterface {
 
     /**
      */

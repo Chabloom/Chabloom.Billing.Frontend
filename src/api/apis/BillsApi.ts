@@ -37,9 +37,70 @@ export interface ApiBillsPostRequest {
 }
 
 /**
+ * BillsApi - interface
+ * 
+ * @export
+ * @interface BillsApiInterface
+ */
+export interface BillsApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillsApiInterface
+     */
+    apiBillsGetRaw(): Promise<runtime.ApiResponse<Array<BillViewModel>>>;
+
+    /**
+     */
+    apiBillsGet(): Promise<Array<BillViewModel>>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillsApiInterface
+     */
+    apiBillsIdGetRaw(requestParameters: ApiBillsIdGetRequest): Promise<runtime.ApiResponse<BillViewModel>>;
+
+    /**
+     */
+    apiBillsIdGet(requestParameters: ApiBillsIdGetRequest): Promise<BillViewModel>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {BillViewModel} [billViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillsApiInterface
+     */
+    apiBillsIdPutRaw(requestParameters: ApiBillsIdPutRequest): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     */
+    apiBillsIdPut(requestParameters: ApiBillsIdPutRequest): Promise<void>;
+
+    /**
+     * 
+     * @param {BillViewModel} [billViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillsApiInterface
+     */
+    apiBillsPostRaw(requestParameters: ApiBillsPostRequest): Promise<runtime.ApiResponse<BillViewModel>>;
+
+    /**
+     */
+    apiBillsPost(requestParameters: ApiBillsPostRequest): Promise<BillViewModel>;
+
+}
+
+/**
  * 
  */
-export class BillsApi extends runtime.BaseAPI {
+export class BillsApi extends runtime.BaseAPI implements BillsApiInterface {
 
     /**
      */

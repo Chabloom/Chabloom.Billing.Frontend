@@ -37,9 +37,70 @@ export interface ApiBillSchedulesPostRequest {
 }
 
 /**
+ * BillSchedulesApi - interface
+ * 
+ * @export
+ * @interface BillSchedulesApiInterface
+ */
+export interface BillSchedulesApiInterface {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillSchedulesApiInterface
+     */
+    apiBillSchedulesGetRaw(): Promise<runtime.ApiResponse<Array<BillScheduleViewModel>>>;
+
+    /**
+     */
+    apiBillSchedulesGet(): Promise<Array<BillScheduleViewModel>>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillSchedulesApiInterface
+     */
+    apiBillSchedulesIdGetRaw(requestParameters: ApiBillSchedulesIdGetRequest): Promise<runtime.ApiResponse<BillScheduleViewModel>>;
+
+    /**
+     */
+    apiBillSchedulesIdGet(requestParameters: ApiBillSchedulesIdGetRequest): Promise<BillScheduleViewModel>;
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {BillScheduleViewModel} [billScheduleViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillSchedulesApiInterface
+     */
+    apiBillSchedulesIdPutRaw(requestParameters: ApiBillSchedulesIdPutRequest): Promise<runtime.ApiResponse<void>>;
+
+    /**
+     */
+    apiBillSchedulesIdPut(requestParameters: ApiBillSchedulesIdPutRequest): Promise<void>;
+
+    /**
+     * 
+     * @param {BillScheduleViewModel} [billScheduleViewModel] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BillSchedulesApiInterface
+     */
+    apiBillSchedulesPostRaw(requestParameters: ApiBillSchedulesPostRequest): Promise<runtime.ApiResponse<BillScheduleViewModel>>;
+
+    /**
+     */
+    apiBillSchedulesPost(requestParameters: ApiBillSchedulesPostRequest): Promise<BillScheduleViewModel>;
+
+}
+
+/**
  * 
  */
-export class BillSchedulesApi extends runtime.BaseAPI {
+export class BillSchedulesApi extends runtime.BaseAPI implements BillSchedulesApiInterface {
 
     /**
      */
