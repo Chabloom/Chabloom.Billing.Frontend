@@ -19,7 +19,7 @@ import {AccountViewModel} from "../../api/models";
 
 import AccountDetails from "./AccountDetails";
 import {Configuration} from "../../api/runtime";
-import {OidcSettings} from "../../oidc/settings";
+import {OidcSettings} from "../../settings/OidcSettings";
 
 interface Props {
     userManager: UserManager,

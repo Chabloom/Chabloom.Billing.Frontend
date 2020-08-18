@@ -4,7 +4,7 @@ import './App.scss';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {UserManager} from "oidc-client";
-import {OidcSettings} from "./oidc/settings";
+import {OidcSettings} from "./settings/OidcSettings";
 
 import Nav from "./components/Nav";
 import Accounts from "./components/manager/Accounts";
