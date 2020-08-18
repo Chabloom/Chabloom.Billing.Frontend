@@ -77,7 +77,7 @@ const Accounts: React.FC<Props> = (props) => {
                     </TableBody>
                 </Table>
                 {dialogAccount !== undefined &&
-                <AccountDetails open={dialogOpen} account={dialogAccount} close={() => setDialogOpen(false)}/>}
+                <AccountDetails userManager={props.userManager} open={dialogOpen} account={dialogAccount} close={() => setDialogOpen(false)}/>}
             </TableContainer>
         );
     }
