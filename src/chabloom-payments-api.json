@@ -1047,15 +1047,9 @@
       }
     },
     "securitySchemes": {
-      "oauth2": {
-        "type": "oauth2",
-        "flows": {
-          "authorizationCode": {
-            "authorizationUrl": "https://localhost:44303/connect/authorize",
-            "tokenUrl": "https://localhost:44303/connect/token",
-            "scopes": { }
-          }
-        }
+      "openid": {
+        "type": "openIdConnect",
+        "openIdConnectUrl": "https://localhost:44303/.well-known/openid-configuration"
       }
     }
   }
