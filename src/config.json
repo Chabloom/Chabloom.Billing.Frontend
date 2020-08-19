@@ -1,4 +1,6 @@
 {
-  "name": "payments-frontend",
-  "displayName": "Chabloom Payments Frontend"
+  "name": "chabloom-payments",
+  "displayName": "Chabloom Payments",
+  "apiPublicAddress": "API_PUBLIC_ADDRESS",
+  "jwtPublicAddress": "JWT_PUBLIC_ADDRESS"
 }
