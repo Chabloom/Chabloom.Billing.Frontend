@@ -1,5 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
+import {ApplicationConfig} from "../settings/config";
+
 /**
  * Chabloom Payments
  * Chabloom Payments v1 API
@@ -13,7 +15,7 @@
  */
 
 
-export const BASE_PATH = "http://localhost".replace(/\/+$/, "");
+export const BASE_PATH = ApplicationConfig.apiPublicAddress.replace(/\/+$/, "");
 
 const isBlob = (value: any) => typeof Blob !== 'undefined' && value instanceof Blob;
 
