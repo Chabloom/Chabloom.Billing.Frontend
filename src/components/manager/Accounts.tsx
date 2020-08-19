@@ -39,7 +39,7 @@ const Accounts: React.FC<Props> = (props) => {
                     const headers = {
                         'Authorization': `Bearer ${value?.access_token}`
                     }
-                    const accountsApi = new AccountsApi(new Configuration({basePath: 'https://localhost:44334', headers: headers}));
+                    const accountsApi = new AccountsApi(new Configuration({headers: headers}));
                     // Get all accounts
                     console.log('loading accounts')
                     accountsApi.apiAccountsGet()
