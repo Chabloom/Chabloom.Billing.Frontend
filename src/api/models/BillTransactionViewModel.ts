@@ -16,52 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TransactionViewModel
+ * @interface BillTransactionViewModel
  */
-export interface TransactionViewModel {
+export interface BillTransactionViewModel {
     /**
      * 
      * @type {string}
-     * @memberof TransactionViewModel
+     * @memberof BillTransactionViewModel
      */
     id?: string;
     /**
      * 
      * @type {string}
-     * @memberof TransactionViewModel
+     * @memberof BillTransactionViewModel
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof TransactionViewModel
+     * @memberof BillTransactionViewModel
      */
     externalId: string;
     /**
      * 
      * @type {number}
-     * @memberof TransactionViewModel
+     * @memberof BillTransactionViewModel
      */
     amount: number;
     /**
      * 
      * @type {string}
-     * @memberof TransactionViewModel
+     * @memberof BillTransactionViewModel
      */
-    account?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TransactionViewModel
-     */
-    bill?: string;
+    bill: string;
 }
 
-export function TransactionViewModelFromJSON(json: any): TransactionViewModel {
-    return TransactionViewModelFromJSONTyped(json, false);
+export function BillTransactionViewModelFromJSON(json: any): BillTransactionViewModel {
+    return BillTransactionViewModelFromJSONTyped(json, false);
 }
 
-export function TransactionViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): TransactionViewModel {
+export function BillTransactionViewModelFromJSONTyped(json: any, ignoreDiscriminator: boolean): BillTransactionViewModel {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -71,12 +65,11 @@ export function TransactionViewModelFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'externalId': json['externalId'],
         'amount': json['amount'],
-        'account': !exists(json, 'account') ? undefined : json['account'],
-        'bill': !exists(json, 'bill') ? undefined : json['bill'],
+        'bill': json['bill'],
     };
 }
 
-export function TransactionViewModelToJSON(value?: TransactionViewModel | null): any {
+export function BillTransactionViewModelToJSON(value?: BillTransactionViewModel | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -89,7 +82,6 @@ export function TransactionViewModelToJSON(value?: TransactionViewModel | null):
         'name': value.name,
         'externalId': value.externalId,
         'amount': value.amount,
-        'account': value.account,
         'bill': value.bill,
     };
 }

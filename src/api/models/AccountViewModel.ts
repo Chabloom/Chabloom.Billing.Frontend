@@ -36,19 +36,19 @@ export interface AccountViewModel {
      * @type {string}
      * @memberof AccountViewModel
      */
-    primaryAddress: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AccountViewModel
-     */
     externalId: string;
     /**
      * 
      * @type {string}
      * @memberof AccountViewModel
      */
-    owner?: string | null;
+    primaryAddress: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AccountViewModel
+     */
+    tenant: string;
 }
 
 export function AccountViewModelFromJSON(json: any): AccountViewModel {
@@ -63,9 +63,9 @@ export function AccountViewModelFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
-        'primaryAddress': json['primaryAddress'],
         'externalId': json['externalId'],
-        'owner': !exists(json, 'owner') ? undefined : json['owner'],
+        'primaryAddress': json['primaryAddress'],
+        'tenant': json['tenant'],
     };
 }
 
@@ -80,9 +80,9 @@ export function AccountViewModelToJSON(value?: AccountViewModel | null): any {
         
         'id': value.id,
         'name': value.name,
-        'primaryAddress': value.primaryAddress,
         'externalId': value.externalId,
-        'owner': value.owner,
+        'primaryAddress': value.primaryAddress,
+        'tenant': value.tenant,
     };
 }
 

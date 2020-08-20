@@ -48,7 +48,7 @@ export interface BillScheduleViewModel {
      * @type {number}
      * @memberof BillScheduleViewModel
      */
-    monthInterval: number;
+    interval: number;
     /**
      * 
      * @type {boolean}
@@ -60,7 +60,7 @@ export interface BillScheduleViewModel {
      * @type {string}
      * @memberof BillScheduleViewModel
      */
-    account?: string;
+    account: string;
 }
 
 export function BillScheduleViewModelFromJSON(json: any): BillScheduleViewModel {
@@ -77,9 +77,9 @@ export function BillScheduleViewModelFromJSONTyped(json: any, ignoreDiscriminato
         'name': json['name'],
         'amount': json['amount'],
         'dayDue': json['dayDue'],
-        'monthInterval': json['monthInterval'],
+        'interval': json['interval'],
         'enabled': json['enabled'],
-        'account': !exists(json, 'account') ? undefined : json['account'],
+        'account': json['account'],
     };
 }
 
@@ -96,7 +96,7 @@ export function BillScheduleViewModelToJSON(value?: BillScheduleViewModel | null
         'name': value.name,
         'amount': value.amount,
         'dayDue': value.dayDue,
-        'monthInterval': value.monthInterval,
+        'interval': value.interval,
         'enabled': value.enabled,
         'account': value.account,
     };

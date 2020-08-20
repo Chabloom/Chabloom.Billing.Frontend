@@ -720,10 +720,10 @@
         }
       }
     },
-    "/api/Transactions": {
+    "/api/BillTransactions": {
       "get": {
         "tags": [
-          "Transactions"
+          "BillTransactions"
         ],
         "responses": {
           "200": {
@@ -733,7 +733,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/TransactionViewModel"
+                    "$ref": "#/components/schemas/BillTransactionViewModel"
                   }
                 }
               }
@@ -763,23 +763,23 @@
       },
       "post": {
         "tags": [
-          "Transactions"
+          "BillTransactions"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransactionViewModel"
+                "$ref": "#/components/schemas/BillTransactionViewModel"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransactionViewModel"
+                "$ref": "#/components/schemas/BillTransactionViewModel"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/TransactionViewModel"
+                "$ref": "#/components/schemas/BillTransactionViewModel"
               }
             }
           }
@@ -790,7 +790,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionViewModel"
+                  "$ref": "#/components/schemas/BillTransactionViewModel"
                 }
               }
             }
@@ -828,10 +828,10 @@
         }
       }
     },
-    "/api/Transactions/{id}": {
+    "/api/BillTransactions/{id}": {
       "get": {
         "tags": [
-          "Transactions"
+          "BillTransactions"
         ],
         "parameters": [
           {
@@ -850,7 +850,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionViewModel"
+                  "$ref": "#/components/schemas/BillTransactionViewModel"
                 }
               }
             }
@@ -877,6 +877,244 @@
           }
         }
       }
+    },
+    "/api/Tenants": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TenantViewModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tenants"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantViewModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Tenants/{id}": {
+      "get": {
+        "tags": [
+          "Tenants"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantViewModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Tenants"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TenantViewModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -885,7 +1123,8 @@
         "required": [
           "externalId",
           "name",
-          "primaryAddress"
+          "primaryAddress",
+          "tenant"
         ],
         "type": "object",
         "properties": {
@@ -896,15 +1135,15 @@
           "name": {
             "type": "string"
           },
-          "primaryAddress": {
-            "type": "string"
-          },
           "externalId": {
             "type": "string"
           },
-          "owner": {
+          "primaryAddress": {
+            "type": "string"
+          },
+          "tenant": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -965,20 +1204,17 @@
           "account": {
             "type": "string",
             "format": "uuid"
-          },
-          "billSchedule": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "additionalProperties": false
       },
       "BillScheduleViewModel": {
         "required": [
+          "account",
           "amount",
           "dayDue",
           "enabled",
-          "monthInterval",
+          "interval",
           "name"
         ],
         "type": "object",
@@ -998,7 +1234,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "monthInterval": {
+          "interval": {
             "type": "integer",
             "format": "int32"
           },
@@ -1012,9 +1248,10 @@
         },
         "additionalProperties": false
       },
-      "TransactionViewModel": {
+      "BillTransactionViewModel": {
         "required": [
           "amount",
+          "bill",
           "externalId",
           "name"
         ],
@@ -1034,13 +1271,25 @@
             "type": "number",
             "format": "double"
           },
-          "account": {
-            "type": "string",
-            "format": "uuid"
-          },
           "bill": {
             "type": "string",
             "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TenantViewModel": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
           }
         },
         "additionalProperties": false
