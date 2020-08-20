@@ -1,4 +1,5 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 import {
     AppBar,
@@ -6,6 +7,7 @@ import {
     CssBaseline,
     Divider,
     Drawer,
+    Grid,
     List,
     ListItem,
     ListItemIcon,
@@ -15,8 +17,10 @@ import {
     Toolbar,
     Typography
 } from "@material-ui/core";
-import {AccountCircle, Business} from '@material-ui/icons'
-import {NavLink} from "react-router-dom";
+import {AccountCircle, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
+import {User, UserManager} from "oidc-client";
+
+import logo from "../logo.svg"
 
 const drawerWidth = 240;
 
@@ -45,18 +49,29 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
+interface Props {
+    userManager: UserManager,
+}
 
-const Nav: React.FC = (props) => {
+const Nav: React.FC<Props> = (props) => {
+    const [user, setUser] = React.useState<User>();
+
+    if (!user) {
+        props.userManager.getUser()
+            .then(value => setUser(value === null ? undefined : value));
+    }
+
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <AppBar position="fixed" className={classes.appBar}>
+            <AppBar position="fixed" color="inherit" className={classes.appBar}>
                 <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Chabloom Payments
-                    </Typography>
+                    <Grid container justify="space-between">
+                        <img src={logo} className="logo" alt="logo"/>
+                        <Typography variant="h6" align="right">{user?.profile.name}</Typography>
+                    </Grid>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -68,23 +83,32 @@ const Nav: React.FC = (props) => {
                 <Toolbar/>
                 <div className={classes.drawerContainer}>
                     <List>
-                        <ListItem button key="Account" component={NavLink} to="/account">
-                            <ListItemIcon><AccountCircle/></ListItemIcon>
-                            <ListItemText primary="Account"/>
+                        <ListItem button key="Home" component={NavLink} to="/">
+                            <ListItemIcon><Home/></ListItemIcon>
+                            <ListItemText primary="Home"/>
                         </ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
                         <ListItem button key="Accounts" component={NavLink} to="/accounts">
                             <ListItemIcon><AccountCircle/></ListItemIcon>
                             <ListItemText primary="Accounts"/>
                         </ListItem>
+                        <ListItem button key="Bills" component={NavLink} to="/bills">
+                            <ListItemIcon><Receipt/></ListItemIcon>
+                            <ListItemText primary="Bills"/>
+                        </ListItem>
+                        <ListItem button key="BillSchedules" component={NavLink} to="/billSchedules">
+                            <ListItemIcon><Schedule/></ListItemIcon>
+                            <ListItemText primary="Bill Schedules"/>
+                        </ListItem>
+                        <ListItem button key="BillTransactions" component={NavLink} to="/billTransactions">
+                            <ListItemIcon><Payment/></ListItemIcon>
+                            <ListItemText primary="Bill Transactions"/>
+                        </ListItem>
                     </List>
                     <Divider/>
                     <List>
-                        <ListItem button key="Partitions" component={NavLink} to="partitions">
+                        <ListItem button key="Tenants" component={NavLink} to="/tenants">
                             <ListItemIcon><Business/></ListItemIcon>
-                            <ListItemText primary="Partitions"/>
+                            <ListItemText primary="Tenants"/>
                         </ListItem>
                     </List>
                 </div>

@@ -7,18 +7,15 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    FormControlLabel,
     FormGroup,
     LinearProgress,
-    Switch,
     TextField
 } from "@material-ui/core";
 
-import {ApiAccountsIdPutRequest, AccountsApi} from "../../api/apis";
-import {AccountViewModel} from "../../api/models";
-import {Configuration} from "../../api/runtime";
+import {AccountsApi, ApiAccountsIdPutRequest} from "../api/apis";
+import {AccountViewModel} from "../api/models";
+import {Configuration} from "../api/runtime";
 import {UserManager} from "oidc-client";
-import {AuthSettings} from "../auth/AuthService";
 
 interface Props {
     open: boolean,
@@ -52,23 +49,23 @@ const AccountDetails: React.FC<Props> = (props) => {
                 <Button color="primary" disabled={saving} onClick={() => {
                     props.userManager.getUser()
                         .then(value => {
-                                // Get an instance of accounts API
-                                const headers = {
-                                    'Authorization': `Bearer ${value?.access_token}`
-                                }
-                                const accountsApi = new AccountsApi(new Configuration({headers: headers}));
-                                const request = {
-                                    id: props.account.id,
-                                    accountViewModel: props.account,
-                                } as ApiAccountsIdPutRequest;
-                                setSaving(true);
-                                accountsApi.apiAccountsIdPut(request)
-                                    .catch(reason => {
-                                        console.log(reason);
-                                        setSaving(false);
-                                    })
-                                    .then(value => props.close())
-                                    .finally(() => setSaving(false));
+                            // Get an instance of accounts API
+                            const headers = {
+                                'Authorization': `Bearer ${value?.access_token}`
+                            }
+                            const accountsApi = new AccountsApi(new Configuration({headers: headers}));
+                            const request = {
+                                id: props.account.id,
+                                accountViewModel: props.account,
+                            } as ApiAccountsIdPutRequest;
+                            setSaving(true);
+                            accountsApi.apiAccountsIdPut(request)
+                                .catch(reason => {
+                                    console.log(reason);
+                                    setSaving(false);
+                                })
+                                .then(value => props.close())
+                                .finally(() => setSaving(false));
                         });
                 }} autoFocus>
                     Save
