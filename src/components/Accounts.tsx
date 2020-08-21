@@ -1,85 +1,79 @@
 import React from "react";
 
-import {
-    Button,
-    CircularProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from "@material-ui/core";
+import {Column} from "react-table";
+
+import {CircularProgress, Paper, TableContainer} from "@material-ui/core";
 
 import {UserManager} from "oidc-client";
 
 import {AccountsApi} from "../api/apis";
 import {AccountViewModel} from "../api/models";
-
-import AccountDetails from "./AccountDetails";
 import {Configuration} from "../api/runtime";
+
+import ChabloomTable from "./common/ChabloomTable";
 
 interface Props {
     userManager: UserManager,
 }
 
-const Accounts: React.FC<Props> = (props) => {
-    const [accounts, setAccounts] = React.useState<AccountViewModel[]>();
-    const [dialogAccount, setDialogAccount] = React.useState<AccountViewModel>();
-    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+const columns: Array<Column<AccountViewModel>> = [
+    {
+        Header: 'Name',
+        accessor: "name",
+    },
+    {
+        Header: 'Number',
+        accessor: "externalId",
+    },
+    {
+        Header: 'Primary Address',
+        accessor: "primaryAddress",
+    },
+]
 
-    if (!accounts) {
+const Accounts: React.FC<Props> = (props) => {
+    const [data, setData] = React.useState<AccountViewModel[]>([
+        {
+            id: "1",
+            name: "test1",
+            externalId: "12345",
+            primaryAddress: "1 Test Rd.",
+            tenant: "1"
+        },
+        {
+            id: "2",
+            name: "test2",
+            externalId: "12345",
+            primaryAddress: "1 Test Rd.",
+            tenant: "1"
+        },
+    ]);
+
+    if (data) {
+        return (
+            <TableContainer component={Paper}>
+                <ChabloomTable columns={columns} data={data}/>
+            </TableContainer>
+        );
+    } else {
         props.userManager.getUser()
-            .then(value => {
-                if (value) {
-                    // Get an instance of accounts API
+            .then(user => {
+                if (user) {
+                    // Define headers
                     const headers = {
-                        'Authorization': `Bearer ${value?.access_token}`
+                        'Authorization': `Bearer ${user?.access_token}`
                     }
-                    const accountsApi = new AccountsApi(new Configuration({headers: headers}));
-                    // Get all accounts
-                    console.log('loading accounts')
-                    accountsApi.apiAccountsGet()
-                        .then(value => setAccounts(value));
+                    // Get an API instance
+                    const api = new AccountsApi(new Configuration({headers: headers}));
+                    // Get all items
+                    api.apiAccountsGet()
+                        .then(data => setData(data));
                 } else {
                     localStorage.setItem("redirectUri", window.location.pathname);
                     props.userManager.signinRedirect({});
                 }
             });
         return <CircularProgress/>
-    } else {
-        return (
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Number</TableCell>
-                            <TableCell>Primary Address</TableCell>
-                            <TableCell/>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {accounts?.map((account) => (
-                            <TableRow key={account.id}>
-                                <TableCell>{account.name}</TableCell>
-                                <TableCell>{account.externalId}</TableCell>
-                                <TableCell>{account.primaryAddress}</TableCell>
-                                <TableCell align="right">
-                                    <Button variant="contained" color="primary" onClick={() => {
-                                        setDialogAccount(account);
-                                        setDialogOpen(true);
-                                    }}>Details</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                {dialogAccount !== undefined &&
-                <AccountDetails userManager={props.userManager} open={dialogOpen} account={dialogAccount} close={() => setDialogOpen(false)}/>}
-            </TableContainer>
-        );
     }
 };
 

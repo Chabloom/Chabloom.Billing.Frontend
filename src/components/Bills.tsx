@@ -1,82 +1,79 @@
 import React from "react";
 
-import {
-    Button,
-    CircularProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from "@material-ui/core";
+import {Column} from "react-table";
+
+import {CircularProgress, Paper, TableContainer} from "@material-ui/core";
 
 import {UserManager} from "oidc-client";
 
 import {BillsApi} from "../api/apis";
 import {BillViewModel} from "../api/models";
-
 import {Configuration} from "../api/runtime";
+
+import ChabloomTable from "./common/ChabloomTable";
 
 interface Props {
     userManager: UserManager,
 }
 
-const Bills: React.FC<Props> = (props) => {
-    const [bills, setBills] = React.useState<BillViewModel[]>();
-    const [dialogBill, setDialogBill] = React.useState<BillViewModel>();
-    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+const columns: Array<Column<BillViewModel>> = [
+    {
+        Header: 'Name',
+        accessor: "name",
+    },
+    {
+        Header: 'Amount',
+        accessor: "amount",
+    },
+    {
+        Header: 'Due Date',
+        accessor: "dueDate",
+    },
+]
 
-    if (!bills) {
+const Bills: React.FC<Props> = (props) => {
+    const [data, setData] = React.useState<BillViewModel[]>([
+        {
+            id: "1",
+            name: "test1",
+            amount: 35.00,
+            dueDate: new Date().toDateString(),
+            account: "1",
+        },
+        {
+            id: "2",
+            name: "test2",
+            amount: 35.00,
+            dueDate: new Date().toDateString(),
+            account: "2",
+        },
+    ]);
+
+    if (data) {
+        return (
+            <TableContainer component={Paper}>
+                <ChabloomTable columns={columns} data={data}/>
+            </TableContainer>
+        );
+    } else {
         props.userManager.getUser()
-            .then(value => {
-                if (value) {
-                    // Get an instance of bills API
+            .then(user => {
+                if (user) {
+                    // Define headers
                     const headers = {
-                        'Authorization': `Bearer ${value?.access_token}`
+                        'Authorization': `Bearer ${user?.access_token}`
                     }
-                    const billsApi = new BillsApi(new Configuration({headers: headers}));
-                    // Get all bills
-                    console.log('loading bills')
-                    billsApi.apiBillsGet()
-                        .then(value => setBills(value));
+                    // Get an API instance
+                    const api = new BillsApi(new Configuration({headers: headers}));
+                    // Get all items
+                    api.apiBillsGet()
+                        .then(data => setData(data));
                 } else {
                     localStorage.setItem("redirectUri", window.location.pathname);
                     props.userManager.signinRedirect({});
                 }
             });
         return <CircularProgress/>
-    } else {
-        return (
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Amount</TableCell>
-                            <TableCell>Due Date</TableCell>
-                            <TableCell/>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {bills?.map((bill) => (
-                            <TableRow key={bill.id}>
-                                <TableCell>{bill.name}</TableCell>
-                                <TableCell>{bill.amount}</TableCell>
-                                <TableCell>{bill.dueDate}</TableCell>
-                                <TableCell align="right">
-                                    <Button variant="contained" color="primary" onClick={() => {
-                                        setDialogBill(bill);
-                                        setDialogOpen(true);
-                                    }}>Details</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
     }
 };
 

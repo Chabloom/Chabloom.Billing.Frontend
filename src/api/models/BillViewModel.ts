@@ -42,7 +42,7 @@ export interface BillViewModel {
      * @type {Date}
      * @memberof BillViewModel
      */
-    dueDate: Date;
+    dueDate: string;
     /**
      * 
      * @type {string}
@@ -64,7 +64,7 @@ export function BillViewModelFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
         'amount': json['amount'],
-        'dueDate': (new Date(json['dueDate'])),
+        'dueDate': json['dueDate'],
         'account': !exists(json, 'account') ? undefined : json['account'],
     };
 }
@@ -81,7 +81,7 @@ export function BillViewModelToJSON(value?: BillViewModel | null): any {
         'id': value.id,
         'name': value.name,
         'amount': value.amount,
-        'dueDate': (value.dueDate.toISOString()),
+        'dueDate': (value.dueDate),
         'account': value.account,
     };
 }

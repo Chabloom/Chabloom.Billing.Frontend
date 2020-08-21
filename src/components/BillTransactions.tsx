@@ -1,82 +1,79 @@
 import React from "react";
 
-import {
-    Button,
-    CircularProgress,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from "@material-ui/core";
+import {Column} from "react-table";
+
+import {CircularProgress, Paper, TableContainer} from "@material-ui/core";
 
 import {UserManager} from "oidc-client";
 
 import {BillTransactionsApi} from "../api/apis";
 import {BillTransactionViewModel} from "../api/models";
-
 import {Configuration} from "../api/runtime";
+
+import ChabloomTable from "./common/ChabloomTable";
 
 interface Props {
     userManager: UserManager,
 }
 
-const BillTransactions: React.FC<Props> = (props) => {
-    const [billTransactions, setBillTransactions] = React.useState<BillTransactionViewModel[]>();
-    const [dialogBillTransaction, setDialogBillTransaction] = React.useState<BillTransactionViewModel>();
-    const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+const columns: Array<Column<BillTransactionViewModel>> = [
+    {
+        Header: 'Name',
+        accessor: "name",
+    },
+    {
+        Header: 'Id',
+        accessor: "externalId",
+    },
+    {
+        Header: 'Amount',
+        accessor: "amount",
+    },
+]
 
-    if (!billTransactions) {
+const BillTransactions: React.FC<Props> = (props) => {
+    const [data, setData] = React.useState<BillTransactionViewModel[]>([
+        {
+            id: "1",
+            name: "test1",
+            externalId: "id1",
+            amount: 35.00,
+            bill: "1"
+        },
+        {
+            id: "2",
+            name: "test2",
+            externalId: "id2",
+            amount: 35.00,
+            bill: "2"
+        },
+    ]);
+
+    if (data) {
+        return (
+            <TableContainer component={Paper}>
+                <ChabloomTable columns={columns} data={data}/>
+            </TableContainer>
+        );
+    } else {
         props.userManager.getUser()
-            .then(value => {
-                if (value) {
-                    // Get an instance of billTransactions API
+            .then(user => {
+                if (user) {
+                    // Define headers
                     const headers = {
-                        'Authorization': `Bearer ${value?.access_token}`
+                        'Authorization': `Bearer ${user?.access_token}`
                     }
-                    const billTransactionsApi = new BillTransactionsApi(new Configuration({headers: headers}));
-                    // Get all billTransactions
-                    console.log('loading billTransactions')
-                    billTransactionsApi.apiBillTransactionsGet()
-                        .then(value => setBillTransactions(value));
+                    // Get an API instance
+                    const api = new BillTransactionsApi(new Configuration({headers: headers}));
+                    // Get all items
+                    api.apiBillTransactionsGet()
+                        .then(data => setData(data));
                 } else {
                     localStorage.setItem("redirectUri", window.location.pathname);
                     props.userManager.signinRedirect({});
                 }
             });
         return <CircularProgress/>
-    } else {
-        return (
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Number</TableCell>
-                            <TableCell>Amount</TableCell>
-                            <TableCell/>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {billTransactions?.map((billTransaction) => (
-                            <TableRow key={billTransaction.id}>
-                                <TableCell>{billTransaction.name}</TableCell>
-                                <TableCell>{billTransaction.externalId}</TableCell>
-                                <TableCell>{billTransaction.amount}</TableCell>
-                                <TableCell align="right">
-                                    <Button variant="contained" color="primary" onClick={() => {
-                                        setDialogBillTransaction(billTransaction);
-                                        setDialogOpen(true);
-                                    }}>Details</Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        );
     }
 };
 
