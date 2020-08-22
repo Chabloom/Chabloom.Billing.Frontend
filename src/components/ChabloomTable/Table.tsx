@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+    Fab,
     IconButton,
     LinearProgress,
     Paper,
@@ -13,7 +14,7 @@ import {
     TableRow,
     TextField
 } from "@material-ui/core";
-import {AddCircleOutlined, CancelOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@material-ui/icons";
+import {Add, CancelOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
 import {ChabloomTableBackend} from "./TableBackend";
@@ -59,7 +60,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                     <TableRow>
                         {!adding &&
                         <TableCell>
-                            <IconButton
+                            <Fab
+                                color="primary"
                                 disabled={editIndex !== -1 || deleteIndex !== -1}
                                 onClick={() => {
                                     setProcessing(true);
@@ -69,8 +71,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                     setAdding(true);
                                     setProcessing(false);
                                 }}>
-                                <AddCircleOutlined/>
-                            </IconButton>
+                                <Add/>
+                            </Fab>
                         </TableCell>
                         }
                         {adding &&
