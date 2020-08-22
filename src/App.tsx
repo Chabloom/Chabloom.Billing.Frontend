@@ -21,7 +21,7 @@ const userManager = new UserManager(OidcSettings);
 const App: React.FC = () => {
     return (
         <Router>
-            <Nav userManager={userManager}>
+            <Nav>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>

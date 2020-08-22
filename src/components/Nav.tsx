@@ -1,8 +1,6 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-import {User, UserManager} from "oidc-client";
-
 import {
     AppBar,
     createStyles,
@@ -10,16 +8,16 @@ import {
     Divider,
     Drawer,
     Grid,
+    IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     makeStyles,
     Theme,
-    Toolbar,
-    Typography
+    Toolbar
 } from "@material-ui/core";
-import {AccountCircle, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
+import {AccountCircle, AccountCircleOutlined, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
 
 import logo from "../logo.svg"
 
@@ -50,18 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface Props {
-    userManager: UserManager,
-}
-
-const Nav: React.FC<Props> = (props) => {
-    const [user, setUser] = React.useState<User>();
-
-    if (!user) {
-        props.userManager.getUser()
-            .then(value => setUser(value === null ? undefined : value));
-    }
-
+const Nav: React.FC = (props) => {
     const classes = useStyles();
 
     return (
@@ -70,8 +57,12 @@ const Nav: React.FC<Props> = (props) => {
             <AppBar position="fixed" color="inherit" className={classes.appBar}>
                 <Toolbar>
                     <Grid container justify="space-between">
-                        <img src={logo} className="logo" alt="logo"/>
-                        <Typography variant="h6" align="right">{user?.profile.name}</Typography>
+                        <Grid item alignItems="flex-start">
+                            <img src={logo} className="logo" alt="logo"/>
+                        </Grid>
+                        <Grid item alignItems="flex-end">
+                            <IconButton><AccountCircleOutlined/></IconButton>
+                        </Grid>
                     </Grid>
                 </Toolbar>
             </AppBar>
