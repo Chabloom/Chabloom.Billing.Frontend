@@ -1,25 +1,35 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-import {UserManager} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {
     AppBar,
+    Button,
+    ClickAwayListener,
     createStyles,
     CssBaseline,
     Divider,
     Drawer,
-    Grid,
+    Grow,
     IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     makeStyles,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper,
     Theme,
     Toolbar
 } from "@material-ui/core";
 import {AccountCircle, AccountCircleOutlined, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
+
+import {ApplicationConfig} from "../settings";
+
+import {TenantViewModel} from "../models";
 
 import logo from "../logo.svg"
 
@@ -51,25 +61,137 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             padding: theme.spacing(3),
         },
+        logo: {
+            height: "3em",
+            pointerEvents: "none",
+        },
+        logoDiv: {
+            flexGrow: 1,
+        }
     }),
 );
 
 const Nav: React.FC<Props> = (props) => {
+    const [data, setData] = React.useState([] as TenantViewModel[]);
+    const [loaded, setLoaded] = React.useState(false);
+    const [processing, setProcessing] = React.useState(false);
+    const [user, setUser] = React.useState<User>();
+    const [tenant, setTenant] = React.useState({} as TenantViewModel);
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
+    const [open2, setOpen2] = React.useState(false);
+    const anchorRef2 = React.useRef(null);
+
     const classes = useStyles();
+
+    const getToken = async (userManager: UserManager) => {
+        let token = "";
+        const user = await userManager.getUser();
+        if (user && !user.expired) {
+            setUser(user);
+            token = user.access_token;
+        }
+        return token;
+    }
+
+    if (!processing && !loaded) {
+        setProcessing(true);
+        const url = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
+        getToken(props.userManager).then(token => fetch(url, {
+            method: "GET",
+            headers: new Headers({
+                "Authorization": `Bearer ${token}`,
+            }),
+            credentials: "include",
+        }).then(response => {
+            if (response.status === 200) {
+                response.json().then(json => setData(json));
+            }
+        }).catch(e => console.log(e.message)))
+            .finally(() => {
+                setLoaded(true);
+                setProcessing(false);
+            });
+    }
 
     return (
         <div className={classes.root}>
             <CssBaseline/>
             <AppBar position="fixed" color="inherit" className={classes.appBar}>
                 <Toolbar>
-                    <Grid container justify="space-between">
-                        <Grid item alignItems="flex-start">
-                            <img src={logo} className="logo" alt="logo"/>
-                        </Grid>
-                        <Grid item alignItems="flex-end">
-                            <IconButton><AccountCircleOutlined/></IconButton>
-                        </Grid>
-                    </Grid>
+                    <div className={classes.logoDiv}>
+                        <img src={logo} className={classes.logo} alt="logo"/>
+                    </div>
+                    {data.length > 0 &&
+                    <div>
+                        <Button
+                            ref={anchorRef}
+                            aria-controls={open ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={() => setOpen(true)}
+                        >
+                            {tenant.name}
+                        </Button>
+                        <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement="bottom-end"
+                                transition disablePortal>
+                            {({TransitionProps, placement}) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={() => setOpen(false)}>
+                                            <MenuList autoFocusItem={open} id="menu-list-grow">
+                                                {data.map((item, index) => {
+                                                    return <MenuItem onClick={() => {
+                                                        if (item.id) {
+                                                            setTenant(item);
+                                                            window.sessionStorage.setItem("TenantId", item.id);
+                                                        }
+                                                        setOpen(false);
+                                                    }}>{item.name}</MenuItem>;
+                                                })}
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </div>
+                    }
+                    <div>
+                        <IconButton
+                            ref={anchorRef2}
+                            aria-controls={open2 ? 'menu-list-grow' : undefined}
+                            aria-haspopup="true"
+                            onClick={() => setOpen2(true)}
+                        >
+                            <AccountCircleOutlined/>
+                        </IconButton>
+                        <Popper open={open2} anchorEl={anchorRef2.current} role={undefined} placement="bottom-end"
+                                transition disablePortal>
+                            {({TransitionProps, placement}) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                >
+                                    <Paper>
+                                        <ClickAwayListener onClickAway={() => setOpen2(false)}>
+                                            <MenuList autoFocusItem={open2} id="menu-list-grow">
+                                                <MenuItem disabled>{user?.profile.name}</MenuItem>
+                                                <MenuItem onClick={() => setOpen2(false)}>Profile</MenuItem>
+                                                <MenuItem onClick={() => setOpen2(false)}>My account</MenuItem>
+                                                <MenuItem onClick={() => {
+                                                    props.userManager.signoutRedirect();
+                                                    setOpen2(false);
+                                                }}>Logout</MenuItem>
+                                            </MenuList>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </div>
                 </Toolbar>
             </AppBar>
             <Drawer
