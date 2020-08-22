@@ -1,6 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
+import {UserManager} from "oidc-client";
+
 import {
     AppBar,
     createStyles,
@@ -20,6 +22,10 @@ import {
 import {AccountCircle, AccountCircleOutlined, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
 
 import logo from "../logo.svg"
+
+interface Props {
+    userManager: UserManager;
+}
 
 const drawerWidth = 240;
 
@@ -48,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Nav: React.FC = (props) => {
+const Nav: React.FC<Props> = (props) => {
     const classes = useStyles();
 
     return (

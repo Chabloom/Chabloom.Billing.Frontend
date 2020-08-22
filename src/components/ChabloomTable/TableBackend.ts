@@ -1,16 +1,14 @@
 import {UserManager} from "oidc-client";
 
-import {OidcSettings} from "../../settings";
-
 import {ChabloomTableDataType} from "./TableDataType";
 
 export class ChabloomTableBackend {
     baseUrl: string;
     userManager: UserManager;
 
-    constructor(baseUrl: string) {
+    constructor(baseUrl: string, userManager: UserManager) {
         this.baseUrl = baseUrl;
-        this.userManager = new UserManager(OidcSettings);
+        this.userManager = userManager;
     }
 
     getToken = async () => {

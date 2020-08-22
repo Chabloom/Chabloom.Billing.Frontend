@@ -32,7 +32,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
     const [processing, setProcessing] = React.useState(false);
     const [error, setError] = React.useState("");
 
-    const api = new ChabloomTableBackend(props.baseUrl);
+    const api = new ChabloomTableBackend(props.baseUrl, props.userManager);
     if (!processing && !loaded) {
         setProcessing(true);
         api.readAll().then(([err, data]) => {

@@ -21,7 +21,7 @@ const userManager = new UserManager(OidcSettings);
 const App: React.FC = () => {
     return (
         <Router>
-            <Nav>
+            <Nav userManager={userManager}>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>
@@ -30,22 +30,22 @@ const App: React.FC = () => {
                         <OidcSignOutCallback userManager={userManager}/>
                     </Route>
                     <Route path="/accounts">
-                        <Accounts/>
+                        <Accounts userManager={userManager}/>
                     </Route>
                     <Route path="/bills">
-                        <Bills/>
+                        <Bills userManager={userManager}/>
                     </Route>
                     <Route path="/billSchedules">
-                        <BillSchedules/>
+                        <BillSchedules userManager={userManager}/>
                     </Route>
                     <Route path="/billTransactions">
-                        <BillTransactions/>
+                        <BillTransactions userManager={userManager}/>
                     </Route>
                     <Route path="/tenants">
-                        <Tenants/>
+                        <Tenants userManager={userManager}/>
                     </Route>
                     <Route path="/">
-                        <Accounts/>
+                        <Accounts userManager={userManager}/>
                     </Route>
                 </Switch>
             </Nav>
