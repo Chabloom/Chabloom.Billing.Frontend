@@ -1,8 +1,8 @@
 import React from "react";
 
-import {CircularProgress} from "@material-ui/core";
-
 import {UserManager} from "oidc-client";
+
+import {CircularProgress} from "@material-ui/core";
 
 interface Props {
     userManager: UserManager,

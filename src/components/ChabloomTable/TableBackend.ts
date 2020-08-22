@@ -1,5 +1,7 @@
 import {UserManager} from "oidc-client";
-import {OidcSettings} from "../../settings/oidc";
+
+import {OidcSettings} from "../../settings";
+
 import {ChabloomTableDataType} from "./TableDataType";
 
 export class ChabloomTableBackend {

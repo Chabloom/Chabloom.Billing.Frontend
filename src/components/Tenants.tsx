@@ -1,13 +1,8 @@
 import React from "react";
 
-import {UserManager} from "oidc-client";
+import {ApplicationConfig} from "../settings";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
-import {ApplicationConfig} from "../settings/config";
-
-interface Props {
-    userManager: UserManager,
-}
 
 const columns: Array<ChabloomTableColumn> = [
     {
@@ -16,11 +11,9 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
-const Tenants: React.FC<Props> = (props) => {
+const Tenants: React.FC = () => {
     const baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
-    return (
-        <ChabloomTable columns={columns} baseUrl={baseUrl}/>
-    );
+    return <ChabloomTable columns={columns} baseUrl={baseUrl}/>;
 }
 
 export default Tenants;

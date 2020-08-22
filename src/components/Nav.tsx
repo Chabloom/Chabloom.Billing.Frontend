@@ -1,6 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
+import {User, UserManager} from "oidc-client";
+
 import {
     AppBar,
     createStyles,
@@ -18,7 +20,6 @@ import {
     Typography
 } from "@material-ui/core";
 import {AccountCircle, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
-import {User, UserManager} from "oidc-client";
 
 import logo from "../logo.svg"
 

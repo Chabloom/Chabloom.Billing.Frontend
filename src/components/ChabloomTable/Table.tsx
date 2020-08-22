@@ -1,4 +1,4 @@
-import React, {PropsWithChildren} from "react";
+import React from "react";
 
 import {
     IconButton,
@@ -20,7 +20,7 @@ import {ChabloomTableBackend} from "./TableBackend";
 import {ChabloomTableDataType} from "./TableDataType";
 import {ChabloomTableProps} from "./TableProps";
 
-export const ChabloomTable = (props: PropsWithChildren<ChabloomTableProps>) => {
+export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
     const [data, setData] = React.useState([] as Array<ChabloomTableDataType>);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
