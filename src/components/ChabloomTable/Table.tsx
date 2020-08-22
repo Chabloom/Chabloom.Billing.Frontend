@@ -93,6 +93,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                     <IconButton onClick={() => {
                                         setProcessing(true);
                                         if (adding) {
+                                            mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
                                             api.add(mutRow).then(err => {
                                                 if (err === "") {
                                                     setEditIndex(-1);
@@ -103,6 +104,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                                 }
                                             });
                                         } else {
+                                            mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
                                             api.edit(mutRow["id"], mutRow).then(err => {
                                                 if (err === "") {
                                                     setEditIndex(-1);

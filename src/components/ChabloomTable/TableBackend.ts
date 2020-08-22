@@ -24,7 +24,8 @@ export class ChabloomTableBackend {
     }
 
     readAll = async () => {
-        const url = this.baseUrl;
+        const tenantId = window.sessionStorage.getItem("TenantId");
+        const url = `${this.baseUrl}?tenantId=${tenantId}`;
         try {
             const response = await fetch(url, {
                 method: "GET",
