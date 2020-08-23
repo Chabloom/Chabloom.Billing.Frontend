@@ -34,6 +34,8 @@ import {TenantViewModel} from "../models";
 import logo from "../logo.svg"
 
 interface Props {
+    tenant: TenantViewModel | undefined;
+    setTenant: CallableFunction;
     userManager: UserManager;
 }
 
@@ -76,7 +78,6 @@ export const Nav: React.FC<Props> = (props) => {
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [user, setUser] = React.useState<User>();
-    const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [open2, setOpen2] = React.useState(false);
@@ -112,12 +113,12 @@ export const Nav: React.FC<Props> = (props) => {
                     if (oldTenant) {
                         const newTenant = newData.find(x => x.id === oldTenant);
                         if (newTenant) {
-                            setTenant(newTenant);
+                            props.setTenant(newTenant);
                         } else {
-                            setTenant(newData[0]);
+                            props.setTenant(newData[0]);
                         }
                     } else {
-                        setTenant(newData[0]);
+                        props.setTenant(newData[0]);
                     }
                 });
             }
@@ -143,7 +144,7 @@ export const Nav: React.FC<Props> = (props) => {
                             aria-haspopup="true"
                             onClick={() => setOpen(true)}
                         >
-                            {tenant === undefined ? "Select Tenant" : tenant.name}
+                            {props.tenant ? props.tenant.name : "Select Tenant"}
                         </Button>
                         <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement="bottom-end"
                                 transition disablePortal>
@@ -155,10 +156,10 @@ export const Nav: React.FC<Props> = (props) => {
                                     <Paper>
                                         <ClickAwayListener onClickAway={() => setOpen(false)}>
                                             <MenuList autoFocusItem={open} id="menu-list-grow">
-                                                {data.map((item, index) => {
+                                                {data.map(item => {
                                                     return <MenuItem onClick={() => {
                                                         if (item.id) {
-                                                            setTenant(item);
+                                                            props.setTenant(item);
                                                             window.localStorage.setItem("TenantId", item.id);
                                                         }
                                                         setOpen(false);

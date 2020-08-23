@@ -1,5 +1,7 @@
 import React from "react";
 
+import {UserManager} from "oidc-client";
+
 import {
     Fab,
     IconButton,
@@ -17,10 +19,22 @@ import {
 import {Add, CancelOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
-import {BaseViewModel} from "../../models";
+import {BaseApiType} from "../../api";
+import {BaseViewModel, TenantViewModel} from "../../models";
 
 import {ChabloomTableBackend} from "./TableBackend";
-import {ChabloomTableProps} from "./TableProps";
+
+export interface ChabloomTableColumn {
+    title: string,
+    accessor: string,
+}
+
+export interface ChabloomTableProps {
+    columns: Array<ChabloomTableColumn>,
+    userManager: UserManager,
+    api: BaseApiType<BaseViewModel>,
+    tenant: TenantViewModel | undefined,
+}
 
 export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
     const [data, setData] = React.useState([] as Array<BaseViewModel>);
@@ -32,6 +46,10 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [error, setError] = React.useState("");
+
+    React.useEffect(() => {
+        setLoaded(false);
+    }, [props.tenant]);
 
     const api = new ChabloomTableBackend(props.api, props.userManager);
     if (!processing && !loaded) {

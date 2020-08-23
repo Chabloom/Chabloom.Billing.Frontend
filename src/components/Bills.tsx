@@ -3,10 +3,12 @@ import React from "react";
 import {UserManager} from "oidc-client";
 
 import {BillsApi} from "../api";
+import {TenantViewModel} from "../models";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
 interface Props {
+    tenant: TenantViewModel | undefined;
     userManager: UserManager;
 }
 
@@ -26,5 +28,5 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 export const Bills: React.FC<Props> = (props) => {
-    return <ChabloomTable columns={columns} api={new BillsApi()} userManager={props.userManager}/>;
+    return <ChabloomTable columns={columns} api={new BillsApi()} userManager={props.userManager} tenant={props.tenant}/>;
 }

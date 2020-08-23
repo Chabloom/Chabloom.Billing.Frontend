@@ -5,6 +5,8 @@ import {UserManager} from "oidc-client";
 
 import {OidcSettings} from "./settings";
 
+import {TenantViewModel} from "./models";
+
 import {Accounts, Bills, BillSchedules, BillTransactions, Home, Nav, Tenants} from "./components";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
@@ -13,9 +15,11 @@ import './App.scss';
 const userManager = new UserManager(OidcSettings);
 
 export const App: React.FC = () => {
+    const [tenant, setTenant] = React.useState<TenantViewModel>();
+
     return (
         <Router>
-            <Nav userManager={userManager}>
+            <Nav tenant={tenant} setTenant={setTenant} userManager={userManager}>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>
@@ -24,16 +28,16 @@ export const App: React.FC = () => {
                         <OidcSignOutCallback userManager={userManager}/>
                     </Route>
                     <Route path="/accounts">
-                        <Accounts userManager={userManager}/>
+                        <Accounts tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/bills">
-                        <Bills userManager={userManager}/>
+                        <Bills tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/billSchedules">
-                        <BillSchedules userManager={userManager}/>
+                        <BillSchedules tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/billTransactions">
-                        <BillTransactions userManager={userManager}/>
+                        <BillTransactions tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/tenants">
                         <Tenants userManager={userManager}/>

@@ -18,5 +18,5 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 export const Tenants: React.FC<Props> = (props) => {
-    return <ChabloomTable columns={columns} api={new TenantsApi()} userManager={props.userManager}/>;
+    return <ChabloomTable columns={columns} api={new TenantsApi()} userManager={props.userManager} tenant={undefined}/>;
 }
