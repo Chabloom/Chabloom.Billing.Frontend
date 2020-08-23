@@ -36,13 +36,6 @@ export const Home: React.FC = (props) => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
-                <Paper elevation={3}>
-                    <Toolbar>
-                        <Typography variant="h6">Chabloom Payments</Typography>
-                    </Toolbar>
-                </Paper>
-            </Grid>
             <Grid item xs={6}>
                 <Paper elevation={3} className={classes.paper}>
                     <Typography variant="h6">Quick Pay</Typography>
