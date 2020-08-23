@@ -14,7 +14,9 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    TextField
+    TextField,
+    Toolbar,
+    Typography
 } from "@material-ui/core";
 import {Add, CancelOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
@@ -30,6 +32,7 @@ export interface ChabloomTableColumn {
 }
 
 export interface ChabloomTableProps {
+    title: string,
     columns: Array<ChabloomTableColumn>,
     userManager: UserManager,
     api: BaseApiType<BaseViewModel>,
@@ -67,6 +70,11 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
 
     return (
         <TableContainer component={Paper}>
+            <Toolbar>
+                <Typography
+                    variant="h6">{props.tenant ? `${props.tenant?.name} ${props.title}` : props.title}
+                </Typography>
+            </Toolbar>
             {processing && <LinearProgress/>}
             {error &&
             <Alert severity="error">
@@ -112,7 +120,6 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                     <IconButton onClick={() => {
                                         setProcessing(true);
                                         if (adding) {
-                                            mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
                                             api.addItem(mutRow).then(err => {
                                                 if (!err) {
                                                     setEditIndex(-1);
@@ -123,7 +130,6 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                                 }
                                             });
                                         } else {
-                                            mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
                                             api.editItem(mutRow).then(err => {
                                                 if (!err) {
                                                     setEditIndex(-1);
