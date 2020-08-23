@@ -25,9 +25,7 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
-const Accounts: React.FC<Props> = (props) => {
+export const Accounts: React.FC<Props> = (props) => {
     const baseUrl = `${ApplicationConfig.apiPublicAddress}/api/accounts`;
     return <ChabloomTable columns={columns} baseUrl={baseUrl} userManager={props.userManager}/>;
 }
-
-export default Accounts;

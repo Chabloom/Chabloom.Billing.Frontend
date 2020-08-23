@@ -8,11 +8,9 @@ interface Props {
     userManager: UserManager,
 }
 
-const OidcSignOutCallback: React.FC<Props> = (props) => {
+export const OidcSignOutCallback: React.FC<Props> = (props) => {
     const redirectUri = localStorage.getItem("redirectUri");
     props.userManager.signoutRedirectCallback()
         .then(() => window.location.replace(redirectUri === null ? "" : redirectUri));
     return <CircularProgress/>
 }
-
-export default OidcSignOutCallback;

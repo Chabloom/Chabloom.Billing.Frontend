@@ -17,9 +17,7 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
-const Tenants: React.FC<Props> = (props) => {
+export const Tenants: React.FC<Props> = (props) => {
     const baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
     return <ChabloomTable columns={columns} baseUrl={baseUrl} userManager={props.userManager}/>;
 }
-
-export default Tenants;

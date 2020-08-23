@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const Nav: React.FC<Props> = (props) => {
+export const Nav: React.FC<Props> = (props) => {
     const [data, setData] = React.useState([] as TenantViewModel[]);
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
@@ -252,5 +252,3 @@ const Nav: React.FC<Props> = (props) => {
         </div>
     );
 };
-
-export default Nav;

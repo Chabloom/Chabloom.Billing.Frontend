@@ -5,21 +5,14 @@ import {UserManager} from "oidc-client";
 
 import {OidcSettings} from "./settings";
 
-import OidcSignInCallback from "./components/oidc/OidcSignInCallback";
-import OidcSignOutCallback from "./components/oidc/OidcSignOutCallback";
-import Nav from "./components/Nav";
-import Accounts from "./components/Accounts";
-import Bills from "./components/Bills";
-import BillSchedules from "./components/BillSchedules";
-import BillTransactions from "./components/BillTransactions";
-import Tenants from "./components/Tenants";
+import {Accounts, Bills, BillSchedules, BillTransactions, Home, Nav, Tenants} from "./components";
+import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
-import {Home} from "./components/Home";
 
 const userManager = new UserManager(OidcSettings);
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
     return (
         <Router>
             <Nav userManager={userManager}>
@@ -53,5 +46,3 @@ const App: React.FC = () => {
         </Router>
     );
 }
-
-export default App;
