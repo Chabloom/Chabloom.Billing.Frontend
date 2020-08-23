@@ -79,7 +79,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                         <TableCell/>
                         }
                         {props.columns.map(column => (
-                            <TableCell align="left">{column.title}</TableCell>
+                            <TableCell key={column.title} align="left">{column.title}</TableCell>
                         ))}
                     </TableRow>
                 </TableHead>
@@ -173,7 +173,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                         );
                                     } else {
                                         return (
-                                            <TableCell align="left">{row[column.accessor]}</TableCell>
+                                            <TableCell key={column.title} align="left">{row[column.accessor]}</TableCell>
                                         );
                                     }
                                 })}
