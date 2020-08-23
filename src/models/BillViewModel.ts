@@ -5,5 +5,6 @@ export interface BillViewModel extends BaseViewModel {
     name: string;
     amount: number;
     dueDate: string;
-    account?: string;
+    account: string;
+    schedule?: string;
 }

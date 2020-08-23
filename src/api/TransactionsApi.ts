@@ -1,11 +1,11 @@
 import {BaseApi, BaseApiType} from "./BaseApi";
-import {BillScheduleViewModel} from "../models";
+import {TransactionViewModel} from "../models";
 import {ApplicationConfig} from "../settings";
 
-export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {
-    baseUrl = `${ApplicationConfig.apiPublicAddress}/api/billSchedules`;
+export class TransactionsApi extends BaseApi<TransactionViewModel> implements BaseApiType<TransactionViewModel> {
+    baseUrl = `${ApplicationConfig.apiPublicAddress}/api/transactions`;
 
-    readItems(token: string): Promise<Array<BillScheduleViewModel> | string> {
+    readItems(token: string): Promise<Array<TransactionViewModel> | string> {
         const tenantId = window.localStorage.getItem("TenantId");
         if (tenantId) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
@@ -14,19 +14,19 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
         }
     }
 
-    readItem(token: string): Promise<BillScheduleViewModel | string> {
+    readItem(token: string): Promise<TransactionViewModel | string> {
         return this._readItem(token, `${this.baseUrl}`);
     }
 
-    addItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {
+    addItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {
+    editItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {
+    deleteItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }

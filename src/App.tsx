@@ -7,7 +7,7 @@ import {OidcSettings} from "./settings";
 
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, BillSchedules, BillTransactions, Home, Nav, Tenants} from "./components";
+import {Accounts, Bills, Schedules, Transactions, Home, Nav, Tenants} from "./components";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
@@ -33,11 +33,11 @@ export const App: React.FC = () => {
                     <Route path="/bills">
                         <Bills tenant={tenant} userManager={userManager}/>
                     </Route>
-                    <Route path="/billSchedules">
-                        <BillSchedules tenant={tenant} userManager={userManager}/>
+                    <Route path="/schedules">
+                        <Schedules tenant={tenant} userManager={userManager}/>
                     </Route>
-                    <Route path="/billTransactions">
-                        <BillTransactions tenant={tenant} userManager={userManager}/>
+                    <Route path="/transactions">
+                        <Transactions tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/tenants">
                         <Tenants userManager={userManager}/>

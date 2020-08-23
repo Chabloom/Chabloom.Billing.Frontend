@@ -228,13 +228,16 @@ export const Nav: React.FC<Props> = (props) => {
                             <ListItemIcon><Receipt/></ListItemIcon>
                             <ListItemText primary="Bills"/>
                         </ListItem>
-                        <ListItem button key="BillSchedules" component={NavLink} to="/billSchedules">
+                    </List>
+                    <Divider/>
+                    <List>
+                        <ListItem button key="Schedules" component={NavLink} to="/schedules">
                             <ListItemIcon><Schedule/></ListItemIcon>
-                            <ListItemText primary="Bill Schedules"/>
+                            <ListItemText primary="Schedules"/>
                         </ListItem>
-                        <ListItem button key="BillTransactions" component={NavLink} to="/billTransactions">
+                        <ListItem button key="Transactions" component={NavLink} to="/transactions">
                             <ListItemIcon><Payment/></ListItemIcon>
-                            <ListItemText primary="Bill Transactions"/>
+                            <ListItemText primary="Transactions"/>
                         </ListItem>
                     </List>
                     <Divider/>
