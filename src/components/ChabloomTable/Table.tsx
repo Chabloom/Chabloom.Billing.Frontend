@@ -111,7 +111,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row, index) => {
+                    {data && data.map((row, index) => {
                         let mutRow = row as BaseViewModel;
                         return (
                             <TableRow key={row["id"]}>
