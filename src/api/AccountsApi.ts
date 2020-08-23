@@ -19,14 +19,26 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
     }
 
     addItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+        const tenantId = window.localStorage.getItem("TenantId");
+        if (tenantId) {
+            item.tenant = tenantId;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+        const tenantId = window.localStorage.getItem("TenantId");
+        if (tenantId) {
+            item.tenant = tenantId;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
     deleteItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+        const tenantId = window.localStorage.getItem("TenantId");
+        if (tenantId) {
+            item.tenant = tenantId;
+        }
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }
