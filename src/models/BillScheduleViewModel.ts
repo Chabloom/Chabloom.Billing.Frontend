@@ -1,6 +1,6 @@
-import {ChabloomTableDataType} from "../components/ChabloomTable";
+import {BaseViewModel} from "./BaseViewModel";
 
-export interface BillScheduleViewModel extends ChabloomTableDataType {
+export interface BillScheduleViewModel extends BaseViewModel {
     id?: string;
     name: string;
     amount: number;

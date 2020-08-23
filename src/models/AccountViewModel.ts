@@ -1,6 +1,6 @@
-import {ChabloomTableDataType} from "../components/ChabloomTable";
+import {BaseViewModel} from "./BaseViewModel";
 
-export interface AccountViewModel extends ChabloomTableDataType {
+export interface AccountViewModel extends BaseViewModel {
     id?: string;
     name: string;
     externalId: string;

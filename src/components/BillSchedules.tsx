@@ -2,7 +2,7 @@ import React from "react";
 
 import {UserManager} from "oidc-client";
 
-import {ApplicationConfig} from "../settings";
+import {BillSchedulesApi} from "../api";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
@@ -30,6 +30,5 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 export const BillSchedules: React.FC<Props> = (props) => {
-    const baseUrl = `${ApplicationConfig.apiPublicAddress}/api/billSchedules`;
-    return <ChabloomTable columns={columns} baseUrl={baseUrl} userManager={props.userManager}/>;
+    return <ChabloomTable columns={columns} api={new BillSchedulesApi()} userManager={props.userManager}/>;
 }

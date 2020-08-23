@@ -17,12 +17,13 @@ import {
 import {Add, CancelOutlined, DeleteOutlined, EditOutlined, SaveOutlined} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
+import {BaseViewModel} from "../../models";
+
 import {ChabloomTableBackend} from "./TableBackend";
-import {ChabloomTableDataType} from "./TableDataType";
 import {ChabloomTableProps} from "./TableProps";
 
 export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
-    const [data, setData] = React.useState([] as Array<ChabloomTableDataType>);
+    const [data, setData] = React.useState([] as Array<BaseViewModel>);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [adding, setAdding] = React.useState(false);
@@ -32,16 +33,16 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
     const [processing, setProcessing] = React.useState(false);
     const [error, setError] = React.useState("");
 
-    const api = new ChabloomTableBackend(props.baseUrl, props.userManager);
+    const api = new ChabloomTableBackend(props.api, props.userManager);
     if (!processing && !loaded) {
         setProcessing(true);
-        api.readAll().then(([err, data]) => {
-            if (err) {
-                setError(err);
-            } else {
-                setData(data);
+        api.readItems().then(result => {
+            try {
+                setData(result as Array<BaseViewModel>);
                 setLoaded(true);
                 setProcessing(false);
+            } catch {
+                setError(result as string);
             }
         });
     }
@@ -65,7 +66,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                 disabled={editIndex !== -1 || deleteIndex !== -1}
                                 onClick={() => {
                                     setProcessing(true);
-                                    setData([{} as ChabloomTableDataType, ...data]);
+                                    setData([{} as BaseViewModel, ...data]);
                                     setEditIndex(0);
                                     setDeleteIndex(-1);
                                     setAdding(true);
@@ -85,7 +86,7 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                 </TableHead>
                 <TableBody>
                     {data.map((row, index) => {
-                        let mutRow = row as ChabloomTableDataType;
+                        let mutRow = row as BaseViewModel;
                         return (
                             <TableRow key={row["id"]}>
                                 {editIndex === index &&
@@ -94,8 +95,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                         setProcessing(true);
                                         if (adding) {
                                             mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
-                                            api.add(mutRow).then(err => {
-                                                if (err === "") {
+                                            api.addItem(mutRow).then(err => {
+                                                if (!err) {
                                                     setEditIndex(-1);
                                                     setAdding(false);
                                                     setError("");
@@ -105,8 +106,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                             });
                                         } else {
                                             mutRow["tenant"] = window.sessionStorage.getItem("TenantId");
-                                            api.edit(mutRow["id"], mutRow).then(err => {
-                                                if (err === "") {
+                                            api.editItem(mutRow).then(err => {
+                                                if (!err) {
                                                     setEditIndex(-1);
                                                     setError("");
                                                 } else {
@@ -136,8 +137,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                 <TableCell>
                                     <IconButton onClick={() => {
                                         setProcessing(true);
-                                        api.delete(row["id"]).then(err => {
-                                            if (err === "") {
+                                        api.deleteItem(row).then(err => {
+                                            if (!err) {
                                                 setData([...data.slice(0, index), ...data.slice(index + 1)]);
                                                 setDeleteIndex(-1);
                                             } else {
@@ -173,7 +174,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                                         );
                                     } else {
                                         return (
-                                            <TableCell key={column.title} align="left">{row[column.accessor]}</TableCell>
+                                            <TableCell key={column.title}
+                                                       align="left">{row[column.accessor]}</TableCell>
                                         );
                                     }
                                 })}

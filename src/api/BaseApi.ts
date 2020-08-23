@@ -1,13 +1,19 @@
-export interface BaseApiType<T> {
-    readItems(token: string): Promise<[string | undefined, Array<T> | undefined]>;
-    readItem(token: string): Promise<[string | undefined, T | undefined]>;
+import {BaseViewModel} from "../models";
+
+export interface BaseApiType<T extends BaseViewModel> {
+    readItems(token: string): Promise<Array<T> | string>;
+
+    readItem(token: string): Promise<T | string>;
+
     addItem(token: string, item: T): Promise<string | undefined>;
+
     editItem(token: string, item: T): Promise<string | undefined>;
+
     deleteItem(token: string, item: T): Promise<string | undefined>;
 }
 
-export class BaseApi<T> {
-    _readItems = async (token: string, url: string): Promise<[string | undefined, Array<T> | undefined]> => {
+export class BaseApi<T extends BaseViewModel> {
+    _readItems = async (token: string, url: string): Promise<Array<T> | string> => {
         try {
             const response = await fetch(url, {
                 method: "GET",
@@ -17,16 +23,16 @@ export class BaseApi<T> {
                 credentials: "include",
             });
             if (response.status === 200) {
-                return [undefined, await response.json() as Array<T>];
+                return await response.json() as Array<T>;
             } else {
-                return [response.statusText, undefined];
+                return response.statusText;
             }
         } catch (e) {
-            return [e, undefined];
+            return e.message;
         }
     }
 
-    _readItem = async (token: string, url: string): Promise<[string | undefined, T | undefined]> => {
+    _readItem = async (token: string, url: string): Promise<T | string> => {
         try {
             const response = await fetch(url, {
                 method: "GET",
@@ -36,12 +42,12 @@ export class BaseApi<T> {
                 credentials: "include",
             });
             if (response.status === 200) {
-                return [undefined, await response.json() as T];
+                return await response.json() as T;
             } else {
-                return [response.statusText, undefined];
+                return response.statusText;
             }
         } catch (e) {
-            return [e, undefined];
+            return e.message;
         }
     }
 
@@ -62,7 +68,7 @@ export class BaseApi<T> {
                 return response.statusText;
             }
         } catch (e) {
-            return e;
+            return e.message;
         }
     }
 
@@ -83,7 +89,7 @@ export class BaseApi<T> {
                 return response.statusText;
             }
         } catch (e) {
-            return e;
+            return e.message;
         }
     }
 

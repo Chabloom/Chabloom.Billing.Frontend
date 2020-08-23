@@ -108,7 +108,7 @@ export const Nav: React.FC<Props> = (props) => {
                 response.json().then(json => {
                     const newData = json as TenantViewModel[];
                     setData(newData);
-                    const oldTenant = window.sessionStorage.getItem("TenantId");
+                    const oldTenant = window.localStorage.getItem("TenantId");
                     if (oldTenant) {
                         const newTenant = newData.find(x => x.id === oldTenant);
                         if (newTenant) {
@@ -159,7 +159,7 @@ export const Nav: React.FC<Props> = (props) => {
                                                     return <MenuItem onClick={() => {
                                                         if (item.id) {
                                                             setTenant(item);
-                                                            window.sessionStorage.setItem("TenantId", item.id);
+                                                            window.localStorage.setItem("TenantId", item.id);
                                                         }
                                                         setOpen(false);
                                                     }}>{item.name}</MenuItem>;

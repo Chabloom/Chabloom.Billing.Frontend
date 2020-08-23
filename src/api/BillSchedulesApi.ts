@@ -5,14 +5,17 @@ import {ApplicationConfig} from "../settings";
 export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/billSchedules`;
 
-    readItems(token: string): Promise<[(string | undefined), (Array<BillScheduleViewModel> | undefined)]> {
-        const tenantId = window.sessionStorage.getItem("TenantId");
-        return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
+    readItems(token: string): Promise<Array<BillScheduleViewModel> | string> {
+        const tenantId = window.localStorage.getItem("TenantId");
+        if (tenantId) {
+            return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
+        } else {
+            return this._readItems(token, `${this.baseUrl}`);
+        }
     }
 
-    readItem(token: string): Promise<[(string | undefined), (BillScheduleViewModel | undefined)]> {
-        const tenantId = window.sessionStorage.getItem("TenantId");
-        return this._readItem(token, `${this.baseUrl}?tenantId=${tenantId}`);
+    readItem(token: string): Promise<BillScheduleViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}`);
     }
 
     addItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {

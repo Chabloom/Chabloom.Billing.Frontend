@@ -5,11 +5,11 @@ import {ApplicationConfig} from "../settings";
 export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<TenantViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
 
-    readItems(token: string): Promise<[(string | undefined), (Array<TenantViewModel> | undefined)]> {
+    readItems(token: string): Promise<Array<TenantViewModel> | string> {
         return this._readItems(token, `${this.baseUrl}`);
     }
 
-    readItem(token: string): Promise<[(string | undefined), (TenantViewModel | undefined)]> {
+    readItem(token: string): Promise<TenantViewModel | string> {
         return this._readItem(token, `${this.baseUrl}`);
     }
 

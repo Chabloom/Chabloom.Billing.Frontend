@@ -1,13 +1,14 @@
 import {UserManager} from "oidc-client";
 
-import {ChabloomTableDataType} from "./TableDataType";
+import {BaseApiType} from "../../api";
+import {BaseViewModel} from "../../models";
 
 export class ChabloomTableBackend {
-    baseUrl: string;
+    api: BaseApiType<BaseViewModel>;
     userManager: UserManager;
 
-    constructor(baseUrl: string, userManager: UserManager) {
-        this.baseUrl = baseUrl;
+    constructor(api: BaseApiType<BaseViewModel>, userManager: UserManager) {
+        this.api = api;
         this.userManager = userManager;
     }
 
@@ -23,108 +24,9 @@ export class ChabloomTableBackend {
         return token;
     }
 
-    readAll = async () => {
-        const tenantId = window.sessionStorage.getItem("TenantId");
-        const url = `${this.baseUrl}?tenantId=${tenantId}`;
-        try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: new Headers({
-                    "Authorization": `Bearer ${await this.getToken()}`,
-                }),
-                credentials: "include",
-            });
-            if (response.status === 200) {
-                return ["", await response.json() as Array<ChabloomTableDataType>];
-            } else {
-                return [response.statusText, [] as Array<ChabloomTableDataType>];
-            }
-        } catch (e) {
-            return [e, [] as Array<ChabloomTableDataType>];
-        }
-    }
-
-    read = async (item_id: string) => {
-        const url = `${this.baseUrl}/${item_id}`;
-        try {
-            const response = await fetch(url, {
-                method: "GET",
-                headers: new Headers({
-                    "Authorization": `Bearer ${await this.getToken()}`,
-                }),
-                credentials: "include",
-            });
-            if (response.status === 200) {
-                return ["", await response.json() as ChabloomTableDataType];
-            } else {
-                return [response.statusText, {} as ChabloomTableDataType];
-            }
-        } catch (e) {
-            return [e, {} as ChabloomTableDataType];
-        }
-    }
-
-    add = async (item: ChabloomTableDataType) => {
-        const url = this.baseUrl;
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: new Headers({
-                    "Authorization": `Bearer ${await this.getToken()}`,
-                    "Content-Type": "application/json",
-                }),
-                credentials: "include",
-                body: JSON.stringify(item),
-            });
-            if (response.status === 201) {
-                return "";
-            } else {
-                return response.statusText;
-            }
-        } catch (e) {
-            return e;
-        }
-    }
-
-    edit = async (item_id: string, item: ChabloomTableDataType) => {
-        const url = `${this.baseUrl}/${item_id}`;
-        try {
-            const response = await fetch(url, {
-                method: "PUT",
-                headers: new Headers({
-                    "Authorization": `Bearer ${await this.getToken()}`,
-                    "Content-Type": "application/json",
-                }),
-                credentials: "include",
-                body: JSON.stringify(item),
-            });
-            if (response.status === 204) {
-                return "";
-            } else {
-                return response.statusText;
-            }
-        } catch (e) {
-            return e;
-        }
-    }
-
-    delete = async (item_id: string) => {
-        const url = `${this.baseUrl}/${item_id}`;
-        try {
-            const response = await fetch(url, {
-                method: "DELETE",
-                headers: new Headers({
-                    "Authorization": `Bearer ${await this.getToken()}`,
-                    "Content-Type": "application/json",
-                }),
-            });
-            if (response.status === 204) {
-                return "";
-            } else {
-                return response.statusText;
-            }
-        } catch (e) {
-            return e;
-        }
-    }
+    readItems = async () => this.api.readItems(await this.getToken())
+    readItem = async () => this.api.readItem(await this.getToken())
+    addItem = async (item: any) => this.api.addItem(await this.getToken(), item)
+    editItem = async (item: any) => this.api.editItem(await this.getToken(), item)
+    deleteItem = async (item: any) => this.api.deleteItem(await this.getToken(), item)
 }
