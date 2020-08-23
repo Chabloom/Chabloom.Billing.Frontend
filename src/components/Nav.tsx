@@ -76,7 +76,7 @@ const Nav: React.FC<Props> = (props) => {
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [user, setUser] = React.useState<User>();
-    const [tenant, setTenant] = React.useState({} as TenantViewModel);
+    const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [open2, setOpen2] = React.useState(false);
@@ -105,13 +105,26 @@ const Nav: React.FC<Props> = (props) => {
             credentials: "include",
         }).then(response => {
             if (response.status === 200) {
-                response.json().then(json => setData(json));
+                response.json().then(json => {
+                    const newData = json as TenantViewModel[];
+                    setData(newData);
+                    const oldTenant = window.sessionStorage.getItem("TenantId");
+                    if (oldTenant) {
+                        const newTenant = newData.find(x => x.id === oldTenant);
+                        if (newTenant) {
+                            setTenant(newTenant);
+                        } else {
+                            setTenant(newData[0]);
+                        }
+                    } else {
+                        setTenant(newData[0]);
+                    }
+                });
             }
-        }).catch(e => console.log(e.message)))
-            .finally(() => {
-                setLoaded(true);
-                setProcessing(false);
-            });
+        }).catch(e => console.log(e.message))).finally(() => {
+            setLoaded(true);
+            setProcessing(false);
+        });
     }
 
     return (
@@ -122,15 +135,15 @@ const Nav: React.FC<Props> = (props) => {
                     <div className={classes.logoDiv}>
                         <img src={logo} className={classes.logo} alt="logo"/>
                     </div>
-                    {data.length > 0 &&
                     <div>
                         <Button
+                            disabled={data.length === 0}
                             ref={anchorRef}
                             aria-controls={open ? 'menu-list-grow' : undefined}
                             aria-haspopup="true"
                             onClick={() => setOpen(true)}
                         >
-                            {tenant.name}
+                            {tenant === undefined ? "Select Tenant" : tenant.name}
                         </Button>
                         <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement="bottom-end"
                                 transition disablePortal>
@@ -158,7 +171,6 @@ const Nav: React.FC<Props> = (props) => {
                             )}
                         </Popper>
                     </div>
-                    }
                     <div>
                         <IconButton
                             ref={anchorRef2}
