@@ -15,6 +15,7 @@ import BillTransactions from "./components/BillTransactions";
 import Tenants from "./components/Tenants";
 
 import './App.scss';
+import {Home} from "./components/Home";
 
 const userManager = new UserManager(OidcSettings);
 
@@ -45,7 +46,7 @@ const App: React.FC = () => {
                         <Tenants userManager={userManager}/>
                     </Route>
                     <Route path="/">
-                        <Accounts userManager={userManager}/>
+                        <Home/>
                     </Route>
                 </Switch>
             </Nav>
