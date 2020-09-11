@@ -9,7 +9,6 @@ import {
     Paper,
     TextField,
     Theme,
-    Toolbar,
     Typography
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
@@ -68,6 +67,5 @@ export const Home: React.FC = (props) => {
                 </Paper>
             </Grid>
         </Grid>
-
     );
 }
