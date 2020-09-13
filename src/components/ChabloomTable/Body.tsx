@@ -50,7 +50,7 @@ export const ChabloomTableBody: React.FC<Props> = props => {
                                                onChange={e => {
                                                    let newItem = props.editItem;
                                                    newItem[column.accessor] = e.target.value;
-                                                   props.setEditItem(newItem);
+                                                   props.setEditItem({...newItem});
                                                }}/>
                                 </TableCell>
                             );
