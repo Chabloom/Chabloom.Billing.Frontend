@@ -1,6 +1,7 @@
 export * from './BaseViewModel';
 export * from './AccountViewModel';
 export * from './AccountUserViewModel';
+export * from './ApplicationUserViewModel'
 export * from './BillViewModel';
 export * from './ScheduleViewModel';
 export * from './TenantViewModel';

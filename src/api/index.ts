@@ -1,6 +1,7 @@
 export * from './BaseApi';
 export * from './AccountsApi';
 export * from './AccountUsersApi';
+export * from './ApplicationUsersApi'
 export * from './BillsApi';
 export * from './SchedulesApi';
 export * from './TenantsApi';
