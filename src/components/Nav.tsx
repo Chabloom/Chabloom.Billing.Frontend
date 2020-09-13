@@ -27,8 +27,7 @@ import {
 } from "@material-ui/core";
 import {AccountCircle, AccountCircleOutlined, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
 
-import {ApplicationConfig} from "../settings";
-
+import {TenantsApi} from "../api";
 import {TenantViewModel} from "../models";
 
 import logo from "../logo.svg"
@@ -36,6 +35,8 @@ import logo from "../logo.svg"
 interface Props {
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
+    allTenants: Array<TenantViewModel>;
+    setAllTenants: CallableFunction;
     userManager: UserManager;
 }
 
@@ -74,7 +75,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Nav: React.FC<Props> = (props) => {
-    const [data, setData] = React.useState([] as TenantViewModel[]);
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [user, setUser] = React.useState<User>();
@@ -85,9 +85,9 @@ export const Nav: React.FC<Props> = (props) => {
 
     const classes = useStyles();
 
-    const getToken = async (userManager: UserManager) => {
+    const getToken = async () => {
         let token = "";
-        const user = await userManager.getUser();
+        const user = await props.userManager.getUser();
         if (user && !user.expired) {
             setUser(user);
             token = user.access_token;
@@ -95,34 +95,38 @@ export const Nav: React.FC<Props> = (props) => {
         return token;
     }
 
+    const api = new TenantsApi();
     if (!processing && !loaded) {
         setProcessing(true);
-        const url = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
-        getToken(props.userManager).then(token => fetch(url, {
-            method: "GET",
-            headers: new Headers({
-                "Authorization": `Bearer ${token}`,
-            }),
-            credentials: "include",
-        }).then(response => {
-            if (response.status === 200) {
-                response.json().then(json => {
-                    const newData = json as TenantViewModel[];
-                    setData(newData);
-                    const oldTenant = window.localStorage.getItem("TenantId");
-                    if (oldTenant) {
-                        const newTenant = newData.find(x => x.id === oldTenant);
+        getToken().then(() => {
+        });
+        // Read all tenants endpoint is anonymous
+        api.readItems("").then(result => {
+            if (typeof result === "string") {
+                console.log(result);
+            } else {
+                try {
+                    result = result.sort((a, b) =>
+                        a.name.localeCompare(b.name));
+                    props.setAllTenants(result);
+                    const oldTenantId = window.localStorage.getItem("TenantId");
+                    if (oldTenantId) {
+                        const newTenant = result.find(x => x.id === oldTenantId);
                         if (newTenant) {
                             props.setTenant(newTenant);
                         } else {
-                            props.setTenant(newData[0]);
+                            props.setTenant(result[0]);
                         }
                     } else {
-                        props.setTenant(newData[0]);
+                        props.setTenant(result[0]);
                     }
-                });
+                    setLoaded(true);
+                    setProcessing(false);
+                } catch {
+                    console.log('item read failed');
+                }
             }
-        }).catch(e => console.log(e.message))).finally(() => {
+        }).catch(e => console.log(e.message)).finally(() => {
             setLoaded(true);
             setProcessing(false);
         });
@@ -138,7 +142,7 @@ export const Nav: React.FC<Props> = (props) => {
                     </div>
                     <div>
                         <Button
-                            disabled={data.length === 0}
+                            disabled={props.allTenants.length === 0}
                             ref={anchorRef}
                             aria-controls={open ? 'menu-list-grow' : undefined}
                             aria-haspopup="true"
@@ -156,7 +160,7 @@ export const Nav: React.FC<Props> = (props) => {
                                     <Paper>
                                         <ClickAwayListener onClickAway={() => setOpen(false)}>
                                             <MenuList autoFocusItem={open} id="menu-list-grow">
-                                                {data.map(item => {
+                                                {props.allTenants.map(item => {
                                                     return <MenuItem onClick={() => {
                                                         if (item.id) {
                                                             props.setTenant(item);
@@ -195,7 +199,8 @@ export const Nav: React.FC<Props> = (props) => {
                                                 <MenuItem onClick={() => setOpen2(false)}>Profile</MenuItem>
                                                 <MenuItem onClick={() => setOpen2(false)}>My account</MenuItem>
                                                 <MenuItem onClick={() => {
-                                                    props.userManager.signoutRedirect();
+                                                    props.userManager.signoutRedirect().then(() => {
+                                                    });
                                                     setOpen2(false);
                                                 }}>Logout</MenuItem>
                                             </MenuList>

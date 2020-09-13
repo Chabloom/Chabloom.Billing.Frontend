@@ -7,7 +7,7 @@ import {OidcSettings} from "./settings";
 
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, Schedules, Transactions, Home, Nav, Tenants} from "./components";
+import {Accounts, Bills, Home, Nav, Schedules, Tenants, Transactions} from "./components";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
@@ -16,10 +16,16 @@ const userManager = new UserManager(OidcSettings);
 
 export const App: React.FC = () => {
     const [tenant, setTenant] = React.useState<TenantViewModel>();
+    const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
 
     return (
         <Router>
-            <Nav tenant={tenant} setTenant={setTenant} userManager={userManager}>
+            <Nav
+                tenant={tenant}
+                setTenant={setTenant}
+                allTenants={allTenants}
+                setAllTenants={setAllTenants}
+                userManager={userManager}>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>
@@ -43,7 +49,7 @@ export const App: React.FC = () => {
                         <Tenants userManager={userManager}/>
                     </Route>
                     <Route path="/">
-                        <Home/>
+                        <Home allTenants={allTenants} setAllTenants={setAllTenants}/>
                     </Route>
                 </Switch>
             </Nav>
