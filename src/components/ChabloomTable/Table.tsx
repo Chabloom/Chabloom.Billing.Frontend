@@ -13,7 +13,7 @@ import {ChabloomTableColumn} from "./Column";
 import {ChabloomTablePagination} from "./Pagination";
 import {ChabloomTableHeading} from "./Heading";
 
-export interface ChabloomTableProps {
+interface Props {
     title: string,
     columns: Array<ChabloomTableColumn>,
     userManager: UserManager,
@@ -34,11 +34,13 @@ const getToken = async (userManager: UserManager) => {
     return token;
 }
 
-export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
+export const ChabloomTable: React.FC<Props> = (props) => {
     const [data, setData] = React.useState([] as Array<BaseViewModel>);
     const [token, setToken] = React.useState("");
     const [adding, setAdding] = React.useState(false);
+    const [selectedIndex, setSelectedIndex] = React.useState(-1);
     const [editIndex, setEditIndex] = React.useState(-1);
+    const [editItem, setEditItem] = React.useState<BaseViewModel>({} as BaseViewModel);
     const [deleteIndex, setDeleteIndex] = React.useState(-1);
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
@@ -58,7 +60,10 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                     setError(result);
                 } else {
                     try {
-                        setData(result as Array<BaseViewModel>);
+                        const initData = result as Array<BaseViewModel>;
+                        const sortedData = initData.sort((a, b) =>
+                            a["name"].localeCompare(b["name"]));
+                        setData([...sortedData]);
                         setLoaded(true);
                         setProcessing(false);
                     } catch {
@@ -74,8 +79,25 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
             <ChabloomTableHeading
                 title={props.title}
                 tenant={props.tenant}
+                api={props.api}
+                token={token}
+                columns={props.columns}
+                data={data}
+                setData={setData}
+                adding={adding}
+                setAdding={setAdding}
+                selectedIndex={selectedIndex}
+                setSelectedIndex={setSelectedIndex}
+                editIndex={editIndex}
+                setEditIndex={setEditIndex}
+                editItem={editItem}
+                setEditItem={setEditItem}
+                deleteIndex={deleteIndex}
+                setDeleteIndex={setDeleteIndex}
                 processing={processing}
-                error={error}/>
+                setProcessing={setProcessing}
+                error={error}
+                setError={setError}/>
             <Table>
                 <ChabloomTableHead
                     columns={props.columns}
@@ -83,6 +105,8 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                     setData={setData}
                     adding={adding}
                     setAdding={setAdding}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
                     editIndex={editIndex}
                     setEditIndex={setEditIndex}
                     deleteIndex={deleteIndex}
@@ -90,21 +114,15 @@ export const ChabloomTable: React.FC<ChabloomTableProps> = (props) => {
                     processing={processing}
                     setProcessing={setProcessing}/>
                 <ChabloomTableBody
-                    api={props.api}
-                    token={token}
                     columns={props.columns}
                     data={data}
-                    setData={setData}
-                    adding={adding}
-                    setAdding={setAdding}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
                     editIndex={editIndex}
-                    setEditIndex={setEditIndex}
+                    editItem={editItem}
+                    setEditItem={setEditItem}
                     deleteIndex={deleteIndex}
-                    setDeleteIndex={setDeleteIndex}
-                    processing={processing}
-                    setProcessing={setProcessing}
-                    error={error}
-                    setError={setError}/>
+                    processing={processing}/>
             </Table>
             <ChabloomTablePagination data={data}/>
         </TableContainer>

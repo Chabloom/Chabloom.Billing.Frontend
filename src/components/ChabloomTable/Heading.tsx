@@ -1,23 +1,189 @@
 import React from "react";
 
-import {LinearProgress, Toolbar, Typography} from "@material-ui/core";
+import {ButtonGroup, IconButton, lighten, LinearProgress, Toolbar, Tooltip, Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Cancel, Delete, Edit, FilterList, Save} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
-import {TenantViewModel} from "../../models";
+import {BaseApiType} from "../../api";
+import {BaseViewModel, TenantViewModel} from "../../models";
+
+import {ChabloomTableColumn} from "./Column";
 
 interface Props {
     title: string,
     tenant: TenantViewModel | undefined,
+    api: BaseApiType<BaseViewModel>,
+    token: string,
+    columns: Array<ChabloomTableColumn>,
+    data: Array<BaseViewModel>,
+    setData: CallableFunction,
+    adding: boolean,
+    setAdding: CallableFunction,
+    selectedIndex: number,
+    setSelectedIndex: CallableFunction,
+    editIndex: number,
+    setEditIndex: CallableFunction,
+    editItem: BaseViewModel,
+    setEditItem: CallableFunction,
+    deleteIndex: number,
+    setDeleteIndex: CallableFunction,
     processing: boolean,
+    setProcessing: CallableFunction,
     error: string,
+    setError: CallableFunction,
 }
 
-export const ChabloomTableHeading: React.FC<Props> = props =>
-    <div>
-        <Toolbar>
-            <Typography
-                variant="h6">{props.tenant ? `${props.tenant?.name} ${props.title}` : props.title}
-            </Typography>
+const useStyles = makeStyles(theme => ({
+    root: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(1),
+    },
+    highlight:
+        theme.palette.type === 'light'
+            ? {
+                color: theme.palette.secondary.main,
+                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            }
+            : {
+                color: theme.palette.text.primary,
+                backgroundColor: theme.palette.secondary.dark,
+            },
+    title: {
+        flex: '1 1 100%',
+    },
+}));
+
+const ChabloomTableActionButtons: React.FC<Props> = props => {
+    if (props.selectedIndex !== -1) {
+        if (props.editIndex === props.selectedIndex) {
+            return (
+                <ButtonGroup>
+                    <IconButton onClick={() => {
+                        props.setProcessing(true);
+                        if (props.adding) {
+                            props.api.addItem(props.token, props.editItem).then(err => {
+                                if (!err) {
+                                    props.setSelectedIndex(-1);
+                                    props.setEditIndex(-1);
+                                    props.setAdding(false);
+                                    props.setError("");
+                                } else {
+                                    props.setError(err);
+                                }
+                            });
+                        } else {
+                            props.api.editItem(props.token, props.editItem).then(err => {
+                                if (!err) {
+                                    props.setSelectedIndex(-1);
+                                    props.setEditIndex(-1);
+                                    props.setError("");
+                                } else {
+                                    props.setError(err);
+                                }
+                            });
+                        }
+                        props.setProcessing(false);
+                    }}>
+                        <Save/>
+                    </IconButton>
+                    <IconButton onClick={() => {
+                        props.setProcessing(true);
+                        if (props.adding) {
+                            props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
+                        } else {
+                            props.setData([...props.data]);
+                        }
+                        props.setSelectedIndex(-1);
+                        props.setEditIndex(-1);
+                        props.setAdding(false);
+                        props.setProcessing(false);
+                        props.setError("");
+                    }}>
+                        <Cancel/>
+                    </IconButton>
+                </ButtonGroup>
+            );
+        } else if (props.deleteIndex === props.selectedIndex) {
+            return (
+                <ButtonGroup>
+                    <IconButton onClick={() => {
+                        props.setProcessing(true);
+                        props.api.deleteItem(props.token, props.editItem).then(err => {
+                            if (!err) {
+                                props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
+                                props.setSelectedIndex(-1);
+                                props.setDeleteIndex(-1);
+                            } else {
+                                props.setError(err);
+                            }
+                        });
+                        props.setProcessing(false);
+                    }}><Delete/></IconButton>
+                    <IconButton onClick={() => {
+                        props.setSelectedIndex(-1);
+                        props.setDeleteIndex(-1);
+                        props.setError("");
+                    }}><Cancel/></IconButton>
+                </ButtonGroup>
+            );
+        } else {
+            return (
+                <ButtonGroup>
+                    <IconButton onClick={() => {
+                        props.setEditItem(props.data[props.selectedIndex]);
+                        props.setEditIndex(props.selectedIndex);
+                    }}><Edit/></IconButton>
+                    <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}><Delete/></IconButton>
+                </ButtonGroup>
+            );
+        }
+    }
+    return (
+        <Tooltip title="Filter list">
+            <IconButton aria-label="filter list">
+                <FilterList/>
+            </IconButton>
+        </Tooltip>
+    );
+}
+
+export const ChabloomTableHeading: React.FC<Props> = props => {
+    const classes = useStyles();
+
+    return <div>
+        <Toolbar className={props.selectedIndex === -1 ? classes.root : classes.highlight}>
+            {props.selectedIndex === -1 ? (
+                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                    {props.tenant ? `${props.tenant?.name} ${props.title}` : props.title}
+                </Typography>
+            ) : (
+                <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+                    1 selected
+                </Typography>
+            )}
+            <ChabloomTableActionButtons
+                title={props.title}
+                tenant={props.tenant}
+                api={props.api}
+                token={props.token}
+                columns={props.columns}
+                data={props.data}
+                setData={props.setData}
+                adding={props.adding}
+                setAdding={props.setAdding}
+                selectedIndex={props.selectedIndex}
+                setSelectedIndex={props.setSelectedIndex}
+                editIndex={props.editIndex}
+                setEditIndex={props.setEditIndex}
+                editItem={props.editItem}
+                setEditItem={props.setEditItem}
+                deleteIndex={props.deleteIndex}
+                setDeleteIndex={props.setDeleteIndex}
+                processing={props.processing}
+                setProcessing={props.setProcessing}
+                error={props.error}
+                setError={props.setError}/>
         </Toolbar>
         {props.processing && <LinearProgress/>}
         {props.error &&
@@ -27,3 +193,4 @@ export const ChabloomTableHeading: React.FC<Props> = props =>
         </Alert>
         }
     </div>
+}
