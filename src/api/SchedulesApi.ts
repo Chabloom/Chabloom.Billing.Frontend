@@ -4,10 +4,18 @@ import {ApplicationConfig} from "../settings";
 
 export class SchedulesApi extends BaseApi<ScheduleViewModel> implements BaseApiType<ScheduleViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/schedules`;
+    account: string | null;
+
+    constructor(account: string | null = null) {
+        super();
+        this.account = account;
+    }
 
     readItems(token: string): Promise<Array<ScheduleViewModel> | string> {
         const tenantId = window.localStorage.getItem("TenantId");
-        if (tenantId) {
+        if (this.account) {
+            return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
+        } else if (tenantId) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
         } else {
             return this._readItems(token, `${this.baseUrl}`);

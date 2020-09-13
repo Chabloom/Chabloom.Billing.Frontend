@@ -27,6 +27,8 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
-export const Transactions: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Transactions" columns={columns} methods={[]} api={new TransactionsApi()} userManager={props.userManager} tenant={props.tenant}/>;
+export const Transactions: React.FC<Props> = props => {
+    const params = new URLSearchParams(window.location.search);
+    const account = params.get("account");
+    return <ChabloomTable title="Transactions" columns={columns} methods={[]} api={new TransactionsApi(account)} userManager={props.userManager} tenant={props.tenant}/>;
 }

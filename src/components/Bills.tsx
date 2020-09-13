@@ -27,6 +27,8 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
-export const Bills: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Bills" columns={columns} methods={["add", "edit", "delete"]} api={new BillsApi()} userManager={props.userManager} tenant={props.tenant}/>;
+export const Bills: React.FC<Props> = props => {
+    const params = new URLSearchParams(window.location.search);
+    const account = params.get("account");
+    return <ChabloomTable title="Bills" columns={columns} methods={["add", "edit", "delete"]} api={new BillsApi(account)} userManager={props.userManager} tenant={props.tenant}/>;
 }
