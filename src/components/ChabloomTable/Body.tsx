@@ -50,7 +50,11 @@ export const ChabloomTableBody: React.FC<Props> = props => {
                                                type={column.type}
                                                onChange={e => {
                                                    let newItem = props.editItem;
-                                                   newItem[column.accessor] = e.target.value;
+                                                   if (column.type === "number") {
+                                                       newItem[column.accessor] = parseFloat(e.target.value);
+                                                   } else {
+                                                       newItem[column.accessor] = e.target.value;
+                                                   }
                                                    props.setEditItem({...newItem});
                                                }}/>
                                 </TableCell>
