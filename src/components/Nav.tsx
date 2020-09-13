@@ -27,7 +27,7 @@ import {
 } from "@material-ui/core";
 import {AccountCircle, AccountCircleOutlined, Business, Home, Payment, Receipt, Schedule} from '@material-ui/icons'
 
-import {TenantsApi} from "../api";
+import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "../api";
 import {TenantViewModel} from "../models";
 
 import logo from "../logo.svg"
@@ -78,6 +78,7 @@ export const Nav: React.FC<Props> = (props) => {
     const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [user, setUser] = React.useState<User>();
+    const [userLevel, setUserLevel] = React.useState<"admin" | "manager" | undefined>();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [open2, setOpen2] = React.useState(false);
@@ -91,6 +92,17 @@ export const Nav: React.FC<Props> = (props) => {
         if (user && !user.expired) {
             setUser(user);
             token = user.access_token;
+            const appUsersApi = new ApplicationUsersApi();
+            const appUser = await appUsersApi.readItem(token, user.profile.sub);
+            if (typeof appUser !== "string") {
+                setUserLevel("admin");
+            } else {
+                const tenantUsersApi = new TenantUsersApi();
+                const tenantUser = await tenantUsersApi.readItem(token, user.profile.sub);
+                if (typeof tenantUser !== "string") {
+                    setUserLevel("manager");
+                }
+            }
         }
         return token;
     }
@@ -225,6 +237,10 @@ export const Nav: React.FC<Props> = (props) => {
                             <ListItemIcon><Home/></ListItemIcon>
                             <ListItemText primary="Home"/>
                         </ListItem>
+                    </List>
+                    <Divider/>
+                    {userLevel === "manager" &&
+                    <List>
                         <ListItem button key="Accounts" component={NavLink} to="/accounts">
                             <ListItemIcon><AccountCircle/></ListItemIcon>
                             <ListItemText primary="Accounts"/>
@@ -233,9 +249,6 @@ export const Nav: React.FC<Props> = (props) => {
                             <ListItemIcon><Receipt/></ListItemIcon>
                             <ListItemText primary="Bills"/>
                         </ListItem>
-                    </List>
-                    <Divider/>
-                    <List>
                         <ListItem button key="Schedules" component={NavLink} to="/schedules">
                             <ListItemIcon><Schedule/></ListItemIcon>
                             <ListItemText primary="Schedules"/>
@@ -245,13 +258,16 @@ export const Nav: React.FC<Props> = (props) => {
                             <ListItemText primary="Transactions"/>
                         </ListItem>
                     </List>
+                    }
                     <Divider/>
+                    {userLevel === "admin" &&
                     <List>
                         <ListItem button key="Tenants" component={NavLink} to="/tenants">
                             <ListItemIcon><Business/></ListItemIcon>
                             <ListItemText primary="Tenants"/>
                         </ListItem>
                     </List>
+                    }
                 </div>
             </Drawer>
             <main className={classes.content}>
