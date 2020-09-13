@@ -16,6 +16,7 @@ interface Props {
     api: BaseApiType<BaseViewModel>,
     token: string,
     columns: Array<ChabloomTableColumn>,
+    methods: Array<"add" | "edit" | "delete">,
     data: Array<BaseViewModel>,
     setData: CallableFunction,
     adding: boolean,
@@ -146,11 +147,19 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
         } else {
             return (
                 <ButtonGroup>
+                    {props.methods.includes("edit") &&
                     <IconButton onClick={() => {
                         props.setEditItem({...props.data[props.selectedIndex]});
                         props.setEditIndex(props.selectedIndex);
-                    }}><Edit/></IconButton>
-                    <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}><Delete/></IconButton>
+                    }}>
+                        <Edit/>
+                    </IconButton>
+                    }
+                    {props.methods.includes("delete") &&
+                    <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}>
+                        <Delete/>
+                    </IconButton>
+                    }
                 </ButtonGroup>
             );
         }
@@ -184,6 +193,7 @@ export const ChabloomTableHeading: React.FC<Props> = props => {
                 api={props.api}
                 token={props.token}
                 columns={props.columns}
+                methods={props.methods}
                 data={props.data}
                 setData={props.setData}
                 adding={props.adding}

@@ -28,5 +28,5 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 export const Accounts: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Accounts" columns={columns} api={new AccountsApi()} userManager={props.userManager} tenant={props.tenant}/>;
+    return <ChabloomTable title="Accounts" columns={columns} methods={["add", "edit", "delete"]} api={new AccountsApi()} userManager={props.userManager} tenant={props.tenant}/>;
 }

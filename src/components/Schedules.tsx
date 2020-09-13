@@ -32,5 +32,5 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 export const Schedules: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Schedules" columns={columns} api={new SchedulesApi()} userManager={props.userManager} tenant={props.tenant}/>;
+    return <ChabloomTable title="Schedules" columns={columns} methods={["add", "edit", "delete"]} api={new SchedulesApi()} userManager={props.userManager} tenant={props.tenant}/>;
 }

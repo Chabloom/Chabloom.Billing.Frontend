@@ -16,6 +16,7 @@ import {ChabloomTableHeading} from "./Heading";
 interface Props {
     title: string,
     columns: Array<ChabloomTableColumn>,
+    methods: Array<"add" | "edit" | "delete">,
     userManager: UserManager,
     api: BaseApiType<BaseViewModel>,
     tenant: TenantViewModel | undefined,
@@ -82,6 +83,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                 api={props.api}
                 token={token}
                 columns={props.columns}
+                methods={props.methods}
                 data={data}
                 setData={setData}
                 adding={adding}
@@ -101,6 +103,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
             <Table>
                 <ChabloomTableHead
                     columns={props.columns}
+                    methods={props.methods}
                     data={data}
                     setData={setData}
                     adding={adding}

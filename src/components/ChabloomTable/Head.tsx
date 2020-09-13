@@ -10,6 +10,7 @@ import {ChabloomTableColumn} from "./Column";
 
 interface Props {
     columns: Array<ChabloomTableColumn>,
+    methods: Array<"add" | "edit" | "delete">,
     data: Array<BaseViewModel>,
     setData: CallableFunction,
     adding: boolean,
@@ -61,6 +62,7 @@ export const ChabloomTableHead: React.FC<Props> = props => {
     return <TableHead>
         <TableRow>
             <TableCell>
+                {props.methods.includes("add") &&
                 <Fab
                     color="primary"
                     disabled={
@@ -81,6 +83,7 @@ export const ChabloomTableHead: React.FC<Props> = props => {
                     }}>
                     <Add/>
                 </Fab>
+                }
             </TableCell>
             {props.columns.map(column => (
                 <TableCell key={column.title} align="left">
