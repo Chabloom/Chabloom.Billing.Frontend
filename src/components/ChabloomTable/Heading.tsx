@@ -17,7 +17,7 @@ interface Props {
     api: BaseApiType<BaseViewModel>,
     token: string,
     columns: Array<ChabloomTableColumn>,
-    methods: Array<"add" | "edit" | "delete">,
+    methods: Array<"add" | "edit" | "delete" | "bill" | "schedule" | "transaction">,
     data: Array<BaseViewModel>,
     setData: CallableFunction,
     adding: boolean,
@@ -149,21 +149,27 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
             const account = props.data[props.selectedIndex] as AccountViewModel;
             return (
                 <ButtonGroup>
+                    {props.methods.includes("bill") &&
                     <Tooltip title="Manage account bills">
                         <IconButton component={NavLink} to={`/bills?account=${account.id}`}>
                             <Receipt/>
                         </IconButton>
                     </Tooltip>
+                    }
+                    {props.methods.includes("schedule") &&
                     <Tooltip title="Manage account schedules">
                         <IconButton component={NavLink} to={`/schedules?account=${account.id}`}>
                             <Schedule/>
                         </IconButton>
                     </Tooltip>
+                    }
+                    {props.methods.includes("transaction") &&
                     <Tooltip title="Manage account transactions">
                         <IconButton component={NavLink} to={`/transactions?account=${account.id}`}>
                             <Payment/>
                         </IconButton>
                     </Tooltip>
+                    }
                     {props.methods.includes("edit") &&
                     <Tooltip title="Edit account">
                         <IconButton onClick={() => {

@@ -10,7 +10,7 @@ import {ChabloomTableColumn} from "./Column";
 
 interface Props {
     columns: Array<ChabloomTableColumn>,
-    methods: Array<"add" | "edit" | "delete">,
+    methods: Array<"add" | "edit" | "delete" | "bill" | "schedule" | "transaction">,
     data: Array<BaseViewModel>,
     setData: CallableFunction,
     adding: boolean,

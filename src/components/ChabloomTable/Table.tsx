@@ -16,7 +16,7 @@ import {ChabloomTableHeading} from "./Heading";
 interface Props {
     title: string,
     columns: Array<ChabloomTableColumn>,
-    methods: Array<"add" | "edit" | "delete">,
+    methods: Array<"add" | "edit" | "delete" | "bill" | "schedule" | "transaction">,
     userManager: UserManager,
     api: BaseApiType<BaseViewModel>,
     tenant: TenantViewModel | undefined,
