@@ -43,7 +43,7 @@ export const App: React.FC = () => {
                         <Tenants userManager={userManager}/>
                     </Route>
                     <Route path="/">
-                        <Home userManager={userManager}/>
+                        <Home/>
                     </Route>
                 </Switch>
             </Nav>

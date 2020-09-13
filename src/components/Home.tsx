@@ -1,7 +1,5 @@
 import React from "react";
 
-import {UserManager} from "oidc-client";
-
 import {
     Button,
     createStyles,
@@ -19,10 +17,6 @@ import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
 import {TenantsApi} from "../api";
 import {TenantViewModel} from "../models";
 
-interface Props {
-    userManager: UserManager,
-}
-
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         paper: {
@@ -34,20 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const getToken = async (userManager: UserManager) => {
-    let token = "";
-    const user = await userManager.getUser();
-    if (user && !user.expired) {
-        token = user.access_token;
-    } else {
-        localStorage.setItem("redirectUri", window.location.pathname);
-        userManager.signinRedirect({}).then().catch(() => {
-        });
-    }
-    return token;
-}
-
-export const Home: React.FC<Props> = props => {
+export const Home: React.FC = () => {
     const [tenant, setTenant] = React.useState("");
     const [account, setAccount] = React.useState("");
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
@@ -60,22 +41,21 @@ export const Home: React.FC<Props> = props => {
     const api = new TenantsApi();
     if (!processing && !loaded) {
         setProcessing(true);
-        getToken(props.userManager).then(token => {
-            api.readItems(token).then(result => {
-                if (typeof result === "string") {
-                    setError(result);
-                } else {
-                    try {
-                        setAllTenants(result.sort((a, b) =>
-                            a.name.localeCompare(b.name)));
-                        setLoaded(true);
-                        setProcessing(false);
-                    } catch {
-                        setError('item read failed');
-                    }
+        // Read all tenants endpoint is anonymous
+        api.readItems("").then(result => {
+            if (typeof result === "string") {
+                setError(result);
+            } else {
+                try {
+                    setAllTenants(result.sort((a, b) =>
+                        a.name.localeCompare(b.name)));
+                    setLoaded(true);
+                    setProcessing(false);
+                } catch {
+                    setError('item read failed');
                 }
-            }).catch(reason => setError(reason));
-        })
+            }
+        }).catch(reason => setError(reason));
     }
 
     return (
@@ -97,7 +77,7 @@ export const Home: React.FC<Props> = props => {
                                         onChange={e => setTenant(e.target.value)}/>
                                 )}
                             />
-                            <TextField required name="account" label="Account" value={account}
+                            <TextField required name="account" label="Account Number" value={account}
                                        disabled={processing} onChange={e => setAccount(e.target.value)}/>
                         </FormGroup>
                         {error &&
