@@ -27,14 +27,23 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
     }
 
     addItem(token: string, item: BillViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string, item: BillViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
     deleteItem(token: string, item: BillViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }

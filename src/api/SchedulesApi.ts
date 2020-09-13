@@ -27,14 +27,23 @@ export class SchedulesApi extends BaseApi<ScheduleViewModel> implements BaseApiT
     }
 
     addItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
     deleteItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }

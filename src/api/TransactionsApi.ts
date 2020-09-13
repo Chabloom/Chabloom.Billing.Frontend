@@ -27,14 +27,23 @@ export class TransactionsApi extends BaseApi<TransactionViewModel> implements Ba
     }
 
     addItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
     deleteItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }
