@@ -1,12 +1,13 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 import {ButtonGroup, IconButton, lighten, LinearProgress, Toolbar, Tooltip, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {Cancel, Delete, Edit, FilterList, Save} from "@material-ui/icons";
+import {Cancel, Delete, Edit, FilterList, Payment, Receipt, Save, Schedule} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
 import {BaseApiType} from "../../api";
-import {BaseViewModel, TenantViewModel} from "../../models";
+import {AccountViewModel, BaseViewModel, TenantViewModel} from "../../models";
 
 import {ChabloomTableColumn} from "./Column";
 
@@ -145,20 +146,40 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
                 </ButtonGroup>
             );
         } else {
+            const account = props.data[props.selectedIndex] as AccountViewModel;
             return (
                 <ButtonGroup>
+                    <Tooltip title="Manage account bills">
+                        <IconButton component={NavLink} to={`/bills?account=${account.id}`}>
+                            <Receipt/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Manage account schedules">
+                        <IconButton component={NavLink} to={`/schedules?account=${account.id}`}>
+                            <Schedule/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Manage account transactions">
+                        <IconButton component={NavLink} to={`/transactions?account=${account.id}`}>
+                            <Payment/>
+                        </IconButton>
+                    </Tooltip>
                     {props.methods.includes("edit") &&
-                    <IconButton onClick={() => {
-                        props.setEditItem({...props.data[props.selectedIndex]});
-                        props.setEditIndex(props.selectedIndex);
-                    }}>
-                        <Edit/>
-                    </IconButton>
+                    <Tooltip title="Edit account">
+                        <IconButton onClick={() => {
+                            props.setEditItem({...props.data[props.selectedIndex]});
+                            props.setEditIndex(props.selectedIndex);
+                        }}>
+                            <Edit/>
+                        </IconButton>
+                    </Tooltip>
                     }
                     {props.methods.includes("delete") &&
-                    <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}>
-                        <Delete/>
-                    </IconButton>
+                    <Tooltip title="Delete account">
+                        <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}>
+                            <Delete/>
+                        </IconButton>
+                    </Tooltip>
                     }
                 </ButtonGroup>
             );
