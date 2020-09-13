@@ -62,7 +62,10 @@ export const ChabloomTableBody: React.FC<Props> = props => {
                         } else {
                             return (
                                 <TableCell key={column.accessor} align="left">
-                                    {row[column.accessor]}
+                                    {column.type === "date" ?
+                                        (new Date(row[column.accessor])).toLocaleDateString() :
+                                        row[column.accessor]
+                                    }
                                 </TableCell>
                             );
                         }
