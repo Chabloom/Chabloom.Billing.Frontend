@@ -22,8 +22,8 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
         }
     }
 
-    readItem(token: string): Promise<BillViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<BillViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: BillViewModel): Promise<string | undefined> {

@@ -14,8 +14,8 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
         }
     }
 
-    readItem(token: string): Promise<AccountUserViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<AccountUserViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: AccountUserViewModel): Promise<string | undefined> {

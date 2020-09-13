@@ -14,8 +14,8 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
         }
     }
 
-    readItem(token: string): Promise<AccountViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<AccountViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: AccountViewModel): Promise<string | undefined> {

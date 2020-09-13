@@ -3,7 +3,7 @@ import {BaseViewModel} from "../models";
 export interface BaseApiType<T extends BaseViewModel> {
     readItems(token: string): Promise<Array<T> | string>;
 
-    readItem(token: string): Promise<T | string>;
+    readItem(token: string, itemId: string): Promise<T | string>;
 
     addItem(token: string, item: T): Promise<string | undefined>;
 

@@ -22,8 +22,8 @@ export class SchedulesApi extends BaseApi<ScheduleViewModel> implements BaseApiT
         }
     }
 
-    readItem(token: string): Promise<ScheduleViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<ScheduleViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {

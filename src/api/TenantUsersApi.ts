@@ -3,7 +3,7 @@ import {TenantUserViewModel} from "../models";
 import {ApplicationConfig} from "../settings";
 
 export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements BaseApiType<TenantUserViewModel> {
-    baseUrl = `${ApplicationConfig.apiPublicAddress}/api/accountUsers`;
+    baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenantUsers`;
 
     readItems(token: string): Promise<Array<TenantUserViewModel> | string> {
         const tenantId = window.localStorage.getItem("TenantId");
@@ -14,8 +14,8 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
         }
     }
 
-    readItem(token: string): Promise<TenantUserViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<TenantUserViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: TenantUserViewModel): Promise<string | undefined> {

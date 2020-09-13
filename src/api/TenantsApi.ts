@@ -9,8 +9,8 @@ export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<
         return this._readItems(token, `${this.baseUrl}`);
     }
 
-    readItem(token: string): Promise<TenantViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<TenantViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: TenantViewModel): Promise<string | undefined> {

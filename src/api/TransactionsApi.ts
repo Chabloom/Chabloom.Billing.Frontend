@@ -22,8 +22,8 @@ export class TransactionsApi extends BaseApi<TransactionViewModel> implements Ba
         }
     }
 
-    readItem(token: string): Promise<TransactionViewModel | string> {
-        return this._readItem(token, `${this.baseUrl}`);
+    readItem(token: string, itemId: string): Promise<TransactionViewModel | string> {
+        return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
     addItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
