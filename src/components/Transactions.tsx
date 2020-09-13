@@ -16,14 +16,17 @@ const columns: Array<ChabloomTableColumn> = [
     {
         title: 'Name',
         accessor: "name",
+        type: "text",
     },
     {
         title: 'Id',
         accessor: "externalId",
+        type: "text",
     },
     {
         title: 'Amount',
         accessor: "amount",
+        type: "number",
     },
 ]
 

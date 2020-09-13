@@ -47,6 +47,7 @@ export const ChabloomTableBody: React.FC<Props> = props => {
                                     <TextField variant="outlined" name={column.accessor}
                                                defaultValue={props.editItem[column.accessor]}
                                                disabled={props.processing}
+                                               type={column.type}
                                                onChange={e => {
                                                    let newItem = props.editItem;
                                                    newItem[column.accessor] = e.target.value;

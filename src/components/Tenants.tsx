@@ -14,6 +14,7 @@ const columns: Array<ChabloomTableColumn> = [
     {
         title: 'Name',
         accessor: "name",
+        type: "text",
     },
 ]
 
