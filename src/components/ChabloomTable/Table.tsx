@@ -59,6 +59,8 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                 if (typeof result === "string") {
                     setData([] as Array<BaseViewModel>);
                     setError(result);
+                    setLoaded(true);
+                    setProcessing(false);
                 } else {
                     try {
                         const initData = result as Array<BaseViewModel>;
