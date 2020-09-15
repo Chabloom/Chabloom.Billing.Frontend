@@ -122,7 +122,7 @@ export const App: React.FC = () => {
                         <Tenants user={user}/>
                     </Route>
                     <Route path="/">
-                        <ChabloomHome user={user} allTenants={allTenants}/>
+                        <ChabloomHome user={user} tenant={tenant} allTenants={allTenants}/>
                     </Route>
                 </Switch>
             </ChabloomNav>
