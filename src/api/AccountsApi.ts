@@ -11,7 +11,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
         this.tenant = tenant;
     }
 
-    readItems(token: string): Promise<Array<AccountViewModel> | string> {
+    readItems(token: string | undefined): Promise<Array<AccountViewModel> | string> {
         if (this.tenant) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
@@ -19,11 +19,11 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
         }
     }
 
-    readItem(token: string, itemId: string): Promise<AccountViewModel | string> {
+    readItem(token: string | undefined, itemId: string): Promise<AccountViewModel | string> {
         return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
-    addItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+    addItem(token: string | undefined, item: AccountViewModel): Promise<string | undefined> {
         const tenantId = window.localStorage.getItem("TenantId");
         if (tenantId) {
             item.tenant = tenantId;
@@ -31,7 +31,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+    editItem(token: string | undefined, item: AccountViewModel): Promise<string | undefined> {
         const tenantId = window.localStorage.getItem("TenantId");
         if (tenantId) {
             item.tenant = tenantId;
@@ -39,7 +39,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+    deleteItem(token: string | undefined, item: AccountViewModel): Promise<string | undefined> {
         const tenantId = window.localStorage.getItem("TenantId");
         if (tenantId) {
             item.tenant = tenantId;

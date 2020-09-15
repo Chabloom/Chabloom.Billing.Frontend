@@ -1,25 +1,27 @@
 import {BaseViewModel} from "../models";
 
 export interface BaseApiType<T extends BaseViewModel> {
-    readItems(token: string): Promise<Array<T> | string>;
+    readItems(token: string | undefined): Promise<Array<T> | string>;
 
-    readItem(token: string, itemId: string): Promise<T | string>;
+    readItem(token: string | undefined, itemId: string): Promise<T | string>;
 
-    addItem(token: string, item: T): Promise<string | undefined>;
+    addItem(token: string | undefined, item: T): Promise<string | undefined>;
 
-    editItem(token: string, item: T): Promise<string | undefined>;
+    editItem(token: string | undefined, item: T): Promise<string | undefined>;
 
-    deleteItem(token: string, item: T): Promise<string | undefined>;
+    deleteItem(token: string | undefined, item: T): Promise<string | undefined>;
 }
 
 export class BaseApi<T extends BaseViewModel> {
-    _readItems = async (token: string, url: string): Promise<Array<T> | string> => {
+    _readItems = async (token: string | undefined, url: string): Promise<Array<T> | string> => {
         try {
+            const headers = new Headers();
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
             const response = await fetch(url, {
                 method: "GET",
-                headers: new Headers({
-                    "Authorization": `Bearer ${token}`,
-                }),
+                headers: headers,
                 credentials: "include",
             });
             if (response.status === 200) {
@@ -32,13 +34,15 @@ export class BaseApi<T extends BaseViewModel> {
         }
     }
 
-    _readItem = async (token: string, url: string): Promise<T | string> => {
+    _readItem = async (token: string | undefined, url: string): Promise<T | string> => {
         try {
+            const headers = new Headers();
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
             const response = await fetch(url, {
                 method: "GET",
-                headers: new Headers({
-                    "Authorization": `Bearer ${token}`,
-                }),
+                headers: headers,
                 credentials: "include",
             });
             if (response.status === 200) {
@@ -51,14 +55,17 @@ export class BaseApi<T extends BaseViewModel> {
         }
     }
 
-    _addItem = async (token: string, url: string, item: T): Promise<string | undefined> => {
+    _addItem = async (token: string | undefined, url: string, item: T): Promise<string | undefined> => {
         try {
+            const headers = new Headers({
+                "Content-Type": "application/json",
+            });
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
             const response = await fetch(url, {
                 method: "POST",
-                headers: new Headers({
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                }),
+                headers: headers,
                 credentials: "include",
                 body: JSON.stringify(item),
             });
@@ -72,14 +79,17 @@ export class BaseApi<T extends BaseViewModel> {
         }
     }
 
-    _editItem = async (token: string, url: string, item: T): Promise<string | undefined> => {
+    _editItem = async (token: string | undefined, url: string, item: T): Promise<string | undefined> => {
         try {
+            const headers = new Headers({
+                "Content-Type": "application/json",
+            });
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
             const response = await fetch(url, {
                 method: "PUT",
-                headers: new Headers({
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                }),
+                headers: headers,
                 credentials: "include",
                 body: JSON.stringify(item),
             });
@@ -93,13 +103,15 @@ export class BaseApi<T extends BaseViewModel> {
         }
     }
 
-    _deleteItem = async (token: string, url: string): Promise<string | undefined> => {
+    _deleteItem = async (token: string | undefined, url: string): Promise<string | undefined> => {
         try {
+            const headers = new Headers();
+            if (token) {
+                headers.append("Authorization", `Bearer ${token}`);
+            }
             const response = await fetch(url, {
                 method: "DELETE",
-                headers: new Headers({
-                    "Authorization": `Bearer ${token}`,
-                }),
+                headers: headers,
             });
             if (response.status === 204) {
                 return undefined;

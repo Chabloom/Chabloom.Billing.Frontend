@@ -13,7 +13,7 @@ export class TransactionsApi extends BaseApi<TransactionViewModel> implements Ba
         this.tenant = tenant;
     }
 
-    readItems(token: string): Promise<Array<TransactionViewModel> | string> {
+    readItems(token: string | undefined): Promise<Array<TransactionViewModel> | string> {
         if (this.account) {
             return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
         } else if (this.tenant) {
@@ -23,25 +23,25 @@ export class TransactionsApi extends BaseApi<TransactionViewModel> implements Ba
         }
     }
 
-    readItem(token: string, itemId: string): Promise<TransactionViewModel | string> {
+    readItem(token: string | undefined, itemId: string): Promise<TransactionViewModel | string> {
         return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
-    addItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+    addItem(token: string | undefined, item: TransactionViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+    editItem(token: string | undefined, item: TransactionViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+    deleteItem(token: string | undefined, item: TransactionViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }

@@ -13,7 +13,7 @@ export class SchedulesApi extends BaseApi<ScheduleViewModel> implements BaseApiT
         this.tenant = tenant;
     }
 
-    readItems(token: string): Promise<Array<ScheduleViewModel> | string> {
+    readItems(token: string | undefined): Promise<Array<ScheduleViewModel> | string> {
         if (this.account) {
             return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
         } else if (this.tenant) {
@@ -23,25 +23,25 @@ export class SchedulesApi extends BaseApi<ScheduleViewModel> implements BaseApiT
         }
     }
 
-    readItem(token: string, itemId: string): Promise<ScheduleViewModel | string> {
+    readItem(token: string | undefined, itemId: string): Promise<ScheduleViewModel | string> {
         return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
-    addItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+    addItem(token: string | undefined, item: ScheduleViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+    editItem(token: string | undefined, item: ScheduleViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: ScheduleViewModel): Promise<string | undefined> {
+    deleteItem(token: string | undefined, item: ScheduleViewModel): Promise<string | undefined> {
         if (this.account) {
             item.account = this.account;
         }

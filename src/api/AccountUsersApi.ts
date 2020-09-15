@@ -11,7 +11,7 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
         this.tenant = tenant;
     }
 
-    readItems(token: string): Promise<Array<AccountUserViewModel> | string> {
+    readItems(token: string | undefined): Promise<Array<AccountUserViewModel> | string> {
         if (this.tenant) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
@@ -19,19 +19,19 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
         }
     }
 
-    readItem(token: string, itemId: string): Promise<AccountUserViewModel | string> {
+    readItem(token: string | undefined, itemId: string): Promise<AccountUserViewModel | string> {
         return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
-    addItem(token: string, item: AccountUserViewModel): Promise<string | undefined> {
+    addItem(token: string | undefined, item: AccountUserViewModel): Promise<string | undefined> {
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: AccountUserViewModel): Promise<string | undefined> {
+    editItem(token: string | undefined, item: AccountUserViewModel): Promise<string | undefined> {
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: AccountUserViewModel): Promise<string | undefined> {
+    deleteItem(token: string | undefined, item: AccountUserViewModel): Promise<string | undefined> {
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }

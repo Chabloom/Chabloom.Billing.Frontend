@@ -11,7 +11,7 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
         this.tenant = tenant;
     }
 
-    readItems(token: string): Promise<Array<TenantUserViewModel> | string> {
+    readItems(token: string | undefined): Promise<Array<TenantUserViewModel> | string> {
         if (this.tenant) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
@@ -19,19 +19,19 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
         }
     }
 
-    readItem(token: string, itemId: string): Promise<TenantUserViewModel | string> {
+    readItem(token: string | undefined, itemId: string): Promise<TenantUserViewModel | string> {
         return this._readItem(token, `${this.baseUrl}/${itemId}`);
     }
 
-    addItem(token: string, item: TenantUserViewModel): Promise<string | undefined> {
+    addItem(token: string | undefined, item: TenantUserViewModel): Promise<string | undefined> {
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
-    editItem(token: string, item: TenantUserViewModel): Promise<string | undefined> {
+    editItem(token: string | undefined, item: TenantUserViewModel): Promise<string | undefined> {
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
-    deleteItem(token: string, item: TenantUserViewModel): Promise<string | undefined> {
+    deleteItem(token: string | undefined, item: TenantUserViewModel): Promise<string | undefined> {
         return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
     }
 }
