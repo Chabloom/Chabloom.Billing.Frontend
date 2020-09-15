@@ -5,9 +5,11 @@ import {User, UserManager} from "oidc-client";
 
 import {OidcSettings} from "./settings";
 
+import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, Home, Nav, Schedules, Tenants, Transactions} from "./components";
+import {Accounts, Bills, Home, Schedules, Tenants, Transactions} from "./components";
+import {ChabloomNav} from "./components/ChabloomNav";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
@@ -16,6 +18,7 @@ const userManager = new UserManager(OidcSettings);
 
 export const App: React.FC = () => {
     const [user, setUser] = React.useState<User>();
+    const [userLevel, setUserLevel] = React.useState<"admin" | "manager" | undefined>();
     const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
 
@@ -41,10 +44,57 @@ export const App: React.FC = () => {
             }
         })
     }, []);
+    React.useEffect(() => {
+        if (user && !user.expired) {
+            const api = new ApplicationUsersApi();
+            api.readItem(user.access_token, user.profile.sub).then(ret => {
+                if (typeof ret !== "string") {
+                    setUserLevel("admin");
+                } else {
+                    const tenantUsersApi = new TenantUsersApi();
+                    tenantUsersApi.readItem(user.access_token, user.profile.sub).then(ret => {
+                        if (typeof ret !== "string") {
+                            setUserLevel("manager");
+                        }
+                    });
+                }
+            });
+        }
+    }, [user]);
+    React.useEffect(() => {
+        console.debug("updating initial tenant");
+        const api = new TenantsApi();
+        api.readItems("").then(result => {
+            if (typeof result === "string") {
+                console.log(result);
+            } else {
+                try {
+                    result = result.sort((a, b) =>
+                        a.name.localeCompare(b.name));
+                    setAllTenants(result);
+                    const oldTenantId = window.localStorage.getItem("TenantId");
+                    if (oldTenantId) {
+                        const newTenant = result.find(x => x.id === oldTenantId);
+                        if (newTenant) {
+                            setTenant(newTenant);
+                        } else {
+                            setTenant(result[0]);
+                        }
+                    } else {
+                        setTenant(result[0]);
+                    }
+                } catch {
+                    console.log('item read failed');
+                }
+            }
+        }).catch(e => console.log(e.message));
+    }, []);
 
     return (
         <Router>
-            <Nav
+            <ChabloomNav
+                user={user}
+                userLevel={userLevel}
                 tenant={tenant}
                 setTenant={setTenant}
                 allTenants={allTenants}
@@ -76,7 +126,7 @@ export const App: React.FC = () => {
                         <Home allTenants={allTenants} setAllTenants={setAllTenants}/>
                     </Route>
                 </Switch>
-            </Nav>
+            </ChabloomNav>
         </Router>
     );
 }
