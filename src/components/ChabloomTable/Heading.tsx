@@ -1,6 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
+import {User} from "oidc-client";
+
 import {ButtonGroup, IconButton, lighten, LinearProgress, Toolbar, Tooltip, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {Cancel, Delete, Edit, FilterList, Payment, Receipt, Save, Schedule} from "@material-ui/icons";
@@ -12,10 +14,10 @@ import {AccountViewModel, BaseViewModel, TenantViewModel} from "../../models";
 import {ChabloomTableColumn} from "./Column";
 
 interface Props {
-    title: string,
-    tenant: TenantViewModel | undefined,
+    user: User | undefined;
+    tenant: TenantViewModel | undefined;
     api: BaseApiType<BaseViewModel>,
-    token: string,
+    title: string,
     columns: Array<ChabloomTableColumn>,
     methods: Array<"add" | "edit" | "delete" | "bill" | "schedule" | "transaction">,
     data: Array<BaseViewModel>,
@@ -64,7 +66,7 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
                     <IconButton onClick={() => {
                         props.setProcessing(true);
                         if (props.adding) {
-                            props.api.addItem(props.token, props.editItem).then(err => {
+                            props.api.addItem(props.user?.access_token, props.editItem).then(err => {
                                 if (!err) {
                                     props.setData([
                                         ...props.data.slice(0, props.selectedIndex),
@@ -80,7 +82,7 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
                                 }
                             });
                         } else {
-                            props.api.editItem(props.token, props.editItem).then(err => {
+                            props.api.editItem(props.user?.access_token, props.editItem).then(err => {
                                 if (!err) {
                                     props.setData([
                                         ...props.data.slice(0, props.selectedIndex),
@@ -124,7 +126,7 @@ const ChabloomTableActionButtons: React.FC<Props> = props => {
                 <ButtonGroup>
                     <IconButton onClick={() => {
                         props.setProcessing(true);
-                        props.api.deleteItem(props.token, props.editItem).then(err => {
+                        props.api.deleteItem(props.user?.access_token, props.editItem).then(err => {
                             if (!err) {
                                 props.setData([
                                     ...props.data.slice(0, props.selectedIndex),

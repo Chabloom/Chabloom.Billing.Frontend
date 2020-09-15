@@ -1,6 +1,6 @@
 import React from "react";
 
-import {User, UserManager} from "oidc-client";
+import {User} from "oidc-client";
 
 import {AccountsApi, SchedulesApi} from "../api";
 import {TenantViewModel} from "../models";
@@ -10,7 +10,6 @@ import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 interface Props {
     user: User | undefined;
     tenant: TenantViewModel | undefined;
-    userManager: UserManager;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -78,10 +77,9 @@ export const Schedules: React.FC<Props> = (props) => {
         }
     }, [account, props.user, props.tenant]);
     return <ChabloomTable
+        {...props}
         api={api}
         title={title}
         columns={columns}
-        methods={["add", "edit", "delete"]}
-        userManager={props.userManager}
-        tenant={props.tenant}/>;
+        methods={["add", "edit", "delete"]}/>;
 }
