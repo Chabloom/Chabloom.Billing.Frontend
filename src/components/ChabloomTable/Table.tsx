@@ -43,15 +43,11 @@ export const ChabloomTable: React.FC<Props> = (props) => {
     const [editIndex, setEditIndex] = React.useState(-1);
     const [editItem, setEditItem] = React.useState<BaseViewModel>({} as BaseViewModel);
     const [deleteIndex, setDeleteIndex] = React.useState(-1);
-    const [loaded, setLoaded] = React.useState(false);
     const [processing, setProcessing] = React.useState(false);
     const [error, setError] = React.useState("");
 
     React.useEffect(() => {
-        setLoaded(false);
-    }, [props.tenant]);
-
-    if (!processing && !loaded) {
+        console.debug("updating table data");
         setProcessing(true);
         getToken(props.userManager).then(token => {
             setToken(token);
@@ -59,33 +55,24 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                 if (typeof result === "string") {
                     setData([] as Array<BaseViewModel>);
                     setError(result);
-                    setLoaded(true);
-                    setProcessing(false);
                 } else {
                     try {
-                        const initData = result as Array<BaseViewModel>;
-                        const sortedData = initData.sort((a, b) =>
+                        const sortedData = result.sort((a, b) =>
                             a["name"].localeCompare(b["name"]));
                         setData([...sortedData]);
-                        setLoaded(true);
-                        setProcessing(false);
                     } catch {
                         setError('item read failed');
                     }
                 }
-            }).catch(reason => setError(reason));
-        })
-    }
+            }).catch(reason => setError(reason)).finally(() => setProcessing(false));
+        });
+    }, [props.api, props.tenant, props.userManager]);
 
     return (
         <TableContainer component={Paper}>
             <ChabloomTableHeading
-                title={props.title}
-                tenant={props.tenant}
-                api={props.api}
+                {...props}
                 token={token}
-                columns={props.columns}
-                methods={props.methods}
                 data={data}
                 setData={setData}
                 adding={adding}
@@ -104,8 +91,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                 setError={setError}/>
             <Table>
                 <ChabloomTableHead
-                    columns={props.columns}
-                    methods={props.methods}
+                    {...props}
                     data={data}
                     setData={setData}
                     adding={adding}
@@ -119,7 +105,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                     processing={processing}
                     setProcessing={setProcessing}/>
                 <ChabloomTableBody
-                    columns={props.columns}
+                    {...props}
                     data={data}
                     selectedIndex={selectedIndex}
                     setSelectedIndex={setSelectedIndex}

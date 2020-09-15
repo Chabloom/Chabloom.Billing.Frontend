@@ -30,6 +30,23 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
+// The API to use
+let api: AccountsApi = new AccountsApi();
+
 export const Accounts: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Accounts" columns={columns} methods={["add", "edit", "delete", "bill" , "schedule" , "transaction"]} api={new AccountsApi()} userManager={props.userManager} tenant={props.tenant}/>;
+    React.useEffect(() => {
+        console.debug("updating api tenant");
+        if (props.tenant?.id) {
+            api.tenant = props.tenant?.id;
+        } else {
+            api.tenant = null;
+        }
+    }, [props.tenant]);
+    return <ChabloomTable
+        api={api}
+        title="Accounts"
+        columns={columns}
+        methods={["add", "edit", "delete", "bill", "schedule", "transaction"]}
+        userManager={props.userManager}
+        tenant={props.tenant}/>;
 }

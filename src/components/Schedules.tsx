@@ -35,8 +35,33 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
+// The API to use
+let api: SchedulesApi = new SchedulesApi();
+
 export const Schedules: React.FC<Props> = props => {
     const params = new URLSearchParams(window.location.search);
     const account = params.get("account");
-    return <ChabloomTable title="Schedules" columns={columns} methods={["add", "edit", "delete"]} api={new SchedulesApi(account)} userManager={props.userManager} tenant={props.tenant}/>;
+    React.useEffect(() => {
+        console.debug("updating api account");
+        if (account) {
+            api.account = account;
+        } else {
+            api.account = null;
+        }
+    }, [account]);
+    React.useEffect(() => {
+        console.debug("updating api tenant");
+        if (props.tenant?.id) {
+            api.tenant = props.tenant?.id;
+        } else {
+            api.tenant = null;
+        }
+    }, [props.tenant]);
+    return <ChabloomTable
+        api={api}
+        title="Schedules"
+        columns={columns}
+        methods={["add", "edit", "delete"]}
+        userManager={props.userManager}
+        tenant={props.tenant}/>;
 }

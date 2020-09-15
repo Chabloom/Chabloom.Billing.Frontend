@@ -18,6 +18,15 @@ const columns: Array<ChabloomTableColumn> = [
     },
 ]
 
+// The API to use
+let api: TenantsApi = new TenantsApi();
+
 export const Tenants: React.FC<Props> = (props) => {
-    return <ChabloomTable title="Tenants" columns={columns} methods={["add", "edit"]} api={new TenantsApi()} userManager={props.userManager} tenant={undefined}/>;
+    return <ChabloomTable
+        api={api}
+        title="Tenants"
+        columns={columns}
+        methods={["add", "edit"]}
+        userManager={props.userManager}
+        tenant={undefined}/>;
 }
