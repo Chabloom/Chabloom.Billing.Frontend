@@ -214,29 +214,7 @@ export const ChabloomTableHeading: React.FC<Props> = props => {
                     1 selected
                 </Typography>
             )}
-            <ChabloomTableActionButtons
-                title={props.title}
-                tenant={props.tenant}
-                api={props.api}
-                token={props.token}
-                columns={props.columns}
-                methods={props.methods}
-                data={props.data}
-                setData={props.setData}
-                adding={props.adding}
-                setAdding={props.setAdding}
-                selectedIndex={props.selectedIndex}
-                setSelectedIndex={props.setSelectedIndex}
-                editIndex={props.editIndex}
-                setEditIndex={props.setEditIndex}
-                editItem={props.editItem}
-                setEditItem={props.setEditItem}
-                deleteIndex={props.deleteIndex}
-                setDeleteIndex={props.setDeleteIndex}
-                processing={props.processing}
-                setProcessing={props.setProcessing}
-                error={props.error}
-                setError={props.setError}/>
+            <ChabloomTableActionButtons {...props}/>
         </Toolbar>
         {props.processing && <LinearProgress/>}
         {props.error &&
