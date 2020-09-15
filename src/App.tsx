@@ -97,9 +97,7 @@ export const App: React.FC = () => {
                 userLevel={userLevel}
                 tenant={tenant}
                 setTenant={setTenant}
-                allTenants={allTenants}
-                setAllTenants={setAllTenants}
-                userManager={userManager}>
+                allTenants={allTenants}>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>

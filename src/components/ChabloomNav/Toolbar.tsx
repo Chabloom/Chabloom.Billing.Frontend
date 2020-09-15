@@ -1,6 +1,6 @@
 import React from "react";
 
-import {User, UserManager} from "oidc-client";
+import {User} from "oidc-client";
 
 import {AppBar, createStyles, makeStyles, Theme, Toolbar} from "@material-ui/core";
 
@@ -17,8 +17,6 @@ interface Props {
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
     allTenants: Array<TenantViewModel>;
-    setAllTenants: CallableFunction;
-    userManager: UserManager;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
