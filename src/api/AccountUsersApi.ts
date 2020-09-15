@@ -4,11 +4,16 @@ import {ApplicationConfig} from "../settings";
 
 export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements BaseApiType<AccountUserViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/accountUsers`;
+    tenant: string | null;
+
+    constructor(tenant: string | null = null) {
+        super();
+        this.tenant = tenant;
+    }
 
     readItems(token: string): Promise<Array<AccountUserViewModel> | string> {
-        const tenantId = window.localStorage.getItem("TenantId");
-        if (tenantId) {
-            return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
+        if (this.tenant) {
+            return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
             return this._readItems(token, `${this.baseUrl}`);
         }

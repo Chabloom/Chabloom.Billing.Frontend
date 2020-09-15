@@ -5,18 +5,19 @@ import {ApplicationConfig} from "../settings";
 export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<BillViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/bills`;
     account: string | null;
+    tenant: string | null;
 
-    constructor(account: string | null = null) {
+    constructor(account: string | null = null, tenant: string | null = null) {
         super();
         this.account = account;
+        this.tenant = tenant;
     }
 
     readItems(token: string): Promise<Array<BillViewModel> | string> {
-        const tenantId = window.localStorage.getItem("TenantId");
         if (this.account) {
             return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
-        } else if (tenantId) {
-            return this._readItems(token, `${this.baseUrl}?tenantId=${tenantId}`);
+        } else if (this.tenant) {
+            return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
             return this._readItems(token, `${this.baseUrl}`);
         }
