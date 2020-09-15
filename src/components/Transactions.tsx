@@ -1,13 +1,14 @@
 import React from "react";
 
-import {UserManager} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
-import {TransactionsApi} from "../api";
+import {AccountsApi, TransactionsApi} from "../api";
 import {TenantViewModel} from "../models";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
 interface Props {
+    user: User | undefined;
     tenant: TenantViewModel | undefined;
     userManager: UserManager;
 }
@@ -34,6 +35,8 @@ const columns: Array<ChabloomTableColumn> = [
 let api: TransactionsApi = new TransactionsApi();
 
 export const Transactions: React.FC<Props> = (props) => {
+    let [title, setTitle] = React.useState("Transactions");
+
     const params = new URLSearchParams(window.location.search);
     const account = params.get("account");
     React.useEffect(() => {
@@ -52,9 +55,26 @@ export const Transactions: React.FC<Props> = (props) => {
             api.tenant = null;
         }
     }, [props.tenant]);
+    React.useEffect(() => {
+        console.debug("updating table title");
+        if (props.tenant?.name && !account) {
+            setTitle(`${props.tenant.name} Transactions`);
+        } else if (account) {
+            const accountsApi = new AccountsApi(props.tenant?.id);
+            accountsApi.readItem(props.user?.access_token, account).then(ret => {
+                if (typeof ret !== "string") {
+                    setTitle(`${ret.name} Transactions`);
+                } else {
+                    setTitle("Transactions");
+                }
+            });
+        } else {
+            setTitle("Transactions");
+        }
+    }, [account, props.user, props.tenant]);
     return <ChabloomTable
         api={api}
-        title="Transactions"
+        title={title}
         columns={columns}
         methods={[]}
         userManager={props.userManager}

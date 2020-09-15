@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
-import {UserManager} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {OidcSettings} from "./settings";
 
@@ -15,8 +15,28 @@ import './App.scss';
 const userManager = new UserManager(OidcSettings);
 
 export const App: React.FC = () => {
+    const [user, setUser] = React.useState<User>();
     const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
+
+    React.useEffect(() => {
+        userManager.getUser().then(ret => {
+            if (ret && !ret.expired) {
+                setUser(ret);
+            } else {
+                // Attempt silent sign in
+                userManager.signinSilent().then(ret => {
+                    if (ret && !ret.expired) {
+                        setUser(ret);
+                    } else {
+                        // Redirect to sign in
+                        localStorage.setItem("redirectUri", window.location.pathname);
+                        userManager.signinRedirect().then();
+                    }
+                })
+            }
+        })
+    }, []);
 
     return (
         <Router>
@@ -34,19 +54,19 @@ export const App: React.FC = () => {
                         <OidcSignOutCallback userManager={userManager}/>
                     </Route>
                     <Route path="/accounts">
-                        <Accounts tenant={tenant} userManager={userManager}/>
+                        <Accounts user={user} tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/bills">
-                        <Bills tenant={tenant} userManager={userManager}/>
+                        <Bills user={user} tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/schedules">
-                        <Schedules tenant={tenant} userManager={userManager}/>
+                        <Schedules user={user} tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/transactions">
-                        <Transactions tenant={tenant} userManager={userManager}/>
+                        <Transactions user={user} tenant={tenant} userManager={userManager}/>
                     </Route>
                     <Route path="/tenants">
-                        <Tenants userManager={userManager}/>
+                        <Tenants user={user} userManager={userManager}/>
                     </Route>
                     <Route path="/">
                         <Home allTenants={allTenants} setAllTenants={setAllTenants}/>

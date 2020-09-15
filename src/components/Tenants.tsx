@@ -1,12 +1,13 @@
 import React from "react";
 
-import {UserManager} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {TenantsApi} from "../api";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
 interface Props {
+    user: User | undefined;
     userManager: UserManager;
 }
 
@@ -22,9 +23,11 @@ const columns: Array<ChabloomTableColumn> = [
 let api: TenantsApi = new TenantsApi();
 
 export const Tenants: React.FC<Props> = (props) => {
+    const title = "Tenants";
+
     return <ChabloomTable
         api={api}
-        title="Tenants"
+        title={title}
         columns={columns}
         methods={["add", "edit"]}
         userManager={props.userManager}

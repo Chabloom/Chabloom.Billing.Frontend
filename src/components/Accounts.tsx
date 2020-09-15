@@ -1,6 +1,6 @@
 import React from "react";
 
-import {UserManager} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {AccountsApi} from "../api";
 import {TenantViewModel} from "../models";
@@ -8,6 +8,7 @@ import {TenantViewModel} from "../models";
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
 interface Props {
+    user: User | undefined;
     tenant: TenantViewModel | undefined;
     userManager: UserManager;
 }
@@ -34,6 +35,8 @@ const columns: Array<ChabloomTableColumn> = [
 let api: AccountsApi = new AccountsApi();
 
 export const Accounts: React.FC<Props> = (props) => {
+    let [title, setTitle] = React.useState("Accounts");
+
     React.useEffect(() => {
         console.debug("updating api tenant");
         if (props.tenant?.id) {
@@ -42,9 +45,17 @@ export const Accounts: React.FC<Props> = (props) => {
             api.tenant = null;
         }
     }, [props.tenant]);
+    React.useEffect(() => {
+        console.debug("updating table title");
+        if (props.tenant?.name) {
+            setTitle(`${props.tenant.name} Accounts`);
+        } else {
+            setTitle("Accounts");
+        }
+    }, [props.tenant]);
     return <ChabloomTable
         api={api}
-        title="Accounts"
+        title={title}
         columns={columns}
         methods={["add", "edit", "delete", "bill", "schedule", "transaction"]}
         userManager={props.userManager}

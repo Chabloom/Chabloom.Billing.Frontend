@@ -207,7 +207,7 @@ export const ChabloomTableHeading: React.FC<Props> = props => {
         <Toolbar className={props.selectedIndex === -1 ? classes.root : classes.highlight}>
             {props.selectedIndex === -1 ? (
                 <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-                    {props.tenant ? `${props.tenant?.name} ${props.title}` : props.title}
+                    {props.title}
                 </Typography>
             ) : (
                 <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
