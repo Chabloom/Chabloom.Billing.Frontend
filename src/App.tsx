@@ -8,7 +8,8 @@ import {OidcSettings} from "./settings";
 import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, Home, Schedules, Tenants, Transactions} from "./components";
+import {Accounts, Bills, Schedules, Tenants, Transactions} from "./components";
+import {ChabloomHome} from "./components/ChabloomHome";
 import {ChabloomNav} from "./components/ChabloomNav";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
@@ -121,7 +122,7 @@ export const App: React.FC = () => {
                         <Tenants user={user}/>
                     </Route>
                     <Route path="/">
-                        <Home allTenants={allTenants} setAllTenants={setAllTenants}/>
+                        <ChabloomHome user={user} allTenants={allTenants}/>
                     </Route>
                 </Switch>
             </ChabloomNav>
