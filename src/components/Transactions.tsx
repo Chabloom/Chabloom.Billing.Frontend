@@ -33,7 +33,7 @@ const columns: Array<ChabloomTableColumn> = [
 // The API to use
 let api: TransactionsApi = new TransactionsApi();
 
-export const Transactions: React.FC<Props> = props => {
+export const Transactions: React.FC<Props> = (props) => {
     const params = new URLSearchParams(window.location.search);
     const account = params.get("account");
     React.useEffect(() => {

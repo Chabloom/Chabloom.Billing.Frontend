@@ -38,7 +38,7 @@ const columns: Array<ChabloomTableColumn> = [
 // The API to use
 let api: SchedulesApi = new SchedulesApi();
 
-export const Schedules: React.FC<Props> = props => {
+export const Schedules: React.FC<Props> = (props) => {
     const params = new URLSearchParams(window.location.search);
     const account = params.get("account");
     React.useEffect(() => {
