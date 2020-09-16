@@ -49,8 +49,8 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                 <div className={classes.logoDiv}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
+                <TenantSelection {...props}/>
                 <ModeSelection {...props}/>
-                {props.user && <TenantSelection {...props}/>}
                 <UserManagement {...props}/>
             </Toolbar>
         </AppBar>
