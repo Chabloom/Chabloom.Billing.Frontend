@@ -2,10 +2,11 @@ import React from "react";
 
 import {User, UserManager} from "oidc-client";
 
-import {AppBar, createStyles, FormControlLabel, FormGroup, makeStyles, Switch, Theme, Toolbar} from "@material-ui/core";
+import {AppBar, createStyles, makeStyles, Theme, Toolbar} from "@material-ui/core";
 
 import {TenantViewModel} from "../../models";
 
+import {Mode} from "./Mode";
 import {TenantManagement} from "./TenantManagement";
 import {UserManagement} from "./UserManagement";
 
@@ -48,29 +49,7 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                 <div className={classes.logoDiv}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
-                {props.userLevel &&
-                <FormGroup row>
-                    {props.userLevel === "admin" &&
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={props.admin}
-                                color="primary"
-                                disabled={props.manager}
-                                onChange={() => props.setAdmin(!props.admin)}/>
-                        }
-                        label="Admin Mode"/>}
-                    {(props.userLevel === "admin" || props.userLevel === "manager") &&
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={props.manager}
-                                color="secondary"
-                                disabled={props.admin}
-                                onChange={() => props.setManager(!props.manager)}/>
-                        }
-                        label="Manager Mode"/>}
-                </FormGroup>}
+                <Mode {...props}/>
                 {props.user && <TenantManagement {...props}/>}
                 <UserManagement {...props}/>
             </Toolbar>
