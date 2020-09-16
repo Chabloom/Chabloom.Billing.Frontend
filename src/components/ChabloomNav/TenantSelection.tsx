@@ -10,7 +10,7 @@ interface Props {
     allTenants: Array<TenantViewModel>;
 }
 
-export const TenantManagement: React.FC<Props> = (props) => {
+export const TenantSelection: React.FC<Props> = (props) => {
     const anchorRef = React.useRef(null);
     const [open, setOpen] = React.useState(false);
 

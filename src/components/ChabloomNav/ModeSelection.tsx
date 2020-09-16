@@ -10,7 +10,7 @@ interface Props {
     setManager: CallableFunction;
 }
 
-export const Mode: React.FC<Props> = (props) => {
+export const ModeSelection: React.FC<Props> = (props) => {
     React.useEffect(() => {
         if (props.userLevel === "admin" || props.userLevel === "manager") {
             const storedLevel = localStorage.getItem("UserLevel");

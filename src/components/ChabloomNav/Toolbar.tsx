@@ -6,8 +6,8 @@ import {AppBar, createStyles, makeStyles, Theme, Toolbar} from "@material-ui/cor
 
 import {TenantViewModel} from "../../models";
 
-import {Mode} from "./Mode";
-import {TenantManagement} from "./TenantManagement";
+import {ModeSelection} from "./ModeSelection";
+import {TenantSelection} from "./TenantSelection";
 import {UserManagement} from "./UserManagement";
 
 import logo from "../../logo.svg";
@@ -49,8 +49,8 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                 <div className={classes.logoDiv}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
-                <Mode {...props}/>
-                {props.user && <TenantManagement {...props}/>}
+                <ModeSelection {...props}/>
+                {props.user && <TenantSelection {...props}/>}
                 <UserManagement {...props}/>
             </Toolbar>
         </AppBar>
