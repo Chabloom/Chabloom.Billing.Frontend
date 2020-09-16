@@ -9,7 +9,7 @@ import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
 import {Accounts, Bills, Schedules, Tenants, Transactions} from "./components";
-import {ChabloomHome} from "./components/ChabloomHome";
+import {Home} from "./components/Home";
 import {ChabloomNav} from "./components/ChabloomNav";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
@@ -20,6 +20,8 @@ const userManager = new UserManager(OidcSettings);
 export const App: React.FC = () => {
     const [user, setUser] = React.useState<User>();
     const [userLevel, setUserLevel] = React.useState<"admin" | "manager" | undefined>();
+    const [admin, setAdmin] = React.useState(false);
+    const [manager, setManager] = React.useState(false);
     const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
 
@@ -104,7 +106,11 @@ export const App: React.FC = () => {
                 userLevel={userLevel}
                 tenant={tenant}
                 setTenant={setTenant}
-                allTenants={allTenants}>
+                allTenants={allTenants}
+                admin={admin}
+                setAdmin={setAdmin}
+                manager={manager}
+                setManager={setManager}>
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
                         <OidcSignInCallback userManager={userManager}/>
@@ -128,7 +134,12 @@ export const App: React.FC = () => {
                         <Tenants user={user}/>
                     </Route>
                     <Route path="/">
-                        <ChabloomHome user={user} tenant={tenant} allTenants={allTenants}/>
+                        <Home
+                            user={user}
+                            tenant={tenant}
+                            allTenants={allTenants}
+                            admin={admin}
+                            manager={manager}/>
                     </Route>
                 </Switch>
             </ChabloomNav>

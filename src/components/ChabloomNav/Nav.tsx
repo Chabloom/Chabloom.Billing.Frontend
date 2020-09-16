@@ -16,6 +16,10 @@ interface Props {
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
     allTenants: Array<TenantViewModel>;
+    admin: boolean;
+    setAdmin: CallableFunction;
+    manager: boolean;
+    setManager: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,25 +35,18 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ChabloomNav: React.FC<Props> = (props) => {
-    const [admin, setAdmin] = React.useState(false);
-    const [manager, setManager] = React.useState(false);
-
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline/>
             <ChabloomToolbar
-                {...props}
-                admin={admin}
-                setAdmin={setAdmin}
-                manager={manager}
-                setManager={setManager}/>
-            {manager &&
+                {...props}/>
+            {props.manager &&
             <ChabloomDrawer
                 {...props}
-            admin={admin}
-            manager={manager}/>}
+            admin={props.admin}
+            manager={props.manager}/>}
             <main className={classes.content}>
                 <Toolbar/>
                 {props.children}
