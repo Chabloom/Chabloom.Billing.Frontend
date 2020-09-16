@@ -17,9 +17,9 @@ interface Props {
 
 export const ChabloomHome: React.FC<Props> = (props) => {
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justify="center">
             <ChabloomQuickPay {...props}/>
-            <ChabloomQuickView {...props}/>
+            {props.user && <ChabloomQuickView {...props}/>}
         </Grid>
     );
 }
