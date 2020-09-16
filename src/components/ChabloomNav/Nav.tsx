@@ -1,6 +1,6 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {createStyles, CssBaseline, makeStyles, Theme, Toolbar} from "@material-ui/core";
 
@@ -11,6 +11,7 @@ import {ChabloomToolbar} from "./Toolbar";
 
 interface Props {
     user: User | undefined;
+    userManager: UserManager;
     userLevel: "admin" | "manager" | undefined;
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
@@ -36,7 +37,7 @@ export const ChabloomNav: React.FC<Props> = (props) => {
         <div className={classes.root}>
             <CssBaseline/>
             <ChabloomToolbar {...props}/>
-            <ChabloomDrawer {...props}/>
+            {props.user && <ChabloomDrawer {...props}/>}
             <main className={classes.content}>
                 <Toolbar/>
                 {props.children}

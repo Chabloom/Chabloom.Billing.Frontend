@@ -1,18 +1,19 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import {User, UserManager} from "oidc-client";
 
 import {AppBar, createStyles, makeStyles, Theme, Toolbar} from "@material-ui/core";
 
 import {TenantViewModel} from "../../models";
 
-import {ChabloomTenantManagement} from "./TenantManagement";
-import {ChabloomUserManagement} from "./UserManagement";
+import {TenantManagement} from "./TenantManagement";
+import {UserManagement} from "./UserManagement";
 
 import logo from "../../logo.svg";
 
 interface Props {
     user: User | undefined;
+    userManager: UserManager;
     userLevel: "admin" | "manager" | undefined;
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
@@ -43,8 +44,8 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                 <div className={classes.logoDiv}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
-                <ChabloomTenantManagement {...props}/>
-                <ChabloomUserManagement {...props}/>
+                {props.user && <TenantManagement {...props}/>}
+                <UserManagement {...props}/>
             </Toolbar>
         </AppBar>
     );

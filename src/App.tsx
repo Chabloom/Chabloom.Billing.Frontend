@@ -41,7 +41,7 @@ export const App: React.FC = () => {
                         localStorage.setItem("redirectUri", window.location.pathname);
                         userManager.signinRedirect().then();
                     }
-                })
+                }).catch(reason => console.debug(reason));
             }
         })
     }, []);
@@ -95,6 +95,7 @@ export const App: React.FC = () => {
         <Router>
             <ChabloomNav
                 user={user}
+                userManager={userManager}
                 userLevel={userLevel}
                 tenant={tenant}
                 setTenant={setTenant}
