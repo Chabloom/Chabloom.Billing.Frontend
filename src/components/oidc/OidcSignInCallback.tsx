@@ -10,6 +10,7 @@ interface Props {
 
 export const OidcSignInCallback: React.FC<Props> = (props) => {
     const redirectUri = localStorage.getItem("redirectUri");
+    localStorage.setItem("SignedIn", "true");
     props.userManager.signinRedirectCallback()
         .then(() => window.location.replace(redirectUri === null ? "" : redirectUri));
     return <CircularProgress/>

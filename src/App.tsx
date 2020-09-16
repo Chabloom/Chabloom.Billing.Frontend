@@ -24,6 +24,11 @@ export const App: React.FC = () => {
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
 
     React.useEffect(() => {
+        const signedIn = localStorage.getItem("SignedIn");
+        if (signedIn !== "true") {
+            console.debug("user not logged in");
+            return;
+        }
         console.debug("updating user");
         userManager.getUser().then(ret => {
             if (ret && !ret.expired) {
