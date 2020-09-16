@@ -31,13 +31,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const ChabloomNav: React.FC<Props> = (props) => {
+    const [admin, setAdmin] = React.useState(false);
+    const [manager, setManager] = React.useState(false);
+
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <ChabloomToolbar {...props}/>
-            {props.user && <ChabloomDrawer {...props}/>}
+            <ChabloomToolbar
+                {...props}
+                admin={admin}
+                setAdmin={setAdmin}
+                manager={manager}
+                setManager={setManager}/>
+            {manager &&
+            <ChabloomDrawer
+                {...props}
+            admin={admin}
+            manager={manager}/>}
             <main className={classes.content}>
                 <Toolbar/>
                 {props.children}

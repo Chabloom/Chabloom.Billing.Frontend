@@ -17,6 +17,8 @@ import {AccountCircle, Business, Home, Payment, Receipt, Schedule} from "@materi
 
 interface Props {
     userLevel: "admin" | "manager" | undefined;
+    admin: boolean;
+    manager: boolean;
 }
 
 const drawerWidth = 240;
@@ -55,7 +57,7 @@ export const ChabloomDrawer: React.FC<Props> = (props) => {
                     </ListItem>
                 </List>
                 <Divider/>
-                {props.userLevel === "manager" &&
+                {(props.admin || props.manager) &&
                 <List>
                     <ListItem button key="Accounts" component={NavLink} to="/accounts">
                         <ListItemIcon><AccountCircle/></ListItemIcon>
@@ -76,7 +78,7 @@ export const ChabloomDrawer: React.FC<Props> = (props) => {
                 </List>
                 }
                 <Divider/>
-                {props.userLevel === "admin" &&
+                {props.admin &&
                 <List>
                     <ListItem button key="Tenants" component={NavLink} to="/tenants">
                         <ListItemIcon><Business/></ListItemIcon>
