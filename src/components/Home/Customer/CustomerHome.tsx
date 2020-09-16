@@ -4,10 +4,10 @@ import {User} from "oidc-client";
 
 import {Grid} from "@material-ui/core";
 
-import {TenantViewModel} from "../../models";
+import {TenantViewModel} from "../../../models";
 
-import {ChabloomQuickPay} from "./QuickPay";
-import {ChabloomQuickView} from "./QuickView";
+import {QuickPay} from "./QuickPay";
+import {QuickView} from "./QuickView";
 
 interface Props {
     user: User | undefined;
@@ -15,11 +15,11 @@ interface Props {
     allTenants: Array<TenantViewModel>;
 }
 
-export const ChabloomHome: React.FC<Props> = (props) => {
+export const CustomerHome: React.FC<Props> = (props) => {
     return (
         <Grid container spacing={3} justify="center">
-            <ChabloomQuickPay {...props}/>
-            {props.user && <ChabloomQuickView {...props}/>}
+            <QuickPay {...props}/>
+            {props.user && <QuickView {...props}/>}
         </Grid>
     );
 }

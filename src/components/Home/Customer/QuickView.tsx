@@ -16,8 +16,8 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
-import {BillsApi} from "../../api";
-import {BillViewModel, TenantViewModel} from "../../models";
+import {BillsApi} from "../../../api";
+import {BillViewModel, TenantViewModel} from "../../../models";
 
 interface Props {
     user: User | undefined;
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const ChabloomQuickBillView: React.FC<{ bills: Array<BillViewModel> }> = (props) => {
+const QuickBillView: React.FC<{ bills: Array<BillViewModel> }> = (props) => {
     return (
         <TableBody>
             {props.bills.map((bill) => {
@@ -60,7 +60,7 @@ const ChabloomQuickBillView: React.FC<{ bills: Array<BillViewModel> }> = (props)
     );
 }
 
-export const ChabloomQuickView: React.FC<Props> = (props) => {
+export const QuickView: React.FC<Props> = (props) => {
     const [bills, setBills] = React.useState([] as Array<BillViewModel>);
 
     const classes = useStyles();
@@ -94,7 +94,7 @@ export const ChabloomQuickView: React.FC<Props> = (props) => {
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    <ChabloomQuickBillView bills={bills}/>
+                    <QuickBillView bills={bills}/>
                 </Table>
             </Paper>
         </Grid>

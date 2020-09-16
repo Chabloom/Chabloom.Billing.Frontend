@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
 
-import {TenantViewModel} from "../../models";
+import {TenantViewModel} from "../../../models";
 
 interface Props {
     user: User | undefined;
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const ChabloomQuickPay: React.FC<Props> = (props) => {
+export const QuickPay: React.FC<Props> = (props) => {
     const [tenant, setTenant] = React.useState("");
     const [account, setAccount] = React.useState("");
     const [processing, setProcessing] = React.useState(false);
