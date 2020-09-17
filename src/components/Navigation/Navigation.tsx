@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export const ChabloomNav: React.FC<Props> = (props) => {
+export const Navigation: React.FC<Props> = (props) => {
     const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false);
 
     const classes = useStyles();

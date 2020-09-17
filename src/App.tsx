@@ -8,9 +8,7 @@ import {OidcSettings} from "./settings";
 import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, Schedules, Tenants, Transactions} from "./components";
-import {Home} from "./components/Home";
-import {ChabloomNav} from "./components/ChabloomNav";
+import {Accounts, Bills, Home, Navigation, Schedules, Tenants, Transactions} from "./components";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
@@ -100,7 +98,7 @@ export const App: React.FC = () => {
 
     return (
         <Router>
-            <ChabloomNav
+            <Navigation
                 user={user}
                 userManager={userManager}
                 userLevel={userLevel}
@@ -142,7 +140,7 @@ export const App: React.FC = () => {
                             manager={manager}/>
                     </Route>
                 </Switch>
-            </ChabloomNav>
+            </Navigation>
         </Router>
     );
 }
