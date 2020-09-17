@@ -16,8 +16,8 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
-import {BillsApi} from "../../../api";
-import {BillViewModel, TenantViewModel} from "../../../models";
+import {AccountsApi, BillsApi} from "../../../api";
+import {AccountViewModel, BillViewModel, TenantViewModel} from "../../../models";
 
 interface Props {
     user: User | undefined;
@@ -35,7 +35,25 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const QuickBillView: React.FC<{ bills: Array<BillViewModel> }> = (props) => {
+const QuickViewTableHead: React.FC = () => {
+    return (
+        <TableHead>
+            <TableRow>
+                <TableCell>
+                    Name
+                </TableCell>
+                <TableCell>
+                    Amount
+                </TableCell>
+                <TableCell>
+                    Due Date
+                </TableCell>
+            </TableRow>
+        </TableHead>
+    );
+}
+
+const QuickViewTableBody: React.FC<{ bills: Array<BillViewModel> }> = (props) => {
     return (
         <TableBody>
             {props.bills.map((bill) => {
@@ -61,42 +79,55 @@ const QuickBillView: React.FC<{ bills: Array<BillViewModel> }> = (props) => {
 }
 
 export const QuickView: React.FC<Props> = (props) => {
+    const [accounts, setAccounts] = React.useState([] as Array<AccountViewModel>);
     const [bills, setBills] = React.useState([] as Array<BillViewModel>);
 
     const classes = useStyles();
 
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
-            const api = new BillsApi(null, props.tenant?.id);
+            const api = new AccountsApi();
             api.readItems(props.user.access_token).then(ret => {
                 if (typeof ret !== "string") {
-                    setBills(ret);
+                    setAccounts(ret);
+                    ret.forEach(account => {
+                        const api = new BillsApi(account.id);
+                        api.readItems(props.user?.access_token).then(ret => {
+                            if (typeof ret !== "string") {
+                                setBills(b => [...b, ...ret]);
+                            }
+                        });
+                    });
                 }
             });
         }
-    }, [props.user, props.tenant]);
+    }, [props.user]);
 
     return (
-        <Grid item xs={6}>
-            <Paper elevation={3} className={classes.paper}>
-                <Typography variant="h6">Quick View</Typography>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>
-                                Name
-                            </TableCell>
-                            <TableCell>
-                                Amount
-                            </TableCell>
-                            <TableCell>
-                                Due Date
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <QuickBillView bills={bills}/>
-                </Table>
-            </Paper>
+        <Grid item md={6} xs={12}>
+            <Grid container spacing={2}>
+                {accounts.map(account => {
+                    const accountBills = bills
+                        .filter(x => x.account === account.id)
+                        .filter(x => new Date(x.dueDate) > new Date());
+                    if (accountBills.length !== 0) {
+                        return (
+                            <Grid item xs={12}>
+                                <Paper elevation={3} className={classes.paper}>
+                                    <Typography variant="subtitle2">
+                                        {account.name}
+                                    </Typography>
+                                    <Table>
+                                        <QuickViewTableHead/>
+                                        <QuickViewTableBody bills={accountBills}/>
+                                    </Table>
+                                </Paper>
+                            </Grid>
+                        );
+                    }
+                    return null;
+                })}
+            </Grid>
         </Grid>
     );
 }

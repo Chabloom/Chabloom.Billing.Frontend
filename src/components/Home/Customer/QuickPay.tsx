@@ -43,7 +43,7 @@ export const QuickPay: React.FC<Props> = (props) => {
     const classes = useStyles();
 
     return (
-        <Grid item xs={6}>
+        <Grid item md={6} xs={12}>
             <Paper elevation={3} className={classes.paper}>
                 <Typography variant="h6">Quick Pay</Typography>
                 <form onSubmit={() => {
