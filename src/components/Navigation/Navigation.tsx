@@ -46,13 +46,14 @@ export const Navigation: React.FC<Props> = (props) => {
                 {...props}
                 mobileDrawerOpen={mobileDrawerOpen}
                 setMobileDrawerOpen={setMobileDrawerOpen}/>
-            {props.manager &&
+            {(props.admin || props.manager) &&
             <ChabloomDrawer
                 {...props}
                 admin={props.admin}
                 manager={props.manager}
                 mobileDrawerOpen={mobileDrawerOpen}
-                setMobileDrawerOpen={setMobileDrawerOpen}/>}
+                setMobileDrawerOpen={setMobileDrawerOpen}/>
+            }
             <main className={classes.content}>
                 <Toolbar/>
                 {props.children}
