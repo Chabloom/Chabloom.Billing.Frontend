@@ -23,6 +23,7 @@ export const App: React.FC = () => {
     const [tenant, setTenant] = React.useState<TenantViewModel>();
     const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
 
+    // Check if the user is signed in
     React.useEffect(() => {
         const signedIn = localStorage.getItem("SignedIn");
         if (signedIn !== "true") {
@@ -50,6 +51,7 @@ export const App: React.FC = () => {
             }
         })
     }, []);
+    // Get the user's administrative level
     React.useEffect(() => {
         if (user && !user.expired) {
             const api = new ApplicationUsersApi();
@@ -67,28 +69,15 @@ export const App: React.FC = () => {
             });
         }
     }, [user]);
+    // Get all available tenants
     React.useEffect(() => {
-        console.debug("updating initial tenant");
         const api = new TenantsApi();
         api.readItems("").then(result => {
-            if (typeof result === "string") {
-                console.log(result);
-            } else {
+            if (typeof result !== "string") {
                 try {
                     result = result.sort((a, b) =>
                         a.name.localeCompare(b.name));
                     setAllTenants(result);
-                    const oldTenantId = window.localStorage.getItem("TenantId");
-                    if (oldTenantId) {
-                        const newTenant = result.find(x => x.id === oldTenantId);
-                        if (newTenant) {
-                            setTenant(newTenant);
-                        } else {
-                            setTenant(result[0]);
-                        }
-                    } else {
-                        setTenant(result[0]);
-                    }
                 } catch {
                     console.log('item read failed');
                 }
@@ -134,7 +123,6 @@ export const App: React.FC = () => {
                     <Route path="/">
                         <Home
                             user={user}
-                            tenant={tenant}
                             allTenants={allTenants}
                             admin={admin}
                             manager={manager}/>

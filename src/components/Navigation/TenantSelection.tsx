@@ -58,7 +58,7 @@ export const TenantSelection: React.FC<Props> = (props) => {
                 }
             }).catch(e => console.log(e.message));
         }
-    }, [props]);
+    }, [props.user, props.setTenant]);
 
     if (props.admin || props.manager) {
         return (

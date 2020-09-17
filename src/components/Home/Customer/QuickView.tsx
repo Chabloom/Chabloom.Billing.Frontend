@@ -17,11 +17,10 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 
 import {AccountsApi, BillsApi} from "../../../api";
-import {AccountViewModel, BillViewModel, TenantViewModel} from "../../../models";
+import {AccountViewModel, BillViewModel} from "../../../models";
 
 interface Props {
     user: User | undefined;
-    tenant: TenantViewModel | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

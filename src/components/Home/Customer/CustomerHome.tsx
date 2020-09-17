@@ -11,7 +11,6 @@ import {QuickView} from "./QuickView";
 
 interface Props {
     user: User | undefined;
-    tenant: TenantViewModel | undefined;
     allTenants: Array<TenantViewModel>;
 }
 

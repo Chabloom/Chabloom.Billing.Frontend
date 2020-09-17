@@ -10,7 +10,6 @@ import {ManagerHome} from "./Manager";
 
 interface Props {
     user: User | undefined;
-    tenant: TenantViewModel | undefined;
     allTenants: Array<TenantViewModel>;
     admin: boolean;
     manager: boolean;
