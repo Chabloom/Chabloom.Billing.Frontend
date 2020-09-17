@@ -30,7 +30,6 @@ export const ModeSelection: React.FC<Props> = (props) => {
                     <Switch
                         checked={props.admin}
                         color="primary"
-                        disabled={props.manager}
                         onChange={() => {
                             if (props.admin) {
                                 // We are disabling admin mode
@@ -40,6 +39,7 @@ export const ModeSelection: React.FC<Props> = (props) => {
                                 localStorage.setItem("UserLevel", "admin");
                             }
                             props.setAdmin(!props.admin);
+                            props.setManager(false);
                         }}/>
                 }
                 label="Admin Mode"/>
@@ -50,7 +50,6 @@ export const ModeSelection: React.FC<Props> = (props) => {
                     <Switch
                         checked={props.manager}
                         color="secondary"
-                        disabled={props.admin}
                         onChange={() => {
                             if (props.manager) {
                                 // We are disabling manager mode
@@ -59,6 +58,7 @@ export const ModeSelection: React.FC<Props> = (props) => {
                                 // We are enabling manager mode
                                 localStorage.setItem("UserLevel", "manager");
                             }
+                            props.setAdmin(false);
                             props.setManager(!props.manager);
                         }}/>
                 }
