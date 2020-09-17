@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
             height: "3em",
             pointerEvents: "none",
         },
-        logoDiv: {
+        flexGrow: {
             flexGrow: 1,
         }
     }),
@@ -46,10 +46,12 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
     return (
         <AppBar position="fixed" color="inherit" className={classes.appBar}>
             <Toolbar>
-                <div className={classes.logoDiv}>
+                <div className={classes.flexGrow}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
-                <TenantSelection {...props}/>
+                <div className={classes.flexGrow}>
+                    <TenantSelection {...props}/>
+                </div>
                 <ModeSelection {...props}/>
                 <UserManagement {...props}/>
             </Toolbar>

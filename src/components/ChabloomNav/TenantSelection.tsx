@@ -2,7 +2,18 @@ import React from "react";
 
 import {User} from "oidc-client";
 
-import {Button, ClickAwayListener, FormGroup, Grow, MenuItem, MenuList, Paper, Popper} from "@material-ui/core";
+import {
+    Button,
+    ButtonGroup,
+    ClickAwayListener,
+    FormGroup,
+    Grow,
+    MenuItem,
+    MenuList,
+    Paper,
+    Popper
+} from "@material-ui/core";
+import {ArrowDropDown} from "@material-ui/icons";
 
 import {TenantsApi} from "../../api";
 import {TenantViewModel} from "../../models";
@@ -17,8 +28,8 @@ interface Props {
 
 export const TenantSelection: React.FC<Props> = (props) => {
     const [tenants, setTenants] = React.useState([] as Array<TenantViewModel>);
-    const anchorRef = React.useRef(null);
     const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
 
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
@@ -52,21 +63,24 @@ export const TenantSelection: React.FC<Props> = (props) => {
     if (props.admin || props.manager) {
         return (
             <FormGroup row>
-                <Button
-                    disabled={tenants.length === 0}
-                    ref={anchorRef}
-                    aria-controls={open ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                    onClick={() => setOpen(true)}>
-                    {props.tenant ? props.tenant.name : "Select Tenant"}
-                </Button>
+                <ButtonGroup ref={anchorRef}>
+                    <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
+                    <Button
+                        disabled={tenants.length === 0}
+                        ref={anchorRef}
+                        aria-controls={open ? 'menu-list-grow' : undefined}
+                        aria-haspopup="true"
+                        onClick={() => setOpen(true)}>
+                        <ArrowDropDown/>
+                    </Button>
+                </ButtonGroup>
                 <Popper
                     transition
                     disablePortal
                     open={open}
                     anchorEl={anchorRef.current}
                     role={undefined}
-                    placement="bottom-end">
+                    placement="bottom-start">
                     {({TransitionProps, placement}) => (
                         <Grow {...TransitionProps}
                               style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
