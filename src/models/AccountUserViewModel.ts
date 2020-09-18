@@ -5,4 +5,5 @@ export interface AccountUserViewModel extends BaseViewModel {
     userId: string;
     account: string;
     role: string;
+    roleName: string;
 }

@@ -6,4 +6,5 @@ export interface TransactionViewModel extends BaseViewModel {
     externalId: string;
     amount: number;
     bill: string;
+    account: string;
 }

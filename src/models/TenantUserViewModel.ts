@@ -5,4 +5,5 @@ export interface TenantUserViewModel extends BaseViewModel {
     userId: string;
     tenant: string;
     role: string;
+    roleName: string;
 }
