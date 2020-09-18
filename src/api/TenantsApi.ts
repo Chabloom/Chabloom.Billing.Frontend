@@ -4,9 +4,19 @@ import {ApplicationConfig} from "../settings";
 
 export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<TenantViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
+    user: string | null;
+
+    constructor(user: string | null = null) {
+        super();
+        this.user = user;
+    }
 
     readItems(token: string | undefined): Promise<Array<TenantViewModel> | string> {
-        return this._readItems(token, `${this.baseUrl}`);
+        if (this.user) {
+            return this._readItems(token, `${this.baseUrl}?userId=${this.user}`);
+        } else {
+            return this._readItems(token, `${this.baseUrl}`);
+        }
     }
 
     readItem(token: string | undefined, itemId: string): Promise<TenantViewModel | string> {
