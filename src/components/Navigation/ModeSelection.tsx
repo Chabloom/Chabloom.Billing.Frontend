@@ -34,6 +34,7 @@ export const ModeSelection: React.FC<Props> = (props) => {
                             if (props.admin) {
                                 // We are disabling admin mode
                                 localStorage.removeItem("UserLevel");
+                                window.location.pathname = "/";
                             } else {
                                 // We are enabling admin mode
                                 localStorage.setItem("UserLevel", "admin");
@@ -54,6 +55,7 @@ export const ModeSelection: React.FC<Props> = (props) => {
                             if (props.manager) {
                                 // We are disabling manager mode
                                 localStorage.removeItem("UserLevel");
+                                window.location.pathname = "/";
                             } else {
                                 // We are enabling manager mode
                                 localStorage.setItem("UserLevel", "manager");
