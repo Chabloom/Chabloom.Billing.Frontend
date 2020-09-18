@@ -8,7 +8,18 @@ import {OidcSettings} from "./settings";
 import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
-import {Accounts, Bills, Home, Navigation, Schedules, Tenants, Transactions} from "./components";
+import {
+    Accounts,
+    AccountUsers,
+    ApplicationUsers,
+    Bills,
+    Home,
+    Navigation,
+    Schedules,
+    Tenants,
+    TenantUsers,
+    Transactions
+} from "./components";
 import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
 
 import './App.scss';
@@ -108,6 +119,11 @@ export const App: React.FC = () => {
                     <Route path="/accounts">
                         <Accounts user={user} tenant={tenant}/>
                     </Route>
+                    {user &&
+                    <Route path="/accountUsers">
+                        <AccountUsers user={user} tenant={tenant}/>
+                    </Route>
+                    }
                     <Route path="/bills">
                         <Bills user={user} tenant={tenant}/>
                     </Route>
@@ -120,6 +136,16 @@ export const App: React.FC = () => {
                     <Route path="/tenants">
                         <Tenants user={user}/>
                     </Route>
+                    {user && tenant &&
+                    <Route path="/tenantUsers">
+                        <TenantUsers user={user} tenant={tenant}/>
+                    </Route>
+                    }
+                    {user &&
+                    <Route path="/applicationUsers">
+                        <ApplicationUsers user={user}/>
+                    </Route>
+                    }
                     <Route path="/">
                         <Home
                             user={user}

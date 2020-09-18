@@ -14,7 +14,7 @@ import {
     Theme,
     Toolbar
 } from "@material-ui/core";
-import {AccountCircle, Business, Home, Payment, Receipt, Schedule} from "@material-ui/icons";
+import {AccountCircle, Business, Group, Home, Payment, Receipt, Schedule} from "@material-ui/icons";
 
 interface Props {
     userLevel: "admin" | "manager" | undefined;
@@ -47,42 +47,74 @@ const useStyles = makeStyles((theme: Theme) =>
 const DrawerItems: React.FC<Props> = (props) => {
     return (
         <div>
-            <Divider/>
-            <List>
-                <ListItem button key="Home" component={NavLink} to="/">
-                    <ListItemIcon><Home/></ListItemIcon>
-                    <ListItemText primary="Home"/>
-                </ListItem>
-            </List>
-            <Divider/>
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="Home" component={NavLink} to="/">
+                        <ListItemIcon><Home/></ListItemIcon>
+                        <ListItemText primary="Home"/>
+                    </ListItem>
+                </List>
+            </div>
             {(props.admin || props.manager) &&
-            <List>
-                <ListItem button key="Accounts" component={NavLink} to="/accounts">
-                    <ListItemIcon><AccountCircle/></ListItemIcon>
-                    <ListItemText primary="Accounts"/>
-                </ListItem>
-                <ListItem button key="Bills" component={NavLink} to="/bills">
-                    <ListItemIcon><Receipt/></ListItemIcon>
-                    <ListItemText primary="Bills"/>
-                </ListItem>
-                <ListItem button key="Schedules" component={NavLink} to="/schedules">
-                    <ListItemIcon><Schedule/></ListItemIcon>
-                    <ListItemText primary="Schedules"/>
-                </ListItem>
-                <ListItem button key="Transactions" component={NavLink} to="/transactions">
-                    <ListItemIcon><Payment/></ListItemIcon>
-                    <ListItemText primary="Transactions"/>
-                </ListItem>
-            </List>
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="Accounts" component={NavLink} to="/accounts">
+                        <ListItemIcon><AccountCircle/></ListItemIcon>
+                        <ListItemText primary="Accounts"/>
+                    </ListItem>
+                    <ListItem button key="Bills" component={NavLink} to="/bills">
+                        <ListItemIcon><Receipt/></ListItemIcon>
+                        <ListItemText primary="Bills"/>
+                    </ListItem>
+                    <ListItem button key="Schedules" component={NavLink} to="/schedules">
+                        <ListItemIcon><Schedule/></ListItemIcon>
+                        <ListItemText primary="Schedules"/>
+                    </ListItem>
+                    <ListItem button key="Transactions" component={NavLink} to="/transactions">
+                        <ListItemIcon><Payment/></ListItemIcon>
+                        <ListItemText primary="Transactions"/>
+                    </ListItem>
+                </List>
+            </div>
             }
-            <Divider/>
+            {(props.admin || props.manager) &&
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="accountUsers" component={NavLink} to="/accountUsers">
+                        <ListItemIcon><Group/></ListItemIcon>
+                        <ListItemText primary="Account Users"/>
+                    </ListItem>
+                    <ListItem button key="tenantUsers" component={NavLink} to="/tenantUsers">
+                        <ListItemIcon><Group/></ListItemIcon>
+                        <ListItemText primary="Tenant Users"/>
+                    </ListItem>
+                </List>
+            </div>
+            }
             {props.admin &&
-            <List>
-                <ListItem button key="Tenants" component={NavLink} to="/tenants">
-                    <ListItemIcon><Business/></ListItemIcon>
-                    <ListItemText primary="Tenants"/>
-                </ListItem>
-            </List>
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="Tenants" component={NavLink} to="/tenants">
+                        <ListItemIcon><Business/></ListItemIcon>
+                        <ListItemText primary="Tenants"/>
+                    </ListItem>
+                </List>
+            </div>
+            }
+            {props.admin &&
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="applicationUsers" component={NavLink} to="/applicationUsers">
+                        <ListItemIcon><Group/></ListItemIcon>
+                        <ListItemText primary="Application Users"/>
+                    </ListItem>
+                </List>
+            </div>
             }
         </div>
     );
