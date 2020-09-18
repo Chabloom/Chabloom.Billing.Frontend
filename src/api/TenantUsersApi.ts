@@ -24,10 +24,16 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
     }
 
     addItem(token: string | undefined, item: TenantUserViewModel): Promise<string | undefined> {
+        if (this.tenant) {
+            item.tenant = this.tenant;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string | undefined, item: TenantUserViewModel): Promise<string | undefined> {
+        if (this.tenant) {
+            item.tenant = this.tenant;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 

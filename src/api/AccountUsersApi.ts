@@ -4,15 +4,19 @@ import {ApplicationConfig} from "../settings";
 
 export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements BaseApiType<AccountUserViewModel> {
     baseUrl = `${ApplicationConfig.apiPublicAddress}/api/accountUsers`;
+    account: string | null;
     tenant: string | null;
 
-    constructor(tenant: string | null = null) {
+    constructor(account: string | null = null, tenant: string | null = null) {
         super();
+        this.account = account;
         this.tenant = tenant;
     }
 
     readItems(token: string | undefined): Promise<Array<AccountUserViewModel> | string> {
-        if (this.tenant) {
+        if (this.account) {
+            return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
+        } else if (this.tenant) {
             return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
         } else {
             return this._readItems(token, `${this.baseUrl}`);
@@ -24,10 +28,16 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
     }
 
     addItem(token: string | undefined, item: AccountUserViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._addItem(token, `${this.baseUrl}`, item);
     }
 
     editItem(token: string | undefined, item: AccountUserViewModel): Promise<string | undefined> {
+        if (this.account) {
+            item.account = this.account;
+        }
         return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
     }
 
