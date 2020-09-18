@@ -47,7 +47,12 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                         setData([...sortedData]);
                         setError("");
                     } catch {
-                        setError('item read failed');
+                        try {
+                            setData(ret);
+                            setError("");
+                        } catch {
+                            setError('item read failed');
+                        }
                     }
                 }
             }).catch(ret => setError(ret)).finally(() => setProcessing(false));
