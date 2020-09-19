@@ -14,7 +14,7 @@ import {
     Theme,
     Toolbar
 } from "@material-ui/core";
-import {AccountCircle, Business, Group, Home, Payment, Receipt, Schedule} from "@material-ui/icons";
+import {AccountCircle, Business, Group, GroupAdd, Home, Payment, Receipt, Schedule} from "@material-ui/icons";
 
 interface Props {
     userLevel: "admin" | "manager" | undefined;
@@ -87,20 +87,17 @@ const DrawerItems: React.FC<Props> = (props) => {
                         <ListItemIcon><Group/></ListItemIcon>
                         <ListItemText primary="Account Users"/>
                     </ListItem>
+                    <ListItem button key="accountRoles" component={NavLink} to="/accountRoles">
+                        <ListItemIcon><GroupAdd/></ListItemIcon>
+                        <ListItemText primary="Account Roles"/>
+                    </ListItem>
                     <ListItem button key="tenantUsers" component={NavLink} to="/tenantUsers">
                         <ListItemIcon><Group/></ListItemIcon>
                         <ListItemText primary="Tenant Users"/>
                     </ListItem>
-                </List>
-            </div>
-            }
-            {props.admin &&
-            <div>
-                <Divider/>
-                <List>
-                    <ListItem button key="Tenants" component={NavLink} to="/tenants">
-                        <ListItemIcon><Business/></ListItemIcon>
-                        <ListItemText primary="Tenants"/>
+                    <ListItem button key="tenantRoles" component={NavLink} to="/tenantRoles">
+                        <ListItemIcon><GroupAdd/></ListItemIcon>
+                        <ListItemText primary="Tenant Roles"/>
                     </ListItem>
                 </List>
             </div>
@@ -112,6 +109,21 @@ const DrawerItems: React.FC<Props> = (props) => {
                     <ListItem button key="applicationUsers" component={NavLink} to="/applicationUsers">
                         <ListItemIcon><Group/></ListItemIcon>
                         <ListItemText primary="Application Users"/>
+                    </ListItem>
+                    <ListItem button key="applicationRoles" component={NavLink} to="/applicationRoles">
+                        <ListItemIcon><GroupAdd/></ListItemIcon>
+                        <ListItemText primary="Application Roles"/>
+                    </ListItem>
+                </List>
+            </div>
+            }
+            {props.admin &&
+            <div>
+                <Divider/>
+                <List>
+                    <ListItem button key="Tenants" component={NavLink} to="/tenants">
+                        <ListItemIcon><Business/></ListItemIcon>
+                        <ListItemText primary="Tenants"/>
                     </ListItem>
                 </List>
             </div>

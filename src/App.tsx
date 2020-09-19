@@ -9,13 +9,16 @@ import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
 import {TenantViewModel} from "./models";
 
 import {
+    AccountRoles,
     Accounts,
     AccountUsers,
+    ApplicationRoles,
     ApplicationUsers,
     Bills,
     Home,
     Navigation,
     Schedules,
+    TenantRoles,
     Tenants,
     TenantUsers,
     Transactions
@@ -120,6 +123,11 @@ export const App: React.FC = () => {
                         <Accounts user={user} tenant={tenant}/>
                     </Route>
                     {user &&
+                    <Route path="/accountRoles">
+                        <AccountRoles user={user} tenant={tenant}/>
+                    </Route>
+                    }
+                    {user &&
                     <Route path="/accountUsers">
                         <AccountUsers user={user} tenant={tenant}/>
                     </Route>
@@ -137,8 +145,18 @@ export const App: React.FC = () => {
                         <Tenants user={user}/>
                     </Route>
                     {user && tenant &&
+                    <Route path="/tenantRoles">
+                        <TenantRoles user={user} tenant={tenant}/>
+                    </Route>
+                    }
+                    {user && tenant &&
                     <Route path="/tenantUsers">
                         <TenantUsers user={user} tenant={tenant}/>
+                    </Route>
+                    }
+                    {user &&
+                    <Route path="/applicationRoles">
+                        <ApplicationRoles user={user}/>
                     </Route>
                     }
                     {user &&
