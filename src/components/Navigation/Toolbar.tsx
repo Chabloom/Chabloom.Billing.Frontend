@@ -65,9 +65,11 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                 <div className={classes.flexGrow}>
                     <img src={logo} className={classes.logo} alt="logo"/>
                 </div>
+                {(props.admin || props.manager) &&
                 <div className={classes.flexGrow}>
                     <TenantSelection {...props}/>
                 </div>
+                }
                 <ModeSelection {...props}/>
                 <UserManagement {...props}/>
             </Toolbar>

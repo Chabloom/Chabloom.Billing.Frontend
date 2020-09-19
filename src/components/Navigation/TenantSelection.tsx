@@ -23,87 +23,99 @@ interface Props {
     tenant: TenantViewModel | undefined;
     setTenant: CallableFunction;
     admin: boolean;
-    manager: boolean;
 }
 
 export const TenantSelection: React.FC<Props> = (props) => {
+    // Tenants available for the user to select
     const [tenants, setTenants] = React.useState([] as Array<TenantViewModel>);
-    const [open, setOpen] = React.useState(false);
+    // True if the dropdown is open
+    const [dropdownOpen, setDropdownOpen] = React.useState(false);
+    // Reference to the dropdown anchor
     const anchorRef = React.useRef(null);
 
+    // Get tenants that the user is authorized to select
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
-            const api = new TenantsApi();
-            api.readItems(props.user.access_token).then(result => {
-                if (typeof result !== "string") {
-                    try {
-                        result = result.sort((a, b) =>
-                            a.name.localeCompare(b.name));
-                        setTenants(result);
-                        // Attempt to find the previously selected tenant
-                        let newTenant;
-                        const oldTenantId = window.localStorage.getItem("TenantId");
-                        if (oldTenantId) {
-                            newTenant = result.find(x => x.id === oldTenantId);
-                        }
-                        // Set the new tenant
-                        if (newTenant) {
-                            props.setTenant(newTenant);
-                        } else {
-                            props.setTenant(result[0]);
-                        }
-                    } catch {
-                        console.log('item read failed');
-                    }
+            let api: TenantsApi
+            if (props.admin) {
+                // Admin mode can see all tenants
+                api = new TenantsApi();
+            } else {
+                api = new TenantsApi(props.user.profile.sub);
+            }
+            api.readItems(props.user.access_token).then(ret => {
+                if (typeof ret !== "string") {
+                    ret = ret.sort((a, b) =>
+                        a.name.localeCompare(b.name));
+                    setTenants(ret);
                 }
-            }).catch(e => console.log(e.message));
+            })
         }
-    }, [props.user, props.setTenant]);
+    }, [props.admin, props.user]);
 
-    if (props.admin || props.manager) {
-        return (
-            <FormGroup row>
-                <ButtonGroup ref={anchorRef}>
-                    <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
-                    <Button
-                        disabled={tenants.length === 0}
-                        ref={anchorRef}
-                        aria-controls={open ? 'menu-list-grow' : undefined}
-                        aria-haspopup="true"
-                        onClick={() => setOpen(true)}>
-                        <ArrowDropDown/>
-                    </Button>
-                </ButtonGroup>
-                <Popper
-                    transition
-                    disablePortal
-                    open={open}
-                    anchorEl={anchorRef.current}
-                    role={undefined}
-                    placement="bottom-start">
-                    {({TransitionProps, placement}) => (
-                        <Grow {...TransitionProps}
-                              style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
-                            <Paper>
-                                <ClickAwayListener onClickAway={() => setOpen(false)}>
-                                    <MenuList autoFocusItem={open} id="menu-list-grow">
-                                        {tenants.map(item => {
-                                            return <MenuItem onClick={() => {
-                                                if (item.id) {
-                                                    props.setTenant(item);
-                                                    window.localStorage.setItem("TenantId", item.id);
-                                                }
-                                                setOpen(false);
-                                            }}>{item.name}</MenuItem>;
-                                        })}
-                                    </MenuList>
-                                </ClickAwayListener>
-                            </Paper>
-                        </Grow>
-                    )}
-                </Popper>
-            </FormGroup>
-        );
-    }
-    return null;
+    // Workaround for eslint issue on the useEffect call below
+    const setTenant = props.setTenant;
+
+    // Select the tenant that was previously selected
+    React.useEffect(() => {
+        console.log('setting tenant');
+        if (tenants && tenants.length !== 0) {
+            // Attempt to find the previously selected tenant
+            const oldTenantId = window.localStorage.getItem("TenantId");
+            if (oldTenantId) {
+                const newTenant = tenants.find(x => x.id === oldTenantId);
+                if (newTenant) {
+                    // Select the previously selected tenant
+                    setTenant(newTenant);
+                    return
+                }
+            }
+            // Use the first available tenant
+            setTenant(tenants[0]);
+        }
+    }, [tenants, setTenant]);
+
+    return (
+        <FormGroup row>
+            <ButtonGroup ref={anchorRef}>
+                <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
+                <Button
+                    disabled={tenants.length === 0}
+                    ref={anchorRef}
+                    aria-controls={dropdownOpen ? 'menu-list-grow' : undefined}
+                    aria-haspopup="true"
+                    onClick={() => setDropdownOpen(true)}>
+                    <ArrowDropDown/>
+                </Button>
+            </ButtonGroup>
+            <Popper
+                transition
+                disablePortal
+                open={dropdownOpen}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                placement="bottom-start">
+                {({TransitionProps, placement}) => (
+                    <Grow {...TransitionProps}
+                          style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
+                        <Paper>
+                            <ClickAwayListener onClickAway={() => setDropdownOpen(false)}>
+                                <MenuList autoFocusItem={dropdownOpen} id="menu-list-grow">
+                                    {tenants.map(item => {
+                                        return <MenuItem onClick={() => {
+                                            if (item.id) {
+                                                props.setTenant(item);
+                                                window.localStorage.setItem("TenantId", item.id);
+                                            }
+                                            setDropdownOpen(false);
+                                        }}>{item.name}</MenuItem>;
+                                    })}
+                                </MenuList>
+                            </ClickAwayListener>
+                        </Paper>
+                    </Grow>
+                )}
+            </Popper>
+        </FormGroup>
+    );
 }
