@@ -16,8 +16,9 @@ import {
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 
-import {AccountsApi, BillsApi} from "../../../api";
-import {AccountViewModel, BillViewModel} from "../../../models";
+import {AccountsApi, AccountViewModel, BillsApi, BillViewModel} from "chabloom-payments-typescript";
+
+import {AppConfig} from "../../../settings";
 
 interface Props {
     user: User | undefined;
@@ -85,12 +86,12 @@ export const QuickView: React.FC<Props> = (props) => {
 
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
-            const api = new AccountsApi();
+            const api = new AccountsApi(AppConfig);
             api.readItems(props.user.access_token).then(ret => {
                 if (typeof ret !== "string") {
                     setAccounts(ret);
                     ret.forEach(account => {
-                        const api = new BillsApi(account.id);
+                        const api = new BillsApi(AppConfig, account.id);
                         api.readItems(props.user?.access_token).then(ret => {
                             if (typeof ret !== "string") {
                                 setBills(b => [...b, ...ret]);

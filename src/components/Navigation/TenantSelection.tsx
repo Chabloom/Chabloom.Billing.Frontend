@@ -15,8 +15,9 @@ import {
 } from "@material-ui/core";
 import {ArrowDropDown} from "@material-ui/icons";
 
-import {TenantsApi} from "../../api";
-import {TenantViewModel} from "../../models";
+import {TenantsApi, TenantViewModel} from "chabloom-payments-typescript";
+
+import {AppConfig} from "../../settings";
 
 interface Props {
     user: User | undefined;
@@ -39,9 +40,9 @@ export const TenantSelection: React.FC<Props> = (props) => {
             let api: TenantsApi
             if (props.admin) {
                 // Admin mode can see all tenants
-                api = new TenantsApi();
+                api = new TenantsApi(AppConfig);
             } else {
-                api = new TenantsApi(props.user.profile.sub);
+                api = new TenantsApi(AppConfig, props.user.profile.sub);
             }
             api.readItems(props.user.access_token).then(ret => {
                 if (typeof ret !== "string") {

@@ -4,7 +4,7 @@ import {Fab, TableCell, TableHead, TableRow, TableSortLabel} from "@material-ui/
 import {makeStyles} from "@material-ui/core/styles";
 import {Add} from "@material-ui/icons";
 
-import {BaseViewModel} from "../../models";
+import {BaseViewModel} from "chabloom-payments-typescript";
 
 import {ChabloomTableColumn} from "./Column";
 

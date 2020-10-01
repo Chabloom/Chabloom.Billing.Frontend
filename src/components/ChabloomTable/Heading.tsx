@@ -8,8 +8,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Cancel, Delete, Edit, FilterList, Payment, Receipt, Save, Schedule} from "@material-ui/icons";
 import {Alert, AlertTitle} from "@material-ui/lab";
 
-import {BaseApiType} from "../../api";
-import {AccountViewModel, BaseViewModel, TenantViewModel} from "../../models";
+import {AccountViewModel, BaseApiType, BaseViewModel, TenantViewModel} from "chabloom-payments-typescript";
 
 import {ChabloomTableColumn} from "./Column";
 

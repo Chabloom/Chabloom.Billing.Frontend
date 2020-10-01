@@ -2,8 +2,9 @@ import React from "react";
 
 import {User} from "oidc-client";
 
-import {AccountsApi, AccountUsersApi} from "../api";
-import {TenantViewModel} from "../models";
+import {AccountsApi, AccountUsersApi, TenantViewModel} from "chabloom-payments-typescript";
+
+import {AppConfig} from "../settings";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
@@ -36,7 +37,7 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 // The API to use
-let api: AccountUsersApi = new AccountUsersApi();
+let api: AccountUsersApi = new AccountUsersApi(AppConfig);
 
 export const AccountUsers: React.FC<Props> = (props) => {
     let [title, setTitle] = React.useState("Account Users");
@@ -62,7 +63,7 @@ export const AccountUsers: React.FC<Props> = (props) => {
     React.useEffect(() => {
         console.debug("updating table title");
         if (account) {
-            const accountsApi = new AccountsApi(props.tenant?.id);
+            const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
             accountsApi.readItem(props.user?.access_token, account).then(ret => {
                 if (typeof ret !== "string") {
                     setTitle(`${ret.name} Users`);

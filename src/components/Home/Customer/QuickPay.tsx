@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import {Alert, AlertTitle, Autocomplete} from "@material-ui/lab";
 
-import {TenantViewModel} from "../../../models";
+import {TenantViewModel} from "chabloom-payments-typescript";
 
 interface Props {
     user: User | undefined;

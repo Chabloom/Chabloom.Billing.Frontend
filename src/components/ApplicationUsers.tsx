@@ -2,7 +2,9 @@ import React from "react";
 
 import {User} from "oidc-client";
 
-import {ApplicationUsersApi} from "../api";
+import {ApplicationUsersApi} from "chabloom-payments-typescript";
+
+import {AppConfig} from "../settings";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
@@ -24,7 +26,7 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 // The API to use
-let api: ApplicationUsersApi = new ApplicationUsersApi();
+let api: ApplicationUsersApi = new ApplicationUsersApi(AppConfig);
 
 export const ApplicationUsers: React.FC<Props> = (props) => {
     const title = "Application Users";

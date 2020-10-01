@@ -3,10 +3,9 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {User, UserManager} from "oidc-client";
 
-import {OidcSettings} from "./settings";
+import {ApplicationUsersApi, TenantsApi, TenantUsersApi, TenantViewModel} from 'chabloom-payments-typescript';
 
-import {ApplicationUsersApi, TenantsApi, TenantUsersApi} from "./api";
-import {TenantViewModel} from "./models";
+import {AppConfig, OidcSettings} from "./settings";
 
 import {
     AccountRoles,
@@ -68,12 +67,12 @@ export const App: React.FC = () => {
     // Get the user's administrative level
     React.useEffect(() => {
         if (user && !user.expired) {
-            const api = new ApplicationUsersApi();
+            const api = new ApplicationUsersApi(AppConfig);
             api.readItem(user.access_token, user.profile.sub).then(ret => {
                 if (typeof ret !== "string") {
                     setUserLevel("admin");
                 } else {
-                    const tenantUsersApi = new TenantUsersApi();
+                    const tenantUsersApi = new TenantUsersApi(AppConfig);
                     tenantUsersApi.readItem(user.access_token, user.profile.sub).then(ret => {
                         if (typeof ret !== "string") {
                             setUserLevel("manager");
@@ -85,7 +84,7 @@ export const App: React.FC = () => {
     }, [user]);
     // Get all available tenants
     React.useEffect(() => {
-        const api = new TenantsApi();
+        const api = new TenantsApi(AppConfig);
         api.readItems("").then(result => {
             if (typeof result !== "string") {
                 try {

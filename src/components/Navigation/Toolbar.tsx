@@ -5,7 +5,7 @@ import {User, UserManager} from "oidc-client";
 import {AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
-import {TenantViewModel} from "../../models";
+import {TenantViewModel} from "chabloom-payments-typescript";
 
 import {ModeSelection} from "./ModeSelection";
 import {TenantSelection} from "./TenantSelection";

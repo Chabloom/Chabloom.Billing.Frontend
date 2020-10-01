@@ -2,7 +2,7 @@ import React from "react";
 
 import {TablePagination} from "@material-ui/core";
 
-import {BaseViewModel} from "../../models";
+import {BaseViewModel} from "chabloom-payments-typescript";
 
 interface Props {
     data: Array<BaseViewModel>,

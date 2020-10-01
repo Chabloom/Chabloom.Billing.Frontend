@@ -2,7 +2,7 @@ import React from "react";
 
 import {Checkbox, TableBody, TableCell, TableRow, TextField} from "@material-ui/core";
 
-import {BaseViewModel} from "../../models";
+import {BaseViewModel} from "chabloom-payments-typescript";
 
 import {ChabloomTableColumn} from "./Column";
 

@@ -4,8 +4,7 @@ import {User} from "oidc-client";
 
 import {Paper, Table, TableContainer} from "@material-ui/core";
 
-import {BaseApiType} from "../../api";
-import {BaseViewModel, TenantViewModel} from "../../models";
+import {BaseApiType, BaseViewModel, TenantViewModel} from "chabloom-payments-typescript";
 
 import {ChabloomTableBody} from "./Body";
 import {ChabloomTableHead} from "./Head";

@@ -2,8 +2,9 @@ import React from "react";
 
 import {User} from "oidc-client";
 
-import {AccountsApi} from "../api";
-import {TenantViewModel} from "../models";
+import {AccountsApi, TenantViewModel} from "chabloom-payments-typescript";
+
+import {AppConfig} from "../settings";
 
 import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
 
@@ -31,7 +32,7 @@ const columns: Array<ChabloomTableColumn> = [
 ]
 
 // The API to use
-let api: AccountsApi = new AccountsApi();
+let api: AccountsApi = new AccountsApi(AppConfig);
 
 export const Accounts: React.FC<Props> = (props) => {
     let [title, setTitle] = React.useState("Accounts");
