@@ -1,8 +1,7 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: default
 
 steps:
 - task: PowerShell@2
