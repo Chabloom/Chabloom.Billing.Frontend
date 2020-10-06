@@ -1,12 +1,12 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {TenantViewModel} from "chabloom-payments-typescript";
+import { TenantViewModel } from "chabloom-payments-typescript";
 
-import {AdminHome} from "./Admin";
-import {CustomerHome} from "./Customer";
-import {ManagerHome} from "./Manager";
+import { AdminHome } from "./Admin";
+import { CustomerHome } from "./Customer";
+import { ManagerHome } from "./Manager";
 
 interface Props {
     user: User | undefined;
@@ -17,9 +17,9 @@ interface Props {
 
 export const Home: React.FC<Props> = (props) => {
     if (props.admin) {
-        return <AdminHome {...props}/>
+        return <AdminHome {...props} />;
     } else if (props.manager) {
-        return <ManagerHome {...props}/>
+        return <ManagerHome {...props} />;
     }
-    return <CustomerHome {...props}/>
-}
+    return <CustomerHome {...props} />;
+};

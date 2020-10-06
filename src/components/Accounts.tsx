@@ -1,12 +1,12 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {AccountsApi, TenantViewModel} from "chabloom-payments-typescript";
+import { AccountsApi, TenantViewModel } from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User | undefined;
@@ -15,21 +15,21 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'Name',
+        title: "Name",
         accessor: "name",
         type: "text",
     },
     {
-        title: 'Number',
+        title: "Number",
         accessor: "externalId",
         type: "text",
     },
     {
-        title: 'Primary Address',
+        title: "Primary Address",
         accessor: "primaryAddress",
         type: "text",
     },
-]
+];
 
 // The API to use
 let api: AccountsApi = new AccountsApi(AppConfig);
@@ -53,10 +53,20 @@ export const Accounts: React.FC<Props> = (props) => {
             setTitle("Accounts");
         }
     }, [props.tenant]);
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete", "bill", "schedule", "transaction"]}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={[
+                "add",
+                "edit",
+                "delete",
+                "bill",
+                "schedule",
+                "transaction",
+            ]}
+        />
+    );
+};

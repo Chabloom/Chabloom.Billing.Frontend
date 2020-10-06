@@ -1,1 +1,1 @@
-export * from './ManagerHome'
+export * from "./ManagerHome";

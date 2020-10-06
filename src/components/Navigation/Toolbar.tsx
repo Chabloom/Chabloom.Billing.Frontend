@@ -1,15 +1,22 @@
 import React from "react";
 
-import {User, UserManager} from "oidc-client";
+import { User, UserManager } from "oidc-client";
 
-import {AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+import {
+    AppBar,
+    createStyles,
+    IconButton,
+    makeStyles,
+    Theme,
+    Toolbar,
+} from "@material-ui/core";
+import { Menu } from "@material-ui/icons";
 
-import {TenantViewModel} from "chabloom-payments-typescript";
+import { TenantViewModel } from "chabloom-payments-typescript";
 
-import {ModeSelection} from "./ModeSelection";
-import {TenantSelection} from "./TenantSelection";
-import {UserManagement} from "./UserManagement";
+import { ModeSelection } from "./ModeSelection";
+import { TenantSelection } from "./TenantSelection";
+import { UserManagement } from "./UserManagement";
 
 import logo from "../../logo.svg";
 
@@ -39,13 +46,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         flexGrow: {
             flexGrow: 1,
-        }, menuButton: {
+        },
+        menuButton: {
             marginRight: theme.spacing(2),
-            [theme.breakpoints.up('sm')]: {
-                display: 'none',
+            [theme.breakpoints.up("sm")]: {
+                display: "none",
             },
         },
-    }),
+    })
 );
 
 export const ChabloomToolbar: React.FC<Props> = (props) => {
@@ -58,21 +66,24 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
                     color="inherit"
                     aria-label="open drawer"
                     edge="start"
-                    onClick={() => props.setMobileDrawerOpen(!props.mobileDrawerOpen)}
-                    className={classes.menuButton}>
-                    <Menu/>
+                    onClick={() =>
+                        props.setMobileDrawerOpen(!props.mobileDrawerOpen)
+                    }
+                    className={classes.menuButton}
+                >
+                    <Menu />
                 </IconButton>
                 <div className={classes.flexGrow}>
-                    <img src={logo} className={classes.logo} alt="logo"/>
+                    <img src={logo} className={classes.logo} alt="logo" />
                 </div>
-                {(props.admin || props.manager) &&
-                <div className={classes.flexGrow}>
-                    <TenantSelection {...props}/>
-                </div>
-                }
-                <ModeSelection {...props}/>
-                <UserManagement {...props}/>
+                {(props.admin || props.manager) && (
+                    <div className={classes.flexGrow}>
+                        <TenantSelection {...props} />
+                    </div>
+                )}
+                <ModeSelection {...props} />
+                <UserManagement {...props} />
             </Toolbar>
         </AppBar>
     );
-}
+};

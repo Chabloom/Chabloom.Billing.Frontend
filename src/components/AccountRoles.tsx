@@ -1,12 +1,16 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {AccountRolesApi, AccountsApi, TenantViewModel} from "chabloom-payments-typescript";
+import {
+    AccountRolesApi,
+    AccountsApi,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User | undefined;
@@ -15,11 +19,11 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'Name',
+        title: "Name",
         accessor: "name",
         type: "text",
     },
-]
+];
 
 // The API to use
 let api: AccountRolesApi = new AccountRolesApi(AppConfig);
@@ -49,21 +53,26 @@ export const AccountRoles: React.FC<Props> = (props) => {
         console.debug("updating table title");
         if (account) {
             const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
-            accountsApi.readItem(props.user?.access_token, account).then(ret => {
-                if (typeof ret !== "string") {
-                    setTitle(`${ret.name} Roles`);
-                } else {
-                    setTitle("Account Roles");
-                }
-            });
+            accountsApi
+                .readItem(props.user?.access_token, account)
+                .then((ret) => {
+                    if (typeof ret !== "string") {
+                        setTitle(`${ret.name} Roles`);
+                    } else {
+                        setTitle("Account Roles");
+                    }
+                });
         } else {
             setTitle("Account Roles");
         }
     }, [account, props.user, props.tenant]);
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete"]}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={["add", "edit", "delete"]}
+        />
+    );
+};

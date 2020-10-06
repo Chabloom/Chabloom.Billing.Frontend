@@ -1,13 +1,13 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
-import {TenantViewModel} from "chabloom-payments-typescript";
+import { TenantViewModel } from "chabloom-payments-typescript";
 
-import {QuickPay} from "./QuickPay";
-import {QuickView} from "./QuickView";
+import { QuickPay } from "./QuickPay";
+import { QuickView } from "./QuickView";
 
 interface Props {
     user: User | undefined;
@@ -17,8 +17,8 @@ interface Props {
 export const CustomerHome: React.FC<Props> = (props) => {
     return (
         <Grid container spacing={3} justify="center">
-            <QuickPay {...props}/>
-            {props.user && <QuickView {...props}/>}
+            <QuickPay {...props} />
+            {props.user && <QuickView {...props} />}
         </Grid>
     );
-}
+};

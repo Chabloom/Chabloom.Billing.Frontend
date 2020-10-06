@@ -1,12 +1,16 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {AccountsApi, BillsApi, TenantViewModel} from "chabloom-payments-typescript";
+import {
+    AccountsApi,
+    BillsApi,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User | undefined;
@@ -15,21 +19,21 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'Name',
+        title: "Name",
         accessor: "name",
         type: "text",
     },
     {
-        title: 'Amount',
+        title: "Amount",
         accessor: "amount",
         type: "number",
     },
     {
-        title: 'Due Date',
+        title: "Due Date",
         accessor: "dueDate",
         type: "date",
     },
-]
+];
 
 // The API to use
 let api: BillsApi = new BillsApi(AppConfig);
@@ -61,21 +65,26 @@ export const Bills: React.FC<Props> = (props) => {
             setTitle(`${props.tenant.name} Bills`);
         } else if (account) {
             const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
-            accountsApi.readItem(props.user?.access_token, account).then(ret => {
-                if (typeof ret !== "string") {
-                    setTitle(`${ret.name} Bills`);
-                } else {
-                    setTitle("Bills");
-                }
-            });
+            accountsApi
+                .readItem(props.user?.access_token, account)
+                .then((ret) => {
+                    if (typeof ret !== "string") {
+                        setTitle(`${ret.name} Bills`);
+                    } else {
+                        setTitle("Bills");
+                    }
+                });
         } else {
             setTitle("Bills");
         }
     }, [account, props.user, props.tenant]);
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete"]}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={["add", "edit", "delete"]}
+        />
+    );
+};

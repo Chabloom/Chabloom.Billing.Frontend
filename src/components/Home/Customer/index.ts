@@ -1,1 +1,1 @@
-export * from './CustomerHome'
+export * from "./CustomerHome";

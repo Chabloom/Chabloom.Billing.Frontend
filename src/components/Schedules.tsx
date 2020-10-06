@@ -1,12 +1,16 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {AccountsApi, SchedulesApi, TenantViewModel} from "chabloom-payments-typescript";
+import {
+    AccountsApi,
+    SchedulesApi,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User | undefined;
@@ -15,26 +19,26 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'Name',
+        title: "Name",
         accessor: "name",
         type: "text",
     },
     {
-        title: 'Amount',
+        title: "Amount",
         accessor: "amount",
         type: "number",
     },
     {
-        title: 'Day Due',
+        title: "Day Due",
         accessor: "dayDue",
         type: "number",
     },
     {
-        title: 'Interval',
+        title: "Interval",
         accessor: "interval",
         type: "number",
     },
-]
+];
 
 // The API to use
 let api: SchedulesApi = new SchedulesApi(AppConfig);
@@ -66,21 +70,26 @@ export const Schedules: React.FC<Props> = (props) => {
             setTitle(`${props.tenant.name} Schedules`);
         } else if (account) {
             const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
-            accountsApi.readItem(props.user?.access_token, account).then(ret => {
-                if (typeof ret !== "string") {
-                    setTitle(`${ret.name} Schedules`);
-                } else {
-                    setTitle("Schedules");
-                }
-            });
+            accountsApi
+                .readItem(props.user?.access_token, account)
+                .then((ret) => {
+                    if (typeof ret !== "string") {
+                        setTitle(`${ret.name} Schedules`);
+                    } else {
+                        setTitle("Schedules");
+                    }
+                });
         } else {
             setTitle("Schedules");
         }
     }, [account, props.user, props.tenant]);
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete"]}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={["add", "edit", "delete"]}
+        />
+    );
+};

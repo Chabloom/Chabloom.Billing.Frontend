@@ -1,12 +1,16 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {TenantsApi, TenantUsersApi, TenantViewModel} from "chabloom-payments-typescript";
+import {
+    TenantsApi,
+    TenantUsersApi,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User | undefined;
@@ -15,26 +19,26 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'User Id',
+        title: "User Id",
         accessor: "userId",
         type: "text",
     },
     {
-        title: 'Tenant Name',
+        title: "Tenant Name",
         accessor: "tenantName",
         type: "text",
     },
     {
-        title: 'Tenant Id',
+        title: "Tenant Id",
         accessor: "tenant",
         type: "text",
     },
     {
-        title: 'Role',
+        title: "Role",
         accessor: "roleName",
         type: "text",
     },
-]
+];
 
 // The API to use
 let api: TenantUsersApi = new TenantUsersApi(AppConfig);
@@ -45,22 +49,30 @@ export const TenantUsers: React.FC<Props> = (props) => {
     React.useEffect(() => {
         console.debug("updating table title");
         if (props.tenant && props.tenant.id) {
-            const tenantsApi = new TenantsApi(AppConfig, props.user?.profile.sub);
-            tenantsApi.readItem(props.user?.access_token, props.tenant.id).then(ret => {
-                if (typeof ret !== "string") {
-                    setTitle(`${ret.name} Users`);
-                } else {
-                    setTitle("Tenant Users");
-                }
-            });
+            const tenantsApi = new TenantsApi(
+                AppConfig,
+                props.user?.profile.sub
+            );
+            tenantsApi
+                .readItem(props.user?.access_token, props.tenant.id)
+                .then((ret) => {
+                    if (typeof ret !== "string") {
+                        setTitle(`${ret.name} Users`);
+                    } else {
+                        setTitle("Tenant Users");
+                    }
+                });
         } else {
             setTitle("Tenant Users");
         }
     }, [props.user, props.tenant]);
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete"]}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={["add", "edit", "delete"]}
+        />
+    );
+};

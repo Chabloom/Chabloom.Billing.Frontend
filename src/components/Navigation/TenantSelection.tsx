@@ -1,6 +1,6 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
 import {
     Button,
@@ -11,13 +11,13 @@ import {
     MenuItem,
     MenuList,
     Paper,
-    Popper
+    Popper,
 } from "@material-ui/core";
-import {ArrowDropDown} from "@material-ui/icons";
+import { ArrowDropDown } from "@material-ui/icons";
 
-import {TenantsApi, TenantViewModel} from "chabloom-payments-typescript";
+import { TenantsApi, TenantViewModel } from "chabloom-payments-typescript";
 
-import {AppConfig} from "../../settings";
+import { AppConfig } from "../../settings";
 
 interface Props {
     user: User | undefined;
@@ -37,20 +37,19 @@ export const TenantSelection: React.FC<Props> = (props) => {
     // Get tenants that the user is authorized to select
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
-            let api: TenantsApi
+            let api: TenantsApi;
             if (props.admin) {
                 // Admin mode can see all tenants
                 api = new TenantsApi(AppConfig);
             } else {
                 api = new TenantsApi(AppConfig, props.user.profile.sub);
             }
-            api.readItems(props.user.access_token).then(ret => {
+            api.readItems(props.user.access_token).then((ret) => {
                 if (typeof ret !== "string") {
-                    ret = ret.sort((a, b) =>
-                        a.name.localeCompare(b.name));
+                    ret = ret.sort((a, b) => a.name.localeCompare(b.name));
                     setTenants(ret);
                 }
-            })
+            });
         }
     }, [props.admin, props.user]);
 
@@ -59,16 +58,16 @@ export const TenantSelection: React.FC<Props> = (props) => {
 
     // Select the tenant that was previously selected
     React.useEffect(() => {
-        console.log('setting tenant');
+        console.log("setting tenant");
         if (tenants && tenants.length !== 0) {
             // Attempt to find the previously selected tenant
             const oldTenantId = window.localStorage.getItem("TenantId");
             if (oldTenantId) {
-                const newTenant = tenants.find(x => x.id === oldTenantId);
+                const newTenant = tenants.find((x) => x.id === oldTenantId);
                 if (newTenant) {
                     // Select the previously selected tenant
                     setTenant(newTenant);
-                    return
+                    return;
                 }
             }
             // Use the first available tenant
@@ -79,14 +78,17 @@ export const TenantSelection: React.FC<Props> = (props) => {
     return (
         <FormGroup row>
             <ButtonGroup ref={anchorRef}>
-                <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
+                <Button>
+                    {props.tenant ? props.tenant.name : "Select Tenant"}
+                </Button>
                 <Button
                     disabled={tenants.length === 0}
                     ref={anchorRef}
-                    aria-controls={dropdownOpen ? 'menu-list-grow' : undefined}
+                    aria-controls={dropdownOpen ? "menu-list-grow" : undefined}
                     aria-haspopup="true"
-                    onClick={() => setDropdownOpen(true)}>
-                    <ArrowDropDown/>
+                    onClick={() => setDropdownOpen(true)}
+                >
+                    <ArrowDropDown />
                 </Button>
             </ButtonGroup>
             <Popper
@@ -95,21 +97,43 @@ export const TenantSelection: React.FC<Props> = (props) => {
                 open={dropdownOpen}
                 anchorEl={anchorRef.current}
                 role={undefined}
-                placement="bottom-start">
-                {({TransitionProps, placement}) => (
-                    <Grow {...TransitionProps}
-                          style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}>
+                placement="bottom-start"
+            >
+                {({ TransitionProps, placement }) => (
+                    <Grow
+                        {...TransitionProps}
+                        style={{
+                            transformOrigin:
+                                placement === "bottom"
+                                    ? "center top"
+                                    : "center bottom",
+                        }}
+                    >
                         <Paper>
-                            <ClickAwayListener onClickAway={() => setDropdownOpen(false)}>
-                                <MenuList autoFocusItem={dropdownOpen} id="menu-list-grow">
-                                    {tenants.map(item => {
-                                        return <MenuItem onClick={() => {
-                                            if (item.id) {
-                                                props.setTenant(item);
-                                                window.localStorage.setItem("TenantId", item.id);
-                                            }
-                                            setDropdownOpen(false);
-                                        }}>{item.name}</MenuItem>;
+                            <ClickAwayListener
+                                onClickAway={() => setDropdownOpen(false)}
+                            >
+                                <MenuList
+                                    autoFocusItem={dropdownOpen}
+                                    id="menu-list-grow"
+                                >
+                                    {tenants.map((item) => {
+                                        return (
+                                            <MenuItem
+                                                onClick={() => {
+                                                    if (item.id) {
+                                                        props.setTenant(item);
+                                                        window.localStorage.setItem(
+                                                            "TenantId",
+                                                            item.id
+                                                        );
+                                                    }
+                                                    setDropdownOpen(false);
+                                                }}
+                                            >
+                                                {item.name}
+                                            </MenuItem>
+                                        );
                                     })}
                                 </MenuList>
                             </ClickAwayListener>
@@ -119,4 +143,4 @@ export const TenantSelection: React.FC<Props> = (props) => {
             </Popper>
         </FormGroup>
     );
-}
+};

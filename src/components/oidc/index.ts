@@ -1,2 +1,2 @@
-export * from './OidcSignInCallback';
-export * from './OidcSignOutCallback';
+export * from "./OidcSignInCallback";
+export * from "./OidcSignOutCallback";

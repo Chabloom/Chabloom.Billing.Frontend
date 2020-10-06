@@ -1,12 +1,12 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {ApplicationRolesApi} from "chabloom-payments-typescript";
+import { ApplicationRolesApi } from "chabloom-payments-typescript";
 
-import {AppConfig} from "../settings";
+import { AppConfig } from "../settings";
 
-import {ChabloomTable, ChabloomTableColumn} from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
     user: User;
@@ -14,11 +14,11 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
     {
-        title: 'Name',
+        title: "Name",
         accessor: "name",
         type: "text",
     },
-]
+];
 
 // The API to use
 let api: ApplicationRolesApi = new ApplicationRolesApi(AppConfig);
@@ -26,11 +26,14 @@ let api: ApplicationRolesApi = new ApplicationRolesApi(AppConfig);
 export const ApplicationRoles: React.FC<Props> = (props) => {
     const title = "Application Roles";
 
-    return <ChabloomTable
-        {...props}
-        api={api}
-        title={title}
-        columns={columns}
-        methods={["add", "edit", "delete"]}
-        tenant={undefined}/>;
-}
+    return (
+        <ChabloomTable
+            {...props}
+            api={api}
+            title={title}
+            columns={columns}
+            methods={["add", "edit", "delete"]}
+            tenant={undefined}
+        />
+    );
+};

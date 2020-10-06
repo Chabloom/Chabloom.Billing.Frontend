@@ -1,2 +1,2 @@
-export * from './config';
-export * from './oidc';
+export * from "./config";
+export * from "./oidc";

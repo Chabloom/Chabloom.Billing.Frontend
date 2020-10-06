@@ -1,9 +1,13 @@
 .logo {
-  height: 3em;
-  pointer-events: none;
+    height: 3em;
+    pointer-events: none;
 }
 
-h1, h2, h3, h4, h5 {
-  pointer-events: none;
-  user-select: none;
+h1,
+h2,
+h3,
+h4,
+h5 {
+    pointer-events: none;
+    user-select: none;
 }

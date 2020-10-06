@@ -1,11 +1,16 @@
-import React from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import {User, UserManager} from "oidc-client";
+import { User, UserManager } from "oidc-client";
 
-import {ApplicationUsersApi, TenantsApi, TenantUsersApi, TenantViewModel} from 'chabloom-payments-typescript';
+import {
+    ApplicationUsersApi,
+    TenantsApi,
+    TenantUsersApi,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {AppConfig, OidcSettings} from "./settings";
+import { AppConfig, OidcSettings } from "./settings";
 
 import {
     AccountRoles,
@@ -20,21 +25,25 @@ import {
     TenantRoles,
     Tenants,
     TenantUsers,
-    Transactions
+    Transactions,
 } from "./components";
-import {OidcSignInCallback, OidcSignOutCallback} from "./components/oidc";
+import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
 
-import './App.scss';
+import "./App.scss";
 
 const userManager = new UserManager(OidcSettings);
 
 export const App: React.FC = () => {
     const [user, setUser] = React.useState<User>();
-    const [userLevel, setUserLevel] = React.useState<"admin" | "manager" | undefined>();
+    const [userLevel, setUserLevel] = React.useState<
+        "admin" | "manager" | undefined
+    >();
     const [admin, setAdmin] = React.useState(false);
     const [manager, setManager] = React.useState(false);
     const [tenant, setTenant] = React.useState<TenantViewModel>();
-    const [allTenants, setAllTenants] = React.useState([] as Array<TenantViewModel>);
+    const [allTenants, setAllTenants] = React.useState(
+        [] as Array<TenantViewModel>
+    );
 
     // Check if the user is signed in
     React.useEffect(() => {
@@ -44,40 +53,48 @@ export const App: React.FC = () => {
             return;
         }
         console.debug("updating user");
-        userManager.getUser().then(ret => {
+        userManager.getUser().then((ret) => {
             if (ret && !ret.expired) {
                 console.debug("user valid");
                 setUser(ret);
             } else {
                 // Attempt silent sign in
-                userManager.signinSilent().then(ret => {
-                    if (ret && !ret.expired) {
-                        console.debug("got silent user");
-                        setUser(ret);
-                    } else {
-                        // Redirect to sign in
-                        console.debug("redirecting to sign in");
-                        localStorage.setItem("redirectUri", window.location.pathname);
-                        userManager.signinRedirect().then();
-                    }
-                }).catch(reason => console.debug(reason));
+                userManager
+                    .signinSilent()
+                    .then((ret) => {
+                        if (ret && !ret.expired) {
+                            console.debug("got silent user");
+                            setUser(ret);
+                        } else {
+                            // Redirect to sign in
+                            console.debug("redirecting to sign in");
+                            localStorage.setItem(
+                                "redirectUri",
+                                window.location.pathname
+                            );
+                            userManager.signinRedirect().then();
+                        }
+                    })
+                    .catch((reason) => console.debug(reason));
             }
-        })
+        });
     }, []);
     // Get the user's administrative level
     React.useEffect(() => {
         if (user && !user.expired) {
             const api = new ApplicationUsersApi(AppConfig);
-            api.readItem(user.access_token, user.profile.sub).then(ret => {
+            api.readItem(user.access_token, user.profile.sub).then((ret) => {
                 if (typeof ret !== "string") {
                     setUserLevel("admin");
                 } else {
                     const tenantUsersApi = new TenantUsersApi(AppConfig);
-                    tenantUsersApi.readItem(user.access_token, user.profile.sub).then(ret => {
-                        if (typeof ret !== "string") {
-                            setUserLevel("manager");
-                        }
-                    });
+                    tenantUsersApi
+                        .readItem(user.access_token, user.profile.sub)
+                        .then((ret) => {
+                            if (typeof ret !== "string") {
+                                setUserLevel("manager");
+                            }
+                        });
                 }
             });
         }
@@ -85,17 +102,20 @@ export const App: React.FC = () => {
     // Get all available tenants
     React.useEffect(() => {
         const api = new TenantsApi(AppConfig);
-        api.readItems("").then(result => {
-            if (typeof result !== "string") {
-                try {
-                    result = result.sort((a, b) =>
-                        a.name.localeCompare(b.name));
-                    setAllTenants(result);
-                } catch {
-                    console.log('item read failed');
+        api.readItems("")
+            .then((result) => {
+                if (typeof result !== "string") {
+                    try {
+                        result = result.sort((a, b) =>
+                            a.name.localeCompare(b.name)
+                        );
+                        setAllTenants(result);
+                    } catch {
+                        console.log("item read failed");
+                    }
                 }
-            }
-        }).catch(e => console.log(e.message));
+            })
+            .catch((e) => console.log(e.message));
     }, []);
 
     return (
@@ -110,68 +130,70 @@ export const App: React.FC = () => {
                 admin={admin}
                 setAdmin={setAdmin}
                 manager={manager}
-                setManager={setManager}>
+                setManager={setManager}
+            >
                 <Switch>
                     <Route exact={true} path="/signin-oidc">
-                        <OidcSignInCallback userManager={userManager}/>
+                        <OidcSignInCallback userManager={userManager} />
                     </Route>
                     <Route exact={true} path="/signout-oidc">
-                        <OidcSignOutCallback userManager={userManager}/>
+                        <OidcSignOutCallback userManager={userManager} />
                     </Route>
                     <Route path="/accounts">
-                        <Accounts user={user} tenant={tenant}/>
+                        <Accounts user={user} tenant={tenant} />
                     </Route>
-                    {user &&
-                    <Route path="/accountRoles">
-                        <AccountRoles user={user} tenant={tenant}/>
-                    </Route>
-                    }
-                    {user &&
-                    <Route path="/accountUsers">
-                        <AccountUsers user={user} tenant={tenant}/>
-                    </Route>
-                    }
+                    {user && (
+                        <Route path="/accountRoles">
+                            <AccountRoles user={user} tenant={tenant} />
+                        </Route>
+                    )}
+                    {user && (
+                        <Route path="/accountUsers">
+                            <AccountUsers user={user} tenant={tenant} />
+                        </Route>
+                    )}
                     <Route path="/bills">
-                        <Bills user={user} tenant={tenant}/>
+                        <Bills user={user} tenant={tenant} />
                     </Route>
                     <Route path="/schedules">
-                        <Schedules user={user} tenant={tenant}/>
+                        <Schedules user={user} tenant={tenant} />
                     </Route>
                     <Route path="/transactions">
-                        <Transactions user={user} tenant={tenant}/>
+                        <Transactions user={user} tenant={tenant} />
                     </Route>
                     <Route path="/tenants">
-                        <Tenants user={user}/>
+                        <Tenants user={user} />
                     </Route>
-                    {user && tenant &&
-                    <Route path="/tenantRoles">
-                        <TenantRoles user={user} tenant={tenant}/>
-                    </Route>
-                    }
-                    {user && tenant &&
-                    <Route path="/tenantUsers">
-                        <TenantUsers user={user} tenant={tenant}/>
-                    </Route>
-                    }
-                    {user &&
-                    <Route path="/applicationRoles">
-                        <ApplicationRoles user={user}/>
-                    </Route>
-                    }
-                    {user &&
-                    <Route path="/applicationUsers">
-                        <ApplicationUsers user={user}/>
-                    </Route>
-                    }
+                    {user && tenant && (
+                        <Route path="/tenantRoles">
+                            <TenantRoles user={user} tenant={tenant} />
+                        </Route>
+                    )}
+                    {user && tenant && (
+                        <Route path="/tenantUsers">
+                            <TenantUsers user={user} tenant={tenant} />
+                        </Route>
+                    )}
+                    {user && (
+                        <Route path="/applicationRoles">
+                            <ApplicationRoles user={user} />
+                        </Route>
+                    )}
+                    {user && (
+                        <Route path="/applicationUsers">
+                            <ApplicationUsers user={user} />
+                        </Route>
+                    )}
                     <Route path="/">
                         <Home
                             user={user}
                             allTenants={allTenants}
                             admin={admin}
-                            manager={manager}/>
+                            manager={manager}
+                        />
                     </Route>
                 </Switch>
             </Navigation>
         </Router>
     );
-}
+};

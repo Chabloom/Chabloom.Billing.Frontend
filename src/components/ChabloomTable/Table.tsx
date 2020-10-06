@@ -1,24 +1,30 @@
 import React from "react";
 
-import {User} from "oidc-client";
+import { User } from "oidc-client";
 
-import {Paper, Table, TableContainer} from "@material-ui/core";
+import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import {BaseApiType, BaseViewModel, TenantViewModel} from "chabloom-payments-typescript";
+import {
+    BaseApiType,
+    BaseViewModel,
+    TenantViewModel,
+} from "chabloom-payments-typescript";
 
-import {ChabloomTableBody} from "./Body";
-import {ChabloomTableHead} from "./Head";
-import {ChabloomTableColumn} from "./Column";
-import {ChabloomTablePagination} from "./Pagination";
-import {ChabloomTableHeading} from "./Heading";
+import { ChabloomTableBody } from "./Body";
+import { ChabloomTableHead } from "./Head";
+import { ChabloomTableColumn } from "./Column";
+import { ChabloomTablePagination } from "./Pagination";
+import { ChabloomTableHeading } from "./Heading";
 
 interface Props {
     user: User | undefined;
     tenant: TenantViewModel | undefined;
-    api: BaseApiType<BaseViewModel>,
-    title: string,
-    columns: Array<ChabloomTableColumn>,
-    methods: Array<"add" | "edit" | "delete" | "bill" | "schedule" | "transaction">,
+    api: BaseApiType<BaseViewModel>;
+    title: string;
+    columns: Array<ChabloomTableColumn>;
+    methods: Array<
+        "add" | "edit" | "delete" | "bill" | "schedule" | "transaction"
+    >;
 }
 
 export const ChabloomTable: React.FC<Props> = (props) => {
@@ -26,7 +32,9 @@ export const ChabloomTable: React.FC<Props> = (props) => {
     const [adding, setAdding] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(-1);
     const [editIndex, setEditIndex] = React.useState(-1);
-    const [editItem, setEditItem] = React.useState<BaseViewModel>({} as BaseViewModel);
+    const [editItem, setEditItem] = React.useState<BaseViewModel>(
+        {} as BaseViewModel
+    );
     const [deleteIndex, setDeleteIndex] = React.useState(-1);
     const [processing, setProcessing] = React.useState(false);
     const [error, setError] = React.useState("");
@@ -35,26 +43,31 @@ export const ChabloomTable: React.FC<Props> = (props) => {
         if (props.user) {
             console.debug("updating table data");
             setProcessing(true);
-            props.api.readItems(props.user?.access_token).then(ret => {
-                if (typeof ret === "string") {
-                    setData([] as Array<BaseViewModel>);
-                    setError(ret);
-                } else {
-                    try {
-                        const sortedData = ret.sort((a, b) =>
-                            a["name"].localeCompare(b["name"]));
-                        setData([...sortedData]);
-                        setError("");
-                    } catch {
+            props.api
+                .readItems(props.user?.access_token)
+                .then((ret) => {
+                    if (typeof ret === "string") {
+                        setData([] as Array<BaseViewModel>);
+                        setError(ret);
+                    } else {
                         try {
-                            setData(ret);
+                            const sortedData = ret.sort((a, b) =>
+                                a["name"].localeCompare(b["name"])
+                            );
+                            setData([...sortedData]);
                             setError("");
                         } catch {
-                            setError('item read failed');
+                            try {
+                                setData(ret);
+                                setError("");
+                            } catch {
+                                setError("item read failed");
+                            }
                         }
                     }
-                }
-            }).catch(ret => setError(ret)).finally(() => setProcessing(false));
+                })
+                .catch((ret) => setError(ret))
+                .finally(() => setProcessing(false));
         }
     }, [props.user, props.api, props.title]);
 
@@ -77,7 +90,8 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                 processing={processing}
                 setProcessing={setProcessing}
                 error={error}
-                setError={setError}/>
+                setError={setError}
+            />
             <Table>
                 <ChabloomTableHead
                     {...props}
@@ -92,7 +106,8 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                     deleteIndex={deleteIndex}
                     setDeleteIndex={setDeleteIndex}
                     processing={processing}
-                    setProcessing={setProcessing}/>
+                    setProcessing={setProcessing}
+                />
                 <ChabloomTableBody
                     {...props}
                     data={data}
@@ -102,9 +117,10 @@ export const ChabloomTable: React.FC<Props> = (props) => {
                     editItem={editItem}
                     setEditItem={setEditItem}
                     deleteIndex={deleteIndex}
-                    processing={processing}/>
+                    processing={processing}
+                />
             </Table>
-            <ChabloomTablePagination data={data}/>
+            <ChabloomTablePagination data={data} />
         </TableContainer>
     );
-}
+};

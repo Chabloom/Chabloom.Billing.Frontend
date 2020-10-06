@@ -1,13 +1,19 @@
 import React from "react";
 
-import {User, UserManager} from "oidc-client";
+import { User, UserManager } from "oidc-client";
 
-import {createStyles, CssBaseline, makeStyles, Theme, Toolbar} from "@material-ui/core";
+import {
+    createStyles,
+    CssBaseline,
+    makeStyles,
+    Theme,
+    Toolbar,
+} from "@material-ui/core";
 
-import {TenantViewModel} from "chabloom-payments-typescript";
+import { TenantViewModel } from "chabloom-payments-typescript";
 
-import {ChabloomDrawer} from "./Drawer";
-import {ChabloomToolbar} from "./Toolbar";
+import { ChabloomDrawer } from "./Drawer";
+import { ChabloomToolbar } from "./Toolbar";
 
 interface Props {
     user: User | undefined;
@@ -25,13 +31,13 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            display: 'flex',
+            display: "flex",
         },
         content: {
             flexGrow: 1,
             padding: theme.spacing(3),
         },
-    }),
+    })
 );
 
 export const Navigation: React.FC<Props> = (props) => {
@@ -41,21 +47,23 @@ export const Navigation: React.FC<Props> = (props) => {
 
     return (
         <div className={classes.root}>
-            <CssBaseline/>
+            <CssBaseline />
             <ChabloomToolbar
                 {...props}
                 mobileDrawerOpen={mobileDrawerOpen}
-                setMobileDrawerOpen={setMobileDrawerOpen}/>
-            {(props.admin || props.manager) &&
-            <ChabloomDrawer
-                {...props}
-                admin={props.admin}
-                manager={props.manager}
-                mobileDrawerOpen={mobileDrawerOpen}
-                setMobileDrawerOpen={setMobileDrawerOpen}/>
-            }
+                setMobileDrawerOpen={setMobileDrawerOpen}
+            />
+            {(props.admin || props.manager) && (
+                <ChabloomDrawer
+                    {...props}
+                    admin={props.admin}
+                    manager={props.manager}
+                    mobileDrawerOpen={mobileDrawerOpen}
+                    setMobileDrawerOpen={setMobileDrawerOpen}
+                />
+            )}
             <main className={classes.content}>
-                <Toolbar/>
+                <Toolbar />
                 {props.children}
             </main>
         </div>
