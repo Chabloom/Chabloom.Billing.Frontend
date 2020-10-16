@@ -8,7 +8,7 @@ import {
     TenantViewModel,
 } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../settings/config";
+import { ApplicationConfig } from "../settings/config";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -41,7 +41,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: TenantUsersApi = new TenantUsersApi(AppConfig);
+let api: TenantUsersApi = new TenantUsersApi(ApplicationConfig);
 
 export const TenantUsers: React.FC<Props> = (props) => {
     let [title, setTitle] = React.useState("Tenant Users");
@@ -50,7 +50,7 @@ export const TenantUsers: React.FC<Props> = (props) => {
         console.debug("updating table title");
         if (props.tenant && props.tenant.id) {
             const tenantsApi = new TenantsApi(
-                AppConfig,
+                ApplicationConfig,
                 props.user?.profile.sub
             );
             tenantsApi

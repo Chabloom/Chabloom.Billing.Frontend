@@ -1,6 +1,4 @@
-import { ApplicationConfig } from "chabloom-payments-typescript";
-
-export const AppConfig: ApplicationConfig = {
+export const ApplicationConfig = {
     name: "chabloom-payments",
     displayName: "Chabloom Payments",
     apiPublicAddress: "API_PUBLIC_ADDRESS",

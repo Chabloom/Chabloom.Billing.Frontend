@@ -23,7 +23,7 @@ import {
     BillViewModel,
 } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../../../settings/config";
+import { ApplicationConfig } from "../../../settings/config";
 
 interface Props {
     user: User | undefined;
@@ -85,12 +85,12 @@ export const QuickView: React.FC<Props> = (props) => {
 
     React.useEffect(() => {
         if (props.user && !props.user.expired) {
-            const api = new AccountsApi(AppConfig);
+            const api = new AccountsApi(ApplicationConfig);
             api.readItems(props.user.access_token).then((ret) => {
                 if (typeof ret !== "string") {
                     setAccounts(ret);
                     ret.forEach((account) => {
-                        const api = new BillsApi(AppConfig, account.id);
+                        const api = new BillsApi(ApplicationConfig, account.id);
                         api.readItems(props.user?.access_token).then((ret) => {
                             if (typeof ret !== "string") {
                                 setBills((b) => [...b, ...ret]);

@@ -4,7 +4,7 @@ import { User } from "oidc-client";
 
 import { ApplicationRolesApi } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../settings/config";
+import { ApplicationConfig } from "../settings/config";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -21,7 +21,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationRolesApi = new ApplicationRolesApi(AppConfig);
+let api: ApplicationRolesApi = new ApplicationRolesApi(ApplicationConfig);
 
 export const ApplicationRoles: React.FC<Props> = (props) => {
     const title = "Application Roles";

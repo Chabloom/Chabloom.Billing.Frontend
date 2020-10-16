@@ -8,7 +8,7 @@ import {
     TenantViewModel,
 } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../settings/config";
+import { ApplicationConfig } from "../settings/config";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -41,7 +41,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: SchedulesApi = new SchedulesApi(AppConfig);
+let api: SchedulesApi = new SchedulesApi(ApplicationConfig);
 
 export const Schedules: React.FC<Props> = (props) => {
     let [title, setTitle] = React.useState("Schedules");
@@ -69,7 +69,7 @@ export const Schedules: React.FC<Props> = (props) => {
         if (props.tenant?.name && !account) {
             setTitle(`${props.tenant.name} Schedules`);
         } else if (account) {
-            const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
+            const accountsApi = new AccountsApi(ApplicationConfig, props.tenant?.id);
             accountsApi
                 .readItem(props.user?.access_token, account)
                 .then((ret) => {

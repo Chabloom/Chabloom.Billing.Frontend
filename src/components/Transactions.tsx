@@ -8,7 +8,7 @@ import {
     TransactionsApi,
 } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../settings/config";
+import { ApplicationConfig } from "../settings/config";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -36,7 +36,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: TransactionsApi = new TransactionsApi(AppConfig);
+let api: TransactionsApi = new TransactionsApi(ApplicationConfig);
 
 export const Transactions: React.FC<Props> = (props) => {
     let [title, setTitle] = React.useState("Transactions");
@@ -64,7 +64,7 @@ export const Transactions: React.FC<Props> = (props) => {
         if (props.tenant?.name && !account) {
             setTitle(`${props.tenant.name} Transactions`);
         } else if (account) {
-            const accountsApi = new AccountsApi(AppConfig, props.tenant?.id);
+            const accountsApi = new AccountsApi(ApplicationConfig, props.tenant?.id);
             accountsApi
                 .readItem(props.user?.access_token, account)
                 .then((ret) => {

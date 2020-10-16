@@ -10,7 +10,7 @@ import {
     TenantViewModel,
 } from "chabloom-payments-typescript";
 
-import { AppConfig } from "./settings/config";
+import { ApplicationConfig } from "./settings/config";
 import { OidcSettings } from "./settings/oidc";
 
 import {
@@ -83,12 +83,12 @@ export const App: React.FC = () => {
     // Get the user's administrative level
     React.useEffect(() => {
         if (user && !user.expired) {
-            const api = new ApplicationUsersApi(AppConfig);
+            const api = new ApplicationUsersApi(ApplicationConfig);
             api.readItem(user.access_token, user.profile.sub).then((ret) => {
                 if (typeof ret !== "string") {
                     setUserLevel("admin");
                 } else {
-                    const tenantUsersApi = new TenantUsersApi(AppConfig);
+                    const tenantUsersApi = new TenantUsersApi(ApplicationConfig);
                     tenantUsersApi
                         .readItem(user.access_token, user.profile.sub)
                         .then((ret) => {
@@ -102,7 +102,7 @@ export const App: React.FC = () => {
     }, [user]);
     // Get all available tenants
     React.useEffect(() => {
-        const api = new TenantsApi(AppConfig);
+        const api = new TenantsApi(ApplicationConfig);
         api.readItems("")
             .then((result) => {
                 if (typeof result !== "string") {
