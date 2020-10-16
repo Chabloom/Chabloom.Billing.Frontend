@@ -4,7 +4,7 @@ import { User } from "oidc-client";
 
 import { ApplicationUsersApi } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../settings";
+import { AppConfig } from "../settings/config";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 

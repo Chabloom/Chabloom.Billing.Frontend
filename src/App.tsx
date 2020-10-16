@@ -10,7 +10,8 @@ import {
     TenantViewModel,
 } from "chabloom-payments-typescript";
 
-import { AppConfig, OidcSettings } from "./settings";
+import { AppConfig } from "./settings/config";
+import { OidcSettings } from "./settings/oidc";
 
 import {
     AccountRoles,

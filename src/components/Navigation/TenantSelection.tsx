@@ -17,7 +17,7 @@ import { ArrowDropDown } from "@material-ui/icons";
 
 import { TenantsApi, TenantViewModel } from "chabloom-payments-typescript";
 
-import { AppConfig } from "../../settings";
+import { AppConfig } from "../../settings/config";
 
 interface Props {
     user: User | undefined;
