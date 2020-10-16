@@ -9,31 +9,31 @@ import { ApplicationConfig } from "../settings/config";
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
-    user: User;
+  user: User;
 }
 
 const columns: Array<ChabloomTableColumn> = [
-    {
-        title: "Name",
-        accessor: "name",
-        type: "text",
-    },
+  {
+    title: "Name",
+    accessor: "name",
+    type: "text",
+  },
 ];
 
 // The API to use
 let api: ApplicationRolesApi = new ApplicationRolesApi(ApplicationConfig);
 
 export const ApplicationRoles: React.FC<Props> = (props) => {
-    const title = "Application Roles";
+  const title = "Application Roles";
 
-    return (
-        <ChabloomTable
-            {...props}
-            api={api}
-            title={title}
-            columns={columns}
-            methods={["add", "edit", "delete"]}
-            tenant={undefined}
-        />
-    );
+  return (
+    <ChabloomTable
+      {...props}
+      api={api}
+      title={title}
+      columns={columns}
+      methods={["add", "edit", "delete"]}
+      tenant={undefined}
+    />
+  );
 };

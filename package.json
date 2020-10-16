@@ -1,53 +1,53 @@
 {
-    "name": "chabloom-payments-frontend",
-    "version": "1.0.0",
-    "private": true,
-    "dependencies": {
-        "@material-ui/core": "4.11.0",
-        "@material-ui/icons": "4.9.1",
-        "@material-ui/lab": "4.0.0-alpha.56",
-        "chabloom-payments-typescript": "1.0.5",
-        "oidc-client": "1.10.1",
-        "react": "16.14.0",
-        "react-dom": "16.14.0",
-        "react-router-dom": "5.2.0"
-    },
-    "devDependencies": {
-        "@testing-library/jest-dom": "latest",
-        "@testing-library/react": "latest",
-        "@testing-library/user-event": "latest",
-        "@types/jest": "latest",
-        "@types/node": "latest",
-        "@types/react": "latest",
-        "@types/react-dom": "latest",
-        "@types/react-router-dom": "latest",
-        "@types/react-test-renderer": "latest",
-        "node-sass": "latest",
-        "prettier": "latest",
-        "react-scripts": "latest",
-        "react-test-renderer": "16.14.0",
-        "typescript": "~4.0.3"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "format": "prettier --write ."
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "chabloom-payments-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "4.11.0",
+    "@material-ui/icons": "4.9.1",
+    "@material-ui/lab": "4.0.0-alpha.56",
+    "chabloom-payments-typescript": "1.0.5",
+    "oidc-client": "1.10.1",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "react-router-dom": "5.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "latest",
+    "@testing-library/react": "latest",
+    "@testing-library/user-event": "latest",
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@types/react-router-dom": "latest",
+    "@types/react-test-renderer": "latest",
+    "node-sass": "latest",
+    "prettier": "latest",
+    "react-scripts": "latest",
+    "react-test-renderer": "16.14.0",
+    "typescript": "~4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "format": "prettier --write ."
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

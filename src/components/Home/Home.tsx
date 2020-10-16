@@ -9,17 +9,17 @@ import { CustomerHome } from "./Customer";
 import { ManagerHome } from "./Manager";
 
 interface Props {
-    user: User | undefined;
-    allTenants: Array<TenantViewModel>;
-    admin: boolean;
-    manager: boolean;
+  user: User | undefined;
+  allTenants: Array<TenantViewModel>;
+  admin: boolean;
+  manager: boolean;
 }
 
 export const Home: React.FC<Props> = (props) => {
-    if (props.admin) {
-        return <AdminHome {...props} />;
-    } else if (props.manager) {
-        return <ManagerHome {...props} />;
-    }
-    return <CustomerHome {...props} />;
+  if (props.admin) {
+    return <AdminHome {...props} />;
+  } else if (props.manager) {
+    return <ManagerHome {...props} />;
+  }
+  return <CustomerHome {...props} />;
 };

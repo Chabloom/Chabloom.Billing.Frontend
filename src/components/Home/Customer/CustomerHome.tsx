@@ -10,15 +10,15 @@ import { QuickPay } from "./QuickPay";
 import { QuickView } from "./QuickView";
 
 interface Props {
-    user: User | undefined;
-    allTenants: Array<TenantViewModel>;
+  user: User | undefined;
+  allTenants: Array<TenantViewModel>;
 }
 
 export const CustomerHome: React.FC<Props> = (props) => {
-    return (
-        <Grid container spacing={3} justify="center">
-            <QuickPay {...props} />
-            {props.user && <QuickView {...props} />}
-        </Grid>
-    );
+  return (
+    <Grid container spacing={3} justify="center">
+      <QuickPay {...props} />
+      {props.user && <QuickView {...props} />}
+    </Grid>
+  );
 };

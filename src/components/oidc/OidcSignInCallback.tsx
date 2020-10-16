@@ -5,16 +5,16 @@ import { UserManager } from "oidc-client";
 import { CircularProgress } from "@material-ui/core";
 
 interface Props {
-    userManager: UserManager;
+  userManager: UserManager;
 }
 
 export const OidcSignInCallback: React.FC<Props> = (props) => {
-    const redirectUri = localStorage.getItem("redirectUri");
-    localStorage.setItem("SignedIn", "true");
-    props.userManager
-        .signinRedirectCallback()
-        .then(() =>
-            window.location.replace(redirectUri === null ? "" : redirectUri)
-        );
-    return <CircularProgress />;
+  const redirectUri = localStorage.getItem("redirectUri");
+  localStorage.setItem("SignedIn", "true");
+  props.userManager
+    .signinRedirectCallback()
+    .then(() =>
+      window.location.replace(redirectUri === null ? "" : redirectUri)
+    );
+  return <CircularProgress />;
 };
