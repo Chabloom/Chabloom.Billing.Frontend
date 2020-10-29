@@ -4,3 +4,5 @@ export const ApplicationConfig = {
   apiPublicAddress: "API_PUBLIC_ADDRESS",
   jwtPublicAddress: "JWT_PUBLIC_ADDRESS",
 };
+
+export const AppInsightsInstrumentationKey = "APPINSIGHTS_INSTRUMENTATIONKEY";

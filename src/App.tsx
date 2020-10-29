@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import { ApplicationInsights } from "@microsoft/applicationinsights-web";
+import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
+
 import { User, UserManager } from "oidc-client";
 
 import {
@@ -10,7 +13,9 @@ import {
   TenantViewModel,
 } from "chabloom-payments-typescript";
 
-import { ApplicationConfig } from "./settings/config";
+import { createBrowserHistory } from "history";
+
+import { ApplicationConfig, AppInsightsInstrumentationKey } from "./settings/config";
 import { OidcSettings } from "./settings/oidc";
 
 import {
@@ -31,6 +36,19 @@ import {
 import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
 
 import "./App.scss";
+
+const browserHistory = createBrowserHistory({ basename: "" });
+const reactPlugin = new ReactPlugin();
+const appInsights = new ApplicationInsights({
+  config: {
+    instrumentationKey: AppInsightsInstrumentationKey,
+    extensions: [reactPlugin],
+    extensionConfig: {
+      [reactPlugin.identifier]: { history: browserHistory },
+    },
+  },
+});
+appInsights.loadAppInsights();
 
 const userManager = new UserManager(OidcSettings);
 
