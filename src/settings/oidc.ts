@@ -5,8 +5,8 @@ import { ApplicationConfig } from "./config";
 export const OidcSettings: UserManagerSettings = {
   authority: ApplicationConfig.jwtPublicAddress,
   client_id: "Chabloom.Payments.Frontend",
-  redirect_uri: "PUBLIC_ADDRESS/signin-oidc",
-  post_logout_redirect_uri: "PUBLIC_ADDRESS/signout-oidc",
+  redirect_uri: "http://localhost:3001/signin-oidc",
+  post_logout_redirect_uri: "http://localhost:3001/signout-oidc",
   response_type: "code",
   scope: "openid profile Chabloom.Payments",
   filterProtocolClaims: true,
