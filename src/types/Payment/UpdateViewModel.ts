@@ -1,4 +1,6 @@
-export interface UpdateViewModel {
+import { BaseViewModel } from "../BaseViewModel";
+
+export interface UpdateViewModel extends BaseViewModel {
   readonly id: string;
   name: string;
   amount: number;
