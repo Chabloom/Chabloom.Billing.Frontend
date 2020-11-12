@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationConfig, AccountsApi, TenantViewModel } from "../types";
+import { AccountsApi, TenantViewModel } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
