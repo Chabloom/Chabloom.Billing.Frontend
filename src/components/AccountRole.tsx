@@ -2,12 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import {
-  ApplicationConfig,
-  AccountRolesApi,
-  AccountsApi,
-  TenantViewModel,
-} from "../types";
+import { AccountRolesApi, AccountsApi, TenantViewModel } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -25,7 +20,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: AccountRolesApi = new AccountRolesApi(ApplicationConfig);
+let api: AccountRolesApi = new AccountRolesApi();
 
 export const AccountRole: React.FC<Props> = (props) => {
   let [title, setTitle] = React.useState("Account Roles");
@@ -51,7 +46,7 @@ export const AccountRole: React.FC<Props> = (props) => {
   React.useEffect(() => {
     console.debug("updating table title");
     if (account) {
-      const accountsApi = new AccountsApi(ApplicationConfig, props.tenant?.id);
+      const accountsApi = new AccountsApi(props.tenant?.id);
       accountsApi.readItem(props.user?.access_token, account).then((ret) => {
         if (typeof ret !== "string") {
           setTitle(`${ret.name} Roles`);

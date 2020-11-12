@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationConfig, ApplicationUsersApi } from "../types";
+import { ApplicationUsersApi } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -24,7 +24,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationUsersApi = new ApplicationUsersApi(ApplicationConfig);
+let api: ApplicationUsersApi = new ApplicationUsersApi();
 
 export const ApplicationUser: React.FC<Props> = (props) => {
   const title = "Application Users";

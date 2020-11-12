@@ -1,14 +1,15 @@
-import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationRoleViewModel } from "./model";
+import { ApplicationConfig } from "../settings";
 
 export class ApplicationRolesApi
   extends BaseApi<ApplicationRoleViewModel>
   implements BaseApiType<ApplicationRoleViewModel> {
   baseUrl: string;
 
-  constructor(config: ApplicationConfigType) {
-    super(config);
-    this.baseUrl = `${config.apiPublicAddress}/api/applicationRoles`;
+  constructor() {
+    super();
+    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/applicationRoles`;
   }
 
   readItems(

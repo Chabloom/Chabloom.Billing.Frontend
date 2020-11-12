@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountsApi, ApplicationConfig, PaymentSchedulesApi } from "../types";
+import { AccountsApi, PaymentSchedulesApi } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -53,7 +53,7 @@ export const PaymentSchedule: React.FC<Props> = (props) => {
   React.useEffect(() => {
     console.debug("updating title");
     if (account) {
-      const accountsApi = new AccountsApi(ApplicationConfig);
+      const accountsApi = new AccountsApi();
       accountsApi.readItem(props.user?.access_token, account).then((ret) => {
         if (typeof ret !== "string") {
           setTitle(`${ret.name} Payment Schedules`);

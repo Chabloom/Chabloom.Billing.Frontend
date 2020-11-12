@@ -30,7 +30,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: AccountsApi = new AccountsApi(ApplicationConfig);
+let api: AccountsApi = new AccountsApi();
 
 export const Account: React.FC<Props> = (props) => {
   let [title, setTitle] = React.useState("Accounts");

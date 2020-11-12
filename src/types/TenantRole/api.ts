@@ -1,5 +1,6 @@
-import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantRoleViewModel } from "./model";
+import { ApplicationConfig } from "../settings";
 
 export class TenantRolesApi
   extends BaseApi<TenantRoleViewModel>
@@ -7,9 +8,9 @@ export class TenantRolesApi
   baseUrl: string;
   tenant: string | null;
 
-  constructor(config: ApplicationConfigType, tenant: string | null = null) {
-    super(config);
-    this.baseUrl = `${config.apiPublicAddress}/api/tenantRoles`;
+  constructor(tenant: string | null = null) {
+    super();
+    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenantRoles`;
     this.tenant = tenant;
   }
 

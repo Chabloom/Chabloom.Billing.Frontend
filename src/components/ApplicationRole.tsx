@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationConfig, ApplicationRolesApi } from "../types";
+import { ApplicationRolesApi } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
@@ -19,7 +19,7 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationRolesApi = new ApplicationRolesApi(ApplicationConfig);
+let api: ApplicationRolesApi = new ApplicationRolesApi();
 
 export const ApplicationRole: React.FC<Props> = (props) => {
   const title = "Application Roles";

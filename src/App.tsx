@@ -8,7 +8,6 @@ import { User, UserManager } from "oidc-client";
 
 import {
   AppInsightsInstrumentationKey,
-  ApplicationConfig,
   ApplicationUsersApi,
   OidcSettings,
   TenantsApi,
@@ -97,12 +96,12 @@ export const App: React.FC = () => {
   // Get the user's administrative level
   React.useEffect(() => {
     if (user && !user.expired) {
-      const api = new ApplicationUsersApi(ApplicationConfig);
+      const api = new ApplicationUsersApi();
       api.readItem(user.access_token, user.profile.sub).then((ret) => {
         if (typeof ret !== "string") {
           setUserLevel("admin");
         } else {
-          const tenantUsersApi = new TenantUsersApi(ApplicationConfig);
+          const tenantUsersApi = new TenantUsersApi();
           tenantUsersApi
             .readItem(user.access_token, user.profile.sub)
             .then((ret) => {
@@ -116,7 +115,7 @@ export const App: React.FC = () => {
   }, [user]);
   // Get all available tenants
   React.useEffect(() => {
-    const api = new TenantsApi(ApplicationConfig);
+    const api = new TenantsApi();
     api
       .readItems("")
       .then((result) => {

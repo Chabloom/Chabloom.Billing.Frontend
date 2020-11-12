@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
 
-import { ApplicationConfig, TenantsApi, TenantViewModel } from "../../types";
+import { TenantsApi, TenantViewModel } from "../../types";
 
 interface Props {
   user: User | undefined;
@@ -38,9 +38,9 @@ export const TenantSelection: React.FC<Props> = (props) => {
       let api: TenantsApi;
       if (props.admin) {
         // Admin mode can see all tenants
-        api = new TenantsApi(ApplicationConfig);
+        api = new TenantsApi();
       } else {
-        api = new TenantsApi(ApplicationConfig, props.user.profile.sub);
+        api = new TenantsApi(props.user.profile.sub);
       }
       api.readItems(props.user.access_token).then((ret) => {
         if (typeof ret !== "string") {

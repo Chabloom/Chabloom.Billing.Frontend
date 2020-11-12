@@ -16,11 +16,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  ApplicationConfig,
-  AccountsApi,
-  AccountViewModel,
-} from "../../../types";
+import { AccountsApi, AccountViewModel, PaymentsApi } from "../../../types";
 
 import { PaymentViewModel } from "../../../types/Payment";
 
@@ -80,24 +76,24 @@ export const QuickView: React.FC<Props> = (props) => {
 
   const classes = useStyles();
 
-  /*React.useEffect(() => {
+  React.useEffect(() => {
     if (props.user && !props.user.expired) {
-      const api = new AccountsApi(ApplicationConfig);
+      const api = new AccountsApi();
       api.readItems(props.user.access_token).then((ret) => {
         if (typeof ret !== "string") {
           setAccounts(ret);
           ret.forEach((account) => {
-            const api = new BillsApi(ApplicationConfig, account.id);
+            const api = new PaymentsApi(account.id as string);
             api.readItems(props.user?.access_token).then((ret) => {
               if (typeof ret !== "string") {
-                setBills((b) => [...b, ...ret]);
+                setPayments((p) => [...p, ...ret]);
               }
             });
           });
         }
       });
     }
-  }, [props.user]);*/
+  }, [props.user]);
 
   return (
     <Grid item md={6} xs={12}>

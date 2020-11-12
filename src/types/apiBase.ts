@@ -1,12 +1,5 @@
 import { BaseViewModel } from "./modelBase";
 
-export interface ApplicationConfigType {
-  name: string;
-  displayName: string;
-  apiPublicAddress: string;
-  jwtPublicAddress: string;
-}
-
 export interface BaseApiType<T extends BaseViewModel> {
   readItems(token: string | undefined): Promise<Array<T> | string>;
 
@@ -20,12 +13,6 @@ export interface BaseApiType<T extends BaseViewModel> {
 }
 
 export class BaseApi<T extends BaseViewModel> {
-  config: ApplicationConfigType;
-
-  constructor(config: ApplicationConfigType) {
-    this.config = config;
-  }
-
   _readItems = async (
     token: string | undefined,
     url: string

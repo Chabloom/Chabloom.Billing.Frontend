@@ -18,7 +18,6 @@ import {
   Delete,
   Edit,
   FilterList,
-  Payment,
   Receipt,
   Save,
   Schedule,

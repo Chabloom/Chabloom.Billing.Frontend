@@ -9,7 +9,7 @@ export class PaymentsApi
   account: string;
 
   constructor(account: string) {
-    super(ApplicationConfig);
+    super();
     this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/payments`;
     this.account = account;
   }
