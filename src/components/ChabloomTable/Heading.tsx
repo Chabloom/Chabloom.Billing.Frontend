@@ -40,9 +40,7 @@ interface Props {
   api: BaseApiType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
-  methods: Array<
-    "add" | "edit" | "delete" | "bill" | "schedule" | "transaction"
-  >;
+  methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
   data: Array<BaseViewModel>;
   setData: CallableFunction;
   adding: boolean;
@@ -192,33 +190,23 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
       const account = props.data[props.selectedIndex] as AccountViewModel;
       return (
         <ButtonGroup>
-          {props.methods.includes("bill") && (
-            <Tooltip title="Manage account bills">
+          {props.methods.includes("payment") && (
+            <Tooltip title="Manage account payments">
               <IconButton
                 component={NavLink}
-                to={`/bills?account=${account.id}`}
+                to={`/payments?account=${account.id}`}
               >
                 <Receipt />
               </IconButton>
             </Tooltip>
           )}
-          {props.methods.includes("schedule") && (
-            <Tooltip title="Manage account schedules">
+          {props.methods.includes("paymentSchedule") && (
+            <Tooltip title="Manage account payment schedules">
               <IconButton
                 component={NavLink}
-                to={`/schedules?account=${account.id}`}
+                to={`/paymentSchedules?account=${account.id}`}
               >
                 <Schedule />
-              </IconButton>
-            </Tooltip>
-          )}
-          {props.methods.includes("transaction") && (
-            <Tooltip title="Manage account transactions">
-              <IconButton
-                component={NavLink}
-                to={`/transactions?account=${account.id}`}
-              >
-                <Payment />
               </IconButton>
             </Tooltip>
           )}

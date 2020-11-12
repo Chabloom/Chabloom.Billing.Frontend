@@ -1,26 +1,23 @@
-import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentScheduleViewModel } from "./model";
+import { ApplicationConfig } from "../settings";
 
 export class PaymentSchedulesApi
   extends BaseApi<PaymentScheduleViewModel>
   implements BaseApiType<PaymentScheduleViewModel> {
   baseUrl: string;
-  user: string | null;
+  account: string;
 
-  constructor(config: ApplicationConfigType, user: string | null = null) {
-    super(config);
-    this.baseUrl = `${config.apiPublicAddress}/api/paymentSchedules`;
-    this.user = user;
+  constructor(account: string) {
+    super(ApplicationConfig);
+    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/paymentSchedules`;
+    this.account = account;
   }
 
   readItems(
     token: string | undefined
   ): Promise<Array<PaymentScheduleViewModel> | string> {
-    if (this.user) {
-      return this._readItems(token, `${this.baseUrl}?userId=${this.user}`);
-    } else {
-      return this._readItems(token, `${this.baseUrl}`);
-    }
+    return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
   }
 
   readItem(

@@ -32,7 +32,7 @@ const columns: Array<ChabloomTableColumn> = [
 // The API to use
 let api: AccountsApi = new AccountsApi(ApplicationConfig);
 
-export const Accounts: React.FC<Props> = (props) => {
+export const Account: React.FC<Props> = (props) => {
   let [title, setTitle] = React.useState("Accounts");
 
   React.useEffect(() => {
@@ -57,7 +57,7 @@ export const Accounts: React.FC<Props> = (props) => {
       api={api}
       title={title}
       columns={columns}
-      methods={["add", "edit", "delete", "bill", "schedule", "transaction"]}
+      methods={["add", "edit", "delete", "payment", "paymentSchedule"]}
     />
   );
 };

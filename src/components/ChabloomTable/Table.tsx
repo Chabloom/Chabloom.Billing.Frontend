@@ -18,9 +18,7 @@ interface Props {
   api: BaseApiType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
-  methods: Array<
-    "add" | "edit" | "delete" | "bill" | "schedule" | "transaction"
-  >;
+  methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
 }
 
 export const ChabloomTable: React.FC<Props> = (props) => {
@@ -36,7 +34,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    if (props.user) {
+    if (props.user && props.api) {
       console.debug("updating table data");
       setProcessing(true);
       props.api

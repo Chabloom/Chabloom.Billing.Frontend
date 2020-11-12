@@ -1,26 +1,23 @@
-import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentViewModel } from "./model";
+import { ApplicationConfig } from "../settings";
 
 export class PaymentsApi
   extends BaseApi<PaymentViewModel>
   implements BaseApiType<PaymentViewModel> {
   baseUrl: string;
-  user: string | null;
+  account: string;
 
-  constructor(config: ApplicationConfigType, user: string | null = null) {
-    super(config);
-    this.baseUrl = `${config.apiPublicAddress}/api/payments`;
-    this.user = user;
+  constructor(account: string) {
+    super(ApplicationConfig);
+    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/payments`;
+    this.account = account;
   }
 
   readItems(
     token: string | undefined
   ): Promise<Array<PaymentViewModel> | string> {
-    if (this.user) {
-      return this._readItems(token, `${this.baseUrl}?userId=${this.user}`);
-    } else {
-      return this._readItems(token, `${this.baseUrl}`);
-    }
+    return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
   }
 
   readItem(

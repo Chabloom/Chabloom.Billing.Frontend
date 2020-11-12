@@ -19,16 +19,18 @@ import {
 import { createBrowserHistory } from "history";
 
 import {
-  AccountRoles,
-  Accounts,
-  AccountUsers,
-  ApplicationRoles,
-  ApplicationUsers,
+  AccountRole,
+  Account,
+  AccountUser,
+  ApplicationRole,
+  ApplicationUser,
   Home,
   Navigation,
-  TenantRoles,
-  Tenants,
-  TenantUsers,
+  Payment,
+  PaymentSchedule,
+  TenantRole,
+  Tenant,
+  TenantUser,
 } from "./components";
 import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
 
@@ -152,39 +154,45 @@ export const App: React.FC = () => {
             <OidcSignOutCallback userManager={userManager} />
           </Route>
           <Route path="/accounts">
-            <Accounts user={user} tenant={tenant} />
+            <Account user={user} tenant={tenant} />
+          </Route>
+          <Route path="/payments">
+            <Payment user={user} />
+          </Route>
+          <Route path="/paymentSchedules">
+            <PaymentSchedule user={user} />
           </Route>
           {user && (
             <Route path="/accountRoles">
-              <AccountRoles user={user} tenant={tenant} />
+              <AccountRole user={user} tenant={tenant} />
             </Route>
           )}
           {user && (
             <Route path="/accountUsers">
-              <AccountUsers user={user} tenant={tenant} />
+              <AccountUser user={user} tenant={tenant} />
             </Route>
           )}
           <Route path="/tenants">
-            <Tenants user={user} />
+            <Tenant user={user} />
           </Route>
           {user && tenant && (
             <Route path="/tenantRoles">
-              <TenantRoles user={user} tenant={tenant} />
+              <TenantRole user={user} tenant={tenant} />
             </Route>
           )}
           {user && tenant && (
             <Route path="/tenantUsers">
-              <TenantUsers user={user} tenant={tenant} />
+              <TenantUser user={user} tenant={tenant} />
             </Route>
           )}
           {user && (
             <Route path="/applicationRoles">
-              <ApplicationRoles user={user} />
+              <ApplicationRole user={user} />
             </Route>
           )}
           {user && (
             <Route path="/applicationUsers">
-              <ApplicationUsers user={user} />
+              <ApplicationUser user={user} />
             </Route>
           )}
           <Route path="/">

@@ -42,7 +42,7 @@ const columns: Array<ChabloomTableColumn> = [
 // The API to use
 let api: TenantUsersApi = new TenantUsersApi(ApplicationConfig);
 
-export const TenantUsers: React.FC<Props> = (props) => {
+export const TenantUser: React.FC<Props> = (props) => {
   let [title, setTitle] = React.useState("Tenant Users");
 
   React.useEffect(() => {

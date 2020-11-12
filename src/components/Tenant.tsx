@@ -2,12 +2,12 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationConfig, ApplicationRolesApi } from "../types";
+import { ApplicationConfig, TenantsApi } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
-  user: User;
+  user: User | undefined;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -19,10 +19,10 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationRolesApi = new ApplicationRolesApi(ApplicationConfig);
+let api: TenantsApi = new TenantsApi(ApplicationConfig);
 
-export const ApplicationRoles: React.FC<Props> = (props) => {
-  const title = "Application Roles";
+export const Tenant: React.FC<Props> = (props) => {
+  const title = "Tenants";
 
   return (
     <ChabloomTable
@@ -30,7 +30,7 @@ export const ApplicationRoles: React.FC<Props> = (props) => {
       api={api}
       title={title}
       columns={columns}
-      methods={["add", "edit", "delete"]}
+      methods={["add", "edit"]}
       tenant={undefined}
     />
   );

@@ -27,7 +27,7 @@ const columns: Array<ChabloomTableColumn> = [
 // The API to use
 let api: TenantRolesApi = new TenantRolesApi(ApplicationConfig);
 
-export const TenantRoles: React.FC<Props> = (props) => {
+export const TenantRole: React.FC<Props> = (props) => {
   let [title, setTitle] = React.useState("Tenant Roles");
 
   React.useEffect(() => {

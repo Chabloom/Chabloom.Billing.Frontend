@@ -77,22 +77,29 @@ const DrawerItems: React.FC<Props> = (props) => {
               </ListItemIcon>
               <ListItemText primary="Accounts" />
             </ListItem>
-            <ListItem button key="Bills" component={NavLink} to="/bills">
+            <ListItem
+              button
+              disabled
+              key="Payments"
+              component={NavLink}
+              to="/payments"
+            >
               <ListItemIcon>
                 <Receipt />
               </ListItemIcon>
-              <ListItemText primary="Bills" />
+              <ListItemText primary="Payments" />
             </ListItem>
             <ListItem
               button
-              key="Schedules"
+              disabled
+              key="Payment Schedules"
               component={NavLink}
-              to="/schedules"
+              to="/paymentSchedules"
             >
               <ListItemIcon>
                 <Schedule />
               </ListItemIcon>
-              <ListItemText primary="Schedules" />
+              <ListItemText primary="Payment Schedules" />
             </ListItem>
             <ListItem
               button

@@ -4,8 +4,8 @@ import { User } from "oidc-client";
 
 import {
   ApplicationConfig,
-  AccountRolesApi,
   AccountsApi,
+  AccountUsersApi,
   TenantViewModel,
 } from "../types";
 
@@ -18,17 +18,32 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
   {
-    title: "Name",
-    accessor: "name",
+    title: "User Id",
+    accessor: "userId",
+    type: "text",
+  },
+  {
+    title: "Account Name",
+    accessor: "accountName",
+    type: "text",
+  },
+  {
+    title: "Account Id",
+    accessor: "account",
+    type: "text",
+  },
+  {
+    title: "Role",
+    accessor: "roleName",
     type: "text",
   },
 ];
 
 // The API to use
-let api: AccountRolesApi = new AccountRolesApi(ApplicationConfig);
+let api: AccountUsersApi = new AccountUsersApi(ApplicationConfig);
 
-export const AccountRoles: React.FC<Props> = (props) => {
-  let [title, setTitle] = React.useState("Account Roles");
+export const AccountUser: React.FC<Props> = (props) => {
+  let [title, setTitle] = React.useState("Account Users");
 
   const params = new URLSearchParams(window.location.search);
   const account = params.get("account");
@@ -54,13 +69,13 @@ export const AccountRoles: React.FC<Props> = (props) => {
       const accountsApi = new AccountsApi(ApplicationConfig, props.tenant?.id);
       accountsApi.readItem(props.user?.access_token, account).then((ret) => {
         if (typeof ret !== "string") {
-          setTitle(`${ret.name} Roles`);
+          setTitle(`${ret.name} Users`);
         } else {
-          setTitle("Account Roles");
+          setTitle("Account Users");
         }
       });
     } else {
-      setTitle("Account Roles");
+      setTitle("Account Users");
     }
   }, [account, props.user, props.tenant]);
   return (
