@@ -1,3 +1,2 @@
-export * from "./InitViewModel";
-export * from "./PaymentScheduleViewModel";
-export * from "./UpdateViewModel";
+export * from "./api";
+export * from "./model";
