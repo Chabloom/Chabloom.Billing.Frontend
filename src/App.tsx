@@ -11,11 +11,14 @@ import {
   TenantsApi,
   TenantUsersApi,
   TenantViewModel,
-} from "chabloom-payments-typescript";
+} from "./types";
 
 import { createBrowserHistory } from "history";
 
-import { ApplicationConfig, AppInsightsInstrumentationKey } from "./settings/config";
+import {
+  ApplicationConfig,
+  AppInsightsInstrumentationKey,
+} from "./settings/config";
 import { OidcSettings } from "./settings/oidc";
 
 import {
@@ -24,14 +27,11 @@ import {
   AccountUsers,
   ApplicationRoles,
   ApplicationUsers,
-  Bills,
   Home,
   Navigation,
-  Schedules,
   TenantRoles,
   Tenants,
   TenantUsers,
-  Transactions,
 } from "./components";
 import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
 
@@ -167,15 +167,6 @@ export const App: React.FC = () => {
               <AccountUsers user={user} tenant={tenant} />
             </Route>
           )}
-          <Route path="/bills">
-            <Bills user={user} tenant={tenant} />
-          </Route>
-          <Route path="/schedules">
-            <Schedules user={user} tenant={tenant} />
-          </Route>
-          <Route path="/transactions">
-            <Transactions user={user} tenant={tenant} />
-          </Route>
           <Route path="/tenants">
             <Tenants user={user} />
           </Route>

@@ -4,7 +4,7 @@ import { User } from "oidc-client";
 
 import { Grid } from "@material-ui/core";
 
-import { TenantViewModel } from "chabloom-payments-typescript";
+import { TenantViewModel } from "../../../types";
 
 import { QuickPay } from "./QuickPay";
 import { QuickView } from "./QuickView";

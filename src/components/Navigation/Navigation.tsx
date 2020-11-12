@@ -10,7 +10,7 @@ import {
   Toolbar,
 } from "@material-ui/core";
 
-import { TenantViewModel } from "chabloom-payments-typescript";
+import { TenantViewModel } from "../../types";
 
 import { ChabloomDrawer } from "./Drawer";
 import { ChabloomToolbar } from "./Toolbar";

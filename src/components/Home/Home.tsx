@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { TenantViewModel } from "chabloom-payments-typescript";
+import { TenantViewModel } from "../../types";
 
 import { AdminHome } from "./Admin";
 import { CustomerHome } from "./Customer";

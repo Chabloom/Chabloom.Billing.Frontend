@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
 
-import { TenantsApi, TenantViewModel } from "chabloom-payments-typescript";
+import { TenantsApi, TenantViewModel } from "../../types";
 
 import { ApplicationConfig } from "../../settings/config";
 

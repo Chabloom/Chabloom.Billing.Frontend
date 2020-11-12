@@ -16,12 +16,9 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  AccountsApi,
-  AccountViewModel,
-  BillsApi,
-  BillViewModel,
-} from "chabloom-payments-typescript";
+import { AccountsApi, AccountViewModel } from "../../../types";
+
+import { PaymentViewModel } from "../../../types/Payment";
 
 import { ApplicationConfig } from "../../../settings/config";
 
@@ -52,20 +49,22 @@ const QuickViewTableHead: React.FC = () => {
   );
 };
 
-const QuickViewTableBody: React.FC<{ bills: Array<BillViewModel> }> = (
+const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
   props
 ) => {
   return (
     <TableBody>
-      {props.bills.map((bill) => {
-        if (new Date(bill.dueDate) < new Date()) {
+      {props.payments.map((payment) => {
+        if (new Date(payment.dueDate) < new Date()) {
           return null;
         }
         return (
-          <TableRow hover key={bill.id}>
-            <TableCell>{bill.name}</TableCell>
-            <TableCell>{`$${bill.amount.toFixed(2)}`}</TableCell>
-            <TableCell>{new Date(bill.dueDate).toLocaleDateString()}</TableCell>
+          <TableRow hover key={payment.id}>
+            <TableCell>{payment.name}</TableCell>
+            <TableCell>{`$${payment.amount.toFixed(2)}`}</TableCell>
+            <TableCell>
+              {new Date(payment.dueDate).toLocaleDateString()}
+            </TableCell>
           </TableRow>
         );
       })}
@@ -75,11 +74,11 @@ const QuickViewTableBody: React.FC<{ bills: Array<BillViewModel> }> = (
 
 export const QuickView: React.FC<Props> = (props) => {
   const [accounts, setAccounts] = React.useState([] as Array<AccountViewModel>);
-  const [bills, setBills] = React.useState([] as Array<BillViewModel>);
+  const [payments, setPayments] = React.useState([] as Array<PaymentViewModel>);
 
   const classes = useStyles();
 
-  React.useEffect(() => {
+  /*React.useEffect(() => {
     if (props.user && !props.user.expired) {
       const api = new AccountsApi(ApplicationConfig);
       api.readItems(props.user.access_token).then((ret) => {
@@ -96,23 +95,23 @@ export const QuickView: React.FC<Props> = (props) => {
         }
       });
     }
-  }, [props.user]);
+  }, [props.user]);*/
 
   return (
     <Grid item md={6} xs={12}>
       <Grid container spacing={2}>
         {accounts.map((account) => {
-          const accountBills = bills
+          const accountPayments = payments
             .filter((x) => x.account === account.id)
             .filter((x) => new Date(x.dueDate) > new Date());
-          if (accountBills.length !== 0) {
+          if (accountPayments.length !== 0) {
             return (
               <Grid item xs={12}>
                 <Paper elevation={3} className={classes.paper}>
                   <Typography variant="subtitle2">{account.name}</Typography>
                   <Table>
                     <QuickViewTableHead />
-                    <QuickViewTableBody bills={accountBills} />
+                    <QuickViewTableBody payments={accountPayments} />
                   </Table>
                 </Paper>
               </Grid>

@@ -10,7 +10,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 
-import { BaseViewModel } from "chabloom-payments-typescript";
+import { BaseViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 

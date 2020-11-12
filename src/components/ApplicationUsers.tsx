@@ -2,7 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationUsersApi } from "chabloom-payments-typescript";
+import { ApplicationUsersApi } from "../types";
 
 import { ApplicationConfig } from "../settings/config";
 

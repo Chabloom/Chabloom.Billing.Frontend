@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 
-import { TenantViewModel } from "chabloom-payments-typescript";
+import { TenantViewModel } from "../../types";
 
 import { ModeSelection } from "./ModeSelection";
 import { TenantSelection } from "./TenantSelection";

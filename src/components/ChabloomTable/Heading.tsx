@@ -30,7 +30,7 @@ import {
   BaseApiType,
   BaseViewModel,
   TenantViewModel,
-} from "chabloom-payments-typescript";
+} from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 
