@@ -7,19 +7,16 @@ import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { User, UserManager } from "oidc-client";
 
 import {
+  AppInsightsInstrumentationKey,
+  ApplicationConfig,
   ApplicationUsersApi,
+  OidcSettings,
   TenantsApi,
   TenantUsersApi,
   TenantViewModel,
 } from "./types";
 
 import { createBrowserHistory } from "history";
-
-import {
-  ApplicationConfig,
-  AppInsightsInstrumentationKey,
-} from "./settings/config";
-import { OidcSettings } from "./settings/oidc";
 
 import {
   AccountRoles,

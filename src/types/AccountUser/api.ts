@@ -1,4 +1,4 @@
-import { ApplicationConfig, BaseApi, BaseApiType } from "../apiBase";
+import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
 import { AccountUserViewModel } from "./model";
 
 export class AccountUsersApi
@@ -9,7 +9,7 @@ export class AccountUsersApi
   tenant: string | null;
 
   constructor(
-    config: ApplicationConfig,
+    config: ApplicationConfigType,
     account: string | null = null,
     tenant: string | null = null
   ) {

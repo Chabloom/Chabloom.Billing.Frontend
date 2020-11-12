@@ -1,4 +1,4 @@
-import { ApplicationConfig, BaseApi, BaseApiType } from "../apiBase";
+import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
 import { PaymentViewModel } from "./model";
 
 export class PaymentsApi
@@ -7,7 +7,7 @@ export class PaymentsApi
   baseUrl: string;
   user: string | null;
 
-  constructor(config: ApplicationConfig, user: string | null = null) {
+  constructor(config: ApplicationConfigType, user: string | null = null) {
     super(config);
     this.baseUrl = `${config.apiPublicAddress}/api/payments`;
     this.user = user;

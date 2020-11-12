@@ -1,4 +1,4 @@
-import { ApplicationConfig, BaseApi, BaseApiType } from "../apiBase";
+import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationUserViewModel } from "./model";
 
 export class ApplicationUsersApi
@@ -6,7 +6,7 @@ export class ApplicationUsersApi
   implements BaseApiType<ApplicationUserViewModel> {
   baseUrl: string;
 
-  constructor(config: ApplicationConfig) {
+  constructor(config: ApplicationConfigType) {
     super(config);
     this.baseUrl = `${config.apiPublicAddress}/api/applicationUsers`;
   }

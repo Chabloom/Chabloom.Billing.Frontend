@@ -16,11 +16,13 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { AccountsApi, AccountViewModel } from "../../../types";
+import {
+  ApplicationConfig,
+  AccountsApi,
+  AccountViewModel,
+} from "../../../types";
 
 import { PaymentViewModel } from "../../../types/Payment";
-
-import { ApplicationConfig } from "../../../settings/config";
 
 interface Props {
   user: User | undefined;

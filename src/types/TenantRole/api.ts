@@ -1,4 +1,4 @@
-import { ApplicationConfig, BaseApi, BaseApiType } from "../apiBase";
+import { ApplicationConfigType, BaseApi, BaseApiType } from "../apiBase";
 import { TenantRoleViewModel } from "./model";
 
 export class TenantRolesApi
@@ -7,7 +7,7 @@ export class TenantRolesApi
   baseUrl: string;
   tenant: string | null;
 
-  constructor(config: ApplicationConfig, tenant: string | null = null) {
+  constructor(config: ApplicationConfigType, tenant: string | null = null) {
     super(config);
     this.baseUrl = `${config.apiPublicAddress}/api/tenantRoles`;
     this.tenant = tenant;

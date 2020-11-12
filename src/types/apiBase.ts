@@ -1,6 +1,6 @@
 import { BaseViewModel } from "./modelBase";
 
-export interface ApplicationConfig {
+export interface ApplicationConfigType {
   name: string;
   displayName: string;
   apiPublicAddress: string;
@@ -20,9 +20,9 @@ export interface BaseApiType<T extends BaseViewModel> {
 }
 
 export class BaseApi<T extends BaseViewModel> {
-  config: ApplicationConfig;
+  config: ApplicationConfigType;
 
-  constructor(config: ApplicationConfig) {
+  constructor(config: ApplicationConfigType) {
     this.config = config;
   }
 
