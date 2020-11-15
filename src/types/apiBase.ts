@@ -5,9 +5,9 @@ export interface BaseApiType<T extends BaseViewModel> {
 
   readItem(token: string | undefined, itemId: string): Promise<T | string>;
 
-  addItem(token: string | undefined, item: T): Promise<string | undefined>;
+  addItem(token: string | undefined, item: T): Promise<[BaseViewModel | undefined, string]>;
 
-  editItem(token: string | undefined, item: T): Promise<string | undefined>;
+  editItem(token: string | undefined, item: T): Promise<[BaseViewModel | undefined, string]>;
 
   deleteItem(token: string | undefined, item: T): Promise<string | undefined>;
 }
@@ -65,7 +65,7 @@ export class BaseApi<T extends BaseViewModel> {
     token: string | undefined,
     url: string,
     item: T
-  ): Promise<string | undefined> => {
+  ): Promise<[BaseViewModel | undefined, string]> => {
     try {
       const headers = new Headers({
         "Content-Type": "application/json",
@@ -80,12 +80,13 @@ export class BaseApi<T extends BaseViewModel> {
         body: JSON.stringify(item),
       });
       if (response.status === 201) {
-        return undefined;
+        const retJson = await response.json();
+        return [retJson, ""];
       } else {
-        return response.statusText;
+        return [undefined, response.statusText];
       }
     } catch (e) {
-      return e.message;
+      return [undefined, e.message];
     }
   };
 
@@ -93,7 +94,7 @@ export class BaseApi<T extends BaseViewModel> {
     token: string | undefined,
     url: string,
     item: T
-  ): Promise<string | undefined> => {
+  ): Promise<[BaseViewModel | undefined, string]> => {
     try {
       const headers = new Headers({
         "Content-Type": "application/json",
@@ -107,13 +108,14 @@ export class BaseApi<T extends BaseViewModel> {
         credentials: "include",
         body: JSON.stringify(item),
       });
-      if (response.status === 204) {
-        return undefined;
+      if (response.status === 200) {
+        const retJson = await response.json();
+        return [retJson, ""];
       } else {
-        return response.statusText;
+        return [undefined, response.statusText];
       }
     } catch (e) {
-      return e.message;
+      return [undefined, e.message];
     }
   };
 

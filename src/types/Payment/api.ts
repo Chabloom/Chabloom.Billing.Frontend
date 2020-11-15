@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class PaymentsApi
   extends BaseApi<PaymentViewModel>
@@ -30,14 +31,16 @@ export class PaymentsApi
   addItem(
     token: string | undefined,
     item: PaymentViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
+    item.account = this.account;
     return this._addItem(token, `${this.baseUrl}`, item);
   }
 
   editItem(
     token: string | undefined,
     item: PaymentViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
+    item.account = this.account;
     return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
   }
 

@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountUserViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class AccountUsersApi
   extends BaseApi<AccountUserViewModel>
@@ -41,7 +42,7 @@ export class AccountUsersApi
   addItem(
     token: string | undefined,
     item: AccountUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.account) {
       item.account = this.account;
     }
@@ -51,7 +52,7 @@ export class AccountUsersApi
   editItem(
     token: string | undefined,
     item: AccountUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.account) {
       item.account = this.account;
     }

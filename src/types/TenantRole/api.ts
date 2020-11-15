@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantRoleViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class TenantRolesApi
   extends BaseApi<TenantRoleViewModel>
@@ -34,7 +35,7 @@ export class TenantRolesApi
   addItem(
     token: string | undefined,
     item: TenantRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }
@@ -44,7 +45,7 @@ export class TenantRolesApi
   editItem(
     token: string | undefined,
     item: TenantRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }

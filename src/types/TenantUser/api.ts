@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantUserViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class TenantUsersApi
   extends BaseApi<TenantUserViewModel>
@@ -34,7 +35,7 @@ export class TenantUsersApi
   addItem(
     token: string | undefined,
     item: TenantUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }
@@ -44,7 +45,7 @@ export class TenantUsersApi
   editItem(
     token: string | undefined,
     item: TenantUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }

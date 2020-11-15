@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class TenantsApi
   extends BaseApi<TenantViewModel>
@@ -34,14 +35,14 @@ export class TenantsApi
   addItem(
     token: string | undefined,
     item: TenantViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._addItem(token, `${this.baseUrl}`, item);
   }
 
   editItem(
     token: string | undefined,
     item: TenantViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
   }
 

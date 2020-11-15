@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class AccountsApi
   extends BaseApi<AccountViewModel>
@@ -34,7 +35,7 @@ export class AccountsApi
   addItem(
     token: string | undefined,
     item: AccountViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     const tenantId = window.localStorage.getItem("TenantId");
     if (tenantId) {
       item.tenant = tenantId;
@@ -45,7 +46,7 @@ export class AccountsApi
   editItem(
     token: string | undefined,
     item: AccountViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     const tenantId = window.localStorage.getItem("TenantId");
     if (tenantId) {
       item.tenant = tenantId;

@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationUserViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class ApplicationUsersApi
   extends BaseApi<ApplicationUserViewModel>
@@ -28,14 +29,14 @@ export class ApplicationUsersApi
   addItem(
     token: string | undefined,
     item: ApplicationUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._addItem(token, `${this.baseUrl}`, item);
   }
 
   editItem(
     token: string | undefined,
     item: ApplicationUserViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
   }
 

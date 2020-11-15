@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationRoleViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class ApplicationRolesApi
   extends BaseApi<ApplicationRoleViewModel>
@@ -28,14 +29,14 @@ export class ApplicationRolesApi
   addItem(
     token: string | undefined,
     item: ApplicationRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._addItem(token, `${this.baseUrl}`, item);
   }
 
   editItem(
     token: string | undefined,
     item: ApplicationRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
   }
 

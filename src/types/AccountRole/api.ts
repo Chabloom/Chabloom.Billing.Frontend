@@ -1,6 +1,7 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountRoleViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseViewModel } from "../modelBase";
 
 export class AccountRolesApi
   extends BaseApi<AccountRoleViewModel>
@@ -41,7 +42,7 @@ export class AccountRolesApi
   addItem(
     token: string | undefined,
     item: AccountRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.account) {
       item.account = this.account;
     }
@@ -51,7 +52,7 @@ export class AccountRolesApi
   editItem(
     token: string | undefined,
     item: AccountRoleViewModel
-  ): Promise<string | undefined> {
+  ): Promise<[BaseViewModel | undefined, string]> {
     if (this.account) {
       item.account = this.account;
     }
