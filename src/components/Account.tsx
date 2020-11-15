@@ -8,7 +8,8 @@ import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
   user: User | undefined;
-  tenant: TenantViewModel | undefined;
+  tenant: TenantViewModel;
+  setAccount: CallableFunction;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -31,26 +32,20 @@ const columns: Array<ChabloomTableColumn> = [
 
 // The API to use
 let api: AccountsApi = new AccountsApi();
+// The page title
+let title: string;
 
 export const Account: React.FC<Props> = (props) => {
-  let [title, setTitle] = React.useState("Accounts");
+  // Update the API and title
+  React.useEffect(() => {
+    api = new AccountsApi(props.tenant.id as string);
+    title = `Accounts for ${props.tenant.name}`;
+  }, [props.tenant]);
 
   React.useEffect(() => {
-    console.debug("updating api tenant");
-    if (props.tenant?.id) {
-      api.tenant = props.tenant?.id;
-    } else {
-      api.tenant = null;
-    }
-  }, [props.tenant]);
-  React.useEffect(() => {
-    console.debug("updating table title");
-    if (props.tenant?.name) {
-      setTitle(`${props.tenant.name} Accounts`);
-    } else {
-      setTitle("Accounts");
-    }
-  }, [props.tenant]);
+    props.setAccount(undefined);
+  }, []);
+
   return (
     <ChabloomTable
       {...props}
@@ -58,6 +53,7 @@ export const Account: React.FC<Props> = (props) => {
       title={title}
       columns={columns}
       methods={["add", "edit", "delete", "payment", "paymentSchedule"]}
+      setAccount={props.setAccount}
     />
   );
 };

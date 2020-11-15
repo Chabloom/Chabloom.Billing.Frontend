@@ -20,10 +20,11 @@ import {
   Group,
   GroupAdd,
   Home,
-  Payment,
   Receipt,
   Schedule,
 } from "@material-ui/icons";
+
+import { AccountViewModel, TenantViewModel } from "../../types";
 
 interface Props {
   userLevel: "admin" | "manager" | undefined;
@@ -31,6 +32,8 @@ interface Props {
   manager: boolean;
   mobileDrawerOpen: boolean;
   setMobileDrawerOpen: CallableFunction;
+  tenant: TenantViewModel | undefined;
+  account: AccountViewModel | undefined;
 }
 
 const drawerWidth = 240;
@@ -71,47 +74,45 @@ const DrawerItems: React.FC<Props> = (props) => {
         <div>
           <Divider />
           <List>
-            <ListItem button key="Accounts" component={NavLink} to="/accounts">
-              <ListItemIcon>
-                <AccountCircle />
-              </ListItemIcon>
-              <ListItemText primary="Accounts" />
-            </ListItem>
-            <ListItem
-              button
-              disabled
-              key="Payments"
-              component={NavLink}
-              to="/payments"
-            >
-              <ListItemIcon>
-                <Receipt />
-              </ListItemIcon>
-              <ListItemText primary="Payments" />
-            </ListItem>
-            <ListItem
-              button
-              disabled
-              key="Payment Schedules"
-              component={NavLink}
-              to="/paymentSchedules"
-            >
-              <ListItemIcon>
-                <Schedule />
-              </ListItemIcon>
-              <ListItemText primary="Payment Schedules" />
-            </ListItem>
-            <ListItem
-              button
-              key="Transactions"
-              component={NavLink}
-              to="/transactions"
-            >
-              <ListItemIcon>
-                <Payment />
-              </ListItemIcon>
-              <ListItemText primary="Transactions" />
-            </ListItem>
+            {props.tenant && (
+              <ListItem
+                button
+                key="Accounts"
+                component={NavLink}
+                to="/accounts"
+              >
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText primary="Accounts" />
+              </ListItem>
+            )}
+            {props.account && (
+              <ListItem
+                button
+                key="Payments"
+                component={NavLink}
+                to="/payments"
+              >
+                <ListItemIcon>
+                  <Receipt />
+                </ListItemIcon>
+                <ListItemText primary="Payments" />
+              </ListItem>
+            )}
+            {props.account && (
+              <ListItem
+                button
+                key="Payment Schedules"
+                component={NavLink}
+                to="/paymentSchedules"
+              >
+                <ListItemIcon>
+                  <Schedule />
+                </ListItemIcon>
+                <ListItemText primary="Payment Schedules" />
+              </ListItem>
+            )}
           </List>
         </div>
       )}
@@ -119,28 +120,6 @@ const DrawerItems: React.FC<Props> = (props) => {
         <div>
           <Divider />
           <List>
-            <ListItem
-              button
-              key="accountUsers"
-              component={NavLink}
-              to="/accountUsers"
-            >
-              <ListItemIcon>
-                <Group />
-              </ListItemIcon>
-              <ListItemText primary="Account Users" />
-            </ListItem>
-            <ListItem
-              button
-              key="accountRoles"
-              component={NavLink}
-              to="/accountRoles"
-            >
-              <ListItemIcon>
-                <GroupAdd />
-              </ListItemIcon>
-              <ListItemText primary="Account Roles" />
-            </ListItem>
             <ListItem
               button
               key="tenantUsers"

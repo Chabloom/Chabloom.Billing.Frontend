@@ -32,6 +32,7 @@ export const Tenant: React.FC<Props> = (props) => {
       columns={columns}
       methods={["add", "edit"]}
       tenant={undefined}
+      setAccount={() => {}}
     />
   );
 };

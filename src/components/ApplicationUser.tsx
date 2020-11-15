@@ -37,6 +37,7 @@ export const ApplicationUser: React.FC<Props> = (props) => {
       columns={columns}
       methods={["add", "edit", "delete"]}
       tenant={undefined}
+      setAccount={() => {}}
     />
   );
 };

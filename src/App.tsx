@@ -7,6 +7,7 @@ import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { User, UserManager } from "oidc-client";
 
 import {
+  AccountViewModel,
   AppInsightsInstrumentationKey,
   ApplicationUsersApi,
   OidcSettings,
@@ -18,8 +19,8 @@ import {
 import { createBrowserHistory } from "history";
 
 import {
-  AccountRole,
   Account,
+  AccountRole,
   AccountUser,
   ApplicationRole,
   ApplicationUser,
@@ -27,8 +28,8 @@ import {
   Navigation,
   Payment,
   PaymentSchedule,
-  TenantRole,
   Tenant,
+  TenantRole,
   TenantUser,
 } from "./components";
 import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
@@ -61,6 +62,8 @@ export const App: React.FC = () => {
   const [allTenants, setAllTenants] = React.useState(
     [] as Array<TenantViewModel>
   );
+
+  const [account, setAccount] = React.useState<AccountViewModel>();
 
   // Check if the user is signed in
   React.useEffect(() => {
@@ -144,6 +147,7 @@ export const App: React.FC = () => {
         setAdmin={setAdmin}
         manager={manager}
         setManager={setManager}
+        account={account}
       >
         <Switch>
           <Route exact={true} path="/signin-oidc">
@@ -152,23 +156,29 @@ export const App: React.FC = () => {
           <Route exact={true} path="/signout-oidc">
             <OidcSignOutCallback userManager={userManager} />
           </Route>
-          <Route path="/accounts">
-            <Account user={user} tenant={tenant} />
-          </Route>
-          <Route path="/payments">
-            <Payment user={user} />
-          </Route>
-          <Route path="/paymentSchedules">
-            <PaymentSchedule user={user} />
-          </Route>
-          {user && (
-            <Route path="/accountRoles">
-              <AccountRole user={user} tenant={tenant} />
+          {tenant && (
+            <Route path="/accounts">
+              <Account user={user} tenant={tenant} setAccount={setAccount} />
             </Route>
           )}
-          {user && (
+          {account && (
+            <Route path="/payments">
+              <Payment user={user} account={account} />
+            </Route>
+          )}
+          {account && (
+            <Route path="/paymentSchedules">
+              <PaymentSchedule user={user} account={account} />
+            </Route>
+          )}
+          {user && account && (
+            <Route path="/accountRoles">
+              <AccountRole user={user} account={account} />
+            </Route>
+          )}
+          {user && account && (
             <Route path="/accountUsers">
-              <AccountUser user={user} tenant={tenant} />
+              <AccountUser user={user} account={account} />
             </Route>
           )}
           <Route path="/tenants">

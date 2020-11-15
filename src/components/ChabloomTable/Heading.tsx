@@ -25,7 +25,6 @@ import {
 import { Alert, AlertTitle } from "@material-ui/lab";
 
 import {
-  AccountViewModel,
   BaseApiType,
   BaseViewModel,
   TenantViewModel,
@@ -186,14 +185,13 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
         </ButtonGroup>
       );
     } else {
-      const account = props.data[props.selectedIndex] as AccountViewModel;
       return (
         <ButtonGroup>
           {props.methods.includes("payment") && (
             <Tooltip title="Manage account payments">
               <IconButton
                 component={NavLink}
-                to={`/payments?account=${account.id}`}
+                to="/payments"
               >
                 <Receipt />
               </IconButton>
@@ -203,7 +201,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
             <Tooltip title="Manage account payment schedules">
               <IconButton
                 component={NavLink}
-                to={`/paymentSchedules?account=${account.id}`}
+                to="/paymentSchedules"
               >
                 <Schedule />
               </IconButton>

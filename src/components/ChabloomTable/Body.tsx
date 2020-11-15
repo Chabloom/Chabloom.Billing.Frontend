@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import { BaseViewModel } from "../../types";
+import { AccountViewModel, BaseViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 
@@ -22,6 +22,7 @@ interface Props {
   setEditItem: CallableFunction;
   deleteIndex: number;
   processing: boolean;
+  setAccount: CallableFunction;
 }
 
 export const ChabloomTableBody: React.FC<Props> = (props) => {
@@ -40,8 +41,13 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                 if (props.editIndex !== index && props.deleteIndex !== index) {
                   props.setSelectedIndex(-1);
                 }
+                props.setAccount(undefined);
               } else {
                 props.setSelectedIndex(index);
+                const account = row as AccountViewModel;
+                if (account) {
+                  props.setAccount(account);
+                }
               }
             }}
             selected={props.selectedIndex === index}

@@ -2,13 +2,13 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountsApi, AccountUsersApi, TenantViewModel } from "../types";
+import { AccountUsersApi, AccountViewModel } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
   user: User | undefined;
-  tenant: TenantViewModel | undefined;
+  account: AccountViewModel;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -36,43 +36,16 @@ const columns: Array<ChabloomTableColumn> = [
 
 // The API to use
 let api: AccountUsersApi = new AccountUsersApi();
+// The page title
+let title: string;
 
 export const AccountUser: React.FC<Props> = (props) => {
-  let [title, setTitle] = React.useState("Account Users");
+  // Update the API and title
+  React.useEffect(() => {
+    api = new AccountUsersApi(props.account.id as string);
+    title = `Account Users for ${props.account.name}`;
+  }, [props.account]);
 
-  const params = new URLSearchParams(window.location.search);
-  const account = params.get("account");
-  React.useEffect(() => {
-    console.debug("updating api account");
-    if (account) {
-      api.account = account;
-    } else {
-      api.account = null;
-    }
-  }, [account]);
-  React.useEffect(() => {
-    console.debug("updating api tenant");
-    if (props.tenant?.id) {
-      api.tenant = props.tenant?.id;
-    } else {
-      api.tenant = null;
-    }
-  }, [props.tenant]);
-  React.useEffect(() => {
-    console.debug("updating table title");
-    if (account) {
-      const accountsApi = new AccountsApi(props.tenant?.id);
-      accountsApi.readItem(props.user?.access_token, account).then((ret) => {
-        if (typeof ret !== "string") {
-          setTitle(`${ret.name} Users`);
-        } else {
-          setTitle("Account Users");
-        }
-      });
-    } else {
-      setTitle("Account Users");
-    }
-  }, [account, props.user, props.tenant]);
   return (
     <ChabloomTable
       {...props}
@@ -80,6 +53,8 @@ export const AccountUser: React.FC<Props> = (props) => {
       title={title}
       columns={columns}
       methods={["add", "edit", "delete"]}
+      tenant={undefined}
+      setAccount={() => {}}
     />
   );
 };

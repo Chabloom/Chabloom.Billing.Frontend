@@ -2,12 +2,13 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountsApi, PaymentsApi } from "../types";
+import { AccountViewModel, PaymentsApi } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
   user: User | undefined;
+  account: AccountViewModel;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -30,34 +31,15 @@ const columns: Array<ChabloomTableColumn> = [
 
 // The API to use
 let api: PaymentsApi;
+// The page title
+let title: string;
 
 export const Payment: React.FC<Props> = (props) => {
-  let [title, setTitle] = React.useState("Payments");
-
-  // Get the currently specified account
-  const params = new URLSearchParams(window.location.search);
-  const account = params.get("account");
-  // Update the API
+  // Update the API and title
   React.useEffect(() => {
-    console.debug("updating api");
-    if (account) {
-      api = new PaymentsApi(account);
-    }
-  }, [account]);
-  // Update the title
-  React.useEffect(() => {
-    console.debug("updating title");
-    if (account) {
-      const accountsApi = new AccountsApi();
-      accountsApi.readItem(props.user?.access_token, account).then((ret) => {
-        if (typeof ret !== "string") {
-          setTitle(`${ret.name} Payments`);
-          return;
-        }
-      });
-    }
-    setTitle("Payments");
-  }, [account, props.user?.access_token]);
+    api = new PaymentsApi(props.account.id as string);
+    title = `Payments for ${props.account.name}`;
+  }, [props.account]);
 
   return (
     <ChabloomTable
@@ -67,6 +49,7 @@ export const Payment: React.FC<Props> = (props) => {
       columns={columns}
       methods={["add", "edit", "delete"]}
       tenant={undefined}
+      setAccount={() => {}}
     />
   );
 };

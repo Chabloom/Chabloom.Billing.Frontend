@@ -10,7 +10,7 @@ import {
   Toolbar,
 } from "@material-ui/core";
 
-import { TenantViewModel } from "../../types";
+import { AccountViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomDrawer } from "./Drawer";
 import { ChabloomToolbar } from "./Toolbar";
@@ -19,13 +19,14 @@ interface Props {
   user: User | undefined;
   userManager: UserManager;
   userLevel: "admin" | "manager" | undefined;
-  tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;
   allTenants: Array<TenantViewModel>;
   admin: boolean;
   setAdmin: CallableFunction;
   manager: boolean;
   setManager: CallableFunction;
+  tenant: TenantViewModel | undefined;
+  account: AccountViewModel | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

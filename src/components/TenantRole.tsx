@@ -2,13 +2,13 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { TenantRolesApi, TenantsApi, TenantViewModel } from "../types";
+import { TenantRolesApi, TenantViewModel } from "../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
 
 interface Props {
   user: User | undefined;
-  tenant: TenantViewModel | undefined;
+  tenant: TenantViewModel;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -21,27 +21,16 @@ const columns: Array<ChabloomTableColumn> = [
 
 // The API to use
 let api: TenantRolesApi = new TenantRolesApi();
+// The page title
+let title: string;
 
 export const TenantRole: React.FC<Props> = (props) => {
-  let [title, setTitle] = React.useState("Tenant Roles");
-
+  // Update the API and title
   React.useEffect(() => {
-    console.debug("updating table title");
-    if (props.tenant && props.tenant.id) {
-      const tenantsApi = new TenantsApi(props.user?.profile.sub);
-      tenantsApi
-        .readItem(props.user?.access_token, props.tenant.id)
-        .then((ret) => {
-          if (typeof ret !== "string") {
-            setTitle(`${ret.name} Roles`);
-          } else {
-            setTitle("Tenant Roles");
-          }
-        });
-    } else {
-      setTitle("Tenant Roles");
-    }
-  }, [props.user, props.tenant]);
+    api = new TenantRolesApi(props.tenant.id as string);
+    title = `Tenant Roles for ${props.tenant.name}`;
+  }, [props.tenant]);
+
   return (
     <ChabloomTable
       {...props}
@@ -49,6 +38,7 @@ export const TenantRole: React.FC<Props> = (props) => {
       title={title}
       columns={columns}
       methods={["add", "edit", "delete"]}
+      setAccount={() => {}}
     />
   );
 };
