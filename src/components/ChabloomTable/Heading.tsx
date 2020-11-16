@@ -24,11 +24,7 @@ import {
 } from "@material-ui/icons";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import {
-  BaseApiType,
-  BaseViewModel,
-  TenantViewModel,
-} from "../../types";
+import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 
@@ -203,20 +199,14 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
         <ButtonGroup>
           {props.methods.includes("payment") && (
             <Tooltip title="Manage account payments">
-              <IconButton
-                component={NavLink}
-                to="/payments"
-              >
+              <IconButton component={NavLink} to="/payments">
                 <Receipt />
               </IconButton>
             </Tooltip>
           )}
           {props.methods.includes("paymentSchedule") && (
             <Tooltip title="Manage account payment schedules">
-              <IconButton
-                component={NavLink}
-                to="/paymentSchedules"
-              >
+              <IconButton component={NavLink} to="/paymentSchedules">
                 <Schedule />
               </IconButton>
             </Tooltip>

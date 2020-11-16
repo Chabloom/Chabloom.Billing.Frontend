@@ -5,9 +5,15 @@ export interface BaseApiType<T extends BaseViewModel> {
 
   readItem(token: string | undefined, itemId: string): Promise<T | string>;
 
-  addItem(token: string | undefined, item: T): Promise<[BaseViewModel | undefined, string]>;
+  addItem(
+    token: string | undefined,
+    item: T
+  ): Promise<[BaseViewModel | undefined, string]>;
 
-  editItem(token: string | undefined, item: T): Promise<[BaseViewModel | undefined, string]>;
+  editItem(
+    token: string | undefined,
+    item: T
+  ): Promise<[BaseViewModel | undefined, string]>;
 
   deleteItem(token: string | undefined, item: T): Promise<string | undefined>;
 }
