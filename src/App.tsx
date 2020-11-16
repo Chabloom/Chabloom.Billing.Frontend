@@ -1,45 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import { User, UserManager } from "oidc-client";
 
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
-import { User, UserManager } from "oidc-client";
-
-import {
-  AccountViewModel,
-  AppInsightsInstrumentationKey,
-  ApplicationUsersApi,
-  OidcSettings,
-  TenantsApi,
-  TenantUsersApi,
-  TenantViewModel,
-} from "./types";
-
 import { createBrowserHistory } from "history";
 
 import {
-  Account,
-  AccountRole,
-  AccountUser,
-  ApplicationRole,
-  ApplicationUser,
-  Home,
-  Navigation,
-  Payment,
-  PaymentSchedule,
-  Tenant,
-  TenantRole,
-  TenantUser,
-  SignIn,
-  SignInCallback,
-  SignOut,
-  SignOutCallback,
-  Register,
-  Error,
-  Transaction,
-  TransactionSchedule,
-} from "./components";
+  AppInsightsInstrumentationKey,
+  appIsStandalone,
+  OidcSettings,
+  TenantsApi,
+  TenantViewModel,
+} from "./types";
+
+import { Main, MainMobile } from "./components";
 
 import "./App.scss";
 
@@ -58,191 +34,89 @@ appInsights.loadAppInsights();
 
 const userManager = new UserManager(OidcSettings);
 
-export const App: React.FC = () => {
-  const [user, setUser] = React.useState<User>();
-  const [userLevel, setUserLevel] = React.useState<
-    "admin" | "manager" | undefined
-  >();
-  const [admin, setAdmin] = React.useState(false);
-  const [manager, setManager] = React.useState(false);
-  const [tenant, setTenant] = React.useState<TenantViewModel>();
-  const [allTenants, setAllTenants] = React.useState(
-    [] as Array<TenantViewModel>
-  );
-
-  const [account, setAccount] = React.useState<AccountViewModel>();
-
-  // Check if the user is signed in
-  React.useEffect(() => {
+const getUser = async (
+  userManager: UserManager
+): Promise<[boolean, User | undefined]> => {
+  // Check if the user wishes to be signed in
+  if (!appIsStandalone()) {
     const signedIn = localStorage.getItem("SignedIn");
     if (signedIn !== "true") {
-      console.debug("user not logged in");
-      return;
+      return [false, undefined];
     }
-    console.debug("updating user");
-    userManager.getUser().then((ret) => {
-      if (ret && !ret.expired) {
-        console.debug("user valid");
-        setUser(ret);
-      } else {
-        // Attempt silent sign in
-        userManager
-          .signinSilent()
-          .then((ret) => {
-            if (ret && !ret.expired) {
-              console.debug("got silent user");
-              setUser(ret);
-            } else {
-              // Redirect to sign in
-              console.debug("redirecting to sign in");
-              localStorage.setItem("redirectUri", window.location.pathname);
-              userManager.signinRedirect().then();
-            }
-          })
-          .catch((reason) => console.debug(reason));
-      }
+  }
+  // Check if the user is already logged in
+  let user = await userManager.getUser();
+  if (user && !user.expired) {
+    return [true, user];
+  }
+  // Attempt silent sign in
+  user = await userManager.signinSilent();
+  if (user && !user.expired) {
+    return [true, user];
+  }
+  // Redirect to sign in page
+  localStorage.setItem("redirectUri", window.location.pathname);
+  await userManager.signinRedirect();
+  return [false, undefined];
+};
+
+const getTenants = async () => {
+  const tenantsApi = new TenantsApi();
+  const tenants = await tenantsApi.readItems("");
+  if (typeof tenants !== "string") {
+    return tenants;
+  }
+  return [] as Array<TenantViewModel>;
+};
+
+export const App: React.FC = () => {
+  const [signedIn, setSignedIn] = React.useState(false);
+  const [user, setUser] = React.useState<User>();
+  const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
+
+  // Ensure user is signed in
+  React.useEffect(() => {
+    getUser(userManager).then(([s, u]) => {
+      setSignedIn(s);
+      setUser(u);
     });
   }, []);
-  // Get the user's administrative level
+
+  // Add access token expired event
   React.useEffect(() => {
-    if (user && !user.expired) {
-      const api = new ApplicationUsersApi();
-      api.readItem(user.access_token, user.profile.sub).then((ret) => {
-        if (typeof ret !== "string") {
-          setUserLevel("admin");
-        } else {
-          const tenantUsersApi = new TenantUsersApi();
-          tenantUsersApi
-            .readItem(user.access_token, user.profile.sub)
-            .then((ret) => {
-              if (typeof ret !== "string") {
-                setUserLevel("manager");
-              }
-            });
-        }
-      });
-    }
-  }, [user]);
-  // Get all available tenants
-  React.useEffect(() => {
-    const api = new TenantsApi();
-    api
-      .readItems("")
-      .then((result) => {
-        if (typeof result !== "string") {
-          try {
-            result = result.sort((a, b) => a.name.localeCompare(b.name));
-            setAllTenants(result);
-          } catch {
-            console.log("item read failed");
-          }
-        }
+    userManager.events.addUserLoaded((u) => {
+      setUser(u);
+      window.location.replace(window.location.pathname);
+    });
+    userManager.events.addAccessTokenExpired(() =>
+      getUser(userManager).then(([s, u]) => {
+        setSignedIn(s);
+        setUser(u);
       })
-      .catch((e) => console.log(e.message));
+    );
   }, []);
 
-  return (
-    <Router>
-      <Navigation
-        user={user}
+  // Get all available tenants
+  React.useEffect(() => {
+    getTenants().then((t) => setTenants(t));
+  }, []);
+
+  if (appIsStandalone()) {
+    // User is required in standalone mode
+    if (!user) {
+      return null;
+    }
+    return (
+      <MainMobile userManager={userManager} user={user} tenants={tenants} />
+    );
+  } else {
+    return (
+      <Main
         userManager={userManager}
-        userLevel={userLevel}
-        tenant={tenant}
-        setTenant={setTenant}
-        allTenants={allTenants}
-        admin={admin}
-        setAdmin={setAdmin}
-        manager={manager}
-        setManager={setManager}
-        account={account}
-      >
-        <Switch>
-          <Route exact={true} path="/Accounts/SignIn">
-            <SignIn />
-          </Route>
-          <Route exact={true} path="/Accounts/SignOut">
-            <SignOut />
-          </Route>
-          <Route exact={true} path="/Accounts/Register">
-            <Register />
-          </Route>
-          <Route exact={true} path="/Accounts/Error">
-            <Error />
-          </Route>
-          <Route exact={true} path="/signin-oidc">
-            <SignInCallback userManager={userManager} />
-          </Route>
-          <Route exact={true} path="/signout-oidc">
-            <SignOutCallback userManager={userManager} />
-          </Route>
-          {tenant && (
-            <Route path="/accounts">
-              <Account user={user} tenant={tenant} setAccount={setAccount} />
-            </Route>
-          )}
-          {account && (
-            <Route path="/payments">
-              <Payment user={user} account={account} />
-            </Route>
-          )}
-          {account && (
-            <Route path="/paymentSchedules">
-              <PaymentSchedule user={user} account={account} />
-            </Route>
-          )}
-          {user && account && (
-            <Route path="/accountRoles">
-              <AccountRole user={user} account={account} />
-            </Route>
-          )}
-          {user && account && (
-            <Route path="/accountUsers">
-              <AccountUser user={user} account={account} />
-            </Route>
-          )}
-          <Route path="/tenants">
-            <Tenant user={user} />
-          </Route>
-          {user && tenant && (
-            <Route path="/tenantRoles">
-              <TenantRole user={user} tenant={tenant} />
-            </Route>
-          )}
-          {user && tenant && (
-            <Route path="/tenantUsers">
-              <TenantUser user={user} tenant={tenant} />
-            </Route>
-          )}
-          {user && (
-            <Route path="/applicationRoles">
-              <ApplicationRole user={user} />
-            </Route>
-          )}
-          {user && (
-            <Route path="/applicationUsers">
-              <ApplicationUser user={user} />
-            </Route>
-          )}
-          {user && (
-            <Route path="/transactions">
-              <Transaction user={user} />
-            </Route>
-          )}
-          {user && (
-            <Route path="/transactionSchedules">
-              <TransactionSchedule user={user} />
-            </Route>
-          )}
-          <Route path="/">
-            <Home
-              user={user}
-              allTenants={allTenants}
-              admin={admin}
-              manager={manager}
-            />
-          </Route>
-        </Switch>
-      </Navigation>
-    </Router>
-  );
+        user={user}
+        signedIn={signedIn}
+        tenants={tenants}
+      />
+    );
+  }
 };

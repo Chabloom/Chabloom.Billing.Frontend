@@ -20,7 +20,7 @@ import { TenantViewModel } from "../../../../types";
 
 interface Props {
   user: User | undefined;
-  allTenants: Array<TenantViewModel>;
+  tenants: Array<TenantViewModel>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,7 +58,7 @@ export const QuickPay: React.FC<Props> = (props) => {
             <Autocomplete
               freeSolo
               disableClearable
-              options={props.allTenants.map((t) => t.name)}
+              options={props.tenants.map((t) => t.name)}
               renderInput={(params) => (
                 <TextField
                   {...params}

@@ -21,12 +21,11 @@ import { UserManagement } from "./UserManagement";
 import logo from "../../../logo.svg";
 
 interface Props {
-  user: User | undefined;
   userManager: UserManager;
+  user: User | undefined;
   userLevel: "admin" | "manager" | undefined;
   tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;
-  allTenants: Array<TenantViewModel>;
   admin: boolean;
   setAdmin: CallableFunction;
   manager: boolean;

@@ -16,11 +16,10 @@ import { ChabloomDrawer } from "./Drawer";
 import { ChabloomToolbar } from "./Toolbar";
 
 interface Props {
-  user: User | undefined;
   userManager: UserManager;
+  user: User | undefined;
   userLevel: "admin" | "manager" | undefined;
   setTenant: CallableFunction;
-  allTenants: Array<TenantViewModel>;
   admin: boolean;
   setAdmin: CallableFunction;
   manager: boolean;

@@ -11,7 +11,7 @@ import { QuickView } from "./QuickView";
 
 interface Props {
   user: User | undefined;
-  allTenants: Array<TenantViewModel>;
+  tenants: Array<TenantViewModel>;
 }
 
 export const CustomerHome: React.FC<Props> = (props) => {
