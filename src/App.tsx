@@ -31,8 +31,11 @@ import {
   Tenant,
   TenantRole,
   TenantUser,
+  SignIn,
+  SignInCallback,
+  SignOut,
+  SignOutCallback,
 } from "./components";
-import { OidcSignInCallback, OidcSignOutCallback } from "./components/oidc";
 
 import "./App.scss";
 
@@ -150,11 +153,17 @@ export const App: React.FC = () => {
         account={account}
       >
         <Switch>
+          <Route exact={true} path="/signin">
+            <SignIn />
+          </Route>
           <Route exact={true} path="/signin-oidc">
-            <OidcSignInCallback userManager={userManager} />
+            <SignInCallback userManager={userManager} />
+          </Route>
+          <Route exact={true} path="/signout">
+            <SignOut />
           </Route>
           <Route exact={true} path="/signout-oidc">
-            <OidcSignOutCallback userManager={userManager} />
+            <SignOutCallback userManager={userManager} />
           </Route>
           {tenant && (
             <Route path="/accounts">

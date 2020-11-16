@@ -1,0 +1,44 @@
+import React from "react";
+
+import { User } from "oidc-client";
+
+import { TenantRolesApi, TenantViewModel } from "../../types";
+
+import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
+
+interface Props {
+  user: User | undefined;
+  tenant: TenantViewModel;
+}
+
+const columns: Array<ChabloomTableColumn> = [
+  {
+    title: "Name",
+    accessor: "name",
+    type: "text",
+  },
+];
+
+// The API to use
+let api: TenantRolesApi = new TenantRolesApi();
+// The page title
+let title: string;
+
+export const TenantRole: React.FC<Props> = (props) => {
+  // Update the API and title
+  React.useEffect(() => {
+    api = new TenantRolesApi(props.tenant.id as string);
+    title = `Tenant Roles for ${props.tenant.name}`;
+  }, [props.tenant]);
+
+  return (
+    <ChabloomTable
+      {...props}
+      api={api}
+      title={title}
+      columns={columns}
+      methods={["add", "edit", "delete"]}
+      setAccount={() => {}}
+    />
+  );
+};
