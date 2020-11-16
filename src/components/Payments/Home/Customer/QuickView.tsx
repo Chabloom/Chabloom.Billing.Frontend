@@ -22,9 +22,8 @@ import {
   AccountViewModel,
   ApplicationConfig,
   PaymentsApi,
+  PaymentViewModel,
 } from "../../../../types";
-
-import { PaymentViewModel } from "../../../../types/Payment";
 
 interface Props {
   user: User | undefined;
@@ -79,7 +78,7 @@ const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
                 className={classes.mt1}
                 variant="contained"
                 color="primary"
-                href={`${ApplicationConfig.processingPublicAddress}
+                href={`${ApplicationConfig.paymentsApiPublicAddress}
               /transactionSchedule/${payment.transactionSchedule}
               ?redirectUri=${window.location.pathname}`}
               >
@@ -91,7 +90,7 @@ const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
                 className={classes.mt1}
                 variant="contained"
                 color="primary"
-                href={`${ApplicationConfig.processingPublicAddress}
+                href={`${ApplicationConfig.paymentsApiPublicAddress}
               /transaction/${payment.transaction}
               ?redirectUri=${window.location.pathname}`}
               >
@@ -104,7 +103,7 @@ const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  const href = `${ApplicationConfig.processingPublicAddress}/transaction?name=${payment.name}&amount=${payment.amount}&redirectUri=${window.location.pathname}`;
+                  const href = `${ApplicationConfig.paymentsApiPublicAddress}/transaction?name=${payment.name}&amount=${payment.amount}&redirectUri=${window.location.pathname}`;
                   window.location.replace(href);
                 }}
               >
