@@ -37,6 +37,8 @@ import {
   SignOutCallback,
   Register,
   Error,
+  Transaction,
+  TransactionSchedule,
 } from "./components";
 
 import "./App.scss";
@@ -219,6 +221,16 @@ export const App: React.FC = () => {
           {user && (
             <Route path="/applicationUsers">
               <ApplicationUser user={user} />
+            </Route>
+          )}
+          {user && (
+            <Route path="/transactions">
+              <Transaction user={user} />
+            </Route>
+          )}
+          {user && (
+            <Route path="/transactionSchedules">
+              <TransactionSchedule user={user} />
             </Route>
           )}
           <Route path="/">
