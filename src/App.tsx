@@ -34,7 +34,9 @@ import {
   SignIn,
   SignInCallback,
   SignOut,
-  SignOutCallback, Register, Error,
+  SignOutCallback,
+  Register,
+  Error,
 } from "./components";
 
 import "./App.scss";

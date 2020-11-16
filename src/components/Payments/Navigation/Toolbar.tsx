@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 
-import { TenantViewModel } from "../../../types";
+import { appIsStandalone, TenantViewModel } from "../../../types";
 
 import { ModeSelection } from "./ModeSelection";
 import { TenantSelection } from "./TenantSelection";
@@ -74,7 +74,7 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
         <div className={classes.flexGrow}>
           <img src={logo} className={classes.logo} alt="logo" />
         </div>
-        {(props.admin || props.manager) && (
+        {(props.admin || props.manager) && !appIsStandalone && (
           <div className={classes.flexGrow}>
             <TenantSelection {...props} />
           </div>
