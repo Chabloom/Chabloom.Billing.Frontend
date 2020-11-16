@@ -34,7 +34,7 @@ import {
   SignIn,
   SignInCallback,
   SignOut,
-  SignOutCallback,
+  SignOutCallback, Register, Error,
 } from "./components";
 
 import "./App.scss";
@@ -153,14 +153,20 @@ export const App: React.FC = () => {
         account={account}
       >
         <Switch>
-          <Route exact={true} path="/signin">
+          <Route exact={true} path="/Accounts/SignIn">
             <SignIn />
+          </Route>
+          <Route exact={true} path="/Accounts/SignOut">
+            <SignOut />
+          </Route>
+          <Route exact={true} path="/Accounts/Register">
+            <Register />
+          </Route>
+          <Route exact={true} path="/Accounts/Error">
+            <Error />
           </Route>
           <Route exact={true} path="/signin-oidc">
             <SignInCallback userManager={userManager} />
-          </Route>
-          <Route exact={true} path="/signout">
-            <SignOut />
           </Route>
           <Route exact={true} path="/signout-oidc">
             <SignOutCallback userManager={userManager} />
