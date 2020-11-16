@@ -68,14 +68,17 @@ export const Register: React.FC = () => {
               password: password1,
               returnUrl: returnUrl,
             } as RegisterViewModel;
-            fetch(`${ApplicationConfig.apiPublicAddress}/api/register`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify(data),
-            })
+            fetch(
+              `${ApplicationConfig.accountsApiPublicAddress}/api/register`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(data),
+              }
+            )
               .then(async (value) => {
                 if (value.status === 400) {
                   setError(await value.text());

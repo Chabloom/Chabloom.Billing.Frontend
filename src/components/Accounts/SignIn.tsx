@@ -63,7 +63,7 @@ export const SignIn: React.FC = () => {
               remember: remember,
               returnUrl: returnUrl,
             } as SignInViewModel;
-            fetch(`${ApplicationConfig.apiPublicAddress}/api/signIn`, {
+            fetch(`${ApplicationConfig.accountsApiPublicAddress}/api/signIn`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

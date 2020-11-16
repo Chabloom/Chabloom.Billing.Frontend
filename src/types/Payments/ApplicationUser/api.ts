@@ -10,7 +10,7 @@ export class ApplicationUsersApi
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/applicationUsers`;
+    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/applicationUsers`;
   }
 
   readItems(

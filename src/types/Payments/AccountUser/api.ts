@@ -12,7 +12,7 @@ export class AccountUsersApi
 
   constructor(account: string | null = null, tenant: string | null = null) {
     super();
-    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/accountUsers`;
+    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/accountUsers`;
     this.account = account;
     this.tenant = tenant;
   }

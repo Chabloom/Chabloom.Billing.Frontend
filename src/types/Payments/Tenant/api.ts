@@ -11,7 +11,7 @@ export class TenantsApi
 
   constructor(user: string | null = null) {
     super();
-    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/tenants`;
+    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenants`;
     this.user = user;
   }
 

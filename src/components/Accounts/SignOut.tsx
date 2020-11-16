@@ -42,7 +42,7 @@ export const SignOut: React.FC = () => {
     const data = {
       id: logoutId,
     } as SignOutViewModel;
-    const url = `${ApplicationConfig.apiPublicAddress}/api/signOut`;
+    const url = `${ApplicationConfig.accountsApiPublicAddress}/api/signOut`;
     fetch(url, {
       method: "POST",
       headers: {

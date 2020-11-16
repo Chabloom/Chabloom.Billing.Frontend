@@ -76,7 +76,7 @@ export const Transaction: React.FC<Props> = (props) => {
               const data = {
                 paymentCard: paymentCard,
               };
-              const url = `${ApplicationConfig.apiPublicAddress}/api/transaction`;
+              const url = `${ApplicationConfig.processingApiPublicAddress}/api/transaction`;
               fetch(url, {
                 method: "POST",
                 headers: {

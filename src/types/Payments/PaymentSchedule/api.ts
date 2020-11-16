@@ -11,7 +11,7 @@ export class PaymentSchedulesApi
 
   constructor(account: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.apiPublicAddress}/api/paymentSchedules`;
+    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/paymentSchedules`;
     this.account = account;
   }
 
