@@ -5,6 +5,7 @@ export const ApplicationConfig = {
   displayName: "Chabloom Payments",
   apiPublicAddress: "https://payments-api-test.chabloom.com",
   jwtPublicAddress: "https://accounts-api-test.chabloom.com",
+  processingPublicAddress: "http://localhost:3002",
 };
 
 export const AppInsightsInstrumentationKey = "APPINSIGHTS_INSTRUMENTATIONKEY";
