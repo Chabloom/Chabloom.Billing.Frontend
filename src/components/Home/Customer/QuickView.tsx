@@ -3,6 +3,7 @@ import React from "react";
 import { User } from "oidc-client";
 
 import {
+  Button,
   createStyles,
   Grid,
   Paper,
@@ -16,7 +17,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { AccountsApi, AccountViewModel, PaymentsApi } from "../../../types";
+import {
+  AccountsApi,
+  AccountViewModel,
+  ApplicationConfig,
+  PaymentsApi,
+} from "../../../types";
 
 import { PaymentViewModel } from "../../../types/Payment";
 
@@ -35,6 +41,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const guidEmpty = "00000000-0000-0000-0000-000000000000";
+
 const QuickViewTableHead: React.FC = () => {
   return (
     <TableHead>
@@ -42,6 +50,7 @@ const QuickViewTableHead: React.FC = () => {
         <TableCell>Name</TableCell>
         <TableCell>Amount</TableCell>
         <TableCell>Due Date</TableCell>
+        <TableCell />
       </TableRow>
     </TableHead>
   );
@@ -50,6 +59,8 @@ const QuickViewTableHead: React.FC = () => {
 const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
   props
 ) => {
+  const classes = useStyles();
+
   return (
     <TableBody>
       {props.payments.map((payment) => {
@@ -63,6 +74,43 @@ const QuickViewTableBody: React.FC<{ payments: Array<PaymentViewModel> }> = (
             <TableCell>
               {new Date(payment.dueDate).toLocaleDateString()}
             </TableCell>
+            {payment.transactionSchedule !== guidEmpty && (
+              <Button
+                className={classes.mt1}
+                variant="contained"
+                color="primary"
+                href={`${ApplicationConfig.processingPublicAddress}
+              /transactionSchedule/${payment.transactionSchedule}
+              ?redirectUri=${window.location.pathname}`}
+              >
+                View Payment Schedule
+              </Button>
+            )}
+            {payment.transaction !== guidEmpty && (
+              <Button
+                className={classes.mt1}
+                variant="contained"
+                color="primary"
+                href={`${ApplicationConfig.processingPublicAddress}
+              /transaction/${payment.transaction}
+              ?redirectUri=${window.location.pathname}`}
+              >
+                View Payment
+              </Button>
+            )}
+            {payment.transaction === guidEmpty && (
+              <Button
+                className={classes.mt1}
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  const href = `${ApplicationConfig.processingPublicAddress}/transaction?name=${payment.name}&amount=${payment.amount}&redirectUri=${window.location.pathname}`;
+                  window.location.replace(href);
+                }}
+              >
+                Manage Payment
+              </Button>
+            )}
           </TableRow>
         );
       })}
