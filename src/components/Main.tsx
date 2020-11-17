@@ -39,6 +39,8 @@ interface Props {
   user: User | undefined;
   signedIn: boolean;
   tenants: Array<TenantViewModel>;
+  darkMode: boolean;
+  setDarkMode: CallableFunction;
 }
 
 const getAdminLevel = async (user: User) => {

@@ -79,9 +79,7 @@ export const App: React.FC = () => {
   const [signedIn, setSignedIn] = React.useState(false);
   const [user, setUser] = React.useState<User>();
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
-  const [darkMode, setDarkMode] = React.useState<boolean>(
-    useMediaQuery("(prefers-color-scheme: dark)")
-  );
+  const [darkMode, setDarkMode] = React.useState<boolean>(false);
 
   // Ensure user is signed in
   React.useEffect(() => {
@@ -110,6 +108,17 @@ export const App: React.FC = () => {
     getTenants().then((t) => setTenants(t));
   }, []);
 
+  // Get dark mode setting
+  const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  React.useEffect(() => {
+    const storedDarkMode = localStorage.getItem("DarkMode");
+    if (storedDarkMode === "true") {
+      setDarkMode(true);
+    } else {
+      setDarkMode(cssDarkMode);
+    }
+  }, [cssDarkMode]);
+
   const theme = React.useMemo(
     () =>
       createMuiTheme({
@@ -127,7 +136,13 @@ export const App: React.FC = () => {
     }
     return (
       <ThemeProvider theme={theme}>
-        <MainMobile userManager={userManager} user={user} tenants={tenants} />
+        <MainMobile
+          userManager={userManager}
+          user={user}
+          tenants={tenants}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
       </ThemeProvider>
     );
   } else {
@@ -138,6 +153,8 @@ export const App: React.FC = () => {
           user={user}
           signedIn={signedIn}
           tenants={tenants}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
         />
       </ThemeProvider>
     );

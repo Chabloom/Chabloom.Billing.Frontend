@@ -19,6 +19,8 @@ interface Props {
   userManager: UserManager;
   user: User;
   tenants: Array<TenantViewModel>;
+  darkMode: boolean;
+  setDarkMode: CallableFunction;
 }
 
 export const MainMobile: React.FC<Props> = (props) => {

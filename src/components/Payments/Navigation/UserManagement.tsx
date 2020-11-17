@@ -4,19 +4,34 @@ import { User, UserManager } from "oidc-client";
 
 import {
   ClickAwayListener,
+  FormControlLabel,
   Grow,
   IconButton,
   MenuItem,
   MenuList,
   Paper,
   Popper,
+  Switch,
 } from "@material-ui/core";
 import { AccountCircleOutlined } from "@material-ui/icons";
 
 interface Props {
   user: User | undefined;
   userManager: UserManager;
+  darkMode: boolean;
+  setDarkMode: CallableFunction;
 }
+
+const toggleDarkMode = (darkMode: boolean, setDarkMode: CallableFunction) => {
+  if (darkMode) {
+    // We are disabling dark mode
+    localStorage.setItem("DarkMode", "false");
+  } else {
+    // We are enabling dark mode
+    localStorage.setItem("DarkMode", "true");
+  }
+  setDarkMode(!darkMode);
+};
 
 const UserManagementAnonymous: React.FC<Props> = (props) => {
   const anchorRef = React.useRef(null);
@@ -50,6 +65,20 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
             <Paper>
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
+                  <MenuItem>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={props.darkMode}
+                          color="primary"
+                          onChange={() =>
+                            toggleDarkMode(props.darkMode, props.setDarkMode)
+                          }
+                        />
+                      }
+                      label="Dark Mode"
+                    />
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       setOpen(false);
@@ -105,6 +134,20 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
                   <MenuItem disabled>{props.user?.profile.name}</MenuItem>
+                  <MenuItem>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={props.darkMode}
+                          color="primary"
+                          onChange={() =>
+                            toggleDarkMode(props.darkMode, props.setDarkMode)
+                          }
+                        />
+                      }
+                      label="Dark Mode"
+                    />
+                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       setOpen(false);

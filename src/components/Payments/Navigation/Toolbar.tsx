@@ -32,6 +32,8 @@ interface Props {
   setManager: CallableFunction;
   mobileDrawerOpen: boolean;
   setMobileDrawerOpen: CallableFunction;
+  darkMode: boolean;
+  setDarkMode: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

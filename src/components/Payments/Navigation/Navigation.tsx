@@ -26,6 +26,8 @@ interface Props {
   setManager: CallableFunction;
   tenant: TenantViewModel | undefined;
   account: AccountViewModel | undefined;
+  darkMode: boolean;
+  setDarkMode: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
