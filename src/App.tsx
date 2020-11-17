@@ -2,6 +2,12 @@ import React from "react";
 
 import { User, UserManager } from "oidc-client";
 
+import {
+  createMuiTheme,
+  ThemeProvider,
+  useMediaQuery,
+} from "@material-ui/core";
+
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
@@ -73,6 +79,9 @@ export const App: React.FC = () => {
   const [signedIn, setSignedIn] = React.useState(false);
   const [user, setUser] = React.useState<User>();
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
+  const [darkMode, setDarkMode] = React.useState<boolean>(
+    useMediaQuery("(prefers-color-scheme: dark)")
+  );
 
   // Ensure user is signed in
   React.useEffect(() => {
@@ -101,22 +110,36 @@ export const App: React.FC = () => {
     getTenants().then((t) => setTenants(t));
   }, []);
 
+  const theme = React.useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type: darkMode ? "dark" : "light",
+        },
+      }),
+    [darkMode]
+  );
+
   if (appIsStandalone()) {
     // User is required in standalone mode
     if (!user) {
       return null;
     }
     return (
-      <MainMobile userManager={userManager} user={user} tenants={tenants} />
+      <ThemeProvider theme={theme}>
+        <MainMobile userManager={userManager} user={user} tenants={tenants} />
+      </ThemeProvider>
     );
   } else {
     return (
-      <Main
-        userManager={userManager}
-        user={user}
-        signedIn={signedIn}
-        tenants={tenants}
-      />
+      <ThemeProvider theme={theme}>
+        <Main
+          userManager={userManager}
+          user={user}
+          signedIn={signedIn}
+          tenants={tenants}
+        />
+      </ThemeProvider>
     );
   }
 };
