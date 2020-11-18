@@ -31,8 +31,6 @@ import {
   AccountViewModel,
   PaymentsApi,
   PaymentViewModel,
-  TenantsApi,
-  TenantViewModel,
 } from "../../types";
 
 interface Props {
@@ -168,6 +166,7 @@ const QuickViewHead: React.FC = () => {
         <TableCell>Name</TableCell>
         <TableCell>Amount</TableCell>
         <TableCell>Due Date</TableCell>
+        <TableCell>Paid</TableCell>
       </TableRow>
     </TableHead>
   );
@@ -200,6 +199,7 @@ const QuickViewBody: React.FC<QuickViewProps> = (props) => {
             <TableCell>
               {new Date(payment.dueDate).toLocaleDateString()}
             </TableCell>
+            <TableCell>{payment.complete ? "Yes" : "No"}</TableCell>
           </TableRow>
         );
       })}
