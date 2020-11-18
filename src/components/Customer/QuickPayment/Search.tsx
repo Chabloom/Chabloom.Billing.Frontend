@@ -22,6 +22,8 @@ import {
 
 interface Props {
   user: User | undefined;
+  payments: Array<PaymentViewModel>;
+  setPayments: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const SearchForm: React.FC<Props> = (props) => {
+export const Search: React.FC<Props> = (props) => {
   const [tenant, setTenant] = React.useState("");
   const [account, setAccount] = React.useState("");
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
@@ -62,12 +64,9 @@ export const SearchForm: React.FC<Props> = (props) => {
     const selectedTenant = tenants.find((x) => x.name === tenant);
     if (selectedTenant && selectedTenant.id) {
       const api = new PaymentsApi("");
-      const ret = await api.readItemsTenantAccountNumber(
-        account,
-        selectedTenant.id
-      );
+      const ret = await api.readTenantAccount(account, selectedTenant.id);
       if (typeof ret !== "string") {
-        return ret as Array<PaymentViewModel>;
+        props.setPayments(ret as Array<PaymentViewModel>);
       } else {
         setError(ret);
       }
@@ -79,9 +78,7 @@ export const SearchForm: React.FC<Props> = (props) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        getTenantAccountNumberPayments().then((p) => {
-          console.log(p);
-        });
+        getTenantAccountNumberPayments().then();
       }}
     >
       <FormGroup>
