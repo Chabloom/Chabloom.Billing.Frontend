@@ -30,7 +30,7 @@ import {
   TenantRole,
   TenantUser,
 } from "./Manager";
-import {Navigation} from "./Navigation";
+import { Navigation } from "./Navigation";
 import { Transaction, TransactionSchedule } from "./Processing";
 
 import { Home } from "./Home";
