@@ -24,7 +24,6 @@ import {
   AccountUser,
   ApplicationRole,
   ApplicationUser,
-  Home,
   Navigation,
   Payment,
   PaymentSchedule,
@@ -33,6 +32,8 @@ import {
   TenantUser,
 } from "./Payments";
 import { Transaction, TransactionSchedule } from "./Processing";
+
+import { Home } from "./Home";
 
 interface Props {
   userManager: UserManager;

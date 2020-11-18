@@ -31,7 +31,9 @@ import {
   AccountViewModel,
   PaymentsApi,
   PaymentViewModel,
-} from "../../../../types";
+  TenantsApi,
+  TenantViewModel,
+} from "../../types";
 
 interface Props {
   user: User | undefined;
@@ -217,7 +219,7 @@ const QuickViewTable: React.FC<QuickViewProps> = (props) => {
   );
 };
 
-export const QuickView: React.FC<Props> = (props) => {
+export const UpcomingPayments: React.FC<Props> = (props) => {
   const [accounts, setAccounts] = React.useState([] as Array<AccountViewModel>);
   const [payments, setPayments] = React.useState([] as Array<PaymentViewModel>);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);

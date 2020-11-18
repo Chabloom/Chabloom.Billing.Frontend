@@ -15,6 +15,8 @@ import {
 } from "./Accounts";
 import { Transaction, TransactionSchedule } from "./Processing";
 
+import { Home } from "./Home";
+
 interface Props {
   userManager: UserManager;
   user: User;
@@ -50,6 +52,9 @@ export const MainMobile: React.FC<Props> = (props) => {
         </Route>
         <Route path="/transactionSchedules">
           <TransactionSchedule {...props} />
+        </Route>
+        <Route path="/">
+          <Home {...props} admin={false} manager={false} />
         </Route>
       </Switch>
     </Router>

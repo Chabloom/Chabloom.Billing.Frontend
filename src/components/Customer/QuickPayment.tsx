@@ -16,11 +16,10 @@ import {
 } from "@material-ui/core";
 import { Alert, AlertTitle, Autocomplete } from "@material-ui/lab";
 
-import { TenantViewModel } from "../../../../types";
+import { TenantsApi, TenantViewModel } from "../../types";
 
 interface Props {
   user: User | undefined;
-  tenants: Array<TenantViewModel>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -34,13 +33,28 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const QuickPay: React.FC<Props> = (props) => {
+const getTenants = async () => {
+  const tenantsApi = new TenantsApi();
+  const tenants = await tenantsApi.readItems("");
+  if (typeof tenants !== "string") {
+    return tenants;
+  }
+  return [] as Array<TenantViewModel>;
+};
+
+export const QuickPayment: React.FC<Props> = (props) => {
+  const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [tenant, setTenant] = React.useState("");
   const [account, setAccount] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const classes = useStyles();
+
+  // Get all available tenants
+  React.useEffect(() => {
+    getTenants().then((t) => setTenants(t));
+  }, []);
 
   return (
     <Grid item md={6} xs={12}>
@@ -58,7 +72,7 @@ export const QuickPay: React.FC<Props> = (props) => {
             <Autocomplete
               freeSolo
               disableClearable
-              options={props.tenants.map((t) => t.name)}
+              options={tenants.map((t) => t.name)}
               renderInput={(params) => (
                 <TextField
                   {...params}
