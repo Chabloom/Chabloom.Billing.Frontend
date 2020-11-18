@@ -22,13 +22,12 @@ export class PaymentsApi
   }
 
   readItemsTenantAccountNumber(
-    token: string | undefined,
-    tenantId: string,
-    accountNumber: string
+    accountNumber: string,
+    tenantId: string
   ): Promise<Array<PaymentViewModel> | string> {
     return this._readItems(
-      token,
-      `${this.baseUrl}?tenantId=${tenantId}&accountNumber=${accountNumber}`
+      "",
+      `${this.baseUrl}?accountNumber=${accountNumber}&tenantId=${tenantId}`
     );
   }
 
