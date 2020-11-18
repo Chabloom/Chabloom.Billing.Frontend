@@ -14,7 +14,7 @@ import {
 import { PaymentViewModel } from "../../../types";
 
 import { Search } from "./Search";
-import { Payments } from "./Payments";
+import { PaymentTable } from "../PaymentTable";
 
 interface Props {
   user: User | undefined;
@@ -24,9 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       padding: theme.spacing(2),
-    },
-    mt3: {
-      marginTop: theme.spacing(3),
     },
   })
 );
@@ -38,13 +35,21 @@ export const QuickPayment: React.FC<Props> = (props) => {
 
   return (
     <Grid item md={6} xs={12}>
-      <Paper elevation={3} className={classes.paper}>
-        <Typography variant="h6">Quick Payment</Typography>
-        <Search {...props} payments={payments} setPayments={setPayments} />
-      </Paper>
-      <Paper elevation={3} className={classes.paper && classes.mt3}>
-        {payments.length !== 0 && <Payments {...props} payments={payments} />}
-      </Paper>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Paper elevation={3} className={classes.paper}>
+            <Typography variant="h6">Quick Payment</Typography>
+            <Search {...props} payments={payments} setPayments={setPayments} />
+          </Paper>
+        </Grid>
+        {payments.length !== 0 && (
+          <Grid item xs={12}>
+            <Paper elevation={3} className={classes.paper}>
+              <PaymentTable title="Upcoming Bills" payments={payments} />
+            </Paper>
+          </Grid>
+        )}
+      </Grid>
     </Grid>
   );
 };
