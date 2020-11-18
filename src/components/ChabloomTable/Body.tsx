@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import { AccountViewModel, BaseViewModel } from "../../../types";
+import { AccountViewModel, BaseViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 

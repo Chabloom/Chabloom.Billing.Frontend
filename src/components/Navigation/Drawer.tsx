@@ -24,7 +24,7 @@ import {
   Schedule,
 } from "@material-ui/icons";
 
-import { AccountViewModel, TenantViewModel } from "../../../types";
+import { AccountViewModel, TenantViewModel } from "../../types";
 
 interface Props {
   userLevel: "admin" | "manager" | undefined;

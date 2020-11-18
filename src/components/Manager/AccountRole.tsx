@@ -2,9 +2,9 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountViewModel, PaymentSchedulesApi } from "../../types";
+import { AccountRolesApi, AccountViewModel } from "../../types";
 
-import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
   user: User | undefined;
@@ -17,33 +17,18 @@ const columns: Array<ChabloomTableColumn> = [
     accessor: "name",
     type: "text",
   },
-  {
-    title: "Amount",
-    accessor: "amount",
-    type: "number",
-  },
-  {
-    title: "Day",
-    accessor: "day",
-    type: "number",
-  },
-  {
-    title: "Interval",
-    accessor: "monthInterval",
-    type: "number",
-  },
 ];
 
 // The API to use
-let api: PaymentSchedulesApi;
+let api: AccountRolesApi = new AccountRolesApi();
 // The page title
 let title: string;
 
-export const PaymentSchedule: React.FC<Props> = (props) => {
+export const AccountRole: React.FC<Props> = (props) => {
   // Update the API and title
   React.useEffect(() => {
-    api = new PaymentSchedulesApi(props.account.id as string);
-    title = `Payment Schedules for ${props.account.name}`;
+    api = new AccountRolesApi(props.account.id as string);
+    title = `Account Roles for ${props.account.name}`;
   }, [props.account]);
 
   return (

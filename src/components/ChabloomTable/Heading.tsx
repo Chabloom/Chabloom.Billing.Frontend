@@ -24,7 +24,7 @@ import {
 } from "@material-ui/icons";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import { BaseApiType, BaseViewModel, TenantViewModel } from "../../../types";
+import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 

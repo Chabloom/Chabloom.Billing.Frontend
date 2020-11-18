@@ -2,13 +2,13 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { TenantUsersApi, TenantViewModel } from "../../types";
+import { AccountUsersApi, AccountViewModel } from "../../types";
 
-import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
   user: User | undefined;
-  tenant: TenantViewModel;
+  account: AccountViewModel;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -18,13 +18,13 @@ const columns: Array<ChabloomTableColumn> = [
     type: "text",
   },
   {
-    title: "Tenant Name",
-    accessor: "tenantName",
+    title: "Account Name",
+    accessor: "accountName",
     type: "text",
   },
   {
-    title: "Tenant Id",
-    accessor: "tenant",
+    title: "Account Id",
+    accessor: "account",
     type: "text",
   },
   {
@@ -35,16 +35,16 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: TenantUsersApi = new TenantUsersApi();
+let api: AccountUsersApi = new AccountUsersApi();
 // The page title
 let title: string;
 
-export const TenantUser: React.FC<Props> = (props) => {
+export const AccountUser: React.FC<Props> = (props) => {
   // Update the API and title
   React.useEffect(() => {
-    api = new TenantUsersApi(props.tenant.id as string);
-    title = `Tenant Users for ${props.tenant.name}`;
-  }, [props.tenant]);
+    api = new AccountUsersApi(props.account.id as string);
+    title = `Account Users for ${props.account.name}`;
+  }, [props.account]);
 
   return (
     <ChabloomTable
@@ -53,6 +53,7 @@ export const TenantUser: React.FC<Props> = (props) => {
       title={title}
       columns={columns}
       methods={["add", "edit", "delete"]}
+      tenant={undefined}
       setAccount={() => {}}
     />
   );

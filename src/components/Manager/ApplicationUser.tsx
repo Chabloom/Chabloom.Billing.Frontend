@@ -2,9 +2,9 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import { ApplicationRolesApi } from "../../types";
+import { ApplicationUsersApi } from "../../types";
 
-import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
   user: User;
@@ -12,17 +12,22 @@ interface Props {
 
 const columns: Array<ChabloomTableColumn> = [
   {
-    title: "Name",
-    accessor: "name",
+    title: "User Id",
+    accessor: "userId",
+    type: "text",
+  },
+  {
+    title: "Role",
+    accessor: "roleName",
     type: "text",
   },
 ];
 
 // The API to use
-let api: ApplicationRolesApi = new ApplicationRolesApi();
+let api: ApplicationUsersApi = new ApplicationUsersApi();
 
-export const ApplicationRole: React.FC<Props> = (props) => {
-  const title = "Application Roles";
+export const ApplicationUser: React.FC<Props> = (props) => {
+  const title = "Application Users";
 
   return (
     <ChabloomTable

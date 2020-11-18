@@ -4,7 +4,7 @@ import { User } from "oidc-client";
 
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import { BaseApiType, BaseViewModel, TenantViewModel } from "../../../types";
+import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";

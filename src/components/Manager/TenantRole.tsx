@@ -4,7 +4,7 @@ import { User } from "oidc-client";
 
 import { TenantRolesApi, TenantViewModel } from "../../types";
 
-import { ChabloomTable, ChabloomTableColumn } from "./ChabloomTable";
+import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
   user: User | undefined;

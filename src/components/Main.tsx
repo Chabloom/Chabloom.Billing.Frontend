@@ -24,13 +24,13 @@ import {
   AccountUser,
   ApplicationRole,
   ApplicationUser,
-  Navigation,
   Payment,
   PaymentSchedule,
   Tenant,
   TenantRole,
   TenantUser,
-} from "./Payments";
+} from "./Manager";
+import {Navigation} from "./Navigation";
 import { Transaction, TransactionSchedule } from "./Processing";
 
 import { Home } from "./Home";
