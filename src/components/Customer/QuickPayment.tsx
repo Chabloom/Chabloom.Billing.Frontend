@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { Alert, AlertTitle, Autocomplete } from "@material-ui/lab";
 
-import { TenantsApi, TenantViewModel } from "../../types";
+import { PaymentsApi, TenantsApi, TenantViewModel } from "../../types";
 
 interface Props {
   user: User | undefined;
@@ -42,6 +42,20 @@ const getTenants = async () => {
   return [] as Array<TenantViewModel>;
 };
 
+const getTenantAccountNumberPayments = async (
+  token: string | undefined,
+  tenantId: string,
+  accountNumber: string
+) => {
+  const api = new PaymentsApi("");
+  const payments = await api.readItemsTenantAccountNumber(
+    token,
+    tenantId,
+    accountNumber
+  );
+  return payments;
+};
+
 export const QuickPayment: React.FC<Props> = (props) => {
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [tenant, setTenant] = React.useState("");
@@ -59,13 +73,24 @@ export const QuickPayment: React.FC<Props> = (props) => {
   return (
     <Grid item md={6} xs={12}>
       <Paper elevation={3} className={classes.paper}>
-        <Typography variant="h6">Quick Pay</Typography>
+        <Typography variant="h6">Quick Payment</Typography>
         <form
-          onSubmit={() => {
-            // TODO: Handle submit
-            setProcessing(true);
-            setError("");
-            setProcessing(false);
+          onSubmit={(e) => {
+            e.preventDefault();
+            const selectedTenant = tenants.find((x) => x.name === tenant);
+            if (selectedTenant && selectedTenant.id) {
+              setProcessing(true);
+              getTenantAccountNumberPayments(
+                props.user?.access_token,
+                selectedTenant.id,
+                account
+              )
+                .then((p) => {
+                  console.log(p);
+                })
+                .catch((reason) => setError(reason))
+                .finally(() => setProcessing(false));
+            }
           }}
         >
           <FormGroup>
@@ -84,6 +109,7 @@ export const QuickPayment: React.FC<Props> = (props) => {
                   onChange={(e) => setTenant(e.target.value)}
                 />
               )}
+              onChange={(event, value) => setTenant(value)}
             />
             <TextField
               required
