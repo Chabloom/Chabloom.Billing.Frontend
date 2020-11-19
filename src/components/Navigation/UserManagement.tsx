@@ -179,15 +179,15 @@ const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
 export const UserManagement: React.FC<Props> = (props) => {
   const [user, setUser] = React.useState<User>();
 
-  const getUser = async () => {
-    const u = await props.userService.getUser(false);
-    if (u) {
-      setUser(u);
-    }
-  };
   React.useEffect(() => {
+    const getUser = async () => {
+      const u = await props.userService.getUser(false);
+      if (u) {
+        setUser(u);
+      }
+    };
     getUser().then();
-  }, []);
+  }, [props.userService]);
 
   if (user) {
     return <UserManagementSignedIn {...props} user={user} />;

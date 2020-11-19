@@ -37,22 +37,20 @@ appInsights.loadAppInsights();
 
 const userService = new UserService();
 
-const getTenants = async () => {
-  const tenantsApi = new TenantsApi();
-  const tenants = await tenantsApi.readItems("");
-  if (typeof tenants !== "string") {
-    return tenants;
-  }
-  return [] as Array<TenantViewModel>;
-};
-
 export const App: React.FC = () => {
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [darkMode, setDarkMode] = React.useState<boolean>(false);
 
   // Get all available tenants
   React.useEffect(() => {
-    getTenants().then((t) => setTenants(t));
+    const getItems = async () => {
+      const api = new TenantsApi();
+      const ret = await api.readItems("");
+      if (typeof ret !== "string") {
+        setTenants(ret);
+      }
+    };
+    getItems().then();
   }, []);
 
   // Get signed in setting

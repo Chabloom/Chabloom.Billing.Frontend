@@ -33,34 +33,33 @@ export const TenantSelection: React.FC<Props> = (props) => {
   const anchorRef = React.useRef(null);
 
   // Get tenants that the user is authorized to select
-  const getTenants = async () => {
-    const user = await props.userService.getUser();
-    if (user) {
-      let api: TenantsApi;
-      if (props.admin) {
-        // Admin mode can see all tenants
-        api = new TenantsApi();
-      } else {
-        api = new TenantsApi(user.profile.sub);
-      }
-      api.readItems(user.access_token).then((ret) => {
-        if (typeof ret !== "string") {
-          ret = ret.sort((a, b) => a.name.localeCompare(b.name));
-          setTenants(ret);
-        }
-      });
-    }
-  };
   React.useEffect(() => {
-    getTenants().then();
-  }, [props.admin]);
+    const getItems = async () => {
+      const user = await props.userService.getUser();
+      if (user) {
+        let api: TenantsApi;
+        if (props.admin) {
+          // Admin mode can see all tenants
+          api = new TenantsApi();
+        } else {
+          api = new TenantsApi(user.profile.sub);
+        }
+        api.readItems(user.access_token).then((ret) => {
+          if (typeof ret !== "string") {
+            ret = ret.sort((a, b) => a.name.localeCompare(b.name));
+            setTenants(ret);
+          }
+        });
+      }
+    };
+    getItems().then();
+  }, [props.userService, props.admin]);
 
   // Workaround for eslint issue on the useEffect call below
   const setTenant = props.setTenant;
 
   // Select the tenant that was previously selected
   React.useEffect(() => {
-    console.log("setting tenant");
     if (tenants && tenants.length !== 0) {
       // Attempt to find the previously selected tenant
       const oldTenantId = window.localStorage.getItem("TenantId");

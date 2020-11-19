@@ -41,9 +41,12 @@ export const Account: React.FC<Props> = (props) => {
     title = `Accounts for ${props.tenant.name}`;
   }, [props.tenant]);
 
+  // Workaround for eslint issue on the useEffect call below
+  const setAccount = props.setAccount;
+
   React.useEffect(() => {
-    props.setAccount(undefined);
-  }, []);
+    setAccount(undefined);
+  }, [setAccount]);
 
   return (
     <ChabloomTable

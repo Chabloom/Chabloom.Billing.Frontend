@@ -31,19 +31,19 @@ export const Transaction: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
 
   // Get parameters and return URL
-  const getPayment = async (paymentId: string) => {
-    const user = await props.userService.getUser(false);
-    setProcessing(true);
-    const api = new PaymentsApi("");
-    const ret = await api.readItem(user?.access_token, paymentId);
-    if (typeof ret !== "string") {
-      setPayment(ret);
-    } else {
-      setError(ret);
-    }
-    setProcessing(false);
-  };
   React.useEffect(() => {
+    const getPayment = async (paymentId: string) => {
+      const user = await props.userService.getUser(false);
+      setProcessing(true);
+      const api = new PaymentsApi("");
+      const ret = await api.readItem(user?.access_token, paymentId);
+      if (typeof ret !== "string") {
+        setPayment(ret);
+      } else {
+        setError(ret);
+      }
+      setProcessing(false);
+    };
     const params = new URLSearchParams(window.location.search);
     const paymentId = params.get("paymentId");
     if (paymentId) {
@@ -53,7 +53,7 @@ export const Transaction: React.FC<Props> = (props) => {
     if (paramReturnUrl) {
       setReturnUrl(paramReturnUrl);
     }
-  }, []);
+  }, [props.userService]);
 
   const createTransaction = async (transaction: TransactionViewModel) => {
     const user = await props.userService.getUser(false);

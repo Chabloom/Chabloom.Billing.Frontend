@@ -26,44 +26,44 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
 
   const classes = useStyles();
 
-  const getUser = async () => {
-    const u = await props.userService.getUser(false);
-    if (u) {
-      setUser(u);
-    }
-  };
   React.useEffect(() => {
-    getUser().then();
-  }, []);
-
-  const getAccounts = async () => {
-    if (user) {
-      const api = new AccountsApi();
-      const ret = await api.readItems(user.access_token);
-      if (typeof ret !== "string") {
-        setAccounts(ret);
+    const getUser = async () => {
+      const u = await props.userService.getUser(false);
+      if (u) {
+        setUser(u);
       }
-    }
-  };
-  React.useEffect(() => {
-    getAccounts().then();
-  }, [user]);
+    };
+    getUser().then();
+  }, [props.userService]);
 
-  const getPayments = async () => {
-    if (user) {
-      const payments = [] as Array<PaymentViewModel>;
-      for (const account of accounts) {
-        const api = new PaymentsApi(account.id as string);
+  React.useEffect(() => {
+    const getItems = async () => {
+      if (user) {
+        const api = new AccountsApi();
         const ret = await api.readItems(user.access_token);
         if (typeof ret !== "string") {
-          payments.push(...ret);
+          setAccounts(ret);
         }
       }
-      setPayments(payments);
-    }
-  };
+    };
+    getItems().then();
+  }, [user]);
+
   React.useEffect(() => {
-    getPayments().then();
+    const getItems = async () => {
+      if (user) {
+        const payments = [] as Array<PaymentViewModel>;
+        for (const account of accounts) {
+          const api = new PaymentsApi(account.id as string);
+          const ret = await api.readItems(user.access_token);
+          if (typeof ret !== "string") {
+            payments.push(...ret);
+          }
+        }
+        setPayments(payments);
+      }
+    };
+    getItems().then();
   }, [user, accounts]);
 
   return (

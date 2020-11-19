@@ -49,30 +49,30 @@ export const Routes: React.FC<Props> = (props) => {
   const [manager, setManager] = React.useState(false);
 
   // Get the user's administrative level
-  const getAdminLevel = async () => {
-    const user = await props.userService.getUser(false);
-    if (user) {
-      const applicationUsersApi = new ApplicationUsersApi();
-      const applicationUser = await applicationUsersApi.readItem(
-        user.access_token,
-        user.profile.sub
-      );
-      if (typeof applicationUser !== "string") {
-        setUserLevel("admin");
-      }
-      const tenantUsersApi = new TenantUsersApi();
-      const tenantUser = await tenantUsersApi.readItem(
-        user.access_token,
-        user.profile.sub
-      );
-      if (typeof tenantUser !== "string") {
-        setUserLevel("manager");
-      }
-    }
-  };
   React.useEffect(() => {
+    const getAdminLevel = async () => {
+      const user = await props.userService.getUser(false);
+      if (user) {
+        const applicationUsersApi = new ApplicationUsersApi();
+        const applicationUser = await applicationUsersApi.readItem(
+          user.access_token,
+          user.profile.sub
+        );
+        if (typeof applicationUser !== "string") {
+          setUserLevel("admin");
+        }
+        const tenantUsersApi = new TenantUsersApi();
+        const tenantUser = await tenantUsersApi.readItem(
+          user.access_token,
+          user.profile.sub
+        );
+        if (typeof tenantUser !== "string") {
+          setUserLevel("manager");
+        }
+      }
+    };
     getAdminLevel().then();
-  }, []);
+  }, [props.userService]);
 
   return (
     <Router>

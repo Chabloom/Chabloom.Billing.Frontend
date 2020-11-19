@@ -34,41 +34,36 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [error, setError] = React.useState("");
 
   // Get the table data
-  const getTableData = async () => {
-    const user = await props.userService.getUser();
-    if (user && props.api) {
-      console.debug("updating table data");
-      setProcessing(true);
-      props.api
-        .readItems(user.access_token)
-        .then((ret) => {
-          if (typeof ret === "string") {
-            setData([] as Array<BaseViewModel>);
-            setError(ret);
-          } else {
+  React.useEffect(() => {
+    const getTableData = async () => {
+      const user = await props.userService.getUser();
+      if (user && props.api) {
+        setProcessing(true);
+        const ret = await props.api.readItems(user.access_token);
+        if (typeof ret === "string") {
+          setData([] as Array<BaseViewModel>);
+          setError(ret);
+        } else {
+          try {
+            const sortedData = ret.sort((a, b) =>
+              a["name"].localeCompare(b["name"])
+            );
+            setData([...sortedData]);
+            setError("");
+          } catch {
             try {
-              const sortedData = ret.sort((a, b) =>
-                a["name"].localeCompare(b["name"])
-              );
-              setData([...sortedData]);
+              setData(ret);
               setError("");
             } catch {
-              try {
-                setData(ret);
-                setError("");
-              } catch {
-                setError("item read failed");
-              }
+              setError("item read failed");
             }
           }
-        })
-        .catch((ret) => setError(ret))
-        .finally(() => setProcessing(false));
-    }
-  };
-  React.useEffect(() => {
+        }
+        setProcessing(false);
+      }
+    };
     getTableData().then();
-  }, [props.api, props.title]);
+  }, [props.userService, props.api, props.title]);
 
   return (
     <TableContainer component={Paper}>
