@@ -19,13 +19,11 @@ export const SignOutCallback: React.FC<Props> = (props) => {
 
   // Sign out and redirect to the specified redirect URI
   React.useEffect(() => {
-    localStorage.removeItem("SignedIn");
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userService
-      .signoutRedirectCallback()
-      .then(() =>
-        window.location.replace(redirectUri === null ? "/" : redirectUri)
-      );
+    props.userService.signoutRedirectCallback().then(() => {
+      localStorage.removeItem("SignedIn");
+      window.location.replace(redirectUri === null ? "/" : redirectUri);
+    });
   }, [props.userService]);
 
   return (
