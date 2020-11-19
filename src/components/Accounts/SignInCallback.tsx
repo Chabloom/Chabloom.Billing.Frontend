@@ -18,13 +18,16 @@ export const SignInCallback: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
-  const redirectUri = localStorage.getItem("redirectUri");
-  localStorage.setItem("SignedIn", "true");
-  props.userManager
-    .signinRedirectCallback()
-    .then(() =>
-      window.location.replace(redirectUri === null ? "" : redirectUri)
-    );
+  // Sign in and redirect to the specified redirect URI
+  React.useEffect(() => {
+    localStorage.setItem("SignedIn", "true");
+    const redirectUri = localStorage.getItem("redirectUri");
+    props.userManager
+      .signinRedirectCallback()
+      .then(() =>
+        window.location.replace(redirectUri === null ? "/" : redirectUri)
+      );
+  }, []);
 
   return (
     <div>
