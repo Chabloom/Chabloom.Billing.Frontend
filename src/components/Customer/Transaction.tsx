@@ -2,16 +2,7 @@ import React from "react";
 
 import { User } from "oidc-client";
 
-import {
-  createStyles,
-  Grid,
-  LinearProgress,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Grid, Paper, Typography } from "@material-ui/core";
 
 import { CardInput } from "./CardInput";
 
@@ -21,24 +12,14 @@ import {
   PaymentViewModel,
   TransactionsApi,
   TransactionViewModel,
+  useStyles,
 } from "../../types";
 
-import logo from "../../logo.svg";
+import { Status } from "../Status";
 
 interface Props {
   user: User | undefined;
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(5),
-    },
-    mt1: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
 
 export const Transaction: React.FC<Props> = (props) => {
   // Initialize classes
@@ -95,36 +76,36 @@ export const Transaction: React.FC<Props> = (props) => {
   };
 
   return (
-    <Grid item xs={12} sm={8} md={4}>
-      <Paper className={classes.paper} elevation={3}>
-        <img src={logo} className="logo" alt="logo" />
-        <Typography variant="h5">{`Payment for ${payment?.name}`}</Typography>
-        {payment && (
-          <CardInput
-            {...props}
-            buttonText={`Pay $${payment.amount}`}
-            completeCardInput={(paymentCard: PaymentCardViewModel) => {
-              if (payment) {
-                const transaction = {
-                  name: payment.name,
-                  amount: payment.amount,
-                  currency: "USD",
-                  paymentCard: paymentCard.id,
-                } as TransactionViewModel;
-                createTransaction(transaction).then();
-                window.location.replace(returnUrl);
-              }
-            }}
-          />
-        )}
-        {processing && <LinearProgress className={classes.mt1} />}
-      </Paper>
-      {error && (
-        <Alert severity="error">
-          <AlertTitle>Error</AlertTitle>
-          {error}
-        </Alert>
-      )}
-    </Grid>
+    <div>
+      <Grid container justify="center" style={{ minHeight: "100vh" }}>
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper className={classes.paper} elevation={3}>
+            <Typography
+              variant="h5"
+              align="center"
+            >{`Payment for ${payment?.name}`}</Typography>
+            {payment && (
+              <CardInput
+                {...props}
+                buttonText={`Pay $${payment.amount}`}
+                completeCardInput={(paymentCard: PaymentCardViewModel) => {
+                  if (payment) {
+                    const transaction = {
+                      name: payment.name,
+                      amount: payment.amount,
+                      currency: "USD",
+                      paymentCard: paymentCard.id,
+                    } as TransactionViewModel;
+                    createTransaction(transaction).then();
+                    window.location.replace(returnUrl);
+                  }
+                }}
+              />
+            )}
+            <Status processing={processing} error={error} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 };

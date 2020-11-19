@@ -1,30 +1,12 @@
 import React from "react";
 
-import {
-  createStyles,
-  Grid,
-  LinearProgress,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Typography } from "@material-ui/core";
 
-import { ApplicationConfig, ErrorViewModel } from "../../types";
+import { ApplicationConfig, ErrorViewModel, useStyles } from "../../types";
+
+import { Status } from "../Status";
 
 import logo from "../../logo.svg";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(5),
-    },
-    mt1: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
 
 export const Error: React.FC = () => {
   // Initialize classes
@@ -64,23 +46,21 @@ export const Error: React.FC = () => {
   }, []);
 
   return (
-    <Grid item xs={12} sm={8} md={4}>
-      <Paper className={classes.paper} elevation={3}>
-        <img src={logo} className="logo" alt="logo" />
-        <Typography variant="h5">Error</Typography>
-        <Typography>{viewModel?.error}</Typography>
-        <Typography>{viewModel?.errorDescription}</Typography>
-        <Typography variant="subtitle2">
-          Please email this error to support@chabloom.com
-        </Typography>
-        {error && (
-          <Alert className={classes.mt1} severity="error">
-            <AlertTitle>Error</AlertTitle>
-            {error}
-          </Alert>
-        )}
-        {processing && <LinearProgress className={classes.mt1} />}
-      </Paper>
-    </Grid>
+    <div>
+      <Grid container justify="center" style={{ minHeight: "100vh" }}>
+        <Grid item xs={12} sm={8} md={6}>
+          <Paper className={classes.paper} elevation={3}>
+            <img src={logo} className="logo" alt="logo" />
+            <Typography variant="h5">Error</Typography>
+            <Typography>{viewModel?.error}</Typography>
+            <Typography>{viewModel?.errorDescription}</Typography>
+            <Typography variant="subtitle2">
+              Please email this error to support@chabloom.com
+            </Typography>
+            <Status processing={processing} error={error} />
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
