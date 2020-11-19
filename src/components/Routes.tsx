@@ -60,14 +60,15 @@ export const Routes: React.FC<Props> = (props) => {
         );
         if (typeof applicationUser !== "string") {
           setUserLevel("admin");
-        }
-        const tenantUsersApi = new TenantUsersApi();
-        const tenantUser = await tenantUsersApi.readItem(
-          user.access_token,
-          user.profile.sub
-        );
-        if (typeof tenantUser !== "string") {
-          setUserLevel("manager");
+        } else {
+          const tenantUsersApi = new TenantUsersApi();
+          const tenantUser = await tenantUsersApi.readItem(
+            user.access_token,
+            user.profile.sub
+          );
+          if (typeof tenantUser !== "string") {
+            setUserLevel("manager");
+          }
         }
       }
     };
