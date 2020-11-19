@@ -1,7 +1,7 @@
 import { BaseViewModel } from "../../modelBase";
 
 export interface TransactionScheduleViewModel extends BaseViewModel {
-  id: string;
+  id?: string;
   name: string;
   amount: number;
   currency: string;

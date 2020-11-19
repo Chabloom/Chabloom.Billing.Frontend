@@ -11,11 +11,10 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentCardViewModel } from "../../types";
+import { PaymentCardsApi, PaymentCardViewModel } from "../../types";
 
 interface Props {
-  user: User;
-  amount: number;
+  user: User | undefined;
   buttonText: string;
   completeCardInput: CallableFunction;
 }
@@ -35,25 +34,50 @@ export const CardInput: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
+  const [cardName, setCardName] = React.useState<string>("");
   const [cardNumber, setCardNumber] = React.useState<string>();
   const [cardholderName, setCardholderName] = React.useState<string>();
   const [expirationMonth, setExpirationMonth] = React.useState<string>();
   const [expirationYear, setExpirationYear] = React.useState<string>();
   const [securityCode, setSecurityCode] = React.useState<string>();
 
+  const createPaymentCard = async (card: PaymentCardViewModel) => {
+    const api = new PaymentCardsApi();
+    const [ret, err] = await api.addItem(props.user?.access_token, card);
+    if (ret) {
+      return ret as PaymentCardViewModel;
+    }
+    return undefined;
+  };
+
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
-        const data = {
-          name: "",
+        const card = {
+          name: cardName,
+          cardNumber: cardNumber,
+          cardholderName: cardholderName,
           expirationMonth: expirationMonth,
           expirationYear: expirationYear,
         } as PaymentCardViewModel;
-        props.completeCardInput(data);
+        createPaymentCard(card).then((ret) => {
+          if (ret) {
+            props.completeCardInput(ret);
+          }
+        });
       }}
     >
       <FormGroup>
+        <TextField
+          className={classes.mt1}
+          fullWidth
+          required
+          name="cardName"
+          label="Card Nickname (optional)"
+          value={cardName}
+          onChange={(e) => setCardName(e.target.value)}
+        />
         <TextField
           className={classes.mt1}
           fullWidth

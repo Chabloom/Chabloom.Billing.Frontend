@@ -13,7 +13,7 @@ import {
   SignOut,
   SignOutCallback,
 } from "./Accounts";
-import { Transaction, TransactionSchedule } from "./Processing";
+import { Transaction } from "./Customer";
 
 import { Home } from "./Home";
 
@@ -47,11 +47,8 @@ export const MainMobile: React.FC<Props> = (props) => {
         <Route exact={true} path="/signout-oidc">
           <SignOutCallback {...props} />
         </Route>
-        <Route path="/transactions">
+        <Route path="/transaction">
           <Transaction {...props} />
-        </Route>
-        <Route path="/transactionSchedules">
-          <TransactionSchedule {...props} />
         </Route>
         <Route path="/">
           <Home {...props} admin={false} manager={false} />

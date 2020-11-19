@@ -17,34 +17,25 @@ export const PaymentTableActionButtons: React.FC<Props> = (props) => {
   if (props.selectedIndex === -1) {
     return null;
   }
+  const payment = props.payments[props.selectedIndex];
   const transaction = props.payments[props.selectedIndex].transaction;
   const hasTransaction = transaction !== guidEmpty;
-  const transactionSchedule =
-    props.payments[props.selectedIndex].transactionSchedule;
-  const hasTransactionSchedule = transactionSchedule !== guidEmpty;
   return (
     <ButtonGroup>
-      {!hasTransaction && !hasTransactionSchedule && (
+      {!hasTransaction && (
         <Tooltip title="Set up payment">
-          <IconButton component={NavLink} to="/transactions">
+          <IconButton
+            component={NavLink}
+            to={`/transaction?paymentId=${payment.id}`}
+          >
             <Payment />
           </IconButton>
         </Tooltip>
       )}
       {hasTransaction && (
         <Tooltip title="Manage payment transaction">
-          <IconButton component={NavLink} to={`/transactions/${transaction}`}>
+          <IconButton component={NavLink} to={`/transaction/${transaction}`}>
             <Receipt />
-          </IconButton>
-        </Tooltip>
-      )}
-      {hasTransactionSchedule && (
-        <Tooltip title="Manage payment auto pay schedule">
-          <IconButton
-            component={NavLink}
-            to={`/transactionSchedules/${transactionSchedule}`}
-          >
-            <Schedule />
           </IconButton>
         </Tooltip>
       )}

@@ -18,6 +18,7 @@ import {
   SignOut,
   SignOutCallback,
 } from "./Accounts";
+import { Transaction } from "./Customer";
 import {
   Account,
   AccountRole,
@@ -31,7 +32,6 @@ import {
   TenantUser,
 } from "./Manager";
 import { Navigation } from "./Navigation";
-import { Transaction, TransactionSchedule } from "./Processing";
 
 import { Home } from "./Home";
 
@@ -161,16 +161,9 @@ export const Main: React.FC<Props> = (props) => {
               <ApplicationUser {...props} user={props.user as User} />
             </Route>
           )}
-          {props.user && (
-            <Route path="/transactions">
-              <Transaction {...props} user={props.user as User} />
-            </Route>
-          )}
-          {props.user && (
-            <Route path="/transactionSchedules">
-              <TransactionSchedule {...props} user={props.user as User} />
-            </Route>
-          )}
+          <Route path="/transaction">
+            <Transaction {...props} />
+          </Route>
           <Route path="/">
             <Home {...props} admin={admin} manager={manager} />
           </Route>

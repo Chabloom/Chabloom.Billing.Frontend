@@ -1,11 +1,11 @@
 import { BaseViewModel } from "../../modelBase";
 
 export interface TransactionViewModel extends BaseViewModel {
-  id: string;
+  id?: string;
   name: string;
   amount: number;
   currency: string;
-  complete: boolean;
+  complete?: boolean;
   paymentCard: string;
-  externalTransactionId: string;
+  externalTransactionId?: string;
 }
