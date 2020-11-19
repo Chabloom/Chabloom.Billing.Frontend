@@ -49,7 +49,11 @@ export class UserService {
   getUser = async (require: boolean = true) => {
     const user = await this.userManager.getUser();
     if (!user && require) {
-      return this.signinRedirectCallback();
+      try {
+        return this.signinRedirectCallback();
+      } catch (e) {
+        this.signinRedirect();
+      }
     }
     return user;
   };
