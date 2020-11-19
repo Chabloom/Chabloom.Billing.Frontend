@@ -1,31 +1,27 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { User, UserManager } from "oidc-client";
-
 import { TenantViewModel } from "../types";
 
-import {
-  Error,
-  Register,
-  SignIn,
-  SignInCallback,
-  SignOut,
-  SignOutCallback,
-} from "./Accounts";
+import { Error, Register } from "./Accounts";
 import { Transaction } from "./Customer";
 
 import { Home } from "./Home";
 
+import { SignIn } from "./SignIn";
+import { SignInCallback } from "./SignInCallback";
+import { SignOut } from "./SignOut";
+import { SignOutCallback } from "./SignOutCallback";
+import { UserService } from "./UserService";
+
 interface Props {
-  userManager: UserManager;
-  user: User;
+  userService: UserService;
   tenants: Array<TenantViewModel>;
   darkMode: boolean;
   setDarkMode: CallableFunction;
 }
 
-export const MainMobile: React.FC<Props> = (props) => {
+export const RoutesMobile: React.FC<Props> = (props) => {
   return (
     <Router>
       <Switch>

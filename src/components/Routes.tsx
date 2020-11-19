@@ -1,8 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { User, UserManager } from "oidc-client";
-
 import {
   AccountViewModel,
   ApplicationUsersApi,
@@ -10,14 +8,7 @@ import {
   TenantViewModel,
 } from "../types";
 
-import {
-  Error,
-  Register,
-  SignIn,
-  SignInCallback,
-  SignOut,
-  SignOutCallback,
-} from "./Accounts";
+import { Error, Register } from "./Accounts";
 import { Transaction } from "./Customer";
 import {
   Account,
@@ -35,36 +26,20 @@ import { Navigation } from "./Navigation";
 
 import { Home } from "./Home";
 
+import { SignIn } from "./SignIn";
+import { SignInCallback } from "./SignInCallback";
+import { SignOut } from "./SignOut";
+import { SignOutCallback } from "./SignOutCallback";
+import { UserService } from "./UserService";
+
 interface Props {
-  userManager: UserManager;
-  user: User | undefined;
-  signedIn: boolean;
+  userService: UserService;
   tenants: Array<TenantViewModel>;
   darkMode: boolean;
   setDarkMode: CallableFunction;
 }
 
-const getAdminLevel = async (user: User) => {
-  const applicationUsersApi = new ApplicationUsersApi();
-  const applicationUser = await applicationUsersApi.readItem(
-    user.access_token,
-    user.profile.sub
-  );
-  if (typeof applicationUser !== "string") {
-    return "admin";
-  }
-  const tenantUsersApi = new TenantUsersApi();
-  const tenantUser = await tenantUsersApi.readItem(
-    user.access_token,
-    user.profile.sub
-  );
-  if (typeof tenantUser !== "string") {
-    return "manager";
-  }
-  return undefined;
-};
-
-export const Main: React.FC<Props> = (props) => {
+export const Routes: React.FC<Props> = (props) => {
   const [userLevel, setUserLevel] = React.useState<
     "admin" | "manager" | undefined
   >();
@@ -74,12 +49,30 @@ export const Main: React.FC<Props> = (props) => {
   const [manager, setManager] = React.useState(false);
 
   // Get the user's administrative level
-  React.useEffect(() => {
-    if (!props.user || props.user.expired) {
-      return;
+  const getAdminLevel = async () => {
+    const user = await props.userService.getUser(false);
+    if (user) {
+      const applicationUsersApi = new ApplicationUsersApi();
+      const applicationUser = await applicationUsersApi.readItem(
+        user.access_token,
+        user.profile.sub
+      );
+      if (typeof applicationUser !== "string") {
+        setUserLevel("admin");
+      }
+      const tenantUsersApi = new TenantUsersApi();
+      const tenantUser = await tenantUsersApi.readItem(
+        user.access_token,
+        user.profile.sub
+      );
+      if (typeof tenantUser !== "string") {
+        setUserLevel("manager");
+      }
     }
-    getAdminLevel(props.user).then((l) => setUserLevel(l));
-  }, [props.user]);
+  };
+  React.useEffect(() => {
+    getAdminLevel().then();
+  }, []);
 
   return (
     <Router>
@@ -128,12 +121,12 @@ export const Main: React.FC<Props> = (props) => {
               <PaymentSchedule {...props} account={account} />
             </Route>
           )}
-          {props.user && account && (
+          {account && (
             <Route path="/accountRoles">
               <AccountRole {...props} account={account} />
             </Route>
           )}
-          {props.user && account && (
+          {account && (
             <Route path="/accountUsers">
               <AccountUser {...props} account={account} />
             </Route>
@@ -141,26 +134,22 @@ export const Main: React.FC<Props> = (props) => {
           <Route path="/tenants">
             <Tenant {...props} />
           </Route>
-          {props.user && tenant && (
+          {tenant && (
             <Route path="/tenantRoles">
               <TenantRole {...props} tenant={tenant} />
             </Route>
           )}
-          {props.user && tenant && (
+          {tenant && (
             <Route path="/tenantUsers">
               <TenantUser {...props} tenant={tenant} />
             </Route>
           )}
-          {props.user && (
-            <Route path="/applicationRoles">
-              <ApplicationRole {...props} user={props.user as User} />
-            </Route>
-          )}
-          {props.user && (
-            <Route path="/applicationUsers">
-              <ApplicationUser {...props} user={props.user as User} />
-            </Route>
-          )}
+          <Route path="/applicationRoles">
+            <ApplicationRole {...props} />
+          </Route>
+          <Route path="/applicationUsers">
+            <ApplicationUser {...props} />
+          </Route>
           <Route path="/transaction">
             <Transaction {...props} />
           </Route>

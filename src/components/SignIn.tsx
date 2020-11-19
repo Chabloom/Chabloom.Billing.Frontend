@@ -12,11 +12,11 @@ import {
   Typography,
 } from "@material-ui/core";
 
-import { ApplicationConfig, SignInViewModel, useStyles } from "../../types";
+import { ApplicationConfig, SignInViewModel, useStyles } from "../types";
 
-import { Status } from "../Status";
+import { Status } from "./Status";
 
-import logo from "../../logo.svg";
+import logo from "../logo.svg";
 
 export const SignIn: React.FC = () => {
   // Initialize classes

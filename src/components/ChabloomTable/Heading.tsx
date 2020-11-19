@@ -1,8 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-import { User } from "oidc-client";
-
 import {
   ButtonGroup,
   IconButton,
@@ -27,9 +25,10 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   tenant: TenantViewModel | undefined;
   api: BaseApiType<BaseViewModel>;
   title: string;
@@ -74,6 +73,78 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChabloomTableActionButtons: React.FC<Props> = (props) => {
+  const addItem = async () => {
+    const user = await props.userService.getUser();
+    if (user && props.api) {
+      props.setProcessing(true);
+      const [newItem, err] = await props.api.addItem(
+        user.access_token,
+        props.editItem
+      );
+      if (!err) {
+        props.setData([
+          ...props.data.slice(0, props.selectedIndex),
+          { ...newItem },
+          ...props.data.slice(props.selectedIndex + 1),
+        ]);
+        props.setSelectedIndex(-1);
+        props.setEditIndex(-1);
+        props.setAdding(false);
+        props.setError("");
+      } else {
+        props.setError(err);
+      }
+      props.setProcessing(false);
+    } else {
+      props.setError("API not defined");
+    }
+  };
+  const editItem = async () => {
+    const user = await props.userService.getUser();
+    if (user && props.api) {
+      props.setProcessing(true);
+      const [newItem, err] = await props.api.editItem(
+        user.access_token,
+        props.editItem
+      );
+      if (!err) {
+        props.setData([
+          ...props.data.slice(0, props.selectedIndex),
+          { ...newItem },
+          ...props.data.slice(props.selectedIndex + 1),
+        ]);
+        props.setSelectedIndex(-1);
+        props.setEditIndex(-1);
+        props.setError("");
+      } else {
+        props.setError(err);
+      }
+      props.setProcessing(false);
+    } else {
+      props.setError("API not defined");
+    }
+  };
+  const deleteItem = async () => {
+    const user = await props.userService.getUser();
+    if (user && props.api) {
+      props.setProcessing(true);
+      const err = await props.api.deleteItem(user.access_token, props.editItem);
+      if (!err) {
+        props.setData([
+          ...props.data.slice(0, props.selectedIndex),
+          ...props.data.slice(props.selectedIndex + 1),
+        ]);
+        props.setSelectedIndex(-1);
+        props.setDeleteIndex(-1);
+      } else {
+        props.setError(err);
+      }
+      props.setProcessing(false);
+    } else {
+      props.setError("API not defined");
+    }
+  };
+
   if (props.selectedIndex !== -1) {
     if (props.editIndex === props.selectedIndex) {
       return (
@@ -81,52 +152,9 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
           <IconButton
             onClick={() => {
               if (props.adding) {
-                if (props.api) {
-                  props.setProcessing(true);
-                  props.api
-                    .addItem(props.user?.access_token, props.editItem)
-                    .then(([newItem, err]) => {
-                      if (!err) {
-                        props.setData([
-                          ...props.data.slice(0, props.selectedIndex),
-                          { ...newItem },
-                          ...props.data.slice(props.selectedIndex + 1),
-                        ]);
-                        props.setSelectedIndex(-1);
-                        props.setEditIndex(-1);
-                        props.setAdding(false);
-                        props.setError("");
-                      } else {
-                        props.setError(err);
-                      }
-                    })
-                    .finally(props.setProcessing(false));
-                } else {
-                  props.setError("API not defined");
-                }
+                addItem().then();
               } else {
-                if (props.api) {
-                  props.setProcessing(true);
-                  props.api
-                    .editItem(props.user?.access_token, props.editItem)
-                    .then(([newItem, err]) => {
-                      if (!err) {
-                        props.setData([
-                          ...props.data.slice(0, props.selectedIndex),
-                          { ...newItem },
-                          ...props.data.slice(props.selectedIndex + 1),
-                        ]);
-                        props.setSelectedIndex(-1);
-                        props.setEditIndex(-1);
-                        props.setError("");
-                      } else {
-                        props.setError(err);
-                      }
-                    })
-                    .finally(props.setProcessing(false));
-                } else {
-                  props.setError("API not defined");
-                }
+                editItem().then();
               }
             }}
           >
@@ -159,26 +187,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
         <ButtonGroup>
           <IconButton
             onClick={() => {
-              if (props.api) {
-                props.setProcessing(true);
-                props.api
-                  .deleteItem(props.user?.access_token, props.editItem)
-                  .then((err) => {
-                    if (!err) {
-                      props.setData([
-                        ...props.data.slice(0, props.selectedIndex),
-                        ...props.data.slice(props.selectedIndex + 1),
-                      ]);
-                      props.setSelectedIndex(-1);
-                      props.setDeleteIndex(-1);
-                    } else {
-                      props.setError(err);
-                    }
-                  })
-                  .finally(props.setProcessing(false));
-              } else {
-                props.setError("API not defined");
-              }
+              deleteItem().then();
             }}
           >
             <Delete />

@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { makeStyles } from "@material-ui/core/styles";
 import {
   createStyles,
@@ -15,9 +13,10 @@ import { PaymentViewModel } from "../../../types";
 
 import { Search } from "./Search";
 import { PaymentTable } from "../PaymentTable";
+import { UserService } from "../../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

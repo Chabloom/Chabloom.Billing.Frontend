@@ -1,17 +1,16 @@
 import React from "react";
 
-import { UserManager } from "oidc-client";
-
 import { Grid, Paper, Typography } from "@material-ui/core";
 
-import { useStyles } from "../../types";
+import { useStyles } from "../types";
 
-import { Status } from "../Status";
+import { Status } from "./Status";
+import { UserService } from "./UserService";
 
-import logo from "../../logo.svg";
+import logo from "../logo.svg";
 
 interface Props {
-  userManager: UserManager;
+  userService: UserService;
 }
 
 export const SignInCallback: React.FC<Props> = (props) => {
@@ -22,12 +21,12 @@ export const SignInCallback: React.FC<Props> = (props) => {
   React.useEffect(() => {
     localStorage.setItem("SignedIn", "true");
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userManager
+    props.userService
       .signinRedirectCallback()
       .then(() =>
         window.location.replace(redirectUri === null ? "/" : redirectUri)
       );
-  }, []);
+  }, [props.userService]);
 
   return (
     <div>

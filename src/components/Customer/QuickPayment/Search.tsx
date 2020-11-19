@@ -1,16 +1,11 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Button,
-  createStyles,
   FormGroup,
   LinearProgress,
   TextField,
-  Theme,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { Alert, AlertTitle, Autocomplete } from "@material-ui/lab";
 
 import {
@@ -18,21 +13,13 @@ import {
   PaymentViewModel,
   TenantsApi,
   TenantViewModel,
+  useStyles,
 } from "../../../types";
 
 interface Props {
-  user: User | undefined;
   payments: Array<PaymentViewModel>;
   setPayments: CallableFunction;
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    mt1: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
 
 export const Search: React.FC<Props> = (props) => {
   const [tenant, setTenant] = React.useState("");

@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { ButtonGroup, IconButton, Tooltip } from "@material-ui/core";
-import { Payment, Receipt, Schedule } from "@material-ui/icons";
+import { Payment, Receipt } from "@material-ui/icons";
 
 import { PaymentViewModel } from "../../../types";
 

@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User, UserManager } from "oidc-client";
-
 import {
   createStyles,
   CssBaseline,
@@ -14,10 +12,10 @@ import { AccountViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomDrawer } from "./Drawer";
 import { ChabloomToolbar } from "./Toolbar";
+import { UserService } from "../UserService";
 
 interface Props {
-  userManager: UserManager;
-  user: User | undefined;
+  userService: UserService;
   userLevel: "admin" | "manager" | undefined;
   setTenant: CallableFunction;
   admin: boolean;

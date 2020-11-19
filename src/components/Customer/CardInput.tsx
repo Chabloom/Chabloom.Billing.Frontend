@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Button,
   createStyles,
@@ -13,8 +11,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { PaymentCardsApi, PaymentCardViewModel } from "../../types";
 
+import { UserService } from "../UserService";
+
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   buttonText: string;
   completeCardInput: CallableFunction;
 }
@@ -42,9 +42,10 @@ export const CardInput: React.FC<Props> = (props) => {
   const [securityCode, setSecurityCode] = React.useState<string>();
 
   const createPaymentCard = async (card: PaymentCardViewModel) => {
+    const user = await props.userService.getUser(false);
     const api = new PaymentCardsApi();
-    const [ret, err] = await api.addItem(props.user?.access_token, card);
-    if (ret) {
+    const [ret, err] = await api.addItem(user?.access_token, card);
+    if (ret && !err) {
       return ret as PaymentCardViewModel;
     }
     return undefined;

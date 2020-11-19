@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
 import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
@@ -11,9 +9,10 @@ import { ChabloomTableHead } from "./Head";
 import { ChabloomTableColumn } from "./Column";
 import { ChabloomTablePagination } from "./Pagination";
 import { ChabloomTableHeading } from "./Heading";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   tenant: TenantViewModel | undefined;
   api: BaseApiType<BaseViewModel>;
   title: string;
@@ -34,12 +33,14 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  React.useEffect(() => {
-    if (props.user && props.api) {
+  // Get the table data
+  const getTableData = async () => {
+    const user = await props.userService.getUser();
+    if (user && props.api) {
       console.debug("updating table data");
       setProcessing(true);
       props.api
-        .readItems(props.user?.access_token)
+        .readItems(user.access_token)
         .then((ret) => {
           if (typeof ret === "string") {
             setData([] as Array<BaseViewModel>);
@@ -64,7 +65,10 @@ export const ChabloomTable: React.FC<Props> = (props) => {
         .catch((ret) => setError(ret))
         .finally(() => setProcessing(false));
     }
-  }, [props.user, props.api, props.title]);
+  };
+  React.useEffect(() => {
+    getTableData().then();
+  }, [props.api, props.title]);
 
   return (
     <TableContainer component={Paper}>

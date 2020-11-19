@@ -1,13 +1,12 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { ApplicationRolesApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User;
+  userService: UserService;
 }
 
 const columns: Array<ChabloomTableColumn> = [

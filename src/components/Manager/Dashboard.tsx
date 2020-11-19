@@ -1,9 +1,9 @@
 import React from "react";
 
-import { User } from "oidc-client";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
 }
 
 export const Dashboard: React.FC<Props> = (props) => {

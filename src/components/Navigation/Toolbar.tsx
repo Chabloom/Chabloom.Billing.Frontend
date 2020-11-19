@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User, UserManager } from "oidc-client";
-
 import {
   AppBar,
   createStyles,
@@ -19,10 +17,10 @@ import { TenantSelection } from "./TenantSelection";
 import { UserManagement } from "./UserManagement";
 
 import logo from "../../logo.svg";
+import { UserService } from "../UserService";
 
 interface Props {
-  userManager: UserManager;
-  user: User | undefined;
+  userService: UserService;
   userLevel: "admin" | "manager" | undefined;
   tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;

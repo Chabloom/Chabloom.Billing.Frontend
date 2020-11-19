@@ -1,13 +1,12 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { AccountUsersApi, AccountViewModel } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   account: AccountViewModel;
 }
 

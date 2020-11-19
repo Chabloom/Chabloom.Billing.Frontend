@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { Grid, Paper, Typography } from "@material-ui/core";
 
 import { CardInput } from "./CardInput";
@@ -16,9 +14,10 @@ import {
 } from "../../types";
 
 import { Status } from "../Status";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
 }
 
 export const Transaction: React.FC<Props> = (props) => {
@@ -33,9 +32,10 @@ export const Transaction: React.FC<Props> = (props) => {
 
   // Get parameters and return URL
   const getPayment = async (paymentId: string) => {
+    const user = await props.userService.getUser(false);
     setProcessing(true);
     const api = new PaymentsApi("");
-    const ret = await api.readItem(props.user?.access_token, paymentId);
+    const ret = await api.readItem(user?.access_token, paymentId);
     if (typeof ret !== "string") {
       setPayment(ret);
     } else {
@@ -56,9 +56,10 @@ export const Transaction: React.FC<Props> = (props) => {
   }, []);
 
   const createTransaction = async (transaction: TransactionViewModel) => {
+    const user = await props.userService.getUser(false);
     setProcessing(true);
     const api = new TransactionsApi();
-    const [ret, err] = await api.addItem(props.user?.access_token, transaction);
+    const [ret, err] = await api.addItem(user?.access_token, transaction);
     if (!ret) {
       setError(err);
     } else {
@@ -68,7 +69,7 @@ export const Transaction: React.FC<Props> = (props) => {
         let updatedPayment = payment;
         if (updatedPayment) {
           updatedPayment.transaction = t.id;
-          await paymentsApi.editItem(props.user?.access_token, updatedPayment);
+          await paymentsApi.editItem(user?.access_token, updatedPayment);
         }
       }
     }

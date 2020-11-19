@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User, UserManager } from "oidc-client";
-
 import {
   createMuiTheme,
   ThemeProvider,
@@ -16,12 +14,11 @@ import { createBrowserHistory } from "history";
 import {
   AppInsightsInstrumentationKey,
   appIsStandalone,
-  OidcSettings,
   TenantsApi,
   TenantViewModel,
 } from "./types";
 
-import { Main, MainMobile } from "./components";
+import { Routes, RoutesMobile, UserService } from "./components";
 
 import "./App.scss";
 
@@ -38,33 +35,7 @@ const appInsights = new ApplicationInsights({
 });
 appInsights.loadAppInsights();
 
-const userManager = new UserManager(OidcSettings);
-
-const getUser = async (
-  userManager: UserManager
-): Promise<[boolean, User | undefined]> => {
-  // Check if the user wishes to be signed in
-  if (!appIsStandalone()) {
-    const signedIn = localStorage.getItem("SignedIn");
-    if (signedIn !== "true") {
-      return [false, undefined];
-    }
-  }
-  // Check if the user is already logged in
-  let user = await userManager.getUser();
-  if (user && !user.expired) {
-    return [true, user];
-  }
-  // Attempt silent sign in
-  user = await userManager.signinSilent();
-  if (user && !user.expired) {
-    return [true, user];
-  }
-  // Redirect to sign in page
-  localStorage.setItem("redirectUri", window.location.pathname);
-  await userManager.signinRedirect();
-  return [false, undefined];
-};
+const userService = new UserService();
 
 const getTenants = async () => {
   const tenantsApi = new TenantsApi();
@@ -76,32 +47,8 @@ const getTenants = async () => {
 };
 
 export const App: React.FC = () => {
-  const [signedIn, setSignedIn] = React.useState(false);
-  const [user, setUser] = React.useState<User>();
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [darkMode, setDarkMode] = React.useState<boolean>(false);
-
-  // Ensure user is signed in
-  React.useEffect(() => {
-    getUser(userManager).then(([s, u]) => {
-      setSignedIn(s);
-      setUser(u);
-    });
-  }, []);
-
-  // Add access token expired event
-  React.useEffect(() => {
-    userManager.events.addUserLoaded((u) => {
-      setUser(u);
-      window.location.replace(window.location.pathname);
-    });
-    userManager.events.addAccessTokenExpired(() =>
-      getUser(userManager).then(([s, u]) => {
-        setSignedIn(s);
-        setUser(u);
-      })
-    );
-  }, []);
 
   // Get all available tenants
   React.useEffect(() => {
@@ -130,15 +77,10 @@ export const App: React.FC = () => {
   );
 
   if (appIsStandalone()) {
-    // User is required in standalone mode
-    if (!user) {
-      return null;
-    }
     return (
       <ThemeProvider theme={theme}>
-        <MainMobile
-          userManager={userManager}
-          user={user}
+        <RoutesMobile
+          userService={userService}
           tenants={tenants}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
@@ -148,10 +90,8 @@ export const App: React.FC = () => {
   } else {
     return (
       <ThemeProvider theme={theme}>
-        <Main
-          userManager={userManager}
-          user={user}
-          signedIn={signedIn}
+        <Routes
+          userService={userService}
           tenants={tenants}
           darkMode={darkMode}
           setDarkMode={setDarkMode}

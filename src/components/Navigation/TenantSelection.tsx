@@ -1,7 +1,5 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Button,
   ButtonGroup,
@@ -17,8 +15,10 @@ import { ArrowDropDown } from "@material-ui/icons";
 
 import { TenantsApi, TenantViewModel } from "../../types";
 
+import { UserService } from "../UserService";
+
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;
   admin: boolean;
@@ -33,23 +33,27 @@ export const TenantSelection: React.FC<Props> = (props) => {
   const anchorRef = React.useRef(null);
 
   // Get tenants that the user is authorized to select
-  React.useEffect(() => {
-    if (props.user && !props.user.expired) {
+  const getTenants = async () => {
+    const user = await props.userService.getUser();
+    if (user) {
       let api: TenantsApi;
       if (props.admin) {
         // Admin mode can see all tenants
         api = new TenantsApi();
       } else {
-        api = new TenantsApi(props.user.profile.sub);
+        api = new TenantsApi(user.profile.sub);
       }
-      api.readItems(props.user.access_token).then((ret) => {
+      api.readItems(user.access_token).then((ret) => {
         if (typeof ret !== "string") {
           ret = ret.sort((a, b) => a.name.localeCompare(b.name));
           setTenants(ret);
         }
       });
     }
-  }, [props.admin, props.user]);
+  };
+  React.useEffect(() => {
+    getTenants().then();
+  }, [props.admin]);
 
   // Workaround for eslint issue on the useEffect call below
   const setTenant = props.setTenant;

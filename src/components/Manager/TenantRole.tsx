@@ -1,13 +1,12 @@
 import React from "react";
 
-import { User } from "oidc-client";
-
 import { TenantRolesApi, TenantViewModel } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
+import { UserService } from "../UserService";
 
 interface Props {
-  user: User | undefined;
+  userService: UserService;
   tenant: TenantViewModel;
 }
 
