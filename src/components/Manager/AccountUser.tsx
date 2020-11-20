@@ -1,9 +1,8 @@
 import React from "react";
 
-import { AccountUsersApi, AccountViewModel } from "../../types";
+import { AccountUsersApi, AccountViewModel, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -34,16 +33,16 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: AccountUsersApi = new AccountUsersApi();
+let api: AccountUsersApi;
 // The page title
 let title: string;
 
 export const AccountUser: React.FC<Props> = (props) => {
   // Update the API and title
   React.useEffect(() => {
-    api = new AccountUsersApi(props.account.id as string);
+    api = new AccountUsersApi(props.userService, props.account.id as string);
     title = `Account Users for ${props.account.name}`;
-  }, [props.account]);
+  }, [props.userService, props.account]);
 
   return (
     <ChabloomTable

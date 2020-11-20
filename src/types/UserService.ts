@@ -1,6 +1,6 @@
 import { UserManager } from "oidc-client";
 
-import { OidcSettings } from "../types";
+import { OidcSettings } from "./index";
 
 export class UserService {
   userManager: UserManager;

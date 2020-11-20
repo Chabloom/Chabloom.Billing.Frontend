@@ -11,10 +11,10 @@ import {
   TransactionsApi,
   TransactionViewModel,
   useStyles,
+  UserService,
 } from "../../types";
 
 import { Status } from "../Status";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -33,14 +33,13 @@ export const Transaction: React.FC<Props> = (props) => {
   // Get parameters and return URL
   React.useEffect(() => {
     const getPayment = async (paymentId: string) => {
-      const user = await props.userService.getUser(false);
       setProcessing(true);
-      const api = new PaymentsApi("");
-      const ret = await api.readItem(user?.access_token, paymentId);
-      if (typeof ret !== "string") {
-        setPayment(ret);
+      const api = new PaymentsApi(props.userService, "");
+      const [item, err] = await api.readItem(paymentId);
+      if (item && !err) {
+        setPayment(item);
       } else {
-        setError(ret);
+        setError(err);
       }
       setProcessing(false);
     };
@@ -56,20 +55,19 @@ export const Transaction: React.FC<Props> = (props) => {
   }, [props.userService]);
 
   const createTransaction = async (transaction: TransactionViewModel) => {
-    const user = await props.userService.getUser(false);
     setProcessing(true);
-    const api = new TransactionsApi();
-    const [ret, err] = await api.addItem(user?.access_token, transaction);
+    const api = new TransactionsApi(props.userService);
+    const [ret, err] = await api.addItem(transaction);
     if (!ret) {
       setError(err);
     } else {
       const t = ret as TransactionViewModel;
       if (t && t.id) {
-        const paymentsApi = new PaymentsApi("");
+        const paymentsApi = new PaymentsApi(props.userService, "");
         let updatedPayment = payment;
         if (updatedPayment) {
           updatedPayment.transaction = t.id;
-          await paymentsApi.editItem(user?.access_token, updatedPayment);
+          await paymentsApi.editItem(updatedPayment);
         }
       }
     }

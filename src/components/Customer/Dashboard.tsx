@@ -4,7 +4,8 @@ import { Grid } from "@material-ui/core";
 
 import { QuickPayment } from "./QuickPayment";
 import { UpcomingPayments } from "./UpcomingPayments";
-import { UserService } from "../UserService";
+
+import { UserService } from "../../types";
 
 interface Props {
   userService: UserService;

@@ -1,49 +1,41 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { ApplicationRoleViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { BaseViewModel } from "../../modelBase";
+import { UserService } from "../../UserService";
 
 export class ApplicationRolesApi
   extends BaseApi<ApplicationRoleViewModel>
   implements BaseApiType<ApplicationRoleViewModel> {
   baseUrl: string;
 
-  constructor() {
-    super();
+  constructor(userService: UserService) {
+    super(userService);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/applicationRoles`;
   }
 
-  readItems(
-    token: string | undefined
-  ): Promise<Array<ApplicationRoleViewModel> | string> {
-    return this._readItems(token, `${this.baseUrl}`);
+  readItems(): Promise<[Array<ApplicationRoleViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`);
   }
 
   readItem(
-    token: string | undefined,
     itemId: string
-  ): Promise<ApplicationRoleViewModel | string> {
-    return this._readItem(token, `${this.baseUrl}/${itemId}`);
+  ): Promise<[ApplicationRoleViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    token: string | undefined,
     item: ApplicationRoleViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._addItem(token, `${this.baseUrl}`, item);
+  ): Promise<[ApplicationRoleViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
-    token: string | undefined,
     item: ApplicationRoleViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
+  ): Promise<[ApplicationRoleViewModel | undefined, string]> {
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(
-    token: string | undefined,
-    item: ApplicationRoleViewModel
-  ): Promise<string | undefined> {
-    return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
+  deleteItem(item: ApplicationRoleViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

@@ -6,6 +6,7 @@ import {
   ApplicationUsersApi,
   TenantUsersApi,
   TenantViewModel,
+  UserService,
 } from "../types";
 
 import { Error, Register } from "./Accounts";
@@ -30,7 +31,6 @@ import { SignIn } from "./SignIn";
 import { SignInCallback } from "./SignInCallback";
 import { SignOut } from "./SignOut";
 import { SignOutCallback } from "./SignOutCallback";
-import { UserService } from "./UserService";
 
 interface Props {
   userService: UserService;
@@ -53,20 +53,18 @@ export const Routes: React.FC<Props> = (props) => {
     const getAdminLevel = async () => {
       const user = await props.userService.getUser(false);
       if (user) {
-        const applicationUsersApi = new ApplicationUsersApi();
-        const applicationUser = await applicationUsersApi.readItem(
-          user.access_token,
+        const applicationUsersApi = new ApplicationUsersApi(props.userService);
+        const [applicationUser, err] = await applicationUsersApi.readItem(
           user.profile.sub
         );
-        if (typeof applicationUser !== "string") {
+        if (applicationUser && !err) {
           setUserLevel("admin");
         } else {
-          const tenantUsersApi = new TenantUsersApi();
-          const tenantUser = await tenantUsersApi.readItem(
-            user.access_token,
+          const tenantUsersApi = new TenantUsersApi(props.userService);
+          const [tenantUser, err] = await tenantUsersApi.readItem(
             user.profile.sub
           );
-          if (typeof tenantUser !== "string") {
+          if (tenantUser && !err) {
             setUserLevel("manager");
           }
         }

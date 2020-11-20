@@ -1,49 +1,41 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { PaymentCardViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { BaseViewModel } from "../../modelBase";
+import { UserService } from "../../UserService";
 
 export class PaymentCardsApi
   extends BaseApi<PaymentCardViewModel>
   implements BaseApiType<PaymentCardViewModel> {
   baseUrl: string;
 
-  constructor() {
-    super();
+  constructor(userService: UserService) {
+    super(userService);
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/paymentCards`;
   }
 
-  readItems(
-    token: string | undefined
-  ): Promise<Array<PaymentCardViewModel> | string> {
-    return this._readItems(token, `${this.baseUrl}`);
+  readItems(): Promise<[Array<PaymentCardViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`);
   }
 
   readItem(
-    token: string | undefined,
     itemId: string
-  ): Promise<PaymentCardViewModel | string> {
-    return this._readItem(token, `${this.baseUrl}/${itemId}`);
+  ): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    token: string | undefined,
     item: PaymentCardViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._addItem(token, `${this.baseUrl}/Demo`, item);
+  ): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}/Demo`, item);
   }
 
   editItem(
-    token: string | undefined,
     item: PaymentCardViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
+  ): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(
-    token: string | undefined,
-    item: PaymentCardViewModel
-  ): Promise<string | undefined> {
-    return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
+  deleteItem(item: PaymentCardViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

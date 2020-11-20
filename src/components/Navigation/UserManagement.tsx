@@ -1,5 +1,7 @@
 import React from "react";
 
+import { User } from "oidc-client";
+
 import {
   ClickAwayListener,
   FormControlLabel,
@@ -12,8 +14,8 @@ import {
   Switch,
 } from "@material-ui/core";
 import { AccountCircleOutlined } from "@material-ui/icons";
-import { UserService } from "../UserService";
-import { User } from "oidc-client";
+
+import { UserService } from "../../types";
 
 interface Props {
   userService: UserService;

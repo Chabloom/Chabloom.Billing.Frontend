@@ -1,9 +1,8 @@
 import React from "react";
 
-import { ApplicationRolesApi } from "../../types";
+import { ApplicationRolesApi, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -18,10 +17,15 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationRolesApi = new ApplicationRolesApi();
+let api: ApplicationRolesApi;
 
 export const ApplicationRole: React.FC<Props> = (props) => {
   const title = "Application Roles";
+
+  // Update the API
+  React.useEffect(() => {
+    api = new ApplicationRolesApi(props.userService);
+  }, [props.userService]);
 
   return (
     <ChabloomTable

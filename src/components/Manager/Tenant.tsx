@@ -1,9 +1,8 @@
 import React from "react";
 
-import { TenantsApi } from "../../types";
+import { TenantsApi, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -18,10 +17,15 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: TenantsApi = new TenantsApi();
+let api: TenantsApi;
 
 export const Tenant: React.FC<Props> = (props) => {
   const title = "Tenants";
+
+  // Update the API
+  React.useEffect(() => {
+    api = new TenantsApi(props.userService);
+  }, [props.userService]);
 
   return (
     <ChabloomTable

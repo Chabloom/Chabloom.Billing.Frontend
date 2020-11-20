@@ -1,9 +1,8 @@
 import React from "react";
 
-import { ApplicationUsersApi } from "../../types";
+import { ApplicationUsersApi, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -23,10 +22,15 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: ApplicationUsersApi = new ApplicationUsersApi();
+let api: ApplicationUsersApi;
 
 export const ApplicationUser: React.FC<Props> = (props) => {
   const title = "Application Users";
+
+  // Update the API
+  React.useEffect(() => {
+    api = new ApplicationUsersApi(props.userService);
+  }, [props.userService]);
 
   return (
     <ChabloomTable

@@ -10,14 +10,13 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 
-import { appIsStandalone, TenantViewModel } from "../../types";
+import { appIsStandalone, TenantViewModel, UserService } from "../../types";
 
 import { ModeSelection } from "./ModeSelection";
 import { TenantSelection } from "./TenantSelection";
 import { UserManagement } from "./UserManagement";
 
 import logo from "../../logo.svg";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;

@@ -1,34 +1,19 @@
 import React from "react";
 
+import { Button, FormGroup, TextField } from "@material-ui/core";
+
 import {
-  Button,
-  createStyles,
-  FormGroup,
-  TextField,
-  Theme,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-import { PaymentCardsApi, PaymentCardViewModel } from "../../types";
-
-import { UserService } from "../UserService";
+  PaymentCardsApi,
+  PaymentCardViewModel,
+  UserService,
+  useStyles,
+} from "../../types";
 
 interface Props {
   userService: UserService;
   buttonText: string;
   completeCardInput: CallableFunction;
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      padding: theme.spacing(5),
-    },
-    mt1: {
-      marginTop: theme.spacing(1),
-    },
-  })
-);
 
 export const CardInput: React.FC<Props> = (props) => {
   // Initialize classes
@@ -42,9 +27,8 @@ export const CardInput: React.FC<Props> = (props) => {
   const [securityCode, setSecurityCode] = React.useState<string>();
 
   const createPaymentCard = async (card: PaymentCardViewModel) => {
-    const user = await props.userService.getUser(false);
-    const api = new PaymentCardsApi();
-    const [ret, err] = await api.addItem(user?.access_token, card);
+    const api = new PaymentCardsApi(props.userService);
+    const [ret, err] = await api.addItem(card);
     if (ret && !err) {
       return ret as PaymentCardViewModel;
     }

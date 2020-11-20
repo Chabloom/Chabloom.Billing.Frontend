@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { TenantViewModel } from "../types";
+import { TenantViewModel, UserService } from "../types";
 
 import { Error, Register } from "./Accounts";
 import { Transaction } from "./Customer";
@@ -12,7 +12,6 @@ import { SignIn } from "./SignIn";
 import { SignInCallback } from "./SignInCallback";
 import { SignOut } from "./SignOut";
 import { SignOutCallback } from "./SignOutCallback";
-import { UserService } from "./UserService";
 
 interface Props {
   userService: UserService;

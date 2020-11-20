@@ -1,6 +1,6 @@
 import React from "react";
 
-import { UserService } from "../UserService";
+import { UserService } from "../../types";
 
 interface Props {
   userService: UserService;

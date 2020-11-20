@@ -1,49 +1,41 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { ApplicationUserViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { BaseViewModel } from "../../modelBase";
+import { UserService } from "../../UserService";
 
 export class ApplicationUsersApi
   extends BaseApi<ApplicationUserViewModel>
   implements BaseApiType<ApplicationUserViewModel> {
   baseUrl: string;
 
-  constructor() {
-    super();
+  constructor(userService: UserService) {
+    super(userService);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/applicationUsers`;
   }
 
-  readItems(
-    token: string | undefined
-  ): Promise<Array<ApplicationUserViewModel> | string> {
-    return this._readItems(token, `${this.baseUrl}`);
+  readItems(): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`);
   }
 
   readItem(
-    token: string | undefined,
     itemId: string
-  ): Promise<ApplicationUserViewModel | string> {
-    return this._readItem(token, `${this.baseUrl}/${itemId}`);
+  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    token: string | undefined,
     item: ApplicationUserViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._addItem(token, `${this.baseUrl}`, item);
+  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
-    token: string | undefined,
     item: ApplicationUserViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
-    return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
+  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(
-    token: string | undefined,
-    item: ApplicationUserViewModel
-  ): Promise<string | undefined> {
-    return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
+  deleteItem(item: ApplicationUserViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

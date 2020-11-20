@@ -1,7 +1,7 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { PaymentViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { BaseViewModel } from "../../modelBase";
+import { UserService } from "../../UserService";
 
 export class PaymentsApi
   extends BaseApi<PaymentViewModel>
@@ -9,55 +9,45 @@ export class PaymentsApi
   baseUrl: string;
   account: string;
 
-  constructor(account: string) {
-    super();
+  constructor(userService: UserService, account: string) {
+    super(userService);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/payments`;
     this.account = account;
   }
 
-  readItems(
-    token: string | undefined
-  ): Promise<Array<PaymentViewModel> | string> {
-    return this._readItems(token, `${this.baseUrl}?accountId=${this.account}`);
+  readItems(): Promise<[Array<PaymentViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}?accountId=${this.account}`);
   }
 
   readTenantAccount(
     accountNumber: string,
     tenantId: string
-  ): Promise<Array<PaymentViewModel> | string> {
+  ): Promise<[Array<PaymentViewModel> | undefined, string]> {
     return this._readItems(
-      "",
-      `${this.baseUrl}/tenantAccount?accountNumber=${accountNumber}&tenantId=${tenantId}`
+      `${this.baseUrl}/tenantAccount?accountNumber=${accountNumber}&tenantId=${tenantId}`,
+      false
     );
   }
 
-  readItem(
-    token: string | undefined,
-    itemId: string
-  ): Promise<PaymentViewModel | string> {
-    return this._readItem(token, `${this.baseUrl}/${itemId}`);
+  readItem(itemId: string): Promise<[PaymentViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    token: string | undefined,
     item: PaymentViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
+  ): Promise<[PaymentViewModel | undefined, string]> {
     item.account = this.account;
-    return this._addItem(token, `${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
-    token: string | undefined,
     item: PaymentViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
+  ): Promise<[PaymentViewModel | undefined, string]> {
     item.account = this.account;
-    return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(
-    token: string | undefined,
-    item: PaymentViewModel
-  ): Promise<string | undefined> {
-    return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
+  deleteItem(item: PaymentViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

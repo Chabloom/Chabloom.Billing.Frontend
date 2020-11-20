@@ -16,9 +16,10 @@ import {
   appIsStandalone,
   TenantsApi,
   TenantViewModel,
+  UserService,
 } from "./types";
 
-import { Routes, RoutesMobile, UserService } from "./components";
+import { Routes, RoutesMobile } from "./components";
 
 import "./App.scss";
 
@@ -44,10 +45,10 @@ export const App: React.FC = () => {
   // Get all available tenants
   React.useEffect(() => {
     const getItems = async () => {
-      const api = new TenantsApi();
-      const ret = await api.readItems("");
-      if (typeof ret !== "string") {
-        setTenants(ret);
+      const api = new TenantsApi(userService);
+      const [items, err] = await api.readItems();
+      if (items && !err) {
+        setTenants(items);
       }
     };
     getItems().then();

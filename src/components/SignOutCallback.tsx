@@ -2,10 +2,9 @@ import React from "react";
 
 import { Grid, Paper, Typography } from "@material-ui/core";
 
-import { useStyles } from "../types";
+import { useStyles, UserService } from "../types";
 
 import { Status } from "./Status";
-import { UserService } from "./UserService";
 
 import logo from "../logo.svg";
 

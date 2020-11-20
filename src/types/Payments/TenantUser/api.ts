@@ -1,7 +1,7 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { TenantUserViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { BaseViewModel } from "../../modelBase";
+import { UserService } from "../../UserService";
 
 export class TenantUsersApi
   extends BaseApi<TenantUserViewModel>
@@ -9,53 +9,43 @@ export class TenantUsersApi
   baseUrl: string;
   tenant: string | null;
 
-  constructor(tenant: string | null = null) {
-    super();
+  constructor(userService: UserService, tenant: string | null = null) {
+    super(userService);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenantUsers`;
     this.tenant = tenant;
   }
 
-  readItems(
-    token: string | undefined
-  ): Promise<Array<TenantUserViewModel> | string> {
+  readItems(): Promise<[Array<TenantUserViewModel> | undefined, string]> {
     if (this.tenant) {
-      return this._readItems(token, `${this.baseUrl}?tenantId=${this.tenant}`);
+      return this._readItems(`${this.baseUrl}?tenantId=${this.tenant}`);
     } else {
-      return this._readItems(token, `${this.baseUrl}`);
+      return this._readItems(`${this.baseUrl}`);
     }
   }
 
-  readItem(
-    token: string | undefined,
-    itemId: string
-  ): Promise<TenantUserViewModel | string> {
-    return this._readItem(token, `${this.baseUrl}/${itemId}`);
+  readItem(itemId: string): Promise<[TenantUserViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    token: string | undefined,
     item: TenantUserViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
+  ): Promise<[TenantUserViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }
-    return this._addItem(token, `${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
-    token: string | undefined,
     item: TenantUserViewModel
-  ): Promise<[BaseViewModel | undefined, string]> {
+  ): Promise<[TenantUserViewModel | undefined, string]> {
     if (this.tenant) {
       item.tenant = this.tenant;
     }
-    return this._editItem(token, `${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(
-    token: string | undefined,
-    item: TenantUserViewModel
-  ): Promise<string | undefined> {
-    return this._deleteItem(token, `${this.baseUrl}/${item.id}`);
+  deleteItem(item: TenantUserViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

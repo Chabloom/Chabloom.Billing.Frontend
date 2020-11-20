@@ -8,11 +8,10 @@ import {
   Toolbar,
 } from "@material-ui/core";
 
-import { AccountViewModel, TenantViewModel } from "../../types";
+import { AccountViewModel, TenantViewModel, UserService } from "../../types";
 
 import { ChabloomDrawer } from "./Drawer";
 import { ChabloomToolbar } from "./Toolbar";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;

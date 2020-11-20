@@ -10,10 +10,10 @@ import {
   PaymentsApi,
   PaymentViewModel,
   useStyles,
+  UserService,
 } from "../../types";
 
 import { PaymentTable } from "./PaymentTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -39,32 +39,32 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getItems = async () => {
       if (user) {
-        const api = new AccountsApi();
-        const ret = await api.readItems(user.access_token);
-        if (typeof ret !== "string") {
-          setAccounts(ret);
+        const api = new AccountsApi(props.userService);
+        const [items, err] = await api.readItems();
+        if (items && !err) {
+          setAccounts(items);
         }
       }
     };
     getItems().then();
-  }, [user]);
+  }, [props.userService, user]);
 
   React.useEffect(() => {
     const getItems = async () => {
       if (user) {
         const payments = [] as Array<PaymentViewModel>;
         for (const account of accounts) {
-          const api = new PaymentsApi(account.id as string);
-          const ret = await api.readItems(user.access_token);
-          if (typeof ret !== "string") {
-            payments.push(...ret);
+          const api = new PaymentsApi(props.userService, account.id as string);
+          const [items, err] = await api.readItems();
+          if (items && !err) {
+            payments.push(...items);
           }
         }
         setPayments(payments);
       }
     };
     getItems().then();
-  }, [user, accounts]);
+  }, [props.userService, user, accounts]);
 
   return (
     <Grid item md={6} xs={12}>

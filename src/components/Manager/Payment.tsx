@@ -1,9 +1,8 @@
 import React from "react";
 
-import { AccountViewModel, PaymentsApi } from "../../types";
+import { AccountViewModel, PaymentsApi, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -36,9 +35,9 @@ let title: string;
 export const Payment: React.FC<Props> = (props) => {
   // Update the API and title
   React.useEffect(() => {
-    api = new PaymentsApi(props.account.id as string);
+    api = new PaymentsApi(props.userService, props.account.id as string);
     title = `Payments for ${props.account.name}`;
-  }, [props.account]);
+  }, [props.userService, props.account]);
 
   return (
     <ChabloomTable

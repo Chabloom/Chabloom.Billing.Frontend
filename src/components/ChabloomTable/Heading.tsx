@@ -22,10 +22,14 @@ import {
 } from "@material-ui/icons";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
+import {
+  BaseApiType,
+  BaseViewModel,
+  TenantViewModel,
+  UserService,
+} from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -74,13 +78,9 @@ const useStyles = makeStyles((theme) => ({
 
 const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const addItem = async () => {
-    const user = await props.userService.getUser();
-    if (user && props.api) {
+    if (props.api) {
       props.setProcessing(true);
-      const [newItem, err] = await props.api.addItem(
-        user.access_token,
-        props.editItem
-      );
+      const [newItem, err] = await props.api.addItem(props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
@@ -100,13 +100,9 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
     }
   };
   const editItem = async () => {
-    const user = await props.userService.getUser();
-    if (user && props.api) {
+    if (props.api) {
       props.setProcessing(true);
-      const [newItem, err] = await props.api.editItem(
-        user.access_token,
-        props.editItem
-      );
+      const [newItem, err] = await props.api.editItem(props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
@@ -125,10 +121,9 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
     }
   };
   const deleteItem = async () => {
-    const user = await props.userService.getUser();
-    if (user && props.api) {
+    if (props.api) {
       props.setProcessing(true);
-      const err = await props.api.deleteItem(user.access_token, props.editItem);
+      const err = await props.api.deleteItem(props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),

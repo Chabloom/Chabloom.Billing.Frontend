@@ -13,10 +13,12 @@ import {
   PaymentViewModel,
   TenantsApi,
   TenantViewModel,
+  UserService,
   useStyles,
 } from "../../../types";
 
 interface Props {
+  userService: UserService;
   payments: Array<PaymentViewModel>;
   setPayments: CallableFunction;
 }
@@ -31,31 +33,34 @@ export const Search: React.FC<Props> = (props) => {
   const classes = useStyles();
 
   // Get all available tenants
-  const getTenants = async () => {
-    setProcessing(true);
-    const api = new TenantsApi();
-    const ret = await api.readItems("");
-    if (typeof ret !== "string") {
-      setTenants(ret as Array<TenantViewModel>);
-    } else {
-      setError(ret);
-    }
-    setProcessing(false);
-  };
   React.useEffect(() => {
+    const getTenants = async () => {
+      setProcessing(true);
+      const api = new TenantsApi(props.userService);
+      const [items, err] = await api.readItems();
+      if (items && !err) {
+        setTenants(items as Array<TenantViewModel>);
+      } else {
+        setError(err);
+      }
+      setProcessing(false);
+    };
     getTenants().then();
-  }, []);
+  }, [props.userService]);
 
   const getTenantAccountNumberPayments = async () => {
     setProcessing(true);
     const selectedTenant = tenants.find((x) => x.name === tenant);
     if (selectedTenant && selectedTenant.id) {
-      const api = new PaymentsApi("");
-      const ret = await api.readTenantAccount(account, selectedTenant.id);
-      if (typeof ret !== "string") {
-        props.setPayments(ret as Array<PaymentViewModel>);
+      const api = new PaymentsApi(props.userService, "");
+      const [items, err] = await api.readTenantAccount(
+        account,
+        selectedTenant.id
+      );
+      if (items && !err) {
+        props.setPayments(items as Array<PaymentViewModel>);
       } else {
-        setError(ret);
+        setError(err);
       }
     }
     setProcessing(false);

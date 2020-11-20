@@ -2,14 +2,18 @@ import React from "react";
 
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
+import {
+  BaseApiType,
+  BaseViewModel,
+  TenantViewModel,
+  UserService,
+} from "../../types";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";
 import { ChabloomTableColumn } from "./Column";
 import { ChabloomTablePagination } from "./Pagination";
 import { ChabloomTableHeading } from "./Heading";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -39,25 +43,25 @@ export const ChabloomTable: React.FC<Props> = (props) => {
       const user = await props.userService.getUser();
       if (user && props.api) {
         setProcessing(true);
-        const ret = await props.api.readItems(user.access_token);
-        if (typeof ret === "string") {
-          setData([] as Array<BaseViewModel>);
-          setError(ret);
-        } else {
+        const [items, err] = await props.api.readItems();
+        if (items && !err) {
           try {
-            const sortedData = ret.sort((a, b) =>
+            const sortedData = items.sort((a, b) =>
               a["name"].localeCompare(b["name"])
             );
             setData([...sortedData]);
             setError("");
           } catch {
             try {
-              setData(ret);
+              setData(items);
               setError("");
             } catch {
               setError("item read failed");
             }
           }
+        } else {
+          setData([] as Array<BaseViewModel>);
+          setError(err);
         }
         setProcessing(false);
       }

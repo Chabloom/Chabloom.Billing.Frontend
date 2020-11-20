@@ -1,9 +1,8 @@
 import React from "react";
 
-import { AccountsApi, TenantViewModel } from "../../types";
+import { AccountsApi, TenantViewModel, UserService } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-import { UserService } from "../UserService";
 
 interface Props {
   userService: UserService;
@@ -30,16 +29,16 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 // The API to use
-let api: AccountsApi = new AccountsApi();
+let api: AccountsApi;
 // The page title
 let title: string;
 
 export const Account: React.FC<Props> = (props) => {
   // Update the API and title
   React.useEffect(() => {
-    api = new AccountsApi(props.tenant.id as string);
+    api = new AccountsApi(props.userService, props.tenant.id as string);
     title = `Accounts for ${props.tenant.name}`;
-  }, [props.tenant]);
+  }, [props.userService, props.tenant]);
 
   // Workaround for eslint issue on the useEffect call below
   const setAccount = props.setAccount;

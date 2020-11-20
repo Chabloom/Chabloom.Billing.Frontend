@@ -3,7 +3,7 @@ import React from "react";
 import { Dashboard as CustomerDashboard } from "./Customer";
 import { Dashboard as ManagerDashboard } from "./Manager";
 
-import { UserService } from "./UserService";
+import { UserService } from "../types";
 
 interface Props {
   userService: UserService;
