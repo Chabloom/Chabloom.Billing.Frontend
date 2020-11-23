@@ -273,3 +273,6 @@ __pycache__/
 .yarn/
 /.pnp
 .pnp.js
+
+# ESLint cache
+.eslintcache
