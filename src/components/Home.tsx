@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Dashboard as CustomerDashboard } from "./Customer";
 import { Dashboard as ManagerDashboard } from "./Manager";

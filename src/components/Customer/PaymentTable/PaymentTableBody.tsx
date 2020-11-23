@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Checkbox, TableBody, TableCell, TableRow } from "@material-ui/core";
 

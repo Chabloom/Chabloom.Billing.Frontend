@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { LinearProgress } from "@material-ui/core";
 import { Alert, AlertTitle } from "@material-ui/lab";
