@@ -30,7 +30,7 @@ export class PaymentsApi
   }
 
   readItem(itemId: string): Promise<[PaymentViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+    return this._readItem(`${this.baseUrl}/Demo/${itemId}`, false);
   }
 
   addItem(
@@ -44,7 +44,7 @@ export class PaymentsApi
     item: PaymentViewModel
   ): Promise<[PaymentViewModel | undefined, string]> {
     item.account = this.account;
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/Demo/${item.id}`, item, false);
   }
 
   deleteItem(item: PaymentViewModel): Promise<string | undefined> {
