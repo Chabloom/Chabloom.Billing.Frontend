@@ -56,10 +56,12 @@ export const Transaction: React.FC<Props> = (props) => {
 
   const createTransaction = async (transaction: TransactionViewModel) => {
     setProcessing(true);
-    const api = new TransactionsApi(props.userService);
-    const [ret, err] = await api.addItem(transaction);
-    if (!ret) {
+    //const api = new TransactionsApi(props.userService);
+    //const [ret, err] = await api.addItem(transaction);
+    const [ret, err] = [{ id: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9" }, ""];
+    if (!ret && err) {
       setError(err);
+      console.log(err);
     } else {
       const t = ret as TransactionViewModel;
       if (t && t.id) {
@@ -67,6 +69,7 @@ export const Transaction: React.FC<Props> = (props) => {
         let updatedPayment = payment;
         if (updatedPayment) {
           updatedPayment.transaction = t.id;
+          updatedPayment.complete = true;
           await paymentsApi.editItem(updatedPayment);
         }
       }

@@ -40,17 +40,19 @@ export const CardInput: React.FC<Props> = (props) => {
       onSubmit={(event) => {
         event.preventDefault();
         const card = {
+          id: "demo",
           name: cardName,
           cardNumber: cardNumber,
           cardholderName: cardholderName,
           expirationMonth: expirationMonth,
           expirationYear: expirationYear,
         } as PaymentCardViewModel;
-        createPaymentCard(card).then((ret) => {
+        props.completeCardInput(card);
+        /*createPaymentCard(card).then((ret) => {
           if (ret) {
             props.completeCardInput(ret);
           }
-        });
+        });*/
       }}
     >
       <FormGroup>
