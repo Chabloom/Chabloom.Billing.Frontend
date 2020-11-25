@@ -47,12 +47,18 @@ export class UserService {
   };
 
   getUser = async (require: boolean = true) => {
-    const user = await this.userManager.getUser();
-    if (!user && require) {
-      try {
-        return this.signinRedirectCallback();
-      } catch (e) {
-        this.signinRedirect();
+    let user = await this.userManager.getUser();
+    if (!user) {
+      const signedIn = localStorage.getItem("SignedIn");
+      if (signedIn === "true") {
+        require = true;
+      }
+      if (require) {
+        try {
+          user = await this.signinRedirectCallback();
+        } catch (e) {
+          user = await this.signinSilent();
+        }
       }
     }
     return user;

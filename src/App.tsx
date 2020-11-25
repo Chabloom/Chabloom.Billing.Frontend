@@ -54,15 +54,6 @@ export const App: React.FC = () => {
     getItems().then();
   }, []);
 
-  // Get signed in setting
-  React.useEffect(() => {
-    const signedIn = localStorage.getItem("SignedIn");
-    if (signedIn === "true") {
-      userService.getUser().then();
-    }
-    userService.getUser(false).then();
-  }, []);
-
   // Get dark mode setting
   const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   React.useEffect(() => {
