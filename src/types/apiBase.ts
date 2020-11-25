@@ -93,8 +93,9 @@ export class BaseApi<T extends BaseViewModel> {
   ): Promise<[T | undefined, string]> => {
     try {
       let response: Response;
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
       if (isAuthenticated) {
-        const headers = new Headers();
         const user = await this.userService.getUser();
         if (user) {
           headers.append("Authorization", `Bearer ${user.access_token}`);
@@ -108,6 +109,7 @@ export class BaseApi<T extends BaseViewModel> {
       } else {
         response = await fetch(url, {
           method: "POST",
+          headers: headers,
           body: JSON.stringify(item),
         });
       }
@@ -129,8 +131,9 @@ export class BaseApi<T extends BaseViewModel> {
   ): Promise<[T | undefined, string]> => {
     try {
       let response: Response;
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
       if (isAuthenticated) {
-        const headers = new Headers();
         const user = await this.userService.getUser();
         if (user) {
           headers.append("Authorization", `Bearer ${user.access_token}`);
@@ -144,6 +147,7 @@ export class BaseApi<T extends BaseViewModel> {
       } else {
         response = await fetch(url, {
           method: "PUT",
+          headers: headers,
           body: JSON.stringify(item),
         });
       }
