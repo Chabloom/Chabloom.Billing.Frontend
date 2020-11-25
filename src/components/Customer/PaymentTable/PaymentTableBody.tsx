@@ -1,8 +1,16 @@
 import * as React from "react";
 
-import { Checkbox, TableBody, TableCell, TableRow } from "@material-ui/core";
+import {
+  Checkbox,
+  createStyles,
+  TableBody,
+  TableCell,
+  TableRow,
+  Theme,
+} from "@material-ui/core";
 
 import { PaymentViewModel } from "../../../types";
+import { makeStyles } from "@material-ui/core/styles";
 
 interface Props {
   payments: Array<PaymentViewModel>;
@@ -10,7 +18,17 @@ interface Props {
   setSelectedIndex: CallableFunction;
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paid: {
+      backgroundColor: "lightgreen",
+    },
+  })
+);
+
 export const PaymentTableBody: React.FC<Props> = (props) => {
+  const classes = useStyles();
+
   return (
     <TableBody>
       {props.payments.map((payment, index) => {
@@ -19,7 +37,7 @@ export const PaymentTableBody: React.FC<Props> = (props) => {
         }
         return (
           <TableRow
-            hover
+            hover={!payment.complete}
             key={payment.id}
             onClick={() => {
               if (props.selectedIndex === index) {
@@ -28,6 +46,7 @@ export const PaymentTableBody: React.FC<Props> = (props) => {
                 props.setSelectedIndex(index);
               }
             }}
+            className={payment.complete ? classes.paid : ""}
           >
             <TableCell padding="checkbox">
               <Checkbox checked={props.selectedIndex === index} />
