@@ -6,7 +6,7 @@ export interface PaymentUpdateViewModel extends BaseViewModel {
   amount: number;
   currency: string;
   dueDate: string;
-  complete: string;
+  complete: boolean;
   transaction: string;
   transactionSchedule: string;
 }
