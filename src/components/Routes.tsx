@@ -10,7 +10,6 @@ import {
 } from "../types";
 
 import { Error, Register } from "./Accounts";
-import { Transaction } from "./Customer";
 import {
   Account,
   AccountRole,
@@ -148,9 +147,6 @@ export const Routes: React.FC<Props> = (props) => {
           </Route>
           <Route path="/applicationUsers">
             <ApplicationUser {...props} />
-          </Route>
-          <Route path="/transaction">
-            <Transaction {...props} />
           </Route>
           <Route path="/">
             <Home {...props} admin={admin} manager={manager} />

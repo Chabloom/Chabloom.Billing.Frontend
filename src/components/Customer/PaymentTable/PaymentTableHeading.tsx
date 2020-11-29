@@ -9,11 +9,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentViewModel } from "../../../types";
+import { PaymentViewModel, UserService } from "../../../types";
 
 import { PaymentTableActionButtons } from "./PaymentTableActionButtons";
 
 interface Props {
+  userService: UserService;
   title: string;
   payments: Array<PaymentViewModel>;
   selectedIndex: number;

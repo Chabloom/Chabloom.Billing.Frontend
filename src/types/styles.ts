@@ -15,5 +15,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     mt3: {
       marginTop: theme.spacing(3),
     },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 1,
+      color: "#fff",
+    },
   })
 );

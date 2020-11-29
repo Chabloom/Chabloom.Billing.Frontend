@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { TenantViewModel, UserService } from "../types";
 
 import { Error, Register } from "./Accounts";
-import { Transaction } from "./Customer";
 
 import { Home } from "./Home";
 
@@ -41,9 +40,6 @@ export const RoutesMobile: React.FC<Props> = (props) => {
         </Route>
         <Route exact={true} path="/signout-oidc">
           <SignOutCallback {...props} />
-        </Route>
-        <Route path="/transaction">
-          <Transaction {...props} />
         </Route>
         <Route path="/">
           <Home {...props} admin={false} manager={false} />

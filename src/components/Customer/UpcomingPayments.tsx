@@ -77,7 +77,11 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
             return (
               <Grid item xs={12}>
                 <Paper elevation={3} className={classes.paper}>
-                  <PaymentTable title={account.name} payments={payments} />
+                  <PaymentTable
+                    {...props}
+                    title={account.name}
+                    payments={payments}
+                  />
                 </Paper>
               </Grid>
             );

@@ -28,7 +28,11 @@ export const QuickPayment: React.FC<Props> = (props) => {
         {payments.length !== 0 && (
           <Grid item xs={12}>
             <Paper elevation={3} className={classes.paper}>
-              <PaymentTable title="Upcoming Bills" payments={payments} />
+              <PaymentTable
+                {...props}
+                title="Upcoming Bills"
+                payments={payments}
+              />
             </Paper>
           </Grid>
         )}
