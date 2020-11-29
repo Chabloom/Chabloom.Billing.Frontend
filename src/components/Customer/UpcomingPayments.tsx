@@ -80,7 +80,7 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
                   <PaymentTable
                     {...props}
                     title={account.name}
-                    payments={payments}
+                    payments={accountPayments}
                   />
                 </Paper>
               </Grid>
