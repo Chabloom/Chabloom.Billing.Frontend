@@ -108,6 +108,7 @@ export const Search: React.FC<Props> = (props) => {
       )}
       {processing && <LinearProgress className={classes.mt1} />}
       <Button
+        fullWidth
         className={classes.mt1}
         variant="contained"
         color="primary"
