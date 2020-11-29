@@ -3,6 +3,7 @@ import * as React from "react";
 import { User } from "oidc-client";
 
 import {
+  Avatar,
   ClickAwayListener,
   FormControlLabel,
   Grow,
@@ -121,7 +122,12 @@ const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
         aria-haspopup="true"
         onClick={() => setOpen(true)}
       >
-        <AccountCircleOutlined />
+        {props.user.profile.name && (
+          <Avatar>
+            {props.user.profile.name.substring(0, 1).toUpperCase()}
+          </Avatar>
+        )}
+        {!props.user.profile.name && <AccountCircleOutlined />}
       </IconButton>
       <Popper
         transition
