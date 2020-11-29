@@ -5,7 +5,8 @@ import { ButtonGroup, IconButton, Tooltip } from "@material-ui/core";
 import { Payment, Receipt } from "@material-ui/icons";
 
 import { PaymentViewModel, UserService } from "../../../types";
-import { Transaction } from "../Transaction";
+
+import { MakeTransaction } from "../Transaction";
 
 interface Props {
   userService: UserService;
@@ -43,7 +44,7 @@ export const PaymentTableActionButtons: React.FC<Props> = (props) => {
           </Tooltip>
         )}
       </ButtonGroup>
-      <Transaction {...props} payment={payment} setPayment={setPayment} />
+      <MakeTransaction {...props} payment={payment} setPayment={setPayment} />
     </div>
   );
 };

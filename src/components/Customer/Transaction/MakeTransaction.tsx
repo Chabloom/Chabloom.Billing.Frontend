@@ -22,9 +22,9 @@ import {
   TransactionViewModel,
   UserService,
   useStyles,
-} from "../../types";
+} from "../../../types";
 
-import { Status } from "../Status";
+import { Status } from "../../Status";
 
 interface Props {
   userService: UserService;
@@ -32,7 +32,7 @@ interface Props {
   setPayment: CallableFunction;
 }
 
-export const Transaction: React.FC<Props> = (props) => {
+export const MakeTransaction: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
