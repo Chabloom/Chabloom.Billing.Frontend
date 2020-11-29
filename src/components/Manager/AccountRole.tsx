@@ -17,17 +17,22 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: AccountRolesApi;
-// The page title
-let title: string;
-
 export const AccountRole: React.FC<Props> = (props) => {
-  // Update the API and title
+  // Initialize state variables
+  const [api, setApi] = React.useState<AccountRolesApi>();
+  const [title, setTitle] = React.useState("Account Roles");
+
+  // Update the API
   React.useEffect(() => {
-    api = new AccountRolesApi(props.userService, props.account.id as string);
-    title = `Account Roles for ${props.account.name}`;
+    if (props.account.id) {
+      setApi(new AccountRolesApi(props.userService, props.account.id));
+    }
   }, [props.userService, props.account]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle(`Account Roles for ${props.account.name}`);
+  }, [props.account]);
 
   return (
     <ChabloomTable

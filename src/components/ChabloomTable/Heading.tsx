@@ -34,7 +34,7 @@ import { ChabloomTableColumn } from "./Column";
 interface Props {
   userService: UserService;
   tenant: TenantViewModel | undefined;
-  api: BaseApiType<BaseViewModel>;
+  api: BaseApiType<BaseViewModel> | undefined;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;

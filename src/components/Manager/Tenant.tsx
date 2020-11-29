@@ -16,16 +16,20 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: TenantsApi;
-
 export const Tenant: React.FC<Props> = (props) => {
-  const title = "Tenants";
+  // Initialize state variables
+  const [api, setApi] = React.useState<TenantsApi>();
+  const [title, setTitle] = React.useState("Tenants");
 
   // Update the API
   React.useEffect(() => {
-    api = new TenantsApi(props.userService);
+    setApi(new TenantsApi(props.userService));
   }, [props.userService]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle("Tenants");
+  }, []);
 
   return (
     <ChabloomTable

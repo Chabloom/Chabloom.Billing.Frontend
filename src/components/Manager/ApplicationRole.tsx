@@ -16,16 +16,20 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: ApplicationRolesApi;
-
 export const ApplicationRole: React.FC<Props> = (props) => {
-  const title = "Application Roles";
+  // Initialize state variables
+  const [api, setApi] = React.useState<ApplicationRolesApi>();
+  const [title, setTitle] = React.useState("Application Roles");
 
   // Update the API
   React.useEffect(() => {
-    api = new ApplicationRolesApi(props.userService);
+    setApi(new ApplicationRolesApi(props.userService));
   }, [props.userService]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle("Application Roles");
+  }, []);
 
   return (
     <ChabloomTable

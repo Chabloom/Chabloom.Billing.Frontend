@@ -21,16 +21,20 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: ApplicationUsersApi;
-
 export const ApplicationUser: React.FC<Props> = (props) => {
-  const title = "Application Users";
+  // Initialize state variables
+  const [api, setApi] = React.useState<ApplicationUsersApi>();
+  const [title, setTitle] = React.useState("Application Users");
 
   // Update the API
   React.useEffect(() => {
-    api = new ApplicationUsersApi(props.userService);
+    setApi(new ApplicationUsersApi(props.userService));
   }, [props.userService]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle("Application Users");
+  }, []);
 
   return (
     <ChabloomTable

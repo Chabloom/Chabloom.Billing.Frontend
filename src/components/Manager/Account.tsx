@@ -28,21 +28,27 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: AccountsApi;
-// The page title
-let title: string;
-
 export const Account: React.FC<Props> = (props) => {
-  // Update the API and title
+  // Initialize state variables
+  const [api, setApi] = React.useState<AccountsApi>();
+  const [title, setTitle] = React.useState("Accounts");
+
+  // Update the API
   React.useEffect(() => {
-    api = new AccountsApi(props.userService, props.tenant.id as string);
-    title = `Accounts for ${props.tenant.name}`;
+    if (props.tenant.id) {
+      setApi(new AccountsApi(props.userService, props.tenant.id));
+    }
   }, [props.userService, props.tenant]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle(`Accounts for ${props.tenant.name}`);
+  }, [props.tenant]);
 
   // Workaround for eslint issue on the useEffect call below
   const setAccount = props.setAccount;
 
+  // Update the title
   React.useEffect(() => {
     setAccount(undefined);
   }, [setAccount]);

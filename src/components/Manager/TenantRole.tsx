@@ -17,17 +17,22 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: TenantRolesApi;
-// The page title
-let title: string;
-
 export const TenantRole: React.FC<Props> = (props) => {
-  // Update the API and title
+  // Initialize state variables
+  const [api, setApi] = React.useState<TenantRolesApi>();
+  const [title, setTitle] = React.useState("Tenant Roles");
+
+  // Update the API
   React.useEffect(() => {
-    api = new TenantRolesApi(props.userService, props.tenant.id as string);
-    title = `Tenant Roles for ${props.tenant.name}`;
+    if (props.tenant.id) {
+      setApi(new TenantRolesApi(props.userService, props.tenant.id));
+    }
   }, [props.userService, props.tenant]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle(`Tenant Roles for ${props.tenant.name}`);
+  }, [props.tenant]);
 
   return (
     <ChabloomTable

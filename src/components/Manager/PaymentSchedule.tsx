@@ -36,20 +36,22 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-// The API to use
-let api: PaymentSchedulesApi;
-// The page title
-let title: string;
-
 export const PaymentSchedule: React.FC<Props> = (props) => {
-  // Update the API and title
+  // Initialize state variables
+  const [api, setApi] = React.useState<PaymentSchedulesApi>();
+  const [title, setTitle] = React.useState("Payment Schedules");
+
+  // Update the API
   React.useEffect(() => {
-    api = new PaymentSchedulesApi(
-      props.userService,
-      props.account.id as string
-    );
-    title = `Payment Schedules for ${props.account.name}`;
+    if (props.account.id) {
+      setApi(new PaymentSchedulesApi(props.userService, props.account.id));
+    }
   }, [props.userService, props.account]);
+
+  // Update the title
+  React.useEffect(() => {
+    setTitle(`Payment Schedules for ${props.account.name}`);
+  }, [props.account]);
 
   return (
     <ChabloomTable
