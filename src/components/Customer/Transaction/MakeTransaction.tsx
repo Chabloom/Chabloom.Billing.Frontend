@@ -73,7 +73,6 @@ export const MakeTransaction: React.FC<Props> = (props) => {
 
   if (props.payment) {
     const onSubmit = (data: any) => {
-      console.log(data);
       const transaction = {
         id: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
         name: props.payment?.name,
@@ -88,11 +87,12 @@ export const MakeTransaction: React.FC<Props> = (props) => {
         <Backdrop className={classes.backdrop} open={open}>
           <Grid
             container
+            className={classes.paper}
             alignItems="center"
             justify="center"
             style={{ minHeight: "100vh" }}
           >
-            <Grid item xs={12} sm={6} md={4} className={classes.paper}>
+            <Grid item xs={12} sm={6} md={4}>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Card>
                   <CardHeader title={`Payment for ${props.payment.name}`} />
