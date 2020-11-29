@@ -116,7 +116,7 @@ const DrawerItems: React.FC<Props> = (props) => {
           </List>
         </div>
       )}
-      {(props.admin || props.manager) && (
+      {props.admin && (
         <div>
           <Divider />
           <List>
