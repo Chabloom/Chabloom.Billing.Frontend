@@ -8,9 +8,9 @@ import {
   TableRow,
   Theme,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { PaymentViewModel } from "../../../types";
-import { makeStyles } from "@material-ui/core/styles";
 
 interface Props {
   payments: Array<PaymentViewModel>;
@@ -21,7 +21,10 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paid: {
-      backgroundColor: "lightgreen",
+      backgroundColor:
+        theme.palette.type === "dark"
+          ? theme.palette.success.dark
+          : theme.palette.success.light,
     },
   })
 );
