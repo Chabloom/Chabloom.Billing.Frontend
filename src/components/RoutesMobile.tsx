@@ -10,7 +10,7 @@ import {
   SignOutCallback,
   Error,
   Register,
-} from "./Accounts";
+} from "./UserManagement";
 
 import { Home } from "./Home";
 
