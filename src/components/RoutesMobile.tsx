@@ -23,16 +23,16 @@ export const RoutesMobile: React.FC<Props> = (props) => {
   return (
     <Router>
       <Switch>
-        <Route exact={true} path="/Accounts/SignIn">
+        <Route exact={true} path="/signIn">
           <SignIn />
         </Route>
-        <Route exact={true} path="/Accounts/SignOut">
+        <Route exact={true} path="/signOut">
           <SignOut />
         </Route>
-        <Route exact={true} path="/Accounts/Register">
+        <Route exact={true} path="/register">
           <Register />
         </Route>
-        <Route exact={true} path="/Accounts/Error">
+        <Route exact={true} path="/error">
           <Error />
         </Route>
         <Route exact={true} path="/signin-oidc">
