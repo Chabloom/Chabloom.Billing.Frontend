@@ -3,14 +3,16 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { TenantViewModel, UserService } from "../types";
 
-import { Error, Register } from "./Accounts";
+import {
+  SignIn,
+  SignInCallback,
+  SignOut,
+  SignOutCallback,
+  Error,
+  Register,
+} from "./Accounts";
 
 import { Home } from "./Home";
-
-import { SignIn } from "./SignIn";
-import { SignInCallback } from "./SignInCallback";
-import { SignOut } from "./SignOut";
-import { SignOutCallback } from "./SignOutCallback";
 
 interface Props {
   userService: UserService;

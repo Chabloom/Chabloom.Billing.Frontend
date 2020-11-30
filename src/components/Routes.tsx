@@ -9,7 +9,14 @@ import {
   UserService,
 } from "../types";
 
-import { Error, Register } from "./Accounts";
+import {
+  SignIn,
+  SignInCallback,
+  SignOut,
+  SignOutCallback,
+  Error,
+  Register,
+} from "./Accounts";
 import {
   Account,
   AccountRole,
@@ -25,11 +32,6 @@ import {
 import { Navigation } from "./Navigation";
 
 import { Home } from "./Home";
-
-import { SignIn } from "./SignIn";
-import { SignInCallback } from "./SignInCallback";
-import { SignOut } from "./SignOut";
-import { SignOutCallback } from "./SignOutCallback";
 
 interface Props {
   userService: UserService;

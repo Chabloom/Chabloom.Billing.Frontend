@@ -2,11 +2,11 @@ import * as React from "react";
 
 import { Grid, Paper, Typography } from "@material-ui/core";
 
-import { ApplicationConfig, SignOutViewModel, useStyles } from "../types";
+import { ApplicationConfig, SignOutViewModel, useStyles } from "../../types";
 
-import { Status } from "./Status";
+import { Status } from "../Status";
 
-import logo from "../logo.svg";
+import logo from "../../logo.svg";
 
 export const SignOut: React.FC = () => {
   // Initialize classes
