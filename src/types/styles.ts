@@ -16,7 +16,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(3),
     },
     backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
+      zIndex: theme.zIndex.tooltip + 1,
       color: "#fff",
     },
   })
