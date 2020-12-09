@@ -6,19 +6,37 @@ import {
   Card,
   CardContent,
   CardHeader,
+  createStyles,
   Divider,
   Grid,
   List,
   ListItem,
   ListItemText,
+  Theme,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentViewModel, useStyles } from "../../../types";
+import { PaymentViewModel } from "../../../types";
 
 interface Props {
   payment: PaymentViewModel | undefined;
   setPayment: CallableFunction;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+    backdrop: {
+      zIndex: theme.zIndex.tooltip + 1,
+      color: "#fff",
+    },
+  })
+);
 
 export const ViewTransaction: React.FC<Props> = (props) => {
   // Initialize classes
