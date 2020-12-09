@@ -71,6 +71,15 @@ export const App: React.FC = () => {
         palette: {
           type: darkMode ? "dark" : "light",
         },
+        typography: {
+          fontFamily: [
+            "Open Sans",
+            "Roboto",
+            "Helvetica",
+            "Arial",
+            "sans-serif",
+          ].join(","),
+        },
       }),
     [darkMode]
   );
