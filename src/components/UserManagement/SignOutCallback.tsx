@@ -1,8 +1,15 @@
 import * as React from "react";
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import {
+  createStyles,
+  Grid,
+  Paper,
+  Theme,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { useStyles, UserService } from "../../types";
+import { UserService } from "../../types";
 
 import { Status } from "../Status";
 
@@ -11,6 +18,17 @@ import logo from "../../logo.svg";
 interface Props {
   userService: UserService;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const SignOutCallback: React.FC<Props> = (props) => {
   // Initialize classes

@@ -2,10 +2,13 @@ import * as React from "react";
 
 import {
   Button,
+  createStyles,
   FormGroup,
   LinearProgress,
   TextField,
+  Theme,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { Alert, AlertTitle, Autocomplete } from "@material-ui/lab";
 
 import {
@@ -14,7 +17,6 @@ import {
   TenantsApi,
   TenantViewModel,
   UserService,
-  useStyles,
 } from "../../../types";
 
 interface Props {
@@ -22,6 +24,17 @@ interface Props {
   payments: Array<PaymentViewModel>;
   setPayments: CallableFunction;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const Search: React.FC<Props> = (props) => {
   const [tenant, setTenant] = React.useState("");

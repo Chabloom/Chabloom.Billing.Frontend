@@ -2,14 +2,14 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import { Grid, Paper } from "@material-ui/core";
+import { createStyles, Grid, Paper, Theme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 import {
   AccountsApi,
   AccountViewModel,
   PaymentsApi,
   PaymentViewModel,
-  useStyles,
   UserService,
 } from "../../types";
 
@@ -18,6 +18,17 @@ import { PaymentTable } from "./PaymentTable";
 interface Props {
   userService: UserService;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const UpcomingPayments: React.FC<Props> = (props) => {
   const [user, setUser] = React.useState<User>();

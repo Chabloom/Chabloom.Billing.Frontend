@@ -1,14 +1,24 @@
 import * as React from "react";
 
-import { LinearProgress } from "@material-ui/core";
+import { createStyles, LinearProgress, Theme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { Alert, AlertTitle } from "@material-ui/lab";
-
-import { useStyles } from "../types";
 
 interface Props {
   processing: boolean;
   error: string;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const Status: React.FC<Props> = (props) => {
   // Initialize classes

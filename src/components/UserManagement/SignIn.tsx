@@ -4,19 +4,33 @@ import { Link } from "react-router-dom";
 import {
   Button,
   Checkbox,
+  createStyles,
   FormControlLabel,
   FormGroup,
   Grid,
   Paper,
   TextField,
+  Theme,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { ApplicationConfig, SignInViewModel, useStyles } from "../../types";
+import { ApplicationConfig, SignInViewModel } from "../../types";
 
 import { Status } from "../Status";
 
 import logo from "../../logo.svg";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const SignIn: React.FC = () => {
   // Initialize classes
@@ -113,6 +127,7 @@ export const SignIn: React.FC = () => {
                 </Link>
               </Typography>
               <Button
+                fullWidth
                 className={classes.mt1}
                 variant="contained"
                 color="primary"

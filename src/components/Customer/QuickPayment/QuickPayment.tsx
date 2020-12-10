@@ -1,8 +1,15 @@
 import * as React from "react";
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import {
+  createStyles,
+  Grid,
+  Paper,
+  Theme,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentViewModel, UserService, useStyles } from "../../../types";
+import { PaymentViewModel, UserService } from "../../../types";
 
 import { Search } from "./Search";
 import { PaymentTable } from "../PaymentTable";
@@ -10,6 +17,17 @@ import { PaymentTable } from "../PaymentTable";
 interface Props {
   userService: UserService;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const QuickPayment: React.FC<Props> = (props) => {
   const [payments, setPayments] = React.useState([] as Array<PaymentViewModel>);

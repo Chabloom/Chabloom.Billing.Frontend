@@ -1,12 +1,30 @@
 import * as React from "react";
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import {
+  createStyles,
+  Grid,
+  Paper,
+  Theme,
+  Typography,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { ApplicationConfig, SignOutViewModel, useStyles } from "../../types";
+import { ApplicationConfig, SignOutViewModel } from "../../types";
 
 import { Status } from "../Status";
 
 import logo from "../../logo.svg";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const SignOut: React.FC = () => {
   // Initialize classes

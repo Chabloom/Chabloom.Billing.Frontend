@@ -2,18 +2,32 @@ import * as React from "react";
 
 import {
   Button,
+  createStyles,
   FormGroup,
   Grid,
   Paper,
   TextField,
+  Theme,
   Typography,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-import { ApplicationConfig, RegisterViewModel, useStyles } from "../../types";
+import { ApplicationConfig, RegisterViewModel } from "../../types";
 
 import { Status } from "../Status";
 
 import logo from "../../logo.svg";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    paper: {
+      padding: theme.spacing(2),
+    },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+  })
+);
 
 export const Register: React.FC = () => {
   // Initialize classes
@@ -129,6 +143,7 @@ export const Register: React.FC = () => {
                 />
               </FormGroup>
               <Button
+                fullWidth
                 className={classes.mt1}
                 variant="contained"
                 color="primary"
