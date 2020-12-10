@@ -16,13 +16,28 @@ export const SignOutCallback: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
+  // Initialize state variables
+  const [error, setError] = React.useState("");
+  const [processing, setProcessing] = React.useState(false);
+
   // Sign out and redirect to the specified redirect URI
   React.useEffect(() => {
+    setProcessing(true);
+    // Removed the signed in key
+    localStorage.removeItem("SignedIn");
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userService.signoutRedirectCallback().then(() => {
-      localStorage.removeItem("SignedIn");
-      window.location.replace(redirectUri === null ? "/" : redirectUri);
+    props.userService.signoutRedirectCallback().then((value) => {
+      if (value.error) {
+        setError(value.error);
+        return;
+      }
+      // Redirect to the post logout URL
+      if (redirectUri) {
+        window.location.replace(redirectUri);
+      }
+      window.location.replace("/");
     });
+    setProcessing(false);
   }, [props.userService]);
 
   return (
@@ -33,7 +48,7 @@ export const SignOutCallback: React.FC<Props> = (props) => {
             <img src={logo} className="logo" alt="logo" />
             <Typography variant="h5">Sign out</Typography>
             <Typography>Hang on a moment while we sign you out.</Typography>
-            <Status processing={true} error="" />
+            <Status processing={processing} error={error} />
           </Paper>
         </Grid>
       </Grid>

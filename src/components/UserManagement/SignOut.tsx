@@ -18,6 +18,8 @@ export const SignOut: React.FC = () => {
 
   React.useEffect(() => {
     setProcessing(true);
+    // Removed the signed in key
+    localStorage.removeItem("SignedIn");
     // Get parameters and logout id
     let params = new URLSearchParams(window.location.search);
     let logoutId = params.get("logoutId");
@@ -36,6 +38,7 @@ export const SignOut: React.FC = () => {
       .then((value) => {
         if (value.status === 401) {
           setError("Invalid logout parameters.");
+          return;
         } else if (value.status === 200) {
           value.json().then((json: SignOutViewModel) => {
             // Redirect to the post logout URL
@@ -44,6 +47,7 @@ export const SignOut: React.FC = () => {
             }
           });
         }
+        window.location.replace("/");
       })
       .finally(() => setProcessing(false));
   }, []);
