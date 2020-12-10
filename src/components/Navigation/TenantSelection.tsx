@@ -71,7 +71,10 @@ export const TenantSelection: React.FC<Props> = (props) => {
         }
       }
       // Use the first available tenant
-      setTenant(tenants[0]);
+      if (tenants[0] && tenants[0].id) {
+        window.localStorage.setItem("TenantId", tenants[0].id);
+        setTenant(tenants[0]);
+      }
     }
   }, [tenants, setTenant]);
 
