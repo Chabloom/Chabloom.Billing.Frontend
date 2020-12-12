@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { User, UserManager } from "oidc-client";
+
 import {
   createMuiTheme,
   ThemeProvider,
@@ -14,9 +16,9 @@ import { createBrowserHistory } from "history";
 import {
   AppInsightsInstrumentationKey,
   appIsStandalone,
+  OidcSettings,
   TenantsApi,
   TenantViewModel,
-  UserService,
 } from "./types";
 
 import { Routes, RoutesMobile } from "./components";
@@ -36,23 +38,55 @@ const appInsights = new ApplicationInsights({
 });
 appInsights.loadAppInsights();
 
-const userService = new UserService();
-
 export const App: React.FC = () => {
+  const [user, setUser] = React.useState<User>();
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [darkMode, setDarkMode] = React.useState<boolean>(false);
+
+  const userManager = React.useMemo(() => new UserManager(OidcSettings), []);
+  React.useEffect(() => {
+    userManager.events.addUserLoaded((user) => {
+      console.debug("user loaded called");
+      setUser(user);
+    });
+    userManager.events.addSilentRenewError((error) => {
+      console.debug("silent renew error called");
+      console.log(error);
+    });
+    userManager.events.addAccessTokenExpired(() => {
+      console.debug("access token expired called");
+      userManager.signinSilent().then((user) => setUser(user));
+    });
+  }, [userManager]);
+
+  React.useEffect(() => {
+    const getUser = async () => {
+      if (localStorage.getItem("SignedIn") === "true") {
+        let user = await userManager.getUser();
+        if (user) {
+          console.debug("set existing user called");
+          setUser(user);
+          return;
+        }
+        console.debug("sign in silent called");
+        user = await userManager.signinSilent();
+        setUser(user);
+      }
+    };
+    getUser().then();
+  }, [userManager]);
 
   // Get all available tenants
   React.useEffect(() => {
     const getItems = async () => {
-      const api = new TenantsApi(userService);
+      const api = new TenantsApi(user);
       const [items, err] = await api.readItems();
       if (items && !err) {
         setTenants(items);
       }
     };
     getItems().then();
-  }, []);
+  }, [user]);
 
   // Get dark mode setting
   const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -88,7 +122,8 @@ export const App: React.FC = () => {
     return (
       <ThemeProvider theme={theme}>
         <RoutesMobile
-          userService={userService}
+          user={user}
+          userManager={userManager}
           tenants={tenants}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
@@ -99,7 +134,8 @@ export const App: React.FC = () => {
     return (
       <ThemeProvider theme={theme}>
         <Routes
-          userService={userService}
+          user={user}
+          userManager={userManager}
           tenants={tenants}
           darkMode={darkMode}
           setDarkMode={setDarkMode}

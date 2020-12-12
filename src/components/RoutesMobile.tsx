@@ -1,7 +1,9 @@
 import * as React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { TenantViewModel, UserService } from "../types";
+import { User, UserManager } from "oidc-client";
+
+import { TenantViewModel } from "../types";
 
 import {
   SignIn,
@@ -15,7 +17,8 @@ import {
 import { Home } from "./Home";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
+  userManager: UserManager;
   tenants: Array<TenantViewModel>;
   darkMode: boolean;
   setDarkMode: CallableFunction;

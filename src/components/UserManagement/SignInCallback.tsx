@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { UserManager } from "oidc-client";
+
 import {
   createStyles,
   Grid,
@@ -9,14 +11,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { UserService } from "../../types";
-
 import { Status } from "../Status";
 
 import logo from "../../logo.svg";
 
 interface Props {
-  userService: UserService;
+  userManager: UserManager;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,11 +37,11 @@ export const SignInCallback: React.FC<Props> = (props) => {
   // Sign in and redirect to the specified redirect URI
   React.useEffect(() => {
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userService.signinRedirectCallback().then(() => {
+    props.userManager.signinRedirectCallback().then(() => {
       localStorage.setItem("SignedIn", "true");
       window.location.replace(redirectUri === null ? "/" : redirectUri);
     });
-  }, [props.userService]);
+  }, [props.userManager]);
 
   return (
     <div>

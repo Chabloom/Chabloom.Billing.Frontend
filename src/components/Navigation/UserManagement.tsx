@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
+import { User, UserManager } from "oidc-client";
 
 import {
   Avatar,
@@ -16,10 +16,9 @@ import {
 } from "@material-ui/core";
 import { AccountCircleOutlined } from "@material-ui/icons";
 
-import { UserService } from "../../types";
-
 interface Props {
-  userService: UserService;
+  user: User | undefined;
+  userManager: UserManager;
   darkMode: boolean;
   setDarkMode: CallableFunction;
 }
@@ -88,7 +87,7 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
                         "redirectUri",
                         window.location.pathname
                       );
-                      props.userService.signinRedirect();
+                      props.userManager.signinRedirect().then();
                     }}
                   >
                     Sign In/Register
@@ -103,16 +102,13 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
   );
 };
 
-interface SignedInProps {
-  user: User;
-  userService: UserService;
-  darkMode: boolean;
-  setDarkMode: CallableFunction;
-}
-
-const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
+const UserManagementSignedIn: React.FC<Props> = (props) => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
+
+  if (!props.user) {
+    return null;
+  }
 
   return (
     <div>
@@ -147,7 +143,7 @@ const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
             <Paper>
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
-                  <MenuItem disabled>{props.user.profile.name}</MenuItem>
+                  <MenuItem disabled>{props.user?.profile.name}</MenuItem>
                   <MenuItem>
                     <FormControlLabel
                       control={
@@ -169,7 +165,7 @@ const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
                         "redirectUri",
                         window.location.pathname
                       );
-                      props.userService.signoutRedirect();
+                      props.userManager.signoutRedirect().then();
                     }}
                   >
                     Logout
@@ -185,20 +181,8 @@ const UserManagementSignedIn: React.FC<SignedInProps> = (props) => {
 };
 
 export const UserManagement: React.FC<Props> = (props) => {
-  const [user, setUser] = React.useState<User>();
-
-  React.useEffect(() => {
-    const getUser = async () => {
-      const u = await props.userService.getUser(false);
-      if (u) {
-        setUser(u);
-      }
-    };
-    getUser().then();
-  }, [props.userService]);
-
-  if (user) {
-    return <UserManagementSignedIn {...props} user={user} />;
+  if (props.user) {
+    return <UserManagementSignedIn {...props} />;
   }
   return <UserManagementAnonymous {...props} />;
 };

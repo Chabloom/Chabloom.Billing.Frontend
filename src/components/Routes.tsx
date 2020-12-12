@@ -1,21 +1,22 @@
 import * as React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import { User, UserManager } from "oidc-client";
+
 import {
   AccountViewModel,
   ApplicationUsersApi,
   TenantUsersApi,
   TenantViewModel,
-  UserService,
 } from "../types";
 
 import {
+  Error,
+  Register,
   SignIn,
   SignInCallback,
   SignOut,
   SignOutCallback,
-  Error,
-  Register,
 } from "./UserManagement";
 import {
   Account,
@@ -34,7 +35,8 @@ import { Navigation } from "./Navigation";
 import { Home } from "./Home";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
+  userManager: UserManager;
   tenants: Array<TenantViewModel>;
   darkMode: boolean;
   setDarkMode: CallableFunction;
@@ -52,18 +54,17 @@ export const Routes: React.FC<Props> = (props) => {
   // Get the user's administrative level
   React.useEffect(() => {
     const getAdminLevel = async () => {
-      const user = await props.userService.getUser(false);
-      if (user) {
-        const applicationUsersApi = new ApplicationUsersApi(props.userService);
+      if (props.user && !props.user.expired) {
+        const applicationUsersApi = new ApplicationUsersApi(props.user);
         const [applicationUser, err] = await applicationUsersApi.readItem(
-          user.profile.sub
+          props.user.profile.sub
         );
         if (applicationUser && !err) {
           setUserLevel("admin");
         } else {
-          const tenantUsersApi = new TenantUsersApi(props.userService);
+          const tenantUsersApi = new TenantUsersApi(props.user);
           const [tenantUser, err] = await tenantUsersApi.readItem(
-            user.profile.sub
+            props.user.profile.sub
           );
           if (tenantUser && !err) {
             setUserLevel("manager");
@@ -72,7 +73,7 @@ export const Routes: React.FC<Props> = (props) => {
       }
     };
     getAdminLevel().then();
-  }, [props.userService]);
+  }, [props.user]);
 
   return (
     <Router>

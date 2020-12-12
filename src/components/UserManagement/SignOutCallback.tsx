@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { UserManager } from "oidc-client";
+
 import {
   createStyles,
   Grid,
@@ -9,14 +11,12 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { UserService } from "../../types";
-
 import { Status } from "../Status";
 
 import logo from "../../logo.svg";
 
 interface Props {
-  userService: UserService;
+  userManager: UserManager;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -44,7 +44,7 @@ export const SignOutCallback: React.FC<Props> = (props) => {
     // Removed the signed in key
     localStorage.removeItem("SignedIn");
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userService.signoutRedirectCallback().then((value) => {
+    props.userManager.signoutRedirectCallback().then((value) => {
       if (value.error) {
         setError(value.error);
         return;
@@ -56,7 +56,7 @@ export const SignOutCallback: React.FC<Props> = (props) => {
       window.location.replace("/");
     });
     setProcessing(false);
-  }, [props.userService]);
+  }, [props.userManager]);
 
   return (
     <div>
