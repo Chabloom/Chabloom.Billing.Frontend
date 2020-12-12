@@ -6,5 +6,3 @@ export * from "./utilities";
 export * from "./Accounts";
 export * from "./Payments";
 export * from "./Processing";
-
-export * from "./UserService";
