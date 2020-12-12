@@ -1,15 +1,15 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { TransactionScheduleViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class TransactionSchedulesApi
   extends BaseApi<TransactionScheduleViewModel>
   implements BaseApiType<TransactionScheduleViewModel> {
   baseUrl: string;
 
-  constructor(userService: UserService) {
-    super(userService);
+  constructor(user: User | undefined) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactionSchedules`;
   }
 

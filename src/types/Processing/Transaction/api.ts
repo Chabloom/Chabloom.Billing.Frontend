@@ -1,15 +1,15 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { TransactionViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class TransactionsApi
   extends BaseApi<TransactionViewModel>
   implements BaseApiType<TransactionViewModel> {
   baseUrl: string;
 
-  constructor(userService: UserService) {
-    super(userService);
+  constructor(user: User | undefined) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactions`;
   }
 

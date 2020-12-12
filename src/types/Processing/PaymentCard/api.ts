@@ -1,15 +1,15 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { PaymentCardViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class PaymentCardsApi
   extends BaseApi<PaymentCardViewModel>
   implements BaseApiType<PaymentCardViewModel> {
   baseUrl: string;
 
-  constructor(userService: UserService) {
-    super(userService);
+  constructor(user: User | undefined) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/paymentCards`;
   }
 

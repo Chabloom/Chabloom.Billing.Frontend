@@ -1,5 +1,5 @@
 import { BaseViewModel } from "./modelBase";
-import { UserService } from "./UserService";
+import { User } from "oidc-client";
 
 export interface BaseApiType<T extends BaseViewModel> {
   readItems(): Promise<[Array<T> | undefined, string]>;
@@ -14,10 +14,10 @@ export interface BaseApiType<T extends BaseViewModel> {
 }
 
 export class BaseApi<T extends BaseViewModel> {
-  userService: UserService;
+  user: User | undefined;
 
-  constructor(userService: UserService) {
-    this.userService = userService;
+  constructor(user: User | undefined) {
+    this.user = user;
   }
 
   _readItems = async (
@@ -28,9 +28,9 @@ export class BaseApi<T extends BaseViewModel> {
       let response: Response;
       if (isAuthenticated) {
         const headers = new Headers();
-        const user = await this.userService.getUser();
-        if (user) {
-          headers.append("Authorization", `Bearer ${user.access_token}`);
+        const token = await this.user?.access_token;
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
         }
         response = await fetch(url, {
           method: "GET",
@@ -61,9 +61,9 @@ export class BaseApi<T extends BaseViewModel> {
       let response: Response;
       if (isAuthenticated) {
         const headers = new Headers();
-        const user = await this.userService.getUser();
-        if (user) {
-          headers.append("Authorization", `Bearer ${user.access_token}`);
+        const token = await this.user?.access_token;
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
         }
         response = await fetch(url, {
           method: "GET",
@@ -96,9 +96,9 @@ export class BaseApi<T extends BaseViewModel> {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       if (isAuthenticated) {
-        const user = await this.userService.getUser();
-        if (user) {
-          headers.append("Authorization", `Bearer ${user.access_token}`);
+        const token = await this.user?.access_token;
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
         }
         response = await fetch(url, {
           method: "POST",
@@ -134,9 +134,9 @@ export class BaseApi<T extends BaseViewModel> {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
       if (isAuthenticated) {
-        const user = await this.userService.getUser();
-        if (user) {
-          headers.append("Authorization", `Bearer ${user.access_token}`);
+        const token = await this.user?.access_token;
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
         }
         response = await fetch(url, {
           method: "PUT",
@@ -170,9 +170,9 @@ export class BaseApi<T extends BaseViewModel> {
       let response: Response;
       if (isAuthenticated) {
         const headers = new Headers();
-        const user = await this.userService.getUser();
-        if (user) {
-          headers.append("Authorization", `Bearer ${user.access_token}`);
+        const token = await this.user?.access_token;
+        if (token) {
+          headers.append("Authorization", `Bearer ${token}`);
         }
         response = await fetch(url, {
           method: "DELETE",

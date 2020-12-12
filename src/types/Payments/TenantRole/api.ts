@@ -1,7 +1,7 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { TenantRoleViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class TenantRolesApi
   extends BaseApi<TenantRoleViewModel>
@@ -9,8 +9,8 @@ export class TenantRolesApi
   baseUrl: string;
   tenant: string | null;
 
-  constructor(userService: UserService, tenant: string | null = null) {
-    super(userService);
+  constructor(user: User | undefined, tenant: string | null = null) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenantRoles`;
     this.tenant = tenant;
   }

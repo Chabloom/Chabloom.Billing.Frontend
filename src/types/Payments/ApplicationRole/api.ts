@@ -1,15 +1,15 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { ApplicationRoleViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class ApplicationRolesApi
   extends BaseApi<ApplicationRoleViewModel>
   implements BaseApiType<ApplicationRoleViewModel> {
   baseUrl: string;
 
-  constructor(userService: UserService) {
-    super(userService);
+  constructor(user: User | undefined) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/applicationRoles`;
   }
 

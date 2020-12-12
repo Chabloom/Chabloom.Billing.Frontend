@@ -1,23 +1,23 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { TenantViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class TenantsApi
   extends BaseApi<TenantViewModel>
   implements BaseApiType<TenantViewModel> {
   baseUrl: string;
-  user: string | null;
+  userId: string | null;
 
-  constructor(userService: UserService, user: string | null = null) {
-    super(userService);
+  constructor(user: User | undefined, userId: string | null = null) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenants`;
-    this.user = user;
+    this.userId = userId;
   }
 
   readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {
-    if (this.user) {
-      return this._readItems(`${this.baseUrl}?userId=${this.user}`, false);
+    if (this.userId) {
+      return this._readItems(`${this.baseUrl}?userId=${this.userId}`, false);
     } else {
       return this._readItems(`${this.baseUrl}`, false);
     }

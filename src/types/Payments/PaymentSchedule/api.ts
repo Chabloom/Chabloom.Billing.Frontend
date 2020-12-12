@@ -1,7 +1,7 @@
 import { BaseApi, BaseApiType } from "../../apiBase";
 import { PaymentScheduleViewModel } from "./model";
 import { ApplicationConfig } from "../../settings";
-import { UserService } from "../../UserService";
+import { User } from "oidc-client";
 
 export class PaymentSchedulesApi
   extends BaseApi<PaymentScheduleViewModel>
@@ -9,8 +9,8 @@ export class PaymentSchedulesApi
   baseUrl: string;
   account: string;
 
-  constructor(userService: UserService, account: string) {
-    super(userService);
+  constructor(user: User | undefined, account: string) {
+    super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/paymentSchedules`;
     this.account = account;
   }
