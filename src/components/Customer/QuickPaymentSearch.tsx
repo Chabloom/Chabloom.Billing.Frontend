@@ -67,12 +67,15 @@ export const QuickPaymentSearch: React.FC<Props> = (props) => {
     const selectedTenant = tenants.find((x) => x.name === tenant);
     if (selectedTenant && selectedTenant.id) {
       const api = new PaymentsApi(props.user, "");
-      const [items, err] = await api.readTenantAccount(
+      const [payments, err] = await api.readTenantAccount(
         account,
         selectedTenant.id
       );
-      if (items && !err) {
-        props.setPayments(items as Array<PaymentViewModel>);
+      if (payments && !err) {
+        const accountPayments = payments.filter(
+          (x) => new Date(x.dueDate) > new Date()
+        );
+        props.setPayments(accountPayments as Array<PaymentViewModel>);
       } else {
         setError(err);
       }
