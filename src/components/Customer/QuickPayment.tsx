@@ -40,7 +40,7 @@ export const QuickPayment: React.FC<Props> = (props) => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper elevation={3} className={classes.paper}>
-          <Typography variant="h5">Quick Payment</Typography>
+          <Typography variant="h5">Quick Account Search</Typography>
           <QuickPaymentSearch
             {...props}
             payments={payments}
@@ -50,12 +50,10 @@ export const QuickPayment: React.FC<Props> = (props) => {
       </Grid>
       {payments.length !== 0 && (
         <Grid item xs={12}>
-          <Paper elevation={3} className={classes.paper}>
-            <PaymentOverview
-              account={{ name: "Account" } as AccountViewModel}
-              payments={payments}
-            />
-          </Paper>
+          <PaymentOverview
+            account={{ name: "Account" } as AccountViewModel}
+            payments={payments}
+          />
         </Grid>
       )}
     </Grid>
