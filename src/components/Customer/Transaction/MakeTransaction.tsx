@@ -1,6 +1,7 @@
 import * as React from "react";
-
 import { Controller, useForm } from "react-hook-form";
+
+import { User } from "oidc-client";
 
 import {
   Backdrop,
@@ -23,13 +24,12 @@ import {
   PaymentsApi,
   PaymentViewModel,
   TransactionViewModel,
-  UserService,
 } from "../../../types";
 
 import { Status } from "../../Status";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   payment: PaymentViewModel | undefined;
   setPayment: CallableFunction;
 }
@@ -73,7 +73,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   const createTransaction = async (transaction: TransactionViewModel) => {
     setProcessing(true);
     if (transaction.id) {
-      const paymentsApi = new PaymentsApi(props.userService, "");
+      const paymentsApi = new PaymentsApi(props.user, "");
       let updatedPayment = props.payment;
       if (updatedPayment) {
         updatedPayment.transaction = transaction.id;

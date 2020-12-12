@@ -1,13 +1,10 @@
 import * as React from "react";
 
+import { User } from "oidc-client";
+
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import {
-  BaseApiType,
-  BaseViewModel,
-  TenantViewModel,
-  UserService,
-} from "../../types";
+import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";
@@ -16,9 +13,9 @@ import { ChabloomTablePagination } from "./Pagination";
 import { ChabloomTableHeading } from "./Heading";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   tenant: TenantViewModel | undefined;
-  api: BaseApiType<BaseViewModel> | undefined;
+  api: BaseApiType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
@@ -40,34 +37,31 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   // Get the table data
   React.useEffect(() => {
     const getTableData = async () => {
-      const user = await props.userService.getUser();
-      if (user && props.api) {
-        setProcessing(true);
-        const [items, err] = await props.api.readItems();
-        if (items && !err) {
+      setProcessing(true);
+      const [items, err] = await props.api.readItems();
+      if (items && !err) {
+        try {
+          const sortedData = items.sort((a, b) =>
+            a["name"].localeCompare(b["name"])
+          );
+          setData([...sortedData]);
+          setError("");
+        } catch {
           try {
-            const sortedData = items.sort((a, b) =>
-              a["name"].localeCompare(b["name"])
-            );
-            setData([...sortedData]);
+            setData(items);
             setError("");
           } catch {
-            try {
-              setData(items);
-              setError("");
-            } catch {
-              setError("item read failed");
-            }
+            setError("item read failed");
           }
-        } else {
-          setData([] as Array<BaseViewModel>);
-          setError(err);
         }
-        setProcessing(false);
+      } else {
+        setData([] as Array<BaseViewModel>);
+        setError(err);
       }
+      setProcessing(false);
     };
     getTableData().then();
-  }, [props.userService, props.api, props.title]);
+  }, [props.api, props.title]);
 
   return (
     <TableContainer component={Paper}>

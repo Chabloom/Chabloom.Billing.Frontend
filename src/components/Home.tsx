@@ -1,12 +1,12 @@
 import * as React from "react";
 
+import { User } from "oidc-client";
+
 import { Dashboard as CustomerDashboard } from "./Customer";
 import { Dashboard as ManagerDashboard } from "./Manager";
 
-import { UserService } from "../types";
-
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   admin: boolean;
   manager: boolean;
 }

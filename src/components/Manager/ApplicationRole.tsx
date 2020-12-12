@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { ApplicationRolesApi, UserService } from "../../types";
+import { User } from "oidc-client";
+
+import { ApplicationRolesApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -18,13 +20,15 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const ApplicationRole: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<ApplicationRolesApi>();
+  const [api, setApi] = React.useState<ApplicationRolesApi>(
+    new ApplicationRolesApi(props.user)
+  );
   const [title, setTitle] = React.useState("Application Roles");
 
   // Update the API
   React.useEffect(() => {
-    setApi(new ApplicationRolesApi(props.userService));
-  }, [props.userService]);
+    setApi(new ApplicationRolesApi(props.user));
+  }, [props.user]);
 
   // Update the title
   React.useEffect(() => {

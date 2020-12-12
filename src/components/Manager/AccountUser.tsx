@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { AccountUsersApi, AccountViewModel, UserService } from "../../types";
+import { User } from "oidc-client";
+
+import { AccountUsersApi, AccountViewModel } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   account: AccountViewModel;
 }
 
@@ -34,15 +36,17 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const AccountUser: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<AccountUsersApi>();
+  const [api, setApi] = React.useState<AccountUsersApi>(
+    new AccountUsersApi(props.user, props.account.id)
+  );
   const [title, setTitle] = React.useState("Account Users");
 
   // Update the API
   React.useEffect(() => {
     if (props.account.id) {
-      setApi(new AccountUsersApi(props.userService, props.account.id));
+      setApi(new AccountUsersApi(props.user, props.account.id));
     }
-  }, [props.userService, props.account]);
+  }, [props.user, props.account]);
 
   // Update the title
   React.useEffect(() => {

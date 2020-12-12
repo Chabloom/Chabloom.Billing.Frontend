@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { User, UserManager } from "oidc-client";
+
 import {
   AppBar,
   createStyles,
@@ -10,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Menu } from "@material-ui/icons";
 
-import { appIsStandalone, TenantViewModel, UserService } from "../../types";
+import { appIsStandalone, TenantViewModel } from "../../types";
 
 import { ModeSelection } from "./ModeSelection";
 import { TenantSelection } from "./TenantSelection";
@@ -19,7 +21,8 @@ import { UserManagement } from "./UserManagement";
 import logo from "../../logo.svg";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
+  userManager: UserManager;
   userLevel: "admin" | "manager" | undefined;
   tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;

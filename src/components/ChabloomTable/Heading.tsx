@@ -1,6 +1,8 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 
+import { User } from "oidc-client";
+
 import {
   ButtonGroup,
   IconButton,
@@ -22,19 +24,14 @@ import {
 } from "@material-ui/icons";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
-import {
-  BaseApiType,
-  BaseViewModel,
-  TenantViewModel,
-  UserService,
-} from "../../types";
+import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   tenant: TenantViewModel | undefined;
-  api: BaseApiType<BaseViewModel> | undefined;
+  api: BaseApiType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
@@ -78,66 +75,54 @@ const useStyles = makeStyles((theme) => ({
 
 const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const addItem = async () => {
-    if (props.api) {
-      props.setProcessing(true);
-      const [newItem, err] = await props.api.addItem(props.editItem);
-      if (!err) {
-        props.setData([
-          ...props.data.slice(0, props.selectedIndex),
-          { ...newItem },
-          ...props.data.slice(props.selectedIndex + 1),
-        ]);
-        props.setSelectedIndex(-1);
-        props.setEditIndex(-1);
-        props.setAdding(false);
-        props.setError("");
-      } else {
-        props.setError(err);
-      }
-      props.setProcessing(false);
+    props.setProcessing(true);
+    const [newItem, err] = await props.api.addItem(props.editItem);
+    if (!err) {
+      props.setData([
+        ...props.data.slice(0, props.selectedIndex),
+        { ...newItem },
+        ...props.data.slice(props.selectedIndex + 1),
+      ]);
+      props.setSelectedIndex(-1);
+      props.setEditIndex(-1);
+      props.setAdding(false);
+      props.setError("");
     } else {
-      props.setError("API not defined");
+      props.setError(err);
     }
+    props.setProcessing(false);
   };
   const editItem = async () => {
-    if (props.api) {
-      props.setProcessing(true);
-      const [newItem, err] = await props.api.editItem(props.editItem);
-      if (!err) {
-        props.setData([
-          ...props.data.slice(0, props.selectedIndex),
-          { ...newItem },
-          ...props.data.slice(props.selectedIndex + 1),
-        ]);
-        props.setSelectedIndex(-1);
-        props.setEditIndex(-1);
-        props.setError("");
-      } else {
-        props.setError(err);
-      }
-      props.setProcessing(false);
+    props.setProcessing(true);
+    const [newItem, err] = await props.api.editItem(props.editItem);
+    if (!err) {
+      props.setData([
+        ...props.data.slice(0, props.selectedIndex),
+        { ...newItem },
+        ...props.data.slice(props.selectedIndex + 1),
+      ]);
+      props.setSelectedIndex(-1);
+      props.setEditIndex(-1);
+      props.setError("");
     } else {
-      props.setError("API not defined");
+      props.setError(err);
     }
+    props.setProcessing(false);
   };
   const deleteItem = async () => {
-    if (props.api) {
-      props.setProcessing(true);
-      const err = await props.api.deleteItem(props.editItem);
-      if (!err) {
-        props.setData([
-          ...props.data.slice(0, props.selectedIndex),
-          ...props.data.slice(props.selectedIndex + 1),
-        ]);
-        props.setSelectedIndex(-1);
-        props.setDeleteIndex(-1);
-      } else {
-        props.setError(err);
-      }
-      props.setProcessing(false);
+    props.setProcessing(true);
+    const err = await props.api.deleteItem(props.editItem);
+    if (!err) {
+      props.setData([
+        ...props.data.slice(0, props.selectedIndex),
+        ...props.data.slice(props.selectedIndex + 1),
+      ]);
+      props.setSelectedIndex(-1);
+      props.setDeleteIndex(-1);
     } else {
-      props.setError("API not defined");
+      props.setError(err);
     }
+    props.setProcessing(false);
   };
 
   if (props.selectedIndex !== -1) {

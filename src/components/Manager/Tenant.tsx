@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { TenantsApi, UserService } from "../../types";
+import { User } from "oidc-client";
+
+import { TenantsApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
 }
 
 const columns: Array<ChabloomTableColumn> = [
@@ -18,13 +20,13 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const Tenant: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<TenantsApi>();
+  const [api, setApi] = React.useState<TenantsApi>(new TenantsApi(props.user));
   const [title, setTitle] = React.useState("Tenants");
 
   // Update the API
   React.useEffect(() => {
-    setApi(new TenantsApi(props.userService));
-  }, [props.userService]);
+    setApi(new TenantsApi(props.user));
+  }, [props.user]);
 
   // Update the title
   React.useEffect(() => {

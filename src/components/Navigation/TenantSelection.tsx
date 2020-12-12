@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { User } from "oidc-client";
+
 import {
   Button,
   ButtonGroup,
@@ -13,10 +15,10 @@ import {
 } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
 
-import { TenantsApi, TenantViewModel, UserService } from "../../types";
+import { TenantsApi, TenantViewModel } from "../../types";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   tenant: TenantViewModel | undefined;
   setTenant: CallableFunction;
   admin: boolean;
@@ -33,26 +35,21 @@ export const TenantSelection: React.FC<Props> = (props) => {
   // Get tenants that the user is authorized to select
   React.useEffect(() => {
     const getItems = async () => {
-      const user = await props.userService.getUser();
-      if (user) {
-        let api: TenantsApi;
-        if (props.admin) {
-          // Admin mode can see all tenants
-          api = new TenantsApi(props.userService);
-        } else {
-          api = new TenantsApi(props.userService, user.profile.sub);
-        }
-        const [items, err] = await api.readItems();
-        if (items && !err) {
-          const itemsSorted = items.sort((a, b) =>
-            a.name.localeCompare(b.name)
-          );
-          setTenants(itemsSorted);
-        }
+      let api: TenantsApi;
+      if (props.admin) {
+        // Admin mode can see all tenants
+        api = new TenantsApi(props.user);
+      } else {
+        api = new TenantsApi(props.user, props.user?.profile.sub);
+      }
+      const [items, err] = await api.readItems();
+      if (items && !err) {
+        const itemsSorted = items.sort((a, b) => a.name.localeCompare(b.name));
+        setTenants(itemsSorted);
       }
     };
     getItems().then();
-  }, [props.userService, props.admin]);
+  }, [props.user, props.admin]);
 
   // Workaround for eslint issue on the useEffect call below
   const setTenant = props.setTenant;

@@ -1,11 +1,13 @@
 import * as React from "react";
 
-import { TenantRolesApi, TenantViewModel, UserService } from "../../types";
+import { User } from "oidc-client";
+
+import { TenantRolesApi, TenantViewModel } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   tenant: TenantViewModel;
 }
 
@@ -19,15 +21,17 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const TenantRole: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<TenantRolesApi>();
+  const [api, setApi] = React.useState<TenantRolesApi>(
+    new TenantRolesApi(props.user, props.tenant.id)
+  );
   const [title, setTitle] = React.useState("Tenant Roles");
 
   // Update the API
   React.useEffect(() => {
     if (props.tenant.id) {
-      setApi(new TenantRolesApi(props.userService, props.tenant.id));
+      setApi(new TenantRolesApi(props.user, props.tenant.id));
     }
-  }, [props.userService, props.tenant]);
+  }, [props.user, props.tenant]);
 
   // Update the title
   React.useEffect(() => {
