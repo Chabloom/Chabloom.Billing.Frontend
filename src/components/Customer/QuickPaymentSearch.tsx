@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { User } from "oidc-client";
+
 import {
   Button,
   createStyles,
@@ -16,11 +18,10 @@ import {
   PaymentViewModel,
   TenantsApi,
   TenantViewModel,
-  UserService,
-} from "../../../types";
+} from "../../types";
 
 interface Props {
-  userService: UserService;
+  user: User | undefined;
   payments: Array<PaymentViewModel>;
   setPayments: CallableFunction;
 }
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Search: React.FC<Props> = (props) => {
+export const QuickPaymentSearch: React.FC<Props> = (props) => {
   const [tenant, setTenant] = React.useState("");
   const [account, setAccount] = React.useState("");
   const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
@@ -49,7 +50,7 @@ export const Search: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getTenants = async () => {
       setProcessing(true);
-      const api = new TenantsApi(props.userService);
+      const api = new TenantsApi(props.user);
       const [items, err] = await api.readItems();
       if (items && !err) {
         setTenants(items as Array<TenantViewModel>);
@@ -59,13 +60,13 @@ export const Search: React.FC<Props> = (props) => {
       setProcessing(false);
     };
     getTenants().then();
-  }, [props.userService]);
+  }, [props.user]);
 
   const getTenantAccountNumberPayments = async () => {
     setProcessing(true);
     const selectedTenant = tenants.find((x) => x.name === tenant);
     if (selectedTenant && selectedTenant.id) {
-      const api = new PaymentsApi(props.userService, "");
+      const api = new PaymentsApi(props.user, "");
       const [items, err] = await api.readTenantAccount(
         account,
         selectedTenant.id
