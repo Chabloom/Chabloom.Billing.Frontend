@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Info, Payment } from "@material-ui/icons";
+import { CheckCircle, Info, Payment } from "@material-ui/icons";
 
 import { AccountViewModel, PaymentViewModel } from "../../types";
 
@@ -40,7 +40,15 @@ export const PaymentOverview: React.FC<Props> = (props) => {
           <Typography variant="h5">{props.account.name}</Typography>
         </Grid>
         {props.payments.map((payment) => {
-          let paymentAmount = `$${payment.amount.toFixed(2)}`;
+          const paymentAmount = `$${payment.amount.toFixed(2)}`;
+          const paymentDueDate = new Date(payment.dueDate);
+          let dueDate = `Due ${paymentDueDate.getDay()}/${paymentDueDate.getMonth()}/${paymentDueDate
+            .getFullYear()
+            .toString()
+            .substr(2, 2)}`;
+          if (payment.complete) {
+            dueDate = "Paid";
+          }
           let paymentAction = "Make payment";
           if (payment.complete) {
             paymentAction = "View payment details";
@@ -50,12 +58,14 @@ export const PaymentOverview: React.FC<Props> = (props) => {
               <Card elevation={3}>
                 <CardContent>
                   <Typography variant="h6">{payment.name}</Typography>
+                  <Typography variant="body1">{dueDate}</Typography>
                   <Typography variant="body1">{paymentAmount}</Typography>
                 </CardContent>
                 <CardActions>
                   <Tooltip title={paymentAction}>
                     <IconButton>
-                      <Payment />
+                      {payment.complete && <CheckCircle />}
+                      {!payment.complete && <Payment />}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Bill information">
