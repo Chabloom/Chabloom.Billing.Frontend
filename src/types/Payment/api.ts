@@ -1,50 +1,40 @@
+import { User } from "oidc-client";
+import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentViewModel } from "./model";
-import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class PaymentsApi
   extends BaseApi<PaymentViewModel>
   implements BaseApiType<PaymentViewModel> {
   baseUrl: string;
-  account: string;
+  accountId: string;
 
-  constructor(user: User | undefined, account: string) {
+  constructor(user: User | undefined, accountId: string) {
     super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/payments`;
-    this.account = account;
+    this.accountId = accountId;
   }
 
   readItems(): Promise<[Array<PaymentViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?accountId=${this.account}`);
-  }
-
-  readTenantAccount(
-    accountNumber: string,
-    tenantId: string
-  ): Promise<[Array<PaymentViewModel> | undefined, string]> {
-    return this._readItems(
-      `${this.baseUrl}/tenantAccount?accountNumber=${accountNumber}&tenantId=${tenantId}`,
-      false
-    );
+    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
   }
 
   readItem(itemId: string): Promise<[PaymentViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/Demo/${itemId}`, false);
+    return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
     item: PaymentViewModel
   ): Promise<[PaymentViewModel | undefined, string]> {
-    item.account = this.account;
+    item.accountId = this.accountId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
     item: PaymentViewModel
   ): Promise<[PaymentViewModel | undefined, string]> {
-    item.account = this.account;
-    return this._editItem(`${this.baseUrl}/Demo/${item.id}`, item, false);
+    item.accountId = this.accountId;
+    return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
   deleteItem(item: PaymentViewModel): Promise<string | undefined> {

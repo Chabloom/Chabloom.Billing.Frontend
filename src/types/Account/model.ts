@@ -1,9 +1,9 @@
 import { BaseViewModel } from "../modelBase";
 
 export interface AccountViewModel extends BaseViewModel {
-  id?: string;
+  readonly id: string;
   name: string;
-  externalId: string;
-  primaryAddress: string;
-  tenant: string;
+  address: string;
+  referenceId: string;
+  tenantId: string;
 }

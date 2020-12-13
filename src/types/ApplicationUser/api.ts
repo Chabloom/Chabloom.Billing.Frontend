@@ -1,7 +1,7 @@
+import { User } from "oidc-client";
+import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationUserViewModel } from "./model";
-import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class ApplicationUsersApi
   extends BaseApi<ApplicationUserViewModel>

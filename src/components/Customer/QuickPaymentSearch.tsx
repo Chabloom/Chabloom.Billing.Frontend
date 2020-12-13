@@ -14,6 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Alert, AlertTitle, Autocomplete } from "@material-ui/lab";
 
 import {
+  AccountsApi,
   PaymentsApi,
   PaymentViewModel,
   TenantsApi,
@@ -38,9 +39,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const QuickPaymentSearch: React.FC<Props> = (props) => {
+  const [allTenants, setAllTenants] = React.useState<Array<TenantViewModel>>(
+    []
+  );
   const [tenant, setTenant] = React.useState("");
-  const [account, setAccount] = React.useState("");
-  const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
+  const [accountNumber, setAccountNumber] = React.useState("");
+
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -50,10 +54,10 @@ export const QuickPaymentSearch: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getTenants = async () => {
       setProcessing(true);
-      const api = new TenantsApi(props.user);
+      const api = new TenantsApi();
       const [items, err] = await api.readItems();
       if (items && !err) {
-        setTenants(items as Array<TenantViewModel>);
+        setAllTenants(items);
       } else {
         setError(err);
       }
@@ -62,23 +66,28 @@ export const QuickPaymentSearch: React.FC<Props> = (props) => {
     getTenants().then();
   }, [props.user]);
 
-  const getTenantAccountNumberPayments = async () => {
+  const getAccountPayments = async () => {
     setProcessing(true);
-    const selectedTenant = tenants.find((x) => x.name === tenant);
+    const selectedTenant = allTenants.find((x) => x.name === tenant);
     if (selectedTenant && selectedTenant.id) {
-      const api = new PaymentsApi(props.user, "");
-      const [payments, err] = await api.readTenantAccount(
-        account,
-        selectedTenant.id
+      const accountsApi = new AccountsApi();
+      const [account, accountErr] = await accountsApi.readItemReference(
+        accountNumber
       );
-      if (payments && !err) {
-        const accountPayments = payments.filter(
-          (x) => new Date(x.dueDate) > new Date()
-        );
-        props.setPayments(accountPayments as Array<PaymentViewModel>);
-      } else {
-        setError(err);
+      if (!account || accountErr) {
+        setError(accountErr);
+        return;
       }
+      const paymentsApi = new PaymentsApi(undefined, account.id);
+      const [payments, paymentsErr] = await paymentsApi.readItems();
+      if (!payments || paymentsErr) {
+        setError(paymentsErr);
+        return;
+      }
+      const accountPayments = payments.filter(
+        (x) => new Date(x.dueDate) > new Date()
+      );
+      props.setPayments(accountPayments as Array<PaymentViewModel>);
     }
     setProcessing(false);
   };
@@ -87,14 +96,14 @@ export const QuickPaymentSearch: React.FC<Props> = (props) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        getTenantAccountNumberPayments().then();
+        getAccountPayments().then();
       }}
     >
       <FormGroup>
         <Autocomplete
           freeSolo
           disableClearable
-          options={tenants.map((t) => t.name)}
+          options={allTenants.map((t) => t.name)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -112,9 +121,9 @@ export const QuickPaymentSearch: React.FC<Props> = (props) => {
           required
           name="account"
           label="Account Number"
-          value={account}
+          value={accountNumber}
           disabled={processing}
-          onChange={(e) => setAccount(e.target.value)}
+          onChange={(e) => setAccountNumber(e.target.value)}
         />
       </FormGroup>
       {error && (

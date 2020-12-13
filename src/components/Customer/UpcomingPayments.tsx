@@ -21,10 +21,11 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
   const [accounts, setAccounts] = React.useState([] as Array<AccountViewModel>);
   const [payments, setPayments] = React.useState([] as Array<PaymentViewModel>);
 
+  // Get all accounts the user is authorized to view
   React.useEffect(() => {
     const getItems = async () => {
       const api = new AccountsApi(props.user);
-      const [items, err] = await api.readItems();
+      const [items, err] = await api.readItemsAuthorized();
       if (items && !err) {
         setAccounts(items);
       }
@@ -32,11 +33,12 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
     getItems().then();
   }, [props.user]);
 
+  // Get all payments for all returned accounts
   React.useEffect(() => {
     const getItems = async () => {
       const payments = [] as Array<PaymentViewModel>;
       for (const account of accounts) {
-        const api = new PaymentsApi(props.user, account.id as string);
+        const api = new PaymentsApi(props.user, account.id);
         const [items, err] = await api.readItems();
         if (items && !err) {
           payments.push(...items);

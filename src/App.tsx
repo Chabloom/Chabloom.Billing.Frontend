@@ -13,15 +13,9 @@ import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
 import { createBrowserHistory } from "history";
 
-import {
-  AppInsightsInstrumentationKey,
-  appIsStandalone,
-  OidcSettings,
-  TenantsApi,
-  TenantViewModel,
-} from "./types";
+import { AppInsightsInstrumentationKey, OidcSettings } from "./types";
 
-import { Routes, RoutesMobile } from "./components";
+import { Routes } from "./components";
 
 import "./App.scss";
 
@@ -40,7 +34,6 @@ appInsights.loadAppInsights();
 
 export const App: React.FC = () => {
   const [user, setUser] = React.useState<User>();
-  const [tenants, setTenants] = React.useState<Array<TenantViewModel>>([]);
   const [darkMode, setDarkMode] = React.useState<boolean>(false);
 
   const userManager = React.useMemo(() => new UserManager(OidcSettings), []);
@@ -76,18 +69,6 @@ export const App: React.FC = () => {
     getUser().then();
   }, [userManager]);
 
-  // Get all available tenants
-  React.useEffect(() => {
-    const getItems = async () => {
-      const api = new TenantsApi(user);
-      const [items, err] = await api.readItems();
-      if (items && !err) {
-        setTenants(items);
-      }
-    };
-    getItems().then();
-  }, [user]);
-
   // Get dark mode setting
   const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   React.useEffect(() => {
@@ -118,29 +99,14 @@ export const App: React.FC = () => {
     [darkMode]
   );
 
-  if (appIsStandalone()) {
-    return (
-      <ThemeProvider theme={theme}>
-        <RoutesMobile
-          user={user}
-          userManager={userManager}
-          tenants={tenants}
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-        />
-      </ThemeProvider>
-    );
-  } else {
-    return (
-      <ThemeProvider theme={theme}>
-        <Routes
-          user={user}
-          userManager={userManager}
-          tenants={tenants}
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-        />
-      </ThemeProvider>
-    );
-  }
+  return (
+    <ThemeProvider theme={theme}>
+      <Routes
+        user={user}
+        userManager={userManager}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
+    </ThemeProvider>
+  );
 };

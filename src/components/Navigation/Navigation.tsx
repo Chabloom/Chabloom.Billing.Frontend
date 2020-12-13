@@ -22,7 +22,6 @@ import {
   AccountCircle,
   Business,
   Group,
-  GroupAdd,
   Home,
   Receipt,
   Schedule,
@@ -39,13 +38,14 @@ import logo from "../../logo.svg";
 interface Props {
   user: User | undefined;
   userManager: UserManager;
+  authorizedTenants: Array<TenantViewModel>;
+  selectedTenant: TenantViewModel | undefined;
+  setSelectedTenant: CallableFunction;
   userLevel: "admin" | "manager" | undefined;
-  setTenant: CallableFunction;
   admin: boolean;
   setAdmin: CallableFunction;
   manager: boolean;
   setManager: CallableFunction;
-  tenant: TenantViewModel | undefined;
   account: AccountViewModel | undefined;
   darkMode: boolean;
   setDarkMode: CallableFunction;
@@ -95,12 +95,11 @@ export const Navigation: React.FC<Props> = (props) => {
           <div className={classes.flexGrow}>
             <img src={logo} className={classes.logo} alt="logo" />
           </div>
-          {props.admin ||
-            (props.manager && (
-              <div className={classes.flexGrow}>
-                <TenantSelection {...props} />
-              </div>
-            ))}
+          {(props.admin || props.manager) && (
+            <div className={classes.flexGrow}>
+              <TenantSelection {...props} />
+            </div>
+          )}
           <ModeSelection {...props} />
           <UserManagement {...props} />
         </Toolbar>
@@ -132,7 +131,7 @@ export const Navigation: React.FC<Props> = (props) => {
                   <div>
                     <Divider />
                     <List>
-                      {props.tenant && (
+                      {props.selectedTenant && (
                         <ListItem
                           button
                           key="Accounts"
@@ -187,18 +186,7 @@ export const Navigation: React.FC<Props> = (props) => {
                         <ListItemIcon>
                           <Group />
                         </ListItemIcon>
-                        <ListItemText primary="Tenant Users" />
-                      </ListItem>
-                      <ListItem
-                        button
-                        key="tenantRoles"
-                        component={NavLink}
-                        to="/tenantRoles"
-                      >
-                        <ListItemIcon>
-                          <GroupAdd />
-                        </ListItemIcon>
-                        <ListItemText primary="Tenant Roles" />
+                        <ListItemText primary="Managers" />
                       </ListItem>
                     </List>
                   </div>
@@ -216,18 +204,7 @@ export const Navigation: React.FC<Props> = (props) => {
                         <ListItemIcon>
                           <Group />
                         </ListItemIcon>
-                        <ListItemText primary="Application Users" />
-                      </ListItem>
-                      <ListItem
-                        button
-                        key="applicationRoles"
-                        component={NavLink}
-                        to="/applicationRoles"
-                      >
-                        <ListItemIcon>
-                          <GroupAdd />
-                        </ListItemIcon>
-                        <ListItemText primary="Application Roles" />
+                        <ListItemText primary="Administrators" />
                       </ListItem>
                     </List>
                   </div>

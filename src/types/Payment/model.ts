@@ -6,9 +6,6 @@ export interface PaymentViewModel extends BaseViewModel {
   amount: number;
   currency: string;
   dueDate: string;
-  complete: boolean;
-  account: string;
-  readonly paymentSchedule: string;
-  transaction: string;
-  transactionSchedule: string;
+  transactionId: string;
+  accountId: string;
 }

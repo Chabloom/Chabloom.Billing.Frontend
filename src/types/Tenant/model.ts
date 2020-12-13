@@ -1,6 +1,6 @@
 import { BaseViewModel } from "../modelBase";
 
 export interface TenantViewModel extends BaseViewModel {
-  id?: string;
+  readonly id: string;
   name: string;
 }

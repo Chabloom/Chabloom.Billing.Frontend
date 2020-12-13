@@ -1,34 +1,22 @@
+import { User } from "oidc-client";
+import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountUserViewModel } from "./model";
-import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class AccountUsersApi
   extends BaseApi<AccountUserViewModel>
   implements BaseApiType<AccountUserViewModel> {
   baseUrl: string;
-  account: string | null;
-  tenant: string | null;
+  accountId: string;
 
-  constructor(
-    user: User | undefined,
-    account: string | null = null,
-    tenant: string | null = null
-  ) {
+  constructor(user: User | undefined, accountId: string) {
     super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/accountUsers`;
-    this.account = account;
-    this.tenant = tenant;
+    this.accountId = accountId;
   }
 
   readItems(): Promise<[Array<AccountUserViewModel> | undefined, string]> {
-    if (this.account) {
-      return this._readItems(`${this.baseUrl}?accountId=${this.account}`);
-    } else if (this.tenant) {
-      return this._readItems(`${this.baseUrl}?tenantId=${this.tenant}`);
-    } else {
-      return this._readItems(`${this.baseUrl}`);
-    }
+    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
   }
 
   readItem(
@@ -40,18 +28,14 @@ export class AccountUsersApi
   addItem(
     item: AccountUserViewModel
   ): Promise<[AccountUserViewModel | undefined, string]> {
-    if (this.account) {
-      item.account = this.account;
-    }
+    item.accountId = this.accountId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
     item: AccountUserViewModel
   ): Promise<[AccountUserViewModel | undefined, string]> {
-    if (this.account) {
-      item.account = this.account;
-    }
+    item.accountId = this.accountId;
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 

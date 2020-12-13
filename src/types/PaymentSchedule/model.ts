@@ -9,6 +9,6 @@ export interface PaymentScheduleViewModel extends BaseViewModel {
   monthInterval: number;
   beginDate: string;
   endDate: string;
-  account: string;
-  transactionSchedule: string;
+  transactionScheduleId: string;
+  accountId: string;
 }

@@ -1,57 +1,55 @@
+import { User } from "oidc-client";
+import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountViewModel } from "./model";
-import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class AccountsApi
   extends BaseApi<AccountViewModel>
   implements BaseApiType<AccountViewModel> {
   baseUrl: string;
-  tenant: string | null;
+  tenantId: string;
 
-  constructor(user: User | undefined, tenant: string | null = null) {
+  constructor(user: User | undefined = undefined, tenantId: string = "") {
     super(user);
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/accounts`;
-    this.tenant = tenant;
+    this.tenantId = tenantId;
   }
 
   readItems(): Promise<[Array<AccountViewModel> | undefined, string]> {
-    if (this.tenant) {
-      return this._readItems(`${this.baseUrl}?tenantId=${this.tenant}`);
-    } else {
-      return this._readItems(`${this.baseUrl}`);
-    }
+    return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`);
+  }
+
+  readItemsAuthorized(): Promise<
+    [Array<AccountViewModel> | undefined, string]
+  > {
+    return this._readItems(`${this.baseUrl}/Authorized`);
   }
 
   readItem(itemId: string): Promise<[AccountViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
+  readItemReference(
+    itemId: string
+  ): Promise<[AccountViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/Reference/${itemId}`);
+  }
+
   addItem(
     item: AccountViewModel
   ): Promise<[AccountViewModel | undefined, string]> {
-    const tenantId = window.localStorage.getItem("TenantId");
-    if (tenantId) {
-      item.tenant = tenantId;
-    }
+    item.tenantId = this.tenantId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
     item: AccountViewModel
   ): Promise<[AccountViewModel | undefined, string]> {
-    const tenantId = window.localStorage.getItem("TenantId");
-    if (tenantId) {
-      item.tenant = tenantId;
-    }
+    item.tenantId = this.tenantId;
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
   deleteItem(item: AccountViewModel): Promise<string | undefined> {
-    const tenantId = window.localStorage.getItem("TenantId");
-    if (tenantId) {
-      item.tenant = tenantId;
-    }
     return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

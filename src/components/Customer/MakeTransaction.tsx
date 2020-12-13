@@ -19,9 +19,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Cleave from "cleave.js/react";
 
 import {
-  PaymentsApi,
   PaymentViewModel,
-  TransactionViewModel,
+  QuickTransactionApi,
+  QuickTransactionViewModel,
 } from "../../types";
 
 import { Status } from "../Status";
@@ -70,32 +70,23 @@ export const MakeTransaction: React.FC<Props> = (props) => {
 
   const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
 
-  const createTransaction = async (transaction: TransactionViewModel) => {
-    setProcessing(true);
-    if (transaction.id) {
-      const paymentsApi = new PaymentsApi(undefined, "");
-      let updatedPayment = props.payment;
-      if (updatedPayment) {
-        updatedPayment.transaction = transaction.id;
-        updatedPayment.complete = true;
-        const [, err] = await paymentsApi.editItem(updatedPayment);
-        setError(err);
-        if (!err) {
-          window.location.replace("/");
-        }
-      }
-    }
-    setProcessing(false);
-  };
-
   const onSubmit = (data: any) => {
-    const transaction = {
-      id: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
-      name: props.payment.name,
-      amount: props.payment.amount,
-      currency: props.payment.currency,
-    } as TransactionViewModel;
-    createTransaction(transaction).then();
+    const makeQuickTransaction = async (
+      quickTransaction: QuickTransactionViewModel
+    ) => {
+      setProcessing(true);
+      const api = new QuickTransactionApi();
+      const [item, err] = await api.addItem(quickTransaction);
+      if (!item || err) {
+        setError(err);
+      }
+      setProcessing(false);
+    };
+    const quickTransaction = {
+      paymentId: props.payment.id,
+      transactionId: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
+    } as QuickTransactionViewModel;
+    makeQuickTransaction(quickTransaction).then();
   };
 
   return (

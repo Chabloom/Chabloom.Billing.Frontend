@@ -1,8 +1,6 @@
 import { BaseViewModel } from "../modelBase";
 
 export interface ApplicationUserViewModel extends BaseViewModel {
-  id?: string;
+  readonly id: string;
   userId: string;
-  role: string;
-  roleName?: string;
 }
