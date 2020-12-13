@@ -40,7 +40,7 @@ export const QuickPayment: React.FC<Props> = (props) => {
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <Paper elevation={3} className={classes.paper}>
-          <Typography variant="h5">Quick Account Search</Typography>
+          <Typography variant="h5">Account Search</Typography>
           <QuickPaymentSearch
             {...props}
             payments={payments}
