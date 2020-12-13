@@ -19,13 +19,13 @@ const columns: Array<ChabloomTableColumn> = [
     type: "text",
   },
   {
-    title: "Number",
-    accessor: "externalId",
+    title: "Address",
+    accessor: "address",
     type: "text",
   },
   {
-    title: "Primary Address",
-    accessor: "primaryAddress",
+    title: "Number",
+    accessor: "referenceId",
     type: "text",
   },
 ];

@@ -17,21 +17,6 @@ const columns: Array<ChabloomTableColumn> = [
     accessor: "userId",
     type: "text",
   },
-  {
-    title: "Tenant Name",
-    accessor: "tenantName",
-    type: "text",
-  },
-  {
-    title: "Tenant Id",
-    accessor: "tenant",
-    type: "text",
-  },
-  {
-    title: "Role",
-    accessor: "roleName",
-    type: "text",
-  },
 ];
 
 export const TenantUser: React.FC<Props> = (props) => {

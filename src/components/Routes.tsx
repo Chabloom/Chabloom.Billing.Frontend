@@ -20,7 +20,6 @@ import {
 } from "./UserManagement";
 import {
   Account,
-  AccountUser,
   ApplicationUser,
   Payment,
   PaymentSchedule,
@@ -164,11 +163,6 @@ export const Routes: React.FC<Props> = (props) => {
           {account && (
             <Route path="/paymentSchedules">
               <PaymentSchedule {...props} account={account} />
-            </Route>
-          )}
-          {account && (
-            <Route path="/accountUsers">
-              <AccountUser {...props} account={account} />
             </Route>
           )}
           <Route path="/tenants">
