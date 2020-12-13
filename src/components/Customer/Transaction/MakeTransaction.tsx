@@ -1,8 +1,6 @@
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { User } from "oidc-client";
-
 import {
   Backdrop,
   Button,
@@ -11,8 +9,8 @@ import {
   CardContent,
   CardHeader,
   createStyles,
-  FormGroup,
   Grid,
+  InputAdornment,
   TextField,
   Theme,
 } from "@material-ui/core";
@@ -28,16 +26,24 @@ import {
 
 import { Status } from "../../Status";
 
+import amex from "./images/amex.png";
+import discover from "./images/discover.png";
+import mastercard from "./images/mastercard.png";
+import visa from "./images/visa.png";
+
 interface Props {
-  user: User | undefined;
-  payment: PaymentViewModel | undefined;
-  setPayment: CallableFunction;
+  payment: PaymentViewModel;
+  selectedPayment: PaymentViewModel | undefined;
+  setSelectedPayment: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       padding: theme.spacing(2),
+    },
+    mr1: {
+      marginRight: theme.spacing(1),
     },
     mt1: {
       marginTop: theme.spacing(1),
@@ -58,22 +64,16 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   });
 
   // Initialize state variables
-  const [open, setOpen] = React.useState(false);
+  const [image, setImage] = React.useState("");
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
 
-  // Open the backdrop
-  React.useEffect(() => {
-    console.log(props.payment);
-    if (props.payment) {
-      setOpen(true);
-    }
-  }, [props.payment]);
+  const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
 
   const createTransaction = async (transaction: TransactionViewModel) => {
     setProcessing(true);
     if (transaction.id) {
-      const paymentsApi = new PaymentsApi(props.user, "");
+      const paymentsApi = new PaymentsApi(undefined, "");
       let updatedPayment = props.payment;
       if (updatedPayment) {
         updatedPayment.transaction = transaction.id;
@@ -88,91 +88,114 @@ export const MakeTransaction: React.FC<Props> = (props) => {
     setProcessing(false);
   };
 
-  if (props.payment) {
-    const onSubmit = (data: any) => {
-      const transaction = {
-        id: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
-        name: props.payment?.name,
-        amount: props.payment?.amount,
-        currency: props.payment?.currency,
-      } as TransactionViewModel;
-      createTransaction(transaction).then();
-    };
+  const onSubmit = (data: any) => {
+    const transaction = {
+      id: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
+      name: props.payment.name,
+      amount: props.payment.amount,
+      currency: props.payment.currency,
+    } as TransactionViewModel;
+    createTransaction(transaction).then();
+  };
 
-    return (
-      <div>
-        <Backdrop className={classes.backdrop} open={open}>
-          <Grid
-            container
-            className={classes.paper}
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: "100vh" }}
-          >
-            <Grid item xs={12} sm={6} md={4}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Card>
-                  <CardHeader title={`Payment for ${props.payment.name}`} />
-                  <CardContent>
-                    <FormGroup>
-                      <Controller
-                        name="cardholderName"
-                        control={control}
-                        defaultValue=""
-                        as={
-                          <TextField
-                            className={classes.mt1}
-                            fullWidth
-                            required
-                            label="Name on card"
-                            autoComplete="cc-name"
-                            error={!!errors.cardholderName}
-                            helperText={
-                              errors.cardholderName
-                                ? errors.cardholderName.message
-                                : ""
-                            }
-                          />
+  return (
+    <div>
+      <Backdrop
+        className={classes.backdrop}
+        open={props.selectedPayment === props.payment}
+      >
+        <Grid
+          container
+          className={classes.paper}
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: "100vh" }}
+        >
+          <Grid item xs={12} sm={6} md={4}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Card>
+                <CardHeader title={`Payment for ${props.payment.name}`} />
+                <CardContent>
+                  <Controller
+                    name="cardNumber"
+                    control={control}
+                    defaultValue=""
+                    as={
+                      <TextField
+                        className={classes.mt1}
+                        fullWidth
+                        required
+                        autoFocus
+                        label="Card number"
+                        inputMode="numeric"
+                        autoComplete="cc-number"
+                        error={!!errors.cardNumber}
+                        helperText={
+                          errors.cardNumber ? errors.cardNumber.message : ""
+                        }
+                        InputProps={{
+                          inputComponent: ({ inputRef, ...props }) => (
+                            <Cleave
+                              {...props}
+                              htmlRef={inputRef}
+                              options={{
+                                creditCard: true,
+                                creditCardStrictMode: true,
+                                onCreditCardTypeChanged: (type) => {
+                                  if (type === "amex") {
+                                    setImage(amex);
+                                  } else if (type === "discover") {
+                                    setImage(discover);
+                                  } else if (type === "mastercard") {
+                                    setImage(mastercard);
+                                  } else if (type === "visa") {
+                                    setImage(visa);
+                                  } else {
+                                    setImage("");
+                                  }
+                                },
+                              }}
+                            />
+                          ),
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              {image && (
+                                <img src={image} height="30" alt="issuer" />
+                              )}
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    }
+                  />
+                  <Controller
+                    name="cardholderName"
+                    control={control}
+                    defaultValue=""
+                    as={
+                      <TextField
+                        className={classes.mt1}
+                        fullWidth
+                        required
+                        label="Name on card"
+                        autoComplete="cc-name"
+                        error={!!errors.cardholderName}
+                        helperText={
+                          errors.cardholderName
+                            ? errors.cardholderName.message
+                            : ""
                         }
                       />
-                      <Controller
-                        name="cardNumber"
-                        control={control}
-                        defaultValue=""
-                        as={
-                          <TextField
-                            className={classes.mt1}
-                            fullWidth
-                            required
-                            label="Card number"
-                            inputMode="numeric"
-                            autoComplete="cc-number"
-                            error={!!errors.cardNumber}
-                            helperText={
-                              errors.cardNumber ? errors.cardNumber.message : ""
-                            }
-                            InputProps={{
-                              inputComponent: ({ inputRef, ...props }) => (
-                                <Cleave
-                                  {...props}
-                                  htmlRef={inputRef}
-                                  options={{
-                                    creditCard: true,
-                                    creditCardStrictMode: true,
-                                  }}
-                                />
-                              ),
-                            }}
-                          />
-                        }
-                      />
+                    }
+                  />
+                  <Grid container className={classes.mt1}>
+                    <Grid item xs={5}>
                       <Controller
                         name="expirationMonth"
                         control={control}
                         defaultValue=""
                         as={
                           <TextField
-                            className={classes.mt1}
                             fullWidth
                             required
                             label="Expiration month (MM)"
@@ -196,13 +219,15 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                           />
                         }
                       />
+                    </Grid>
+                    <Grid item xs={1} />
+                    <Grid item xs={6}>
                       <Controller
                         name="expirationYear"
                         control={control}
                         defaultValue=""
                         as={
                           <TextField
-                            className={classes.mt1}
                             fullWidth
                             required
                             label="Expiration year (YY)"
@@ -226,67 +251,66 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                           />
                         }
                       />
-                      <Controller
-                        name="securityCode"
-                        control={control}
-                        defaultValue=""
-                        as={
-                          <TextField
-                            className={classes.mt1}
-                            fullWidth
-                            required
-                            label="Security code"
-                            inputMode="numeric"
-                            autoComplete="cc-csc"
-                            error={!!errors.securityCode}
-                            helperText={
-                              errors.securityCode
-                                ? errors.securityCode.message
-                                : ""
-                            }
-                            InputProps={{
-                              inputComponent: ({ inputRef, ...props }) => (
-                                <Cleave
-                                  {...props}
-                                  htmlRef={inputRef}
-                                  options={{ blocks: [3], numericOnly: true }}
-                                />
-                              ),
-                            }}
-                          />
+                    </Grid>
+                  </Grid>
+                  <Controller
+                    name="securityCode"
+                    control={control}
+                    defaultValue=""
+                    as={
+                      <TextField
+                        className={classes.mt1}
+                        fullWidth
+                        required
+                        label={`Security code (${
+                          image === amex ? 4 : 3
+                        } digits)`}
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
+                        error={!!errors.securityCode}
+                        helperText={
+                          errors.securityCode ? errors.securityCode.message : ""
                         }
-                      />
-                    </FormGroup>
-                    <ButtonGroup className={classes.mt1} fullWidth>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        type="submit"
-                      >
-                        {`Pay $${props.payment.amount}`}
-                      </Button>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                          props.setPayment(undefined);
-                          setOpen(false);
+                        InputProps={{
+                          inputComponent: ({ inputRef, ...props }) => (
+                            <Cleave
+                              {...props}
+                              htmlRef={inputRef}
+                              options={{
+                                blocks: [image === amex ? 4 : 3],
+                                numericOnly: true,
+                              }}
+                            />
+                          ),
                         }}
-                      >
-                        Cancel
-                      </Button>
-                    </ButtonGroup>
-                  </CardContent>
-                </Card>
-              </form>
-              <Status processing={processing} error={error} />
-            </Grid>
+                      />
+                    }
+                  />
+                  <ButtonGroup className={classes.mt1} fullWidth>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                    >
+                      {`Pay ${paymentAmount}`}
+                    </Button>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => props.setSelectedPayment(undefined)}
+                    >
+                      Cancel
+                    </Button>
+                  </ButtonGroup>
+                </CardContent>
+              </Card>
+            </form>
+            <Status processing={processing} error={error} />
           </Grid>
-        </Backdrop>
-      </div>
-    );
-  }
-  return null;
+        </Grid>
+      </Backdrop>
+    </div>
+  );
 };

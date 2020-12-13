@@ -13,9 +13,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CheckCircle, Info, Payment } from "@material-ui/icons";
+import { CheckCircle, Payment } from "@material-ui/icons";
 
 import { AccountViewModel, PaymentViewModel } from "../../types";
+import { MakeTransaction } from "./Transaction";
 
 interface Props {
   account: AccountViewModel;
@@ -31,6 +32,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const PaymentOverview: React.FC<Props> = (props) => {
+  const [
+    selectedPayment,
+    setSelectedPayment,
+  ] = React.useState<PaymentViewModel>();
+
   const classes = useStyles();
 
   return (
@@ -49,9 +55,9 @@ export const PaymentOverview: React.FC<Props> = (props) => {
           if (payment.complete) {
             dueDate = "Paid";
           }
-          let paymentAction = "Make payment";
-          if (payment.complete) {
-            paymentAction = "View payment details";
+          let paymentAction = "";
+          if (!payment.complete) {
+            paymentAction = "Make payment";
           }
           return (
             <Grid item xl={2} lg={3} md={4} sm={6} xs={12}>
@@ -63,18 +69,28 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                 </CardContent>
                 <CardActions>
                   <Tooltip title={paymentAction}>
-                    <IconButton>
+                    <IconButton
+                      onClick={() => {
+                        if (!payment.complete) {
+                          setSelectedPayment(
+                            selectedPayment === undefined ? payment : undefined
+                          );
+                        }
+                      }}
+                    >
                       {payment.complete && <CheckCircle />}
                       {!payment.complete && <Payment />}
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Bill information">
-                    <IconButton>
-                      <Info />
-                    </IconButton>
-                  </Tooltip>
                 </CardActions>
               </Card>
+              {selectedPayment === payment && !payment.complete && (
+                <MakeTransaction
+                  payment={payment}
+                  selectedPayment={selectedPayment}
+                  setSelectedPayment={setSelectedPayment}
+                />
+              )}
             </Grid>
           );
         })}
