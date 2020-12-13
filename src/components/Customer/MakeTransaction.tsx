@@ -22,9 +22,9 @@ import {
   PaymentsApi,
   PaymentViewModel,
   TransactionViewModel,
-} from "../../../types";
+} from "../../types";
 
-import { Status } from "../../Status";
+import { Status } from "../Status";
 
 import amex from "./images/amex.png";
 import discover from "./images/discover.png";

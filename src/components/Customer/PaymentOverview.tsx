@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CheckCircle, Payment } from "@material-ui/icons";
 
 import { AccountViewModel, PaymentViewModel } from "../../types";
-import { MakeTransaction } from "./Transaction";
+import { MakeTransaction } from "./MakeTransaction";
 
 interface Props {
   account: AccountViewModel;
