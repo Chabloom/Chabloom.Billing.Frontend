@@ -13,14 +13,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { CheckCircle, Payment } from "@material-ui/icons";
+import { AddCircle, CheckCircle, Payment } from "@material-ui/icons";
 
 import { AccountViewModel, PaymentViewModel } from "../../types";
+
 import { MakeTransaction } from "./MakeTransaction";
 
 interface Props {
   account: AccountViewModel;
   payments: Array<PaymentViewModel>;
+  allowTracking: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +45,20 @@ export const PaymentOverview: React.FC<Props> = (props) => {
     <Paper className={classes.paper}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h5">{props.account.name}</Typography>
+          <Grid container>
+            <Grid item style={{ flexGrow: 1, margin: "auto" }}>
+              <Typography variant="h5">{props.account.name}</Typography>
+            </Grid>
+            {props.allowTracking && (
+              <Grid item>
+                <Tooltip title="Track account">
+                  <IconButton>
+                    <AddCircle />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
         {props.payments.map((payment) => {
           const paymentAmount = `$${payment.amount.toFixed(2)}`;

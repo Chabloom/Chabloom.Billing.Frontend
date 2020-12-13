@@ -59,7 +59,11 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
         if (accountPayments.length !== 0) {
           return (
             <Grid item xs={12}>
-              <PaymentOverview account={account} payments={accountPayments} />
+              <PaymentOverview
+                account={account}
+                payments={accountPayments}
+                allowTracking={false}
+              />
             </Grid>
           );
         }

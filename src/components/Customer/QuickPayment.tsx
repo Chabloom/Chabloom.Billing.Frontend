@@ -51,8 +51,9 @@ export const QuickPayment: React.FC<Props> = (props) => {
       {payments.length !== 0 && (
         <Grid item xs={12}>
           <PaymentOverview
-            account={{ name: "Account" } as AccountViewModel}
+            account={{ name: "Account Search Results" } as AccountViewModel}
             payments={payments}
+            allowTracking={true}
           />
         </Grid>
       )}
