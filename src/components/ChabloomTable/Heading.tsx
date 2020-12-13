@@ -85,6 +85,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
       ]);
       props.setSelectedIndex(-1);
       props.setEditIndex(-1);
+      props.setEditItem({} as BaseViewModel);
       props.setAdding(false);
       props.setError("");
     } else {
@@ -103,6 +104,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
       ]);
       props.setSelectedIndex(-1);
       props.setEditIndex(-1);
+      props.setEditItem({} as BaseViewModel);
       props.setError("");
     } else {
       props.setError(err);
