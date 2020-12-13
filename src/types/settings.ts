@@ -3,6 +3,7 @@ import { UserManagerSettings } from "oidc-client";
 export const ApplicationConfig = {
   name: "chabloom-payments",
   displayName: "Chabloom Payments",
+  publicAddress: "http://localhost:3000",
   accountsApiPublicAddress: "https://accounts-api-test.chabloom.com",
   paymentsApiPublicAddress: "https://payments-api-test.chabloom.com",
   processingApiPublicAddress: "https://processing-api-test.chabloom.com",
