@@ -1,4 +1,4 @@
-import { BaseViewModel } from "../../modelBase";
+import { BaseViewModel } from "../modelBase";
 
 export interface ApplicationRoleViewModel extends BaseViewModel {
   id?: string;

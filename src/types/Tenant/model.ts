@@ -1,4 +1,4 @@
-import { BaseViewModel } from "../../modelBase";
+import { BaseViewModel } from "../modelBase";
 
 export interface TenantViewModel extends BaseViewModel {
   id?: string;

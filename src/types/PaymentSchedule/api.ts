@@ -1,6 +1,6 @@
-import { BaseApi, BaseApiType } from "../../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentScheduleViewModel } from "./model";
-import { ApplicationConfig } from "../../settings";
+import { ApplicationConfig } from "../settings";
 import { User } from "oidc-client";
 
 export class PaymentSchedulesApi
