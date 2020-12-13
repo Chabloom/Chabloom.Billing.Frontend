@@ -30,8 +30,6 @@ interface Props {
   userLevel: "admin" | "manager" | undefined;
   admin: boolean;
   manager: boolean;
-  mobileDrawerOpen: boolean;
-  setMobileDrawerOpen: CallableFunction;
   tenant: TenantViewModel | undefined;
   account: AccountViewModel | undefined;
 }
@@ -195,24 +193,8 @@ export const ChabloomDrawer: React.FC<Props> = (props) => {
   const classes = useStyles();
 
   return (
-    <nav className={classes.drawer}>
-      <Hidden smUp implementation="css">
-        <Drawer
-          className={classes.drawer}
-          variant="temporary"
-          open={props.mobileDrawerOpen}
-          onClose={() => props.setMobileDrawerOpen(false)}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-          <DrawerItems {...props} />
-        </Drawer>
-      </Hidden>
-      <Hidden xsDown implementation="css">
+    <Hidden smDown implementation="css">
+      <nav className={classes.drawer}>
         <Drawer
           className={classes.drawer}
           variant="permanent"
@@ -223,7 +205,7 @@ export const ChabloomDrawer: React.FC<Props> = (props) => {
           <Toolbar />
           <DrawerItems {...props} />
         </Drawer>
-      </Hidden>
-    </nav>
+      </nav>
+    </Hidden>
   );
 };

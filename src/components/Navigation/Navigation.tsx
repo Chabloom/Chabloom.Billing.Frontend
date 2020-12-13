@@ -43,25 +43,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Navigation: React.FC<Props> = (props) => {
-  const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false);
-
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <ChabloomToolbar
-        {...props}
-        mobileDrawerOpen={mobileDrawerOpen}
-        setMobileDrawerOpen={setMobileDrawerOpen}
-      />
+      <ChabloomToolbar {...props} />
       {(props.admin || props.manager) && (
         <ChabloomDrawer
           {...props}
           admin={props.admin}
           manager={props.manager}
-          mobileDrawerOpen={mobileDrawerOpen}
-          setMobileDrawerOpen={setMobileDrawerOpen}
         />
       )}
       <main className={classes.content}>

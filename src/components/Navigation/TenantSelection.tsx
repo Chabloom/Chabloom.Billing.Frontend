@@ -8,6 +8,7 @@ import {
   ClickAwayListener,
   FormGroup,
   Grow,
+  Hidden,
   MenuItem,
   MenuList,
   Paper,
@@ -76,59 +77,61 @@ export const TenantSelection: React.FC<Props> = (props) => {
   }, [tenants, setTenant]);
 
   return (
-    <FormGroup row>
-      <ButtonGroup ref={anchorRef}>
-        <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
-        <Button
-          disabled={tenants.length === 0}
-          ref={anchorRef}
-          aria-controls={dropdownOpen ? "menu-list-grow" : undefined}
-          aria-haspopup="true"
-          onClick={() => setDropdownOpen(true)}
-        >
-          <ArrowDropDown />
-        </Button>
-      </ButtonGroup>
-      <Popper
-        transition
-        disablePortal
-        open={dropdownOpen}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        placement="bottom-start"
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
-            }}
+    <Hidden smDown implementation="css">
+      <FormGroup row>
+        <ButtonGroup ref={anchorRef}>
+          <Button>{props.tenant ? props.tenant.name : "Select Tenant"}</Button>
+          <Button
+            disabled={tenants.length === 0}
+            ref={anchorRef}
+            aria-controls={dropdownOpen ? "menu-list-grow" : undefined}
+            aria-haspopup="true"
+            onClick={() => setDropdownOpen(true)}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={() => setDropdownOpen(false)}>
-                <MenuList autoFocusItem={dropdownOpen} id="menu-list-grow">
-                  {tenants.map((item) => {
-                    return (
-                      <MenuItem
-                        onClick={() => {
-                          if (item.id) {
-                            props.setTenant(item);
-                            window.localStorage.setItem("TenantId", item.id);
-                          }
-                          setDropdownOpen(false);
-                        }}
-                      >
-                        {item.name}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </FormGroup>
+            <ArrowDropDown />
+          </Button>
+        </ButtonGroup>
+        <Popper
+          transition
+          disablePortal
+          open={dropdownOpen}
+          anchorEl={anchorRef.current}
+          role={undefined}
+          placement="bottom-start"
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "center top" : "center bottom",
+              }}
+            >
+              <Paper>
+                <ClickAwayListener onClickAway={() => setDropdownOpen(false)}>
+                  <MenuList autoFocusItem={dropdownOpen} id="menu-list-grow">
+                    {tenants.map((item) => {
+                      return (
+                        <MenuItem
+                          onClick={() => {
+                            if (item.id) {
+                              props.setTenant(item);
+                              window.localStorage.setItem("TenantId", item.id);
+                            }
+                            setDropdownOpen(false);
+                          }}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+      </FormGroup>
+    </Hidden>
   );
 };

@@ -5,12 +5,10 @@ import { User, UserManager } from "oidc-client";
 import {
   AppBar,
   createStyles,
-  IconButton,
   makeStyles,
   Theme,
   Toolbar,
 } from "@material-ui/core";
-import { Menu } from "@material-ui/icons";
 
 import { appIsStandalone, TenantViewModel } from "../../types";
 
@@ -30,8 +28,6 @@ interface Props {
   setAdmin: CallableFunction;
   manager: boolean;
   setManager: CallableFunction;
-  mobileDrawerOpen: boolean;
-  setMobileDrawerOpen: CallableFunction;
   darkMode: boolean;
   setDarkMode: CallableFunction;
 }
@@ -63,15 +59,6 @@ export const ChabloomToolbar: React.FC<Props> = (props) => {
   return (
     <AppBar position="fixed" color="inherit" className={classes.appBar}>
       <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={() => props.setMobileDrawerOpen(!props.mobileDrawerOpen)}
-          className={classes.menuButton}
-        >
-          <Menu />
-        </IconButton>
         <div className={classes.flexGrow}>
           <img src={logo} className={classes.logo} alt="logo" />
         </div>
