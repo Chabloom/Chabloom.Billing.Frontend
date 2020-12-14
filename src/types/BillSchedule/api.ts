@@ -11,7 +11,7 @@ export class BillSchedulesApi
 
   constructor(user: User | undefined, accountId: string) {
     super(user);
-    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/paymentSchedules`;
+    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/billSchedules`;
     this.accountId = accountId;
   }
 
