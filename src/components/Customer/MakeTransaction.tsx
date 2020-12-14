@@ -70,7 +70,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
 
   const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     const makeQuickTransaction = async (
       quickTransaction: QuickTransactionViewModel
     ) => {
@@ -180,7 +180,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                     }
                   />
                   <Grid container className={classes.mt1}>
-                    <Grid item xs={5}>
+                    <Grid item md={6} sm={12}>
                       <Controller
                         name="expirationMonth"
                         control={control}
@@ -211,8 +211,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                         }
                       />
                     </Grid>
-                    <Grid item xs={1} />
-                    <Grid item xs={6}>
+                    <Grid item md={6} sm={12}>
                       <Controller
                         name="expirationYear"
                         control={control}
