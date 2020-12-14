@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountViewModel, PaymentSchedulesApi } from "../../types";
+import { AccountViewModel, BillSchedulesApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 
@@ -34,23 +34,23 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-export const PaymentSchedule: React.FC<Props> = (props) => {
+export const BillSchedule: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<PaymentSchedulesApi>(
-    new PaymentSchedulesApi(props.user, props.account.id as string)
+  const [api, setApi] = React.useState<BillSchedulesApi>(
+    new BillSchedulesApi(props.user, props.account.id as string)
   );
-  const [title, setTitle] = React.useState("Payment Schedules");
+  const [title, setTitle] = React.useState("Bill Schedules");
 
   // Update the API
   React.useEffect(() => {
     if (props.account.id) {
-      setApi(new PaymentSchedulesApi(props.user, props.account.id));
+      setApi(new BillSchedulesApi(props.user, props.account.id));
     }
   }, [props.user, props.account]);
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`${props.account.name} Payment Schedules`);
+    setTitle(`${props.account.name} Bill Schedules`);
   }, [props.account]);
 
   return (

@@ -21,8 +21,8 @@ import {
 import {
   Account,
   ApplicationUser,
-  Payment,
-  PaymentSchedule,
+  Bill,
+  BillSchedule,
   Tenant,
   TenantUser,
 } from "./Manager";
@@ -156,24 +156,24 @@ export const Routes: React.FC<Props> = (props) => {
             </Route>
           )}
           {account && (
-            <Route path="/payments">
-              <Payment {...props} account={account} />
+            <Route path="/bills">
+              <Bill {...props} account={account} />
             </Route>
           )}
           {account && (
-            <Route path="/paymentSchedules">
-              <PaymentSchedule {...props} account={account} />
+            <Route path="/billSchedules">
+              <BillSchedule {...props} account={account} />
             </Route>
           )}
           <Route path="/tenants">
             <Tenant {...props} />
           </Route>
           {selectedTenant && (
-            <Route path="/tenantUsers">
+            <Route path="/managers">
               <TenantUser {...props} tenant={selectedTenant} />
             </Route>
           )}
-          <Route path="/applicationUsers">
+          <Route path="/administrators">
             <ApplicationUser {...props} />
           </Route>
           <Route path="/">

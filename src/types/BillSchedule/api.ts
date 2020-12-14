@@ -1,11 +1,11 @@
 import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
-import { PaymentScheduleViewModel } from "./model";
+import { BillScheduleViewModel } from "./model";
 
-export class PaymentSchedulesApi
-  extends BaseApi<PaymentScheduleViewModel>
-  implements BaseApiType<PaymentScheduleViewModel> {
+export class BillSchedulesApi
+  extends BaseApi<BillScheduleViewModel>
+  implements BaseApiType<BillScheduleViewModel> {
   baseUrl: string;
   accountId: string;
 
@@ -15,33 +15,33 @@ export class PaymentSchedulesApi
     this.accountId = accountId;
   }
 
-  readItems(): Promise<[Array<PaymentScheduleViewModel> | undefined, string]> {
+  readItems(): Promise<[Array<BillScheduleViewModel> | undefined, string]> {
     return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
   }
 
   readItem(
     itemId: string
-  ): Promise<[PaymentScheduleViewModel | undefined, string]> {
+  ): Promise<[BillScheduleViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
   addItem(
-    item: PaymentScheduleViewModel
-  ): Promise<[PaymentScheduleViewModel | undefined, string]> {
+    item: BillScheduleViewModel
+  ): Promise<[BillScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
     return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
-    item: PaymentScheduleViewModel
-  ): Promise<[PaymentScheduleViewModel | undefined, string]> {
+    item: BillScheduleViewModel
+  ): Promise<[BillScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(item: PaymentScheduleViewModel): Promise<string | undefined> {
+  deleteItem(item: BillScheduleViewModel): Promise<string | undefined> {
     return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

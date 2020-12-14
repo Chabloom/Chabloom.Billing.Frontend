@@ -1,6 +1,6 @@
 import { BaseViewModel } from "../modelBase";
 
-export interface PaymentScheduleViewModel extends BaseViewModel {
+export interface BillScheduleViewModel extends BaseViewModel {
   readonly id: string;
   name: string;
   amount: number;

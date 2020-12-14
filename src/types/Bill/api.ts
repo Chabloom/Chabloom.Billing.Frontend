@@ -1,11 +1,11 @@
 import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
-import { PaymentViewModel } from "./model";
+import { BillViewModel } from "./model";
 
-export class PaymentsApi
-  extends BaseApi<PaymentViewModel>
-  implements BaseApiType<PaymentViewModel> {
+export class BillsApi
+  extends BaseApi<BillViewModel>
+  implements BaseApiType<BillViewModel> {
   baseUrl: string;
   accountId: string;
 
@@ -15,31 +15,27 @@ export class PaymentsApi
     this.accountId = accountId;
   }
 
-  readItems(): Promise<[Array<PaymentViewModel> | undefined, string]> {
+  readItems(): Promise<[Array<BillViewModel> | undefined, string]> {
     return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
   }
 
-  readItem(itemId: string): Promise<[PaymentViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[BillViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: PaymentViewModel
-  ): Promise<[PaymentViewModel | undefined, string]> {
+  addItem(item: BillViewModel): Promise<[BillViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: PaymentViewModel
-  ): Promise<[PaymentViewModel | undefined, string]> {
+  editItem(item: BillViewModel): Promise<[BillViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
-  deleteItem(item: PaymentViewModel): Promise<string | undefined> {
+  deleteItem(item: BillViewModel): Promise<string | undefined> {
     return this._deleteItem(`${this.baseUrl}/${item.id}`);
   }
 }

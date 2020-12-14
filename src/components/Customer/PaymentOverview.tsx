@@ -26,8 +26,8 @@ import {
   AccountUsersApi,
   AccountUserViewModel,
   AccountViewModel,
-  PaymentsApi,
-  PaymentViewModel,
+  BillsApi,
+  BillViewModel,
 } from "../../types";
 
 import { MakeTransaction } from "./MakeTransaction";
@@ -50,12 +50,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const PaymentOverview: React.FC<Props> = (props) => {
-  const [
-    selectedPayment,
-    setSelectedPayment,
-  ] = React.useState<PaymentViewModel>();
+  const [selectedPayment, setSelectedPayment] = React.useState<BillViewModel>();
   const [accountPayments, setAccountPayments] = React.useState(
-    [] as Array<PaymentViewModel>
+    [] as Array<BillViewModel>
   );
   const [accountUsers, setAccountUsers] = React.useState(
     [] as Array<AccountUserViewModel>
@@ -69,7 +66,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getAccountPayments = async () => {
       setProcessing(true);
-      const api = new PaymentsApi(props.user, props.account.id);
+      const api = new BillsApi(props.user, props.account.id);
       const [payments, err] = await api.readItems();
       if (payments) {
         const futurePayments = payments

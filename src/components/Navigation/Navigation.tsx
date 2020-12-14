@@ -119,7 +119,7 @@ export const Navigation: React.FC<Props> = (props) => {
                 <div>
                   <Divider />
                   <List>
-                    <ListItem button key="Home" component={NavLink} to="/">
+                    <ListItem button key="home" component={NavLink} to="/">
                       <ListItemIcon>
                         <Home />
                       </ListItemIcon>
@@ -134,7 +134,7 @@ export const Navigation: React.FC<Props> = (props) => {
                       {props.selectedTenant && (
                         <ListItem
                           button
-                          key="Accounts"
+                          key="accounts"
                           component={NavLink}
                           to="/accounts"
                         >
@@ -147,27 +147,27 @@ export const Navigation: React.FC<Props> = (props) => {
                       {props.account && (
                         <ListItem
                           button
-                          key="Payments"
+                          key="bills"
                           component={NavLink}
-                          to="/payments"
+                          to="/bills"
                         >
                           <ListItemIcon>
                             <Receipt />
                           </ListItemIcon>
-                          <ListItemText primary="Payments" />
+                          <ListItemText primary="Bills" />
                         </ListItem>
                       )}
                       {props.account && (
                         <ListItem
                           button
-                          key="Payment Schedules"
+                          key="billSchedules"
                           component={NavLink}
-                          to="/paymentSchedules"
+                          to="/billSchedules"
                         >
                           <ListItemIcon>
                             <Schedule />
                           </ListItemIcon>
-                          <ListItemText primary="Payment Schedules" />
+                          <ListItemText primary="Bill Schedules" />
                         </ListItem>
                       )}
                     </List>
@@ -179,9 +179,9 @@ export const Navigation: React.FC<Props> = (props) => {
                     <List>
                       <ListItem
                         button
-                        key="tenantUsers"
+                        key="managers"
                         component={NavLink}
-                        to="/tenantUsers"
+                        to="/managers"
                       >
                         <ListItemIcon>
                           <Group />
@@ -197,9 +197,9 @@ export const Navigation: React.FC<Props> = (props) => {
                     <List>
                       <ListItem
                         button
-                        key="applicationUsers"
+                        key="administrators"
                         component={NavLink}
-                        to="/applicationUsers"
+                        to="/administrators"
                       >
                         <ListItemIcon>
                           <Group />
@@ -215,7 +215,7 @@ export const Navigation: React.FC<Props> = (props) => {
                     <List>
                       <ListItem
                         button
-                        key="Tenants"
+                        key="tenants"
                         component={NavLink}
                         to="/tenants"
                       >

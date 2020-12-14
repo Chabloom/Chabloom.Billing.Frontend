@@ -19,7 +19,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Cleave from "cleave.js/react";
 
 import {
-  PaymentViewModel,
+  BillViewModel,
   QuickTransactionApi,
   QuickTransactionViewModel,
 } from "../../types";
@@ -32,8 +32,8 @@ import mastercard from "./images/mastercard.png";
 import visa from "./images/visa.png";
 
 interface Props {
-  payment: PaymentViewModel;
-  selectedPayment: PaymentViewModel | undefined;
+  payment: BillViewModel;
+  selectedPayment: BillViewModel | undefined;
   setSelectedPayment: CallableFunction;
 }
 
