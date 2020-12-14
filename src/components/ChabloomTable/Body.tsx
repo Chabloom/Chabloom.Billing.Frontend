@@ -84,6 +84,8 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                   <TableCell key={column.accessor} align="left">
                     {column.type === "date"
                       ? new Date(row[column.accessor]).toLocaleDateString()
+                      : column.type === "currency"
+                      ? `$${parseFloat(row[column.accessor]).toFixed(2)}`
                       : row[column.accessor]}
                   </TableCell>
                 );
