@@ -72,9 +72,12 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       const api = new PaymentsApi(props.user, props.account.id);
       const [payments, err] = await api.readItems();
       if (payments) {
-        const futurePayments = payments.filter(
-          (x) => new Date(x.dueDate) > new Date()
-        );
+        const futurePayments = payments
+          .filter((x) => new Date(x.dueDate) > new Date())
+          .sort(
+            (a, b) =>
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+          );
         setAccountPayments(futurePayments);
       } else {
         setError(err);
@@ -192,10 +195,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
           accountPayments.map((payment) => {
             const paymentAmount = `$${payment.amount.toFixed(2)}`;
             const paymentDueDate = new Date(payment.dueDate);
-            let dueDate = `Due ${paymentDueDate.getDay()}/${paymentDueDate.getMonth()}/${paymentDueDate
-              .getFullYear()
-              .toString()
-              .substr(2, 2)}`;
+            let dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
             if (payment.complete) {
               dueDate = "Paid";
             }
