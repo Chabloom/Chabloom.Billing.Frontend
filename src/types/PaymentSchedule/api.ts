@@ -29,6 +29,7 @@ export class PaymentSchedulesApi
     item: PaymentScheduleViewModel
   ): Promise<[PaymentScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
+    item.currency = "USD";
     return this._addItem(`${this.baseUrl}`, item);
   }
 
@@ -36,6 +37,7 @@ export class PaymentSchedulesApi
     item: PaymentScheduleViewModel
   ): Promise<[PaymentScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
+    item.currency = "USD";
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 
