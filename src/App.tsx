@@ -39,15 +39,12 @@ export const App: React.FC = () => {
   const userManager = React.useMemo(() => new UserManager(OidcSettings), []);
   React.useEffect(() => {
     userManager.events.addUserLoaded((user) => {
-      console.debug("user loaded called");
       setUser(user);
     });
     userManager.events.addSilentRenewError((error) => {
-      console.debug("silent renew error called");
       console.log(error);
     });
     userManager.events.addAccessTokenExpired(() => {
-      console.debug("access token expired called");
       userManager.signinSilent().then((user) => setUser(user));
     });
   }, [userManager]);
