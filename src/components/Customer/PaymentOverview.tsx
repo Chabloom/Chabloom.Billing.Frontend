@@ -55,6 +55,9 @@ export const PaymentOverview: React.FC<Props> = (props) => {
   const [accountPayments, setAccountPayments] = React.useState(
     [] as Array<PaymentViewModel>
   );
+  const [accountUsers, setAccountUsers] = React.useState(
+    [] as Array<AccountUserViewModel>
+  );
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -64,8 +67,8 @@ export const PaymentOverview: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getAccountPayments = async () => {
       setProcessing(true);
-      const paymentsApi = new PaymentsApi(undefined, props.account.id);
-      const [payments, err] = await paymentsApi.readItems();
+      const api = new PaymentsApi(props.user, props.account.id);
+      const [payments, err] = await api.readItems();
       if (payments) {
         const futurePayments = payments.filter(
           (x) => new Date(x.dueDate) > new Date()
@@ -77,7 +80,24 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       setProcessing(false);
     };
     getAccountPayments().then();
-  }, [props.account]);
+  }, [props.user, props.account]);
+
+  // Get all account users
+  React.useEffect(() => {
+    const getAccountUsers = async () => {
+      setProcessing(true);
+      const api = new AccountUsersApi(props.user, props.account.id);
+      const [users, err] = await api.readItems();
+      if (users && users.length !== 0) {
+        console.log(users);
+        setAccountUsers(users);
+      } else {
+        setError(err);
+      }
+      setProcessing(false);
+    };
+    getAccountUsers().then();
+  }, [props.user, props.account]);
 
   return (
     <Paper className={classes.paper}>
@@ -120,17 +140,20 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                     onClick={() => {
                       if (props.user && !props.user.expired) {
                         setProcessing(true);
-                        const model = {
-                          userId: props.user?.profile.sub,
-                        } as AccountUserViewModel;
-                        const api = new AccountUsersApi(
-                          props.user,
-                          props.account.id
-                        );
-                        api
-                          .deleteItem(model)
-                          .then()
-                          .finally(() => setProcessing(false));
+                        const userId = props.user.profile.sub;
+                        const accountUser = accountUsers
+                          .filter((x) => x.accountId === props.account.id)
+                          .find((x) => x.userId === userId);
+                        if (accountUser) {
+                          const api = new AccountUsersApi(
+                            props.user,
+                            props.account.id
+                          );
+                          api
+                            .deleteItem(accountUser)
+                            .then()
+                            .finally(() => setProcessing(false));
+                        }
                       }
                     }}
                   >
