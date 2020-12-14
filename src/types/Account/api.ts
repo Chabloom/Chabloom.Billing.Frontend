@@ -32,7 +32,9 @@ export class AccountsApi
   readItemReference(
     itemId: string
   ): Promise<[AccountViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/Reference/${itemId}`);
+    return this._readItem(
+      `${this.baseUrl}/Reference/${itemId}?tenantId=${this.tenantId}`
+    );
   }
 
   addItem(
