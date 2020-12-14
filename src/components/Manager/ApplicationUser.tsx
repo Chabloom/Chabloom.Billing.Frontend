@@ -23,7 +23,7 @@ export const ApplicationUser: React.FC<Props> = (props) => {
   const [api, setApi] = React.useState<ApplicationUsersApi>(
     new ApplicationUsersApi(props.user)
   );
-  const [title, setTitle] = React.useState("Application Users");
+  const [title, setTitle] = React.useState("Administrators");
 
   // Update the API
   React.useEffect(() => {
@@ -32,7 +32,7 @@ export const ApplicationUser: React.FC<Props> = (props) => {
 
   // Update the title
   React.useEffect(() => {
-    setTitle("Application Users");
+    setTitle("Administrators");
   }, []);
 
   return (

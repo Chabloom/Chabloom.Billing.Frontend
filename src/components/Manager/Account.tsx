@@ -46,7 +46,7 @@ export const Account: React.FC<Props> = (props) => {
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`Accounts for ${props.tenant.name}`);
+    setTitle(`${props.tenant.name} Accounts`);
   }, [props.tenant]);
 
   // Workaround for eslint issue on the useEffect call below

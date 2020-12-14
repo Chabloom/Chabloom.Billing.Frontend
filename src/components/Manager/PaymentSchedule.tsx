@@ -20,7 +20,7 @@ const columns: Array<ChabloomTableColumn> = [
   {
     title: "Amount",
     accessor: "amount",
-    type: "number",
+    type: "currency",
   },
   {
     title: "Day",
@@ -50,7 +50,7 @@ export const PaymentSchedule: React.FC<Props> = (props) => {
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`Payment Schedules for ${props.account.name}`);
+    setTitle(`${props.account.name} Payment Schedules`);
   }, [props.account]);
 
   return (

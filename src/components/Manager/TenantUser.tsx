@@ -24,7 +24,7 @@ export const TenantUser: React.FC<Props> = (props) => {
   const [api, setApi] = React.useState<TenantUsersApi>(
     new TenantUsersApi(props.user, props.tenant.id)
   );
-  const [title, setTitle] = React.useState("Tenant Users");
+  const [title, setTitle] = React.useState("Managers");
 
   // Update the API
   React.useEffect(() => {
@@ -35,7 +35,7 @@ export const TenantUser: React.FC<Props> = (props) => {
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`Tenant Users for ${props.tenant.name}`);
+    setTitle(`${props.tenant.name} Managers`);
   }, [props.tenant]);
 
   return (
