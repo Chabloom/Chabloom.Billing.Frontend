@@ -37,6 +37,8 @@ interface Props {
   user: User | undefined;
   account: AccountViewModel;
   allowTracking: boolean;
+  trackedAccounts: Array<AccountViewModel>;
+  setTrackedAccounts: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -123,7 +125,12 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                         );
                         api
                           .addItem(model)
-                          .then()
+                          .then(() => {
+                            props.setTrackedAccounts([
+                              ...props.trackedAccounts,
+                              props.account,
+                            ]);
+                          })
                           .finally(() => setProcessing(false));
                       }
                     }}
@@ -151,7 +158,18 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                           );
                           api
                             .deleteItem(accountUser)
-                            .then()
+                            .then(() => {
+                              props.setTrackedAccounts([
+                                ...props.trackedAccounts.slice(
+                                  0,
+                                  props.trackedAccounts.indexOf(props.account)
+                                ),
+                                ...props.trackedAccounts.slice(
+                                  props.trackedAccounts.indexOf(props.account) +
+                                    1
+                                ),
+                              ]);
+                            })
                             .finally(() => setProcessing(false));
                         }
                       }

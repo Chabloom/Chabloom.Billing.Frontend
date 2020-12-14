@@ -27,6 +27,8 @@ import { Status } from "../Status";
 
 interface Props {
   user: User | undefined;
+  trackedAccounts: Array<AccountViewModel>;
+  setTrackedAccounts: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
