@@ -4,12 +4,7 @@ import { User } from "oidc-client";
 
 import { Grid } from "@material-ui/core";
 
-import {
-  AccountsApi,
-  AccountViewModel,
-  PaymentsApi,
-  PaymentViewModel,
-} from "../../types";
+import { AccountsApi, AccountViewModel } from "../../types";
 
 import { PaymentOverview } from "./PaymentOverview";
 
@@ -19,7 +14,6 @@ interface Props {
 
 export const UpcomingPayments: React.FC<Props> = (props) => {
   const [accounts, setAccounts] = React.useState([] as Array<AccountViewModel>);
-  const [payments, setPayments] = React.useState([] as Array<PaymentViewModel>);
 
   // Get all accounts the user is authorized to view
   React.useEffect(() => {
@@ -33,43 +27,21 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
     getItems().then();
   }, [props.user]);
 
-  // Get all payments for all returned accounts
-  React.useEffect(() => {
-    const getItems = async () => {
-      const payments = [] as Array<PaymentViewModel>;
-      for (const account of accounts) {
-        const api = new PaymentsApi(props.user, account.id);
-        const [items, err] = await api.readItems();
-        if (items && !err) {
-          payments.push(...items);
-        }
-      }
-      setPayments(payments);
-    };
-    getItems().then();
-  }, [props.user, accounts]);
-
   if (!props.user) {
     return null;
   }
   return (
     <Grid container spacing={2}>
       {accounts.map((account) => {
-        const accountPayments = payments
-          .filter((x) => x.account === account.id)
-          .filter((x) => new Date(x.dueDate) > new Date());
-        if (accountPayments.length !== 0) {
-          return (
-            <Grid item xs={12}>
-              <PaymentOverview
-                account={account}
-                payments={accountPayments}
-                allowTracking={false}
-              />
-            </Grid>
-          );
-        }
-        return null;
+        return (
+          <Grid item xs={12}>
+            <PaymentOverview
+              {...props}
+              account={account}
+              allowTracking={false}
+            />
+          </Grid>
+        );
       })}
     </Grid>
   );
