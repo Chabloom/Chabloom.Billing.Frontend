@@ -71,6 +71,8 @@ export const QuickPayment: React.FC<Props> = (props) => {
   }, [props.user]);
 
   const getAccountPayments = async () => {
+    setAccount(undefined);
+    setError("");
     setProcessing(true);
     const selectedTenant = allTenants.find((x) => x.name === tenant);
     if (selectedTenant) {
