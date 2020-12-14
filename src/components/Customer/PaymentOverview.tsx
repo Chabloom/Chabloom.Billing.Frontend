@@ -89,8 +89,8 @@ export const PaymentOverview: React.FC<Props> = (props) => {
     const getAccountUsers = async () => {
       setProcessing(true);
       const api = new AccountUsersApi(props.user, props.account.id);
-      const [users, _] = await api.readItems();
-      if (users && users.length !== 0) {
+      const [users, err] = await api.readItems();
+      if (users && users.length !== 0 && !err) {
         setAccountUsers(users);
       }
       setProcessing(false);
