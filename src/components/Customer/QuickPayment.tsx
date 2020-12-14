@@ -133,7 +133,7 @@ export const QuickPayment: React.FC<Props> = (props) => {
               type="submit"
               disabled={processing}
             >
-              Get Bills
+              Search
             </Button>
           </form>
           <Status processing={processing} error={error} />
