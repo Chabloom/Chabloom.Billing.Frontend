@@ -1,37 +1,41 @@
 import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
+
+import { User } from "oidc-client";
 
 import {
   Backdrop,
   Button,
   ButtonGroup,
   Card,
+  CardActionArea,
+  CardActions,
   CardContent,
   CardHeader,
   createStyles,
   Grid,
-  InputAdornment,
-  TextField,
+  Hidden,
   Theme,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Cleave from "cleave.js/react";
-
 import {
   BillViewModel,
+  PaymentCardsApi,
+  PaymentCardViewModel,
   QuickTransactionApi,
   QuickTransactionViewModel,
+  TransactionsApi,
+  TransactionViewModel,
 } from "../../types";
 
 import { Status } from "../Status";
-
-import amex from "./images/amex.png";
-import discover from "./images/discover.png";
-import mastercard from "./images/mastercard.png";
-import visa from "./images/visa.png";
+import { SavedPaymentInfo } from "./SavedPaymentInfo";
+import { NewPaymentInfo } from "./NewPaymentInfo";
+import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
 interface Props {
+  user: User | undefined;
   payment: BillViewModel;
   selectedPayment: BillViewModel | undefined;
   setSelectedPayment: CallableFunction;
@@ -59,41 +63,82 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
-  const { handleSubmit, errors, control } = useForm({
-    mode: "onChange",
-  });
-
   // Initialize state variables
-  const [image, setImage] = React.useState("");
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
+  const [paymentCardId, setPaymentCardId] = React.useState("");
+  const [savedPayments, setSavedPayments] = React.useState<
+    Array<PaymentCardViewModel>
+  >([]);
 
-  const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
-
-  const onSubmit = () => {
-    const makeQuickTransaction = async (
-      quickTransaction: QuickTransactionViewModel
-    ) => {
-      setProcessing(true);
-      const api = new QuickTransactionApi();
-      const [item, err] = await api.addItem(quickTransaction);
-      if (!item || err) {
-        setError(err);
+  React.useEffect(() => {
+    var api = new PaymentCardsApi(props.user);
+    api.readItems().then(([ret, err]) => {
+      if (ret) {
+        setSavedPayments(ret);
+      } else {
+        console.log(err);
       }
-      setProcessing(false);
-    };
-    const quickTransaction = {
+    });
+  }, [props.user]);
+
+  const makeTransaction = async (paymentCardId: string) => {
+    setProcessing(true);
+    setError("");
+    const item = {
+      name: props.payment.name,
+      amount: props.payment.amount,
+      paymentCardId: paymentCardId,
+    } as TransactionViewModel;
+    const api = new TransactionsApi(props.user);
+    const [ret, err] = await api.addItem(item);
+    setProcessing(false);
+    if (ret) {
+      return ret.id;
+    } else {
+      setError(err);
+    }
+    return "";
+  };
+  const makeQuickTransaction = async (transactionId: string) => {
+    setProcessing(true);
+    setError("");
+    const item = {
       paymentId: props.payment.id,
-      transactionId: "C46CC466-6B9C-44B2-8DC7-C542A6EE80B9",
+      transactionId: transactionId,
     } as QuickTransactionViewModel;
-    makeQuickTransaction(quickTransaction).then();
+    const api = new QuickTransactionApi();
+    await api.addItem(item);
+    setProcessing(false);
+  };
+  const completeTransaction = async () => {
+    if (paymentCardId) {
+      const transactionId = await makeTransaction(paymentCardId);
+      if (transactionId) {
+        await makeQuickTransaction(transactionId);
+        props.setSelectedPayment(undefined);
+      }
+    }
   };
 
+  const getSavedPaymentCardLast4 = () => {
+    const savedPaymentCard = savedPayments.find((x) => x.id === paymentCardId);
+    if (savedPaymentCard) {
+      return savedPaymentCard.cardNumberLast4;
+    }
+    return "0000";
+  };
+
+  const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
+  const paymentDueDate = new Date(props.payment.dueDate);
+  const dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
+
   return (
-    <div>
+    <React.Fragment>
       <Backdrop
         className={classes.backdrop}
         open={props.selectedPayment === props.payment}
+        onClick={() => props.setSelectedPayment(undefined)}
       >
         <Grid
           container
@@ -102,205 +147,73 @@ export const MakeTransaction: React.FC<Props> = (props) => {
           justify="center"
           style={{ minHeight: "100vh" }}
         >
-          <Grid item xs={12} sm={6} md={4}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Card>
-                <CardHeader title={`Payment for ${props.payment.name}`} />
-                <CardContent>
-                  <Controller
-                    name="cardNumber"
-                    control={control}
-                    defaultValue=""
-                    as={
-                      <TextField
-                        className={classes.mt1}
-                        fullWidth
-                        required
-                        autoFocus
-                        label="Card number"
-                        inputMode="numeric"
-                        autoComplete="cc-number"
-                        error={!!errors.cardNumber}
-                        helperText={
-                          errors.cardNumber ? errors.cardNumber.message : ""
-                        }
-                        InputProps={{
-                          inputComponent: ({ inputRef, ...props }) => (
-                            <Cleave
-                              {...props}
-                              htmlRef={inputRef}
-                              options={{
-                                creditCard: true,
-                                creditCardStrictMode: true,
-                                onCreditCardTypeChanged: (type) => {
-                                  if (type === "amex") {
-                                    setImage(amex);
-                                  } else if (type === "discover") {
-                                    setImage(discover);
-                                  } else if (type === "mastercard") {
-                                    setImage(mastercard);
-                                  } else if (type === "visa") {
-                                    setImage(visa);
-                                  } else {
-                                    setImage("");
-                                  }
-                                },
-                              }}
-                            />
-                          ),
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              {image && (
-                                <img src={image} height="30" alt="issuer" />
-                              )}
-                            </InputAdornment>
-                          ),
+          <Grid item xs={12} sm={8} md={4}>
+            <Card onClick={(e) => e.stopPropagation()}>
+              <CardHeader title="Manage payment" />
+              <CardContent>
+                <Typography variant="h6">{props.payment.name}</Typography>
+                <Typography variant="body1">{dueDate}</Typography>
+                <Typography variant="body1">{paymentAmount}</Typography>
+                {paymentCardId === "" && (
+                  <SavedPaymentInfo
+                    {...props}
+                    paymentCardId={paymentCardId}
+                    setPaymentCardId={setPaymentCardId}
+                    savedPayments={savedPayments}
+                  />
+                )}
+                {paymentCardId === "new" && (
+                  <NewPaymentInfo
+                    {...props}
+                    paymentCardId={paymentCardId}
+                    setPaymentCardId={setPaymentCardId}
+                    savedPayments={savedPayments}
+                    setSavedPayments={setSavedPayments}
+                    setError={setError}
+                    setProcessing={setProcessing}
+                  />
+                )}
+                {paymentCardId !== "" && paymentCardId !== "new" && (
+                  <Typography variant="body1">{`Using payment method ending in ${getSavedPaymentCardLast4()}`}</Typography>
+                )}
+              </CardContent>
+              {paymentCardId !== "" && paymentCardId !== "new" && (
+                <CardActionArea>
+                  <CardActions>
+                    <ButtonGroup fullWidth>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => {
+                          completeTransaction().then();
                         }}
-                      />
-                    }
-                  />
-                  <Controller
-                    name="cardholderName"
-                    control={control}
-                    defaultValue=""
-                    as={
-                      <TextField
-                        className={classes.mt1}
-                        fullWidth
-                        required
-                        label="Name on card"
-                        autoComplete="cc-name"
-                        error={!!errors.cardholderName}
-                        helperText={
-                          errors.cardholderName
-                            ? errors.cardholderName.message
-                            : ""
-                        }
-                      />
-                    }
-                  />
-                  <Grid container className={classes.mt1}>
-                    <Grid item md={6} sm={12}>
-                      <Controller
-                        name="expirationMonth"
-                        control={control}
-                        defaultValue=""
-                        as={
-                          <TextField
-                            fullWidth
-                            required
-                            label="Expiration month (MM)"
-                            inputMode="numeric"
-                            autoComplete="cc-exp-month"
-                            error={!!errors.expirationMonth}
-                            helperText={
-                              errors.expirationMonth
-                                ? errors.expirationMonth.message
-                                : ""
-                            }
-                            InputProps={{
-                              inputComponent: ({ inputRef, ...props }) => (
-                                <Cleave
-                                  {...props}
-                                  htmlRef={inputRef}
-                                  options={{ blocks: [2], numericOnly: true }}
-                                />
-                              ),
-                            }}
-                          />
-                        }
-                      />
-                    </Grid>
-                    <Grid item md={6} sm={12}>
-                      <Controller
-                        name="expirationYear"
-                        control={control}
-                        defaultValue=""
-                        as={
-                          <TextField
-                            fullWidth
-                            required
-                            label="Expiration year (YY)"
-                            inputMode="numeric"
-                            autoComplete="cc-exp-year"
-                            error={!!errors.expirationYear}
-                            helperText={
-                              errors.expirationYear
-                                ? errors.expirationYear.message
-                                : ""
-                            }
-                            InputProps={{
-                              inputComponent: ({ inputRef, ...props }) => (
-                                <Cleave
-                                  {...props}
-                                  htmlRef={inputRef}
-                                  options={{ blocks: [2], numericOnly: true }}
-                                />
-                              ),
-                            }}
-                          />
-                        }
-                      />
-                    </Grid>
-                  </Grid>
-                  <Controller
-                    name="securityCode"
-                    control={control}
-                    defaultValue=""
-                    as={
-                      <TextField
-                        className={classes.mt1}
-                        fullWidth
-                        required
-                        label={`Security code (${
-                          image === amex ? 4 : 3
-                        } digits)`}
-                        inputMode="numeric"
-                        autoComplete="cc-csc"
-                        error={!!errors.securityCode}
-                        helperText={
-                          errors.securityCode ? errors.securityCode.message : ""
-                        }
-                        InputProps={{
-                          inputComponent: ({ inputRef, ...props }) => (
-                            <Cleave
-                              {...props}
-                              htmlRef={inputRef}
-                              options={{
-                                blocks: [image === amex ? 4 : 3],
-                                numericOnly: true,
-                              }}
-                            />
-                          ),
+                      >
+                        <CheckCircle className={classes.mr1} />
+                        <Hidden smDown implementation="css">
+                          Complete
+                        </Hidden>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => {
+                          setPaymentCardId("");
                         }}
-                      />
-                    }
-                  />
-                  <ButtonGroup className={classes.mt1} fullWidth>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      type="submit"
-                    >
-                      {`Pay ${paymentAmount}`}
-                    </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => props.setSelectedPayment(undefined)}
-                    >
-                      Cancel
-                    </Button>
-                  </ButtonGroup>
-                </CardContent>
-              </Card>
-            </form>
-            <Status processing={processing} error={error} />
+                      >
+                        <CancelOutlined className={classes.mr1} />
+                        <Hidden smDown implementation="css">
+                          Cancel
+                        </Hidden>
+                      </Button>
+                    </ButtonGroup>
+                  </CardActions>
+                </CardActionArea>
+              )}
+              <Status processing={processing} error={error} />
+            </Card>
           </Grid>
         </Grid>
       </Backdrop>
-    </div>
+    </React.Fragment>
   );
 };

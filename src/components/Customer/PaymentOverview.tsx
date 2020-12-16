@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const guidEmpty = "00000000-0000-0000-0000-000000000000";
+
 export const PaymentOverview: React.FC<Props> = (props) => {
   const [selectedPayment, setSelectedPayment] = React.useState<BillViewModel>();
   const [accountPayments, setAccountPayments] = React.useState(
@@ -97,6 +99,9 @@ export const PaymentOverview: React.FC<Props> = (props) => {
     };
     getAccountUsers().then();
   }, [props.user, props.account]);
+
+  const billComplete = (bill: BillViewModel) =>
+    bill.transactionId && bill.transactionId !== guidEmpty;
 
   return (
     <Paper className={classes.paper}>
@@ -192,12 +197,13 @@ export const PaymentOverview: React.FC<Props> = (props) => {
           accountPayments.map((payment) => {
             const paymentAmount = `$${payment.amount.toFixed(2)}`;
             const paymentDueDate = new Date(payment.dueDate);
-            let dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
-            if (payment.complete) {
+            let dueDate;
+            let paymentAction;
+            if (billComplete(payment)) {
               dueDate = "Paid";
-            }
-            let paymentAction = "";
-            if (!payment.complete) {
+              paymentAction = "";
+            } else {
+              dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
               paymentAction = "Make payment";
             }
             return (
@@ -212,7 +218,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                     <Tooltip title={paymentAction}>
                       <IconButton
                         onClick={() => {
-                          if (!payment.complete) {
+                          if (!billComplete(payment)) {
                             setSelectedPayment(
                               selectedPayment === undefined
                                 ? payment
@@ -221,14 +227,15 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                           }
                         }}
                       >
-                        {payment.complete && <CheckCircle />}
-                        {!payment.complete && <Payment />}
+                        {billComplete(payment) && <CheckCircle />}
+                        {!billComplete(payment) && <Payment />}
                       </IconButton>
                     </Tooltip>
                   </CardActions>
                 </Card>
-                {selectedPayment === payment && !payment.complete && (
+                {selectedPayment === payment && !billComplete(payment) && (
                   <MakeTransaction
+                    {...props}
                     payment={payment}
                     selectedPayment={selectedPayment}
                     setSelectedPayment={setSelectedPayment}
