@@ -1,6 +1,6 @@
-import { BaseApi, BaseApiType } from "../../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentCardViewModel } from "./model";
-import { ApplicationConfig } from "../../settings";
+import { ApplicationConfig } from "../settings";
 import { User } from "oidc-client";
 
 export class PaymentCardsApi
@@ -26,7 +26,7 @@ export class PaymentCardsApi
   addItem(
     item: PaymentCardViewModel
   ): Promise<[PaymentCardViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}/Demo`, item);
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(

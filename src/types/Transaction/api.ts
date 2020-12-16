@@ -1,6 +1,6 @@
-import { BaseApi, BaseApiType } from "../../apiBase";
+import { BaseApi, BaseApiType } from "../apiBase";
 import { TransactionViewModel } from "./model";
-import { ApplicationConfig } from "../../settings";
+import { ApplicationConfig } from "../settings";
 import { User } from "oidc-client";
 
 export class TransactionsApi
@@ -26,12 +26,14 @@ export class TransactionsApi
   addItem(
     item: TransactionViewModel
   ): Promise<[TransactionViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}/Demo`, item);
+    item.currency = "USD";
+    return this._addItem(`${this.baseUrl}`, item);
   }
 
   editItem(
     item: TransactionViewModel
   ): Promise<[TransactionViewModel | undefined, string]> {
+    item.currency = "USD";
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 

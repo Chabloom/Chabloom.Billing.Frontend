@@ -1,7 +1,7 @@
-import { BaseViewModel } from "../../modelBase";
+import { BaseViewModel } from "../modelBase";
 
 export interface PaymentCardViewModel extends BaseViewModel {
-  id: string;
+  readonly id: string;
   name: string;
   cardNumber: string;
   cardNumberLast4: string;
