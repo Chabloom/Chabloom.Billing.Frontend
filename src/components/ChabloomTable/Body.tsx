@@ -1,12 +1,6 @@
 import * as React from "react";
 
-import {
-  Checkbox,
-  TableBody,
-  TableCell,
-  TableRow,
-  TextField,
-} from "@material-ui/core";
+import { Checkbox, TableBody, TableCell, TableRow, TextField } from "@material-ui/core";
 
 import { AccountViewModel, BaseViewModel } from "../../types";
 

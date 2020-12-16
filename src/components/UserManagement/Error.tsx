@@ -1,12 +1,6 @@
 import * as React from "react";
 
-import {
-  createStyles,
-  Grid,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { createStyles, Grid, Paper, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { ApplicationConfig, ErrorViewModel } from "../../types";
@@ -72,9 +66,7 @@ export const Error: React.FC = () => {
             <Typography variant="h5">Error</Typography>
             <Typography>{viewModel?.error}</Typography>
             <Typography>{viewModel?.errorDescription}</Typography>
-            <Typography variant="subtitle2">
-              Please email this error to support@chabloom.com
-            </Typography>
+            <Typography variant="subtitle2">Please email this error to support@chabloom.com</Typography>
             <Status processing={processing} error={error} />
           </Paper>
         </Grid>

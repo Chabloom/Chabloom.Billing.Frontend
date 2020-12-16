@@ -67,9 +67,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
   const [paymentCardId, setPaymentCardId] = React.useState("");
-  const [savedPayments, setSavedPayments] = React.useState<
-    Array<PaymentCardViewModel>
-  >([]);
+  const [savedPayments, setSavedPayments] = React.useState<Array<PaymentCardViewModel>>([]);
 
   React.useEffect(() => {
     var api = new PaymentCardsApi(props.user);
@@ -140,13 +138,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
         open={props.selectedPayment === props.payment}
         onClick={() => props.setSelectedPayment(undefined)}
       >
-        <Grid
-          container
-          className={classes.paper}
-          alignItems="center"
-          justify="center"
-          style={{ minHeight: "100vh" }}
-        >
+        <Grid container className={classes.paper} alignItems="center" justify="center" style={{ minHeight: "100vh" }}>
           <Grid item xs={12} sm={8} md={4}>
             <Card onClick={(e) => e.stopPropagation()}>
               <CardHeader title="Manage payment" />

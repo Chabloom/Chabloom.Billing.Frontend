@@ -3,25 +3,9 @@ import { NavLink } from "react-router-dom";
 
 import { User } from "oidc-client";
 
-import {
-  ButtonGroup,
-  IconButton,
-  lighten,
-  LinearProgress,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
+import { ButtonGroup, IconButton, lighten, LinearProgress, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Cancel,
-  Delete,
-  Edit,
-  FilterList,
-  Receipt,
-  Save,
-  Schedule,
-} from "@material-ui/icons";
+import { Cancel, Delete, Edit, FilterList, Receipt, Save, Schedule } from "@material-ui/icons";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
 import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
@@ -115,10 +99,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
     props.setProcessing(true);
     const err = await props.api.deleteItem(props.editItem);
     if (!err) {
-      props.setData([
-        ...props.data.slice(0, props.selectedIndex),
-        ...props.data.slice(props.selectedIndex + 1),
-      ]);
+      props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
       props.setSelectedIndex(-1);
       props.setDeleteIndex(-1);
     } else {
@@ -218,9 +199,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
           )}
           {props.methods.includes("delete") && (
             <Tooltip title="Delete account">
-              <IconButton
-                onClick={() => props.setDeleteIndex(props.selectedIndex)}
-              >
+              <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}>
                 <Delete />
               </IconButton>
             </Tooltip>
@@ -243,27 +222,13 @@ export const ChabloomTableHeading: React.FC<Props> = (props) => {
 
   return (
     <div>
-      <Toolbar
-        className={
-          props.selectedIndex === -1 ? classes.root : classes.highlight
-        }
-      >
+      <Toolbar className={props.selectedIndex === -1 ? classes.root : classes.highlight}>
         {props.selectedIndex === -1 ? (
-          <Typography
-            className={classes.title}
-            variant="h6"
-            id="tableTitle"
-            component="div"
-          >
+          <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
             {props.title}
           </Typography>
         ) : (
-          <Typography
-            className={classes.title}
-            color="inherit"
-            variant="subtitle1"
-            component="div"
-          >
+          <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
             1 selected
           </Typography>
         )}

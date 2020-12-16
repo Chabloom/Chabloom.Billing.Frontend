@@ -3,9 +3,7 @@ import { TransactionViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
 import { User } from "oidc-client";
 
-export class TransactionsApi
-  extends BaseApi<TransactionViewModel>
-  implements BaseApiType<TransactionViewModel> {
+export class TransactionsApi extends BaseApi<TransactionViewModel> implements BaseApiType<TransactionViewModel> {
   baseUrl: string;
 
   constructor(user: User | undefined) {
@@ -17,22 +15,16 @@ export class TransactionsApi
     return this._readItems(`${this.baseUrl}`);
   }
 
-  readItem(
-    itemId: string
-  ): Promise<[TransactionViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[TransactionViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: TransactionViewModel
-  ): Promise<[TransactionViewModel | undefined, string]> {
+  addItem(item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
     item.currency = "USD";
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: TransactionViewModel
-  ): Promise<[TransactionViewModel | undefined, string]> {
+  editItem(item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
     item.currency = "USD";
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }

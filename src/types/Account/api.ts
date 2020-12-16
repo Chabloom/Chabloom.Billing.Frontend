@@ -3,9 +3,7 @@ import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountViewModel } from "./model";
 
-export class AccountsApi
-  extends BaseApi<AccountViewModel>
-  implements BaseApiType<AccountViewModel> {
+export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiType<AccountViewModel> {
   baseUrl: string;
   tenantId: string;
 
@@ -19,9 +17,7 @@ export class AccountsApi
     return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`);
   }
 
-  readItemsAuthorized(): Promise<
-    [Array<AccountViewModel> | undefined, string]
-  > {
+  readItemsAuthorized(): Promise<[Array<AccountViewModel> | undefined, string]> {
     return this._readItems(`${this.baseUrl}/Authorized`);
   }
 
@@ -29,24 +25,16 @@ export class AccountsApi
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  readItemReference(
-    itemId: string
-  ): Promise<[AccountViewModel | undefined, string]> {
-    return this._readItem(
-      `${this.baseUrl}/Reference/${itemId}?tenantId=${this.tenantId}`
-    );
+  readItemReference(itemId: string): Promise<[AccountViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/Reference/${itemId}?tenantId=${this.tenantId}`);
   }
 
-  addItem(
-    item: AccountViewModel
-  ): Promise<[AccountViewModel | undefined, string]> {
+  addItem(item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
     item.tenantId = this.tenantId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: AccountViewModel
-  ): Promise<[AccountViewModel | undefined, string]> {
+  editItem(item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
     item.tenantId = this.tenantId;
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }

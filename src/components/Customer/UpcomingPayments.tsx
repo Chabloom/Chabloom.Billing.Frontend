@@ -23,11 +23,7 @@ export const UpcomingPayments: React.FC<Props> = (props) => {
       {props.trackedAccounts.map((account) => {
         return (
           <Grid item xs={12}>
-            <PaymentOverview
-              {...props}
-              account={account}
-              allowTracking={false}
-            />
+            <PaymentOverview {...props} account={account} allowTracking={false} />
           </Grid>
         );
       })}

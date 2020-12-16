@@ -3,9 +3,7 @@ import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { BillViewModel } from "./model";
 
-export class BillsApi
-  extends BaseApi<BillViewModel>
-  implements BaseApiType<BillViewModel> {
+export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<BillViewModel> {
   baseUrl: string;
   accountId: string;
 

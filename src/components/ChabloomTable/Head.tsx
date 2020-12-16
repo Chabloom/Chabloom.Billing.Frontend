@@ -1,12 +1,6 @@
 import * as React from "react";
 
-import {
-  Fab,
-  TableCell,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-} from "@material-ui/core";
+import { Fab, TableCell, TableHead, TableRow, TableSortLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 
@@ -55,14 +49,10 @@ export const ChabloomTableHead: React.FC<Props> = (props) => {
     setOrderBy(accessor);
     setDirection(direction === "asc" ? "desc" : "asc");
     if (direction === "desc") {
-      const sortedData = props.data
-        .sort((a, b) => a[accessor].localeCompare(b[accessor]))
-        .reverse();
+      const sortedData = props.data.sort((a, b) => a[accessor].localeCompare(b[accessor])).reverse();
       props.setData([...sortedData]);
     } else {
-      const sortedData = props.data.sort((a, b) =>
-        a[accessor].localeCompare(b[accessor])
-      );
+      const sortedData = props.data.sort((a, b) => a[accessor].localeCompare(b[accessor]));
       props.setData([...sortedData]);
     }
   };
@@ -105,9 +95,7 @@ export const ChabloomTableHead: React.FC<Props> = (props) => {
               {column.title}
               {orderBy === column.accessor ? (
                 <span className={classes.visuallyHidden}>
-                  {direction === "desc"
-                    ? "sorted descending"
-                    : "sorted ascending"}
+                  {direction === "desc" ? "sorted descending" : "sorted ascending"}
                 </span>
               ) : null}
             </TableSortLabel>

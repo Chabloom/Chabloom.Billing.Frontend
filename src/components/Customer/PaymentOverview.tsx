@@ -15,20 +15,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  AddCircle,
-  CheckCircle,
-  Payment,
-  RemoveCircle,
-} from "@material-ui/icons";
+import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icons";
 
-import {
-  AccountUsersApi,
-  AccountUserViewModel,
-  AccountViewModel,
-  BillsApi,
-  BillViewModel,
-} from "../../types";
+import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../types";
 
 import { MakeTransaction } from "./MakeTransaction";
 import { Status } from "../Status";
@@ -53,12 +42,8 @@ const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
 export const PaymentOverview: React.FC<Props> = (props) => {
   const [selectedPayment, setSelectedPayment] = React.useState<BillViewModel>();
-  const [accountPayments, setAccountPayments] = React.useState(
-    [] as Array<BillViewModel>
-  );
-  const [accountUsers, setAccountUsers] = React.useState(
-    [] as Array<AccountUserViewModel>
-  );
+  const [accountPayments, setAccountPayments] = React.useState([] as Array<BillViewModel>);
+  const [accountUsers, setAccountUsers] = React.useState([] as Array<AccountUserViewModel>);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -73,10 +58,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       if (payments) {
         const futurePayments = payments
           .filter((x) => new Date(x.dueDate) > new Date())
-          .sort(
-            (a, b) =>
-              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
-          );
+          .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
         setAccountPayments(futurePayments);
       } else {
         setError(err);
@@ -100,8 +82,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
     getAccountUsers().then();
   }, [props.user, props.account]);
 
-  const billComplete = (bill: BillViewModel) =>
-    bill.transactionId && bill.transactionId !== guidEmpty;
+  const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 
   return (
     <Paper className={classes.paper}>
@@ -121,17 +102,11 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                         const model = {
                           userId: props.user?.profile.sub,
                         } as AccountUserViewModel;
-                        const api = new AccountUsersApi(
-                          props.user,
-                          props.account.id
-                        );
+                        const api = new AccountUsersApi(props.user, props.account.id);
                         api
                           .addItem(model)
                           .then(() => {
-                            props.setTrackedAccounts([
-                              ...props.trackedAccounts,
-                              props.account,
-                            ]);
+                            props.setTrackedAccounts([...props.trackedAccounts, props.account]);
                           })
                           .finally(() => setProcessing(false));
                       }
@@ -154,22 +129,13 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                           .filter((x) => x.accountId === props.account.id)
                           .find((x) => x.userId === userId);
                         if (accountUser) {
-                          const api = new AccountUsersApi(
-                            props.user,
-                            props.account.id
-                          );
+                          const api = new AccountUsersApi(props.user, props.account.id);
                           api
                             .deleteItem(accountUser)
                             .then(() => {
                               props.setTrackedAccounts([
-                                ...props.trackedAccounts.slice(
-                                  0,
-                                  props.trackedAccounts.indexOf(props.account)
-                                ),
-                                ...props.trackedAccounts.slice(
-                                  props.trackedAccounts.indexOf(props.account) +
-                                    1
-                                ),
+                                ...props.trackedAccounts.slice(0, props.trackedAccounts.indexOf(props.account)),
+                                ...props.trackedAccounts.slice(props.trackedAccounts.indexOf(props.account) + 1),
                               ]);
                             })
                             .finally(() => setProcessing(false));
@@ -219,11 +185,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                       <IconButton
                         onClick={() => {
                           if (!billComplete(payment)) {
-                            setSelectedPayment(
-                              selectedPayment === undefined
-                                ? payment
-                                : undefined
-                            );
+                            setSelectedPayment(selectedPayment === undefined ? payment : undefined);
                           }
                         }}
                       >

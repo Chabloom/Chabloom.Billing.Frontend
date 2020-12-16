@@ -21,9 +21,7 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const TenantUser: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<TenantUsersApi>(
-    new TenantUsersApi(props.user, props.tenant.id)
-  );
+  const [api, setApi] = React.useState<TenantUsersApi>(new TenantUsersApi(props.user, props.tenant.id));
   const [title, setTitle] = React.useState("Managers");
 
   // Update the API

@@ -31,9 +31,7 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const Bill: React.FC<Props> = (props) => {
   // Initialize state variables
-  const [api, setApi] = React.useState<BillsApi>(
-    new BillsApi(props.user, props.account.id as string)
-  );
+  const [api, setApi] = React.useState<BillsApi>(new BillsApi(props.user, props.account.id as string));
   const [title, setTitle] = React.useState("Bills");
 
   // Update the API

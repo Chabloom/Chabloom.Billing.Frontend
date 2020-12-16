@@ -35,9 +35,7 @@ export const TenantSelection: React.FC<Props> = (props) => {
     <Hidden smDown implementation="css">
       <FormGroup row>
         <ButtonGroup ref={anchorRef}>
-          <Button>
-            {props.selectedTenant ? props.selectedTenant.name : "Select Tenant"}
-          </Button>
+          <Button>{props.selectedTenant ? props.selectedTenant.name : "Select Tenant"}</Button>
           <Button
             disabled={props.authorizedTenants.length === 0}
             ref={anchorRef}
@@ -60,8 +58,7 @@ export const TenantSelection: React.FC<Props> = (props) => {
             <Grow
               {...TransitionProps}
               style={{
-                transformOrigin:
-                  placement === "bottom" ? "center top" : "center bottom",
+                transformOrigin: placement === "bottom" ? "center top" : "center bottom",
               }}
             >
               <Paper>

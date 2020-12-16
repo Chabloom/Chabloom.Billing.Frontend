@@ -3,9 +3,7 @@ import { PaymentCardViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
 import { User } from "oidc-client";
 
-export class PaymentCardsApi
-  extends BaseApi<PaymentCardViewModel>
-  implements BaseApiType<PaymentCardViewModel> {
+export class PaymentCardsApi extends BaseApi<PaymentCardViewModel> implements BaseApiType<PaymentCardViewModel> {
   baseUrl: string;
 
   constructor(user: User | undefined) {
@@ -17,21 +15,15 @@ export class PaymentCardsApi
     return this._readItems(`${this.baseUrl}`);
   }
 
-  readItem(
-    itemId: string
-  ): Promise<[PaymentCardViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[PaymentCardViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: PaymentCardViewModel
-  ): Promise<[PaymentCardViewModel | undefined, string]> {
+  addItem(item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: PaymentCardViewModel
-  ): Promise<[PaymentCardViewModel | undefined, string]> {
+  editItem(item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 

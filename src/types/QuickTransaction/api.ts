@@ -16,21 +16,15 @@ export class QuickTransactionApi
     throw new Error("Not implemented");
   }
 
-  readItem(
-    itemId: string
-  ): Promise<[QuickTransactionViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[QuickTransactionViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  addItem(
-    item: QuickTransactionViewModel
-  ): Promise<[QuickTransactionViewModel | undefined, string]> {
+  addItem(item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
     return this._addItem(`${this.baseUrl}`, item, false);
   }
 
-  editItem(
-    item: QuickTransactionViewModel
-  ): Promise<[QuickTransactionViewModel | undefined, string]> {
+  editItem(item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 

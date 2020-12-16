@@ -3,29 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { User, UserManager } from "oidc-client";
 
-import {
-  AccountViewModel,
-  ApplicationUsersApi,
-  TenantsApi,
-  TenantViewModel,
-} from "../types";
+import { AccountViewModel, ApplicationUsersApi, TenantsApi, TenantViewModel } from "../types";
 
-import {
-  Error,
-  Register,
-  SignIn,
-  SignInCallback,
-  SignOut,
-  SignOutCallback,
-} from "./UserManagement";
-import {
-  Account,
-  ApplicationUser,
-  Bill,
-  BillSchedule,
-  Tenant,
-  TenantUser,
-} from "./Manager";
+import { Error, Register, SignIn, SignInCallback, SignOut, SignOutCallback } from "./UserManagement";
+import { Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser } from "./Manager";
 import { Navigation } from "./Navigation";
 
 import { Home } from "./Home";
@@ -38,13 +19,9 @@ interface Props {
 }
 
 export const Routes: React.FC<Props> = (props) => {
-  const [authorizedTenants, setAuthorizedTenants] = React.useState<
-    Array<TenantViewModel>
-  >([]);
+  const [authorizedTenants, setAuthorizedTenants] = React.useState<Array<TenantViewModel>>([]);
   const [selectedTenant, setSelectedTenant] = React.useState<TenantViewModel>();
-  const [userLevel, setUserLevel] = React.useState<
-    "admin" | "manager" | undefined
-  >();
+  const [userLevel, setUserLevel] = React.useState<"admin" | "manager" | undefined>();
   const [account, setAccount] = React.useState<AccountViewModel>();
   const [admin, setAdmin] = React.useState(false);
   const [manager, setManager] = React.useState(false);
@@ -77,9 +54,7 @@ export const Routes: React.FC<Props> = (props) => {
         return;
       }
       const applicationUsersApi = new ApplicationUsersApi(props.user);
-      const [applicationUser, err] = await applicationUsersApi.readItem(
-        props.user.profile.sub
-      );
+      const [applicationUser, err] = await applicationUsersApi.readItem(props.user.profile.sub);
       if (applicationUser && !err) {
         setUserLevel("admin");
         return;
@@ -148,11 +123,7 @@ export const Routes: React.FC<Props> = (props) => {
           </Route>
           {selectedTenant && (
             <Route path="/accounts">
-              <Account
-                {...props}
-                tenant={selectedTenant}
-                setAccount={setAccount}
-              />
+              <Account {...props} tenant={selectedTenant} setAccount={setAccount} />
             </Route>
           )}
           {account && (

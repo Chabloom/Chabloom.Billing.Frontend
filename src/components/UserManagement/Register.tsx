@@ -1,15 +1,6 @@
 import * as React from "react";
 
-import {
-  Button,
-  createStyles,
-  FormGroup,
-  Grid,
-  Paper,
-  TextField,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { ApplicationConfig, RegisterViewModel } from "../../types";
@@ -70,24 +61,19 @@ export const Register: React.FC = () => {
                   password: password1,
                   returnUrl: returnUrl,
                 } as RegisterViewModel;
-                fetch(
-                  `${ApplicationConfig.accountsApiPublicAddress}/api/register`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(data),
-                  }
-                )
+                fetch(`${ApplicationConfig.accountsApiPublicAddress}/api/register`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                  body: JSON.stringify(data),
+                })
                   .then(async (value) => {
                     if (value.status === 400) {
                       setError(await value.text());
                     } else if (value.status === 200 && returnUrl) {
-                      window.location.replace(
-                        `/signIn${window.location.search}`
-                      );
+                      window.location.replace(`/signIn${window.location.search}`);
                     }
                   })
                   .catch((reason) => {

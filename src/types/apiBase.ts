@@ -20,10 +20,7 @@ export class BaseApi<T extends BaseViewModel> {
     this.user = user;
   }
 
-  _readItems = async (
-    url: string,
-    isAuthenticated: boolean = true
-  ): Promise<[Array<T> | undefined, string]> => {
+  _readItems = async (url: string, isAuthenticated: boolean = true): Promise<[Array<T> | undefined, string]> => {
     try {
       let response: Response;
       if (isAuthenticated) {
@@ -53,10 +50,7 @@ export class BaseApi<T extends BaseViewModel> {
     }
   };
 
-  _readItem = async (
-    url: string,
-    isAuthenticated: boolean = true
-  ): Promise<[T | undefined, string]> => {
+  _readItem = async (url: string, isAuthenticated: boolean = true): Promise<[T | undefined, string]> => {
     try {
       let response: Response;
       if (isAuthenticated) {
@@ -86,11 +80,7 @@ export class BaseApi<T extends BaseViewModel> {
     }
   };
 
-  _addItem = async (
-    url: string,
-    item: T,
-    isAuthenticated: boolean = true
-  ): Promise<[T | undefined, string]> => {
+  _addItem = async (url: string, item: T, isAuthenticated: boolean = true): Promise<[T | undefined, string]> => {
     try {
       let response: Response;
       const headers = new Headers();
@@ -124,11 +114,7 @@ export class BaseApi<T extends BaseViewModel> {
     }
   };
 
-  _editItem = async (
-    url: string,
-    item: T,
-    isAuthenticated: boolean = true
-  ): Promise<[T | undefined, string]> => {
+  _editItem = async (url: string, item: T, isAuthenticated: boolean = true): Promise<[T | undefined, string]> => {
     try {
       let response: Response;
       const headers = new Headers();
@@ -162,10 +148,7 @@ export class BaseApi<T extends BaseViewModel> {
     }
   };
 
-  _deleteItem = async (
-    url: string,
-    isAuthenticated: boolean = true
-  ): Promise<string | undefined> => {
+  _deleteItem = async (url: string, isAuthenticated: boolean = true): Promise<string | undefined> => {
     try {
       let response: Response;
       if (isAuthenticated) {

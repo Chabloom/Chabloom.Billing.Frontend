@@ -65,17 +65,14 @@ export const SignIn: React.FC = () => {
                   remember: remember,
                   returnUrl: returnUrl,
                 } as SignInViewModel;
-                fetch(
-                  `${ApplicationConfig.accountsApiPublicAddress}/api/signIn`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    credentials: "include",
-                    body: JSON.stringify(data),
-                  }
-                )
+                fetch(`${ApplicationConfig.accountsApiPublicAddress}/api/signIn`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                  body: JSON.stringify(data),
+                })
                   .then((value) => {
                     if (value.status === 401) {
                       setError("Invalid username or password.");
@@ -121,10 +118,7 @@ export const SignIn: React.FC = () => {
                 />
               </FormGroup>
               <Typography className={classes.mt1} variant="body1">
-                No account?{" "}
-                <Link to={`/register${window.location.search}`}>
-                  Create one!
-                </Link>
+                No account? <Link to={`/register${window.location.search}`}>Create one!</Link>
               </Typography>
               <Button
                 fullWidth

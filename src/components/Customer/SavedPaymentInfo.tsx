@@ -2,15 +2,7 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import {
-  Button,
-  ButtonGroup,
-  createStyles,
-  Hidden,
-  InputLabel,
-  Select,
-  Theme,
-} from "@material-ui/core";
+import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, CheckCircle } from "@material-ui/icons";
 
@@ -61,11 +53,7 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
       >
         <option value="" />
         {props.savedPayments.map((payment) => {
-          return (
-            <option
-              value={payment.id}
-            >{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>
-          );
+          return <option value={payment.id}>{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>;
         })}
       </Select>
       <ButtonGroup className={classes.mt1} fullWidth>

@@ -18,14 +18,7 @@ import {
   Theme,
   Toolbar,
 } from "@material-ui/core";
-import {
-  AccountCircle,
-  Business,
-  Group,
-  Home,
-  Receipt,
-  Schedule,
-} from "@material-ui/icons";
+import { AccountCircle, Business, Group, Home, Receipt, Schedule } from "@material-ui/icons";
 
 import { AccountViewModel, TenantViewModel } from "../../types";
 
@@ -132,12 +125,7 @@ export const Navigation: React.FC<Props> = (props) => {
                     <Divider />
                     <List>
                       {props.selectedTenant && (
-                        <ListItem
-                          button
-                          key="accounts"
-                          component={NavLink}
-                          to="/accounts"
-                        >
+                        <ListItem button key="accounts" component={NavLink} to="/accounts">
                           <ListItemIcon>
                             <AccountCircle />
                           </ListItemIcon>
@@ -145,12 +133,7 @@ export const Navigation: React.FC<Props> = (props) => {
                         </ListItem>
                       )}
                       {props.account && (
-                        <ListItem
-                          button
-                          key="bills"
-                          component={NavLink}
-                          to="/bills"
-                        >
+                        <ListItem button key="bills" component={NavLink} to="/bills">
                           <ListItemIcon>
                             <Receipt />
                           </ListItemIcon>
@@ -158,12 +141,7 @@ export const Navigation: React.FC<Props> = (props) => {
                         </ListItem>
                       )}
                       {props.account && (
-                        <ListItem
-                          button
-                          key="billSchedules"
-                          component={NavLink}
-                          to="/billSchedules"
-                        >
+                        <ListItem button key="billSchedules" component={NavLink} to="/billSchedules">
                           <ListItemIcon>
                             <Schedule />
                           </ListItemIcon>
@@ -177,12 +155,7 @@ export const Navigation: React.FC<Props> = (props) => {
                   <div>
                     <Divider />
                     <List>
-                      <ListItem
-                        button
-                        key="managers"
-                        component={NavLink}
-                        to="/managers"
-                      >
+                      <ListItem button key="managers" component={NavLink} to="/managers">
                         <ListItemIcon>
                           <Group />
                         </ListItemIcon>
@@ -195,12 +168,7 @@ export const Navigation: React.FC<Props> = (props) => {
                   <div>
                     <Divider />
                     <List>
-                      <ListItem
-                        button
-                        key="administrators"
-                        component={NavLink}
-                        to="/administrators"
-                      >
+                      <ListItem button key="administrators" component={NavLink} to="/administrators">
                         <ListItemIcon>
                           <Group />
                         </ListItemIcon>
@@ -213,12 +181,7 @@ export const Navigation: React.FC<Props> = (props) => {
                   <div>
                     <Divider />
                     <List>
-                      <ListItem
-                        button
-                        key="tenants"
-                        component={NavLink}
-                        to="/tenants"
-                      >
+                      <ListItem button key="tenants" component={NavLink} to="/tenants">
                         <ListItemIcon>
                           <Business />
                         </ListItemIcon>

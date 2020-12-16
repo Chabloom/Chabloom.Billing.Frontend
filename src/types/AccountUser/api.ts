@@ -3,9 +3,7 @@ import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountUserViewModel } from "./model";
 
-export class AccountUsersApi
-  extends BaseApi<AccountUserViewModel>
-  implements BaseApiType<AccountUserViewModel> {
+export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements BaseApiType<AccountUserViewModel> {
   baseUrl: string;
   accountId: string;
 
@@ -19,22 +17,16 @@ export class AccountUsersApi
     return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
   }
 
-  readItem(
-    itemId: string
-  ): Promise<[AccountUserViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[AccountUserViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: AccountUserViewModel
-  ): Promise<[AccountUserViewModel | undefined, string]> {
+  addItem(item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
     item.accountId = this.accountId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: AccountUserViewModel
-  ): Promise<[AccountUserViewModel | undefined, string]> {
+  editItem(item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
     item.accountId = this.accountId;
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }

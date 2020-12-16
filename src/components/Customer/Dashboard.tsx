@@ -13,9 +13,7 @@ interface Props {
 }
 
 export const Dashboard: React.FC<Props> = (props) => {
-  const [trackedAccounts, setTrackedAccounts] = React.useState(
-    [] as Array<AccountViewModel>
-  );
+  const [trackedAccounts, setTrackedAccounts] = React.useState([] as Array<AccountViewModel>);
 
   // Get all accounts the user is tracking
   React.useEffect(() => {
@@ -32,18 +30,10 @@ export const Dashboard: React.FC<Props> = (props) => {
   return (
     <Grid container spacing={3} justify="center">
       <Grid item md={6} xs={12}>
-        <QuickPayment
-          {...props}
-          trackedAccounts={trackedAccounts}
-          setTrackedAccounts={setTrackedAccounts}
-        />
+        <QuickPayment {...props} trackedAccounts={trackedAccounts} setTrackedAccounts={setTrackedAccounts} />
       </Grid>
       <Grid item md={6} xs={12}>
-        <UpcomingPayments
-          {...props}
-          trackedAccounts={trackedAccounts}
-          setTrackedAccounts={setTrackedAccounts}
-        />
+        <UpcomingPayments {...props} trackedAccounts={trackedAccounts} setTrackedAccounts={setTrackedAccounts} />
       </Grid>
     </Grid>
   );

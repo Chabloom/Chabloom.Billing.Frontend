@@ -2,24 +2,10 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import {
-  Button,
-  createStyles,
-  FormGroup,
-  Grid,
-  Paper,
-  TextField,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  AccountsApi,
-  AccountViewModel,
-  TenantsApi,
-  TenantViewModel,
-} from "../../types";
+import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
 
 import { PaymentOverview } from "./PaymentOverview";
 import { Autocomplete } from "@material-ui/lab";
@@ -44,9 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const QuickPayment: React.FC<Props> = (props) => {
   const [account, setAccount] = React.useState<AccountViewModel>();
-  const [allTenants, setAllTenants] = React.useState<Array<TenantViewModel>>(
-    []
-  );
+  const [allTenants, setAllTenants] = React.useState<Array<TenantViewModel>>([]);
   const [tenant, setTenant] = React.useState("");
   const [accountNumber, setAccountNumber] = React.useState("");
   const [processing, setProcessing] = React.useState(false);

@@ -4,16 +4,7 @@ import { User } from "oidc-client";
 
 import { Controller, useForm } from "react-hook-form";
 
-import {
-  Button,
-  ButtonGroup,
-  createStyles,
-  Grid,
-  Hidden,
-  InputAdornment,
-  TextField,
-  Theme,
-} from "@material-ui/core";
+import { Button, ButtonGroup, createStyles, Grid, Hidden, InputAdornment, TextField, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
@@ -154,9 +145,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               label="Name on card"
               autoComplete="cc-name"
               error={!!errors.cardholderName}
-              helperText={
-                errors.cardholderName ? errors.cardholderName.message : ""
-              }
+              helperText={errors.cardholderName ? errors.cardholderName.message : ""}
             />
           }
         />
@@ -174,16 +163,10 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                   inputMode="numeric"
                   autoComplete="cc-exp-month"
                   error={!!errors.expirationMonth}
-                  helperText={
-                    errors.expirationMonth ? errors.expirationMonth.message : ""
-                  }
+                  helperText={errors.expirationMonth ? errors.expirationMonth.message : ""}
                   InputProps={{
                     inputComponent: ({ inputRef, ...props }) => (
-                      <Cleave
-                        {...props}
-                        htmlRef={inputRef}
-                        options={{ blocks: [2], numericOnly: true }}
-                      />
+                      <Cleave {...props} htmlRef={inputRef} options={{ blocks: [2], numericOnly: true }} />
                     ),
                   }}
                 />
@@ -203,16 +186,10 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                   inputMode="numeric"
                   autoComplete="cc-exp-year"
                   error={!!errors.expirationYear}
-                  helperText={
-                    errors.expirationYear ? errors.expirationYear.message : ""
-                  }
+                  helperText={errors.expirationYear ? errors.expirationYear.message : ""}
                   InputProps={{
                     inputComponent: ({ inputRef, ...props }) => (
-                      <Cleave
-                        {...props}
-                        htmlRef={inputRef}
-                        options={{ blocks: [2], numericOnly: true }}
-                      />
+                      <Cleave {...props} htmlRef={inputRef} options={{ blocks: [2], numericOnly: true }} />
                     ),
                   }}
                 />
@@ -233,9 +210,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               inputMode="numeric"
               autoComplete="cc-csc"
               error={!!errors.securityCode}
-              helperText={
-                errors.securityCode ? errors.securityCode.message : ""
-              }
+              helperText={errors.securityCode ? errors.securityCode.message : ""}
               InputProps={{
                 inputComponent: ({ inputRef, ...props }) => (
                   <Cleave

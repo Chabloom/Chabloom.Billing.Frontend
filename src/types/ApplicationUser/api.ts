@@ -17,21 +17,15 @@ export class ApplicationUsersApi
     return this._readItems(`${this.baseUrl}`);
   }
 
-  readItem(
-    itemId: string
-  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+  readItem(itemId: string): Promise<[ApplicationUserViewModel | undefined, string]> {
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: ApplicationUserViewModel
-  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+  addItem(item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: ApplicationUserViewModel
-  ): Promise<[ApplicationUserViewModel | undefined, string]> {
+  editItem(item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
 

@@ -2,11 +2,7 @@ import * as React from "react";
 
 import { User, UserManager } from "oidc-client";
 
-import {
-  createMuiTheme,
-  ThemeProvider,
-  useMediaQuery,
-} from "@material-ui/core";
+import { createMuiTheme, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
@@ -84,13 +80,7 @@ export const App: React.FC = () => {
           type: darkMode ? "dark" : "light",
         },
         typography: {
-          fontFamily: [
-            "Open Sans",
-            "Roboto",
-            "Helvetica",
-            "Arial",
-            "sans-serif",
-          ].join(","),
+          fontFamily: ["Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif"].join(","),
         },
       }),
     [darkMode]
@@ -98,12 +88,7 @@ export const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Routes
-        user={user}
-        userManager={userManager}
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+      <Routes user={user} userManager={userManager} darkMode={darkMode} setDarkMode={setDarkMode} />
     </ThemeProvider>
   );
 };

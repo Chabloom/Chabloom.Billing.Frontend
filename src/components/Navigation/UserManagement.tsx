@@ -48,19 +48,12 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
       >
         <AccountCircleOutlined />
       </IconButton>
-      <Popper
-        transition
-        disablePortal
-        open={open}
-        anchorEl={anchorRef.current}
-        placement="bottom-end"
-      >
+      <Popper transition disablePortal open={open} anchorEl={anchorRef.current} placement="bottom-end">
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
+              transformOrigin: placement === "bottom" ? "center top" : "center bottom",
             }}
           >
             <Paper>
@@ -72,9 +65,7 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
                         <Switch
                           checked={props.darkMode}
                           color="primary"
-                          onChange={() =>
-                            toggleDarkMode(props.darkMode, props.setDarkMode)
-                          }
+                          onChange={() => toggleDarkMode(props.darkMode, props.setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -83,10 +74,7 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
                   <MenuItem
                     onClick={() => {
                       setOpen(false);
-                      localStorage.setItem(
-                        "redirectUri",
-                        window.location.pathname
-                      );
+                      localStorage.setItem("redirectUri", window.location.pathname);
                       props.userManager.signinRedirect().then();
                     }}
                   >
@@ -118,26 +106,15 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
         aria-haspopup="true"
         onClick={() => setOpen(true)}
       >
-        {props.user.profile.name && (
-          <Avatar>
-            {props.user.profile.name.substring(0, 1).toUpperCase()}
-          </Avatar>
-        )}
+        {props.user.profile.name && <Avatar>{props.user.profile.name.substring(0, 1).toUpperCase()}</Avatar>}
         {!props.user.profile.name && <AccountCircleOutlined />}
       </IconButton>
-      <Popper
-        transition
-        disablePortal
-        open={open}
-        anchorEl={anchorRef.current}
-        placement="bottom-end"
-      >
+      <Popper transition disablePortal open={open} anchorEl={anchorRef.current} placement="bottom-end">
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
+              transformOrigin: placement === "bottom" ? "center top" : "center bottom",
             }}
           >
             <Paper>
@@ -150,9 +127,7 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
                         <Switch
                           checked={props.darkMode}
                           color="primary"
-                          onChange={() =>
-                            toggleDarkMode(props.darkMode, props.setDarkMode)
-                          }
+                          onChange={() => toggleDarkMode(props.darkMode, props.setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -161,10 +136,7 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
                   <MenuItem
                     onClick={() => {
                       setOpen(false);
-                      localStorage.setItem(
-                        "redirectUri",
-                        window.location.pathname
-                      );
+                      localStorage.setItem("redirectUri", window.location.pathname);
                       props.userManager.signoutRedirect().then();
                     }}
                   >

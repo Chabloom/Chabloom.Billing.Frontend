@@ -27,9 +27,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [adding, setAdding] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
   const [editIndex, setEditIndex] = React.useState(-1);
-  const [editItem, setEditItem] = React.useState<BaseViewModel>(
-    {} as BaseViewModel
-  );
+  const [editItem, setEditItem] = React.useState<BaseViewModel>({} as BaseViewModel);
   const [deleteIndex, setDeleteIndex] = React.useState(-1);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -41,9 +39,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
       const [items, err] = await props.api.readItems();
       if (items && !err) {
         try {
-          const sortedData = items.sort((a, b) =>
-            a["name"].localeCompare(b["name"])
-          );
+          const sortedData = items.sort((a, b) => a["name"].localeCompare(b["name"]));
           setData([...sortedData]);
           setError("");
         } catch {

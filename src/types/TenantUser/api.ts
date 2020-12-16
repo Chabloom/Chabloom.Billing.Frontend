@@ -3,9 +3,7 @@ import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantUserViewModel } from "./model";
 
-export class TenantUsersApi
-  extends BaseApi<TenantUserViewModel>
-  implements BaseApiType<TenantUserViewModel> {
+export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements BaseApiType<TenantUserViewModel> {
   baseUrl: string;
   tenantId: string;
 
@@ -23,16 +21,12 @@ export class TenantUsersApi
     return this._readItem(`${this.baseUrl}/${itemId}`);
   }
 
-  addItem(
-    item: TenantUserViewModel
-  ): Promise<[TenantUserViewModel | undefined, string]> {
+  addItem(item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
     item.tenant = this.tenantId;
     return this._addItem(`${this.baseUrl}`, item);
   }
 
-  editItem(
-    item: TenantUserViewModel
-  ): Promise<[TenantUserViewModel | undefined, string]> {
+  editItem(item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
     item.tenant = this.tenantId;
     return this._editItem(`${this.baseUrl}/${item.id}`, item);
   }
