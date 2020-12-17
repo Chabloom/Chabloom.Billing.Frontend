@@ -1,4 +1,3 @@
-import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { BillScheduleViewModel } from "./model";
@@ -7,33 +6,33 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
   baseUrl: string;
   accountId: string;
 
-  constructor(user: User | undefined, accountId: string) {
-    super(user);
+  constructor(accountId: string) {
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/billSchedules`;
     this.accountId = accountId;
   }
 
-  readItems(): Promise<[Array<BillScheduleViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
+  readItems(token: string): Promise<[Array<BillScheduleViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`, token);
   }
 
-  readItem(itemId: string): Promise<[BillScheduleViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[BillScheduleViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
+  addItem(token: string, item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
+  editItem(token: string, item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
     item.accountId = this.accountId;
     item.currency = "USD";
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: BillScheduleViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

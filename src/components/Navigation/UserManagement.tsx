@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Avatar,
   ClickAwayListener,
@@ -33,7 +31,7 @@ const UserManagementAnonymous: React.FC = () => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
 
-  const context = useAppContext();
+  const { userManager, darkMode, setDarkMode } = useAppContext();
 
   return (
     <React.Fragment>
@@ -60,9 +58,9 @@ const UserManagementAnonymous: React.FC = () => {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={context.darkMode}
+                          checked={darkMode}
                           color="primary"
-                          onChange={() => toggleDarkMode(context.darkMode, context.setDarkMode)}
+                          onChange={() => toggleDarkMode(darkMode, setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -72,7 +70,7 @@ const UserManagementAnonymous: React.FC = () => {
                     onClick={() => {
                       setOpen(false);
                       localStorage.setItem("redirectUri", window.location.pathname);
-                      context.userManager.signinRedirect().then();
+                      userManager.signinRedirect().then();
                     }}
                   >
                     Sign In/Register
@@ -91,13 +89,9 @@ const UserManagementSignedIn: React.FC = () => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
 
-  const context = useAppContext();
-  const [user, setUser] = React.useState<User | null>(null);
-  React.useEffect(() => {
-    context.getUser().then((u) => setUser(u));
-  }, [context.userLoaded]);
+  const { userManager, userName, userToken, darkMode, setDarkMode } = useAppContext();
 
-  if (!user) {
+  if (!userToken) {
     return null;
   }
 
@@ -109,8 +103,7 @@ const UserManagementSignedIn: React.FC = () => {
         aria-haspopup="true"
         onClick={() => setOpen(true)}
       >
-        {user.profile.name && <Avatar>{user.profile.name.substring(0, 1).toUpperCase()}</Avatar>}
-        {!user.profile.name && <AccountCircleOutlined />}
+        <Avatar>{userName.substring(0, 1).toUpperCase()}</Avatar>
       </IconButton>
       <Popper transition disablePortal open={open} anchorEl={anchorRef.current} placement="bottom-end">
         {({ TransitionProps, placement }) => (
@@ -123,14 +116,14 @@ const UserManagementSignedIn: React.FC = () => {
             <Paper>
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
-                  <MenuItem disabled>{user.profile.name}</MenuItem>
+                  <MenuItem disabled>{userName}</MenuItem>
                   <MenuItem>
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={context.darkMode}
+                          checked={darkMode}
                           color="primary"
-                          onChange={() => toggleDarkMode(context.darkMode, context.setDarkMode)}
+                          onChange={() => toggleDarkMode(darkMode, setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -140,7 +133,7 @@ const UserManagementSignedIn: React.FC = () => {
                     onClick={() => {
                       setOpen(false);
                       localStorage.setItem("redirectUri", window.location.pathname);
-                      context.userManager.signoutRedirect().then();
+                      userManager.signoutRedirect().then();
                     }}
                   >
                     Logout
@@ -156,9 +149,9 @@ const UserManagementSignedIn: React.FC = () => {
 };
 
 export const UserManagement: React.FC = () => {
-  const context = useAppContext();
+  const { userToken } = useAppContext();
 
-  if (context.userLoaded) {
+  if (userToken) {
     return <UserManagementSignedIn />;
   } else {
     return <UserManagementAnonymous />;

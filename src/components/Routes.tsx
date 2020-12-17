@@ -8,7 +8,7 @@ import { Home } from "./Home";
 import { useAppContext } from "../AppContext";
 
 export const Routes: React.FC = () => {
-  const context = useAppContext();
+  const { selectedTenant, selectedAccount } = useAppContext();
 
   return (
     <Router>
@@ -32,17 +32,17 @@ export const Routes: React.FC = () => {
           <Route exact={true} path="/signout-oidc">
             <SignOutCallback />
           </Route>
-          {context.selectedTenant && (
+          {selectedTenant && (
             <Route path="/accounts">
               <Account />
             </Route>
           )}
-          {context.selectedAccount && (
+          {selectedAccount && (
             <Route path="/bills">
               <Bill />
             </Route>
           )}
-          {context.selectedAccount && (
+          {selectedAccount && (
             <Route path="/billSchedules">
               <BillSchedule />
             </Route>
@@ -50,7 +50,7 @@ export const Routes: React.FC = () => {
           <Route path="/tenants">
             <Tenant />
           </Route>
-          {context.selectedTenant && (
+          {selectedTenant && (
             <Route path="/managers">
               <TenantUser />
             </Route>

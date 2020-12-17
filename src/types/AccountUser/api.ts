@@ -1,4 +1,3 @@
-import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountUserViewModel } from "./model";
@@ -7,31 +6,31 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
   baseUrl: string;
   accountId: string;
 
-  constructor(user: User | undefined, accountId: string) {
-    super(user);
+  constructor(accountId: string) {
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/accountUsers`;
     this.accountId = accountId;
   }
 
-  readItems(): Promise<[Array<AccountUserViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`);
+  readItems(token: string): Promise<[Array<AccountUserViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`, token);
   }
 
-  readItem(itemId: string): Promise<[AccountUserViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[AccountUserViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
+  addItem(token: string, item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
     item.accountId = this.accountId;
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
+  editItem(token: string, item: AccountUserViewModel): Promise<[AccountUserViewModel | undefined, string]> {
     item.accountId = this.accountId;
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: AccountUserViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: AccountUserViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

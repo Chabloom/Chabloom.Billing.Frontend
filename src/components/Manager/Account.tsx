@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import { AccountsApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
@@ -26,36 +24,14 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 export const Account: React.FC = () => {
-  // Initialize state variables
-  const [api, setApi] = React.useState<AccountsApi>();
-  const [title, setTitle] = React.useState("Accounts");
-
-  const context = useAppContext();
-  const [user, setUser] = React.useState<User | null>(null);
-  React.useEffect(() => {
-    context.getUser().then((u) => setUser(u));
-  }, [context.userLoaded]);
-
-  // Update the API
-  React.useEffect(() => {
-    if (user) {
-      if (context.selectedTenant && context.selectedTenant.id) {
-        setApi(new AccountsApi(user, context.selectedTenant.id));
-      }
-    }
-  }, [user, context.selectedTenant]);
-
-  // Update the title
-  React.useEffect(() => {
-    if (context.selectedTenant) {
-      setTitle(`${context.selectedTenant.name} Accounts`);
-    }
-  }, [context.selectedTenant]);
+  const { selectedTenant, setSelectedAccount } = useAppContext();
+  const api = React.useMemo(() => new AccountsApi(selectedTenant?.id as string), [selectedTenant?.id]);
+  const title = React.useMemo(() => `${selectedTenant?.name as string} Accounts`, [selectedTenant?.name]);
 
   // Unset the account
   React.useEffect(() => {
-    context.setSelectedAccount(undefined);
-  }, []);
+    setSelectedAccount(undefined);
+  }, [setSelectedAccount]);
 
   return (
     <ChabloomTable

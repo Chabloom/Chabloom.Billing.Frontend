@@ -8,27 +8,27 @@ export class QuickTransactionApi
   baseUrl: string;
 
   constructor() {
-    super(undefined);
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/quickTransaction`;
   }
 
-  readItems(): Promise<[Array<QuickTransactionViewModel> | undefined, string]> {
+  readItems(token: string): Promise<[Array<QuickTransactionViewModel> | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  readItem(itemId: string): Promise<[QuickTransactionViewModel | undefined, string]> {
+  readItem(token: string, itemId: string): Promise<[QuickTransactionViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  addItem(item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, item, false);
+  addItem(token: string, item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}`, "", item, false);
   }
 
-  editItem(item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
+  editItem(token: string, item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  deleteItem(item: QuickTransactionViewModel): Promise<string | undefined> {
+  deleteItem(token: string, item: QuickTransactionViewModel): Promise<string | undefined> {
     throw new Error("Not implemented");
   }
 }

@@ -1,4 +1,3 @@
-import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TenantUserViewModel } from "./model";
@@ -7,31 +6,31 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
   baseUrl: string;
   tenantId: string;
 
-  constructor(user: User | undefined, tenantId: string) {
-    super(user);
+  constructor(tenantId: string) {
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenantUsers`;
     this.tenantId = tenantId;
   }
 
-  readItems(): Promise<[Array<TenantUserViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`);
+  readItems(token: string): Promise<[Array<TenantUserViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`, token);
   }
 
-  readItem(itemId: string): Promise<[TenantUserViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[TenantUserViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
+  addItem(token: string, item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
     item.tenant = this.tenantId;
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
+  editItem(token: string, item: TenantUserViewModel): Promise<[TenantUserViewModel | undefined, string]> {
     item.tenant = this.tenantId;
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: TenantUserViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: TenantUserViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

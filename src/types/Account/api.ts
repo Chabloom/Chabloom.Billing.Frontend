@@ -1,4 +1,3 @@
-import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { AccountViewModel } from "./model";
@@ -7,39 +6,39 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
   baseUrl: string;
   tenantId: string;
 
-  constructor(user: User | undefined = undefined, tenantId: string = "") {
-    super(user);
+  constructor(tenantId: string = "") {
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/accounts`;
     this.tenantId = tenantId;
   }
 
-  readItems(): Promise<[Array<AccountViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`);
+  readItems(token: string): Promise<[Array<AccountViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}?tenantId=${this.tenantId}`, token);
   }
 
-  readItemsAuthorized(): Promise<[Array<AccountViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}/Authorized`);
+  readItemsAuthorized(token: string): Promise<[Array<AccountViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}/Authorized`, token);
   }
 
-  readItem(itemId: string): Promise<[AccountViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[AccountViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  readItemReference(itemId: string): Promise<[AccountViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/Reference/${itemId}?tenantId=${this.tenantId}`);
+  readItemReference(token: string, itemId: string): Promise<[AccountViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/Reference/${itemId}?tenantId=${this.tenantId}`, token);
   }
 
-  addItem(item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
+  addItem(token: string, item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
     item.tenantId = this.tenantId;
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
+  editItem(token: string, item: AccountViewModel): Promise<[AccountViewModel | undefined, string]> {
     item.tenantId = this.tenantId;
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: AccountViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: AccountViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

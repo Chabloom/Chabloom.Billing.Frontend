@@ -1,4 +1,3 @@
-import { User } from "oidc-client";
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
 import { ApplicationUserViewModel } from "./model";
@@ -8,28 +7,28 @@ export class ApplicationUsersApi
   implements BaseApiType<ApplicationUserViewModel> {
   baseUrl: string;
 
-  constructor(user: User | undefined) {
-    super(user);
+  constructor() {
+    super();
     this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/applicationUsers`;
   }
 
-  readItems(): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`);
+  readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`, token);
   }
 
-  readItem(itemId: string): Promise<[ApplicationUserViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, item);
+  addItem(token: string, item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+  editItem(token: string, item: ApplicationUserViewModel): Promise<[ApplicationUserViewModel | undefined, string]> {
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: ApplicationUserViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: ApplicationUserViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

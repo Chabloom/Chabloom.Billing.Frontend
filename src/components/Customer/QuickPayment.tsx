@@ -53,8 +53,8 @@ export const QuickPayment: React.FC = () => {
     setProcessing(true);
     const selectedTenant = allTenants.find((x) => x.name === tenant);
     if (selectedTenant) {
-      const accountsApi = new AccountsApi(undefined, selectedTenant.id);
-      const [account, err] = await accountsApi.readItemReference(accountNumber);
+      const accountsApi = new AccountsApi(selectedTenant.id);
+      const [account, err] = await accountsApi.readItemReference("", accountNumber);
       if (account) {
         setAccount(account);
       } else {

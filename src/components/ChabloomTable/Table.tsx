@@ -9,9 +9,10 @@ import { ChabloomTableHead } from "./Head";
 import { ChabloomTableColumn } from "./Column";
 import { ChabloomTablePagination } from "./Pagination";
 import { ChabloomTableHeading } from "./Heading";
+import { useAppContext } from "../../AppContext";
 
 interface Props {
-  api: BaseApiType<BaseViewModel> | undefined;
+  api: BaseApiType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
@@ -27,34 +28,36 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
+  const { userToken } = useAppContext();
+
   // Get the table data
   React.useEffect(() => {
-    const getTableData = async () => {
+    if (userToken) {
       setProcessing(true);
-      if (props.api) {
-        const [items, err] = await props.api.readItems();
-        if (items && !err) {
-          try {
-            const sortedData = items.sort((a, b) => a["name"].localeCompare(b["name"]));
-            setData([...sortedData]);
-            setError("");
-          } catch {
+      props.api
+        .readItems(userToken)
+        .then(([ret, err]) => {
+          if (ret && !err) {
             try {
-              setData(items);
+              const sortedData = ret.sort((a, b) => a["name"].localeCompare(b["name"]));
+              setData([...sortedData]);
               setError("");
             } catch {
-              setError("item read failed");
+              try {
+                setData(ret);
+                setError("");
+              } catch {
+                setError("item read failed");
+              }
             }
+          } else {
+            setData([] as Array<BaseViewModel>);
+            setError(err);
           }
-        } else {
-          setData([] as Array<BaseViewModel>);
-          setError(err);
-        }
-      }
-      setProcessing(false);
-    };
-    getTableData().then();
-  }, [props.api, props.title]);
+        })
+        .finally(() => setProcessing(false));
+    }
+  }, [props.api, props.title, userToken]);
 
   return (
     <TableContainer component={Paper}>

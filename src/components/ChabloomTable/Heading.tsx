@@ -9,6 +9,7 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 import { BaseApiType, BaseViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
+import { useAppContext } from "../../AppContext";
 
 interface Props {
   api: BaseApiType<BaseViewModel> | undefined;
@@ -54,10 +55,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChabloomTableActionButtons: React.FC<Props> = (props) => {
+  const { userToken } = useAppContext();
+
   const addItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const [newItem, err] = await props.api.addItem(props.editItem);
+      const [newItem, err] = await props.api.addItem(userToken, props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
@@ -78,7 +81,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const editItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const [newItem, err] = await props.api.editItem(props.editItem);
+      const [newItem, err] = await props.api.editItem(userToken, props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
@@ -98,7 +101,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const deleteItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const err = await props.api.deleteItem(props.editItem);
+      const err = await props.api.deleteItem(userToken, props.editItem);
       if (!err) {
         props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
         props.setSelectedIndex(-1);

@@ -1,33 +1,32 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { PaymentCardViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class PaymentCardsApi extends BaseApi<PaymentCardViewModel> implements BaseApiType<PaymentCardViewModel> {
   baseUrl: string;
 
-  constructor(user: User | undefined) {
-    super(user);
+  constructor() {
+    super();
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/paymentCards`;
   }
 
-  readItems(): Promise<[Array<PaymentCardViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`);
+  readItems(token: string): Promise<[Array<PaymentCardViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`, token);
   }
 
-  readItem(itemId: string): Promise<[PaymentCardViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, item);
+  addItem(token: string, item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+  editItem(token: string, item: PaymentCardViewModel): Promise<[PaymentCardViewModel | undefined, string]> {
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: PaymentCardViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: PaymentCardViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

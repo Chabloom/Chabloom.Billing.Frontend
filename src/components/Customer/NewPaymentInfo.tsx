@@ -2,8 +2,6 @@ import * as React from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
-import { User } from "oidc-client";
-
 import {
   Button,
   ButtonGroup,
@@ -62,11 +60,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
   const [image, setImage] = React.useState("");
   const [permanent, setPermanent] = React.useState(false);
 
-  const context = useAppContext();
-  const [user, setUser] = React.useState<User | null>(null);
-  React.useEffect(() => {
-    context.getUser().then((u) => setUser(u));
-  }, [context.userLoaded]);
+  const { userToken } = useAppContext();
 
   const { handleSubmit, errors, control } = useForm({
     mode: "onChange",
@@ -74,7 +68,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
 
   const onSubmit = (data: any) => {
     const createPaymentCard = async () => {
-      if (user) {
+      if (userToken) {
         props.setProcessing(true);
         props.setError("");
         const item = {
@@ -86,8 +80,8 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
           expirationYear: data.expirationYear,
           permanent: permanent,
         } as PaymentCardViewModel;
-        const api = new PaymentCardsApi(user);
-        const [ret, err] = await api.addItem(item);
+        const api = new PaymentCardsApi();
+        const [ret, err] = await api.addItem(userToken, item);
         props.setProcessing(false);
         if (ret) {
           props.setSavedPayments([...props.savedPayments, ret]);

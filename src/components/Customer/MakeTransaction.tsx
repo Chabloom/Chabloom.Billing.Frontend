@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Backdrop,
   Button,
@@ -69,16 +67,15 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   const [paymentCardId, setPaymentCardId] = React.useState("");
   const [savedPayments, setSavedPayments] = React.useState<Array<PaymentCardViewModel>>([]);
 
-  const context = useAppContext();
-  const [user, setUser] = React.useState<User | null>(null);
-  React.useEffect(() => {
-    context.getUser().then((u) => setUser(u));
-  }, [context.userLoaded]);
+  const { userToken } = useAppContext();
 
   React.useEffect(() => {
-    if (user) {
-      const api = new PaymentCardsApi(user);
-      api.readItems().then(([ret, err]) => {
+    setProcessing(true);
+    setError("");
+    const api = new PaymentCardsApi();
+    api
+      .readItems(userToken)
+      .then(([ret, err]) => {
         if (ret) {
           if (ret.length === 0) {
             setPaymentCardId("new");
@@ -86,31 +83,29 @@ export const MakeTransaction: React.FC<Props> = (props) => {
             setSavedPayments(ret.filter((x) => x.permanent));
           }
         } else {
-          console.log(err);
+          setError(err);
         }
-      });
-    }
-  }, [user]);
+      })
+      .finally(() => setProcessing(false));
+  }, [userToken]);
 
   const makeTransaction = async (paymentCardId: string) => {
-    if (user) {
-      setProcessing(true);
-      setError("");
-      const item = {
-        name: props.payment.name,
-        amount: props.payment.amount,
-        paymentCardId: paymentCardId,
-      } as TransactionViewModel;
-      const api = new TransactionsApi(user);
-      const [ret, err] = await api.addItem(item);
-      setProcessing(false);
-      if (ret) {
-        return ret.id;
-      } else {
-        setError(err);
-      }
-      return "";
+    setProcessing(true);
+    setError("");
+    const item = {
+      name: props.payment.name,
+      amount: props.payment.amount,
+      paymentCardId: paymentCardId,
+    } as TransactionViewModel;
+    const api = new TransactionsApi();
+    const [ret, err] = await api.addItem(userToken, item);
+    setProcessing(false);
+    if (ret) {
+      return ret.id;
+    } else {
+      setError(err);
     }
+    return "";
   };
   const makeQuickTransaction = async (transactionId: string) => {
     setProcessing(true);
@@ -120,7 +115,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
       transactionId: transactionId,
     } as QuickTransactionViewModel;
     const api = new QuickTransactionApi();
-    await api.addItem(item);
+    await api.addItem(userToken, item);
     setProcessing(false);
   };
   const completeTransaction = async () => {

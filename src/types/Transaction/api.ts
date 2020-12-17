@@ -1,35 +1,34 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TransactionViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class TransactionsApi extends BaseApi<TransactionViewModel> implements BaseApiType<TransactionViewModel> {
   baseUrl: string;
 
-  constructor(user: User | undefined) {
-    super(user);
+  constructor() {
+    super();
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactions`;
   }
 
-  readItems(): Promise<[Array<TransactionViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`);
+  readItems(token: string): Promise<[Array<TransactionViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`, token);
   }
 
-  readItem(itemId: string): Promise<[TransactionViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[TransactionViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
+  addItem(token: string, item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
     item.currency = "USD";
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
+  editItem(token: string, item: TransactionViewModel): Promise<[TransactionViewModel | undefined, string]> {
     item.currency = "USD";
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: TransactionViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: TransactionViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

@@ -1,37 +1,42 @@
 import { BaseApi, BaseApiType } from "../apiBase";
 import { TransactionScheduleViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
-import { User } from "oidc-client";
 
 export class TransactionSchedulesApi
   extends BaseApi<TransactionScheduleViewModel>
   implements BaseApiType<TransactionScheduleViewModel> {
   baseUrl: string;
 
-  constructor(user: User | undefined) {
-    super(user);
+  constructor() {
+    super();
     this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactionSchedules`;
   }
 
-  readItems(): Promise<[Array<TransactionScheduleViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`);
+  readItems(token: string): Promise<[Array<TransactionScheduleViewModel> | undefined, string]> {
+    return this._readItems(`${this.baseUrl}`, token);
   }
 
-  readItem(itemId: string): Promise<[TransactionScheduleViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`);
+  readItem(token: string, itemId: string): Promise<[TransactionScheduleViewModel | undefined, string]> {
+    return this._readItem(`${this.baseUrl}/${itemId}`, token);
   }
 
-  addItem(item: TransactionScheduleViewModel): Promise<[TransactionScheduleViewModel | undefined, string]> {
+  addItem(
+    token: string,
+    item: TransactionScheduleViewModel
+  ): Promise<[TransactionScheduleViewModel | undefined, string]> {
     item.currency = "USD";
-    return this._addItem(`${this.baseUrl}`, item);
+    return this._addItem(`${this.baseUrl}`, token, item);
   }
 
-  editItem(item: TransactionScheduleViewModel): Promise<[TransactionScheduleViewModel | undefined, string]> {
+  editItem(
+    token: string,
+    item: TransactionScheduleViewModel
+  ): Promise<[TransactionScheduleViewModel | undefined, string]> {
     item.currency = "USD";
-    return this._editItem(`${this.baseUrl}/${item.id}`, item);
+    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
   }
 
-  deleteItem(item: TransactionScheduleViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`);
+  deleteItem(token: string, item: TransactionScheduleViewModel): Promise<string | undefined> {
+    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
   }
 }

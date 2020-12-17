@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { User, UserManager } from "oidc-client";
+import { UserManager } from "oidc-client";
 
 import { AccountViewModel, OidcSettings, TenantViewModel } from "./types";
 
@@ -12,8 +12,10 @@ export enum UserLevel {
 
 export interface AppContextProps {
   userManager: UserManager;
-  getUser: () => Promise<User | null>;
   userLoaded: boolean;
+  userId: string;
+  userName: string;
+  userToken: string;
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
   userLevel: UserLevel;
@@ -30,8 +32,10 @@ export interface AppContextProps {
 
 export const AppContext = React.createContext<AppContextProps>({
   userManager: new UserManager(OidcSettings),
-  getUser: async () => null,
   userLoaded: false,
+  userId: "",
+  userName: "",
+  userToken: "",
   darkMode: false,
   setDarkMode: () => {},
   userLevel: UserLevel.Customer,

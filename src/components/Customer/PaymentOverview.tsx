@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import {
   Card,
   CardActions,
@@ -47,18 +45,14 @@ export const PaymentOverview: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  const context = useAppContext();
-  const [user, setUser] = React.useState<User | null>(null);
-  React.useEffect(() => {
-    context.getUser().then((u) => setUser(u));
-  }, [context.userLoaded]);
+  const { userId, userToken, trackedAccounts, setTrackedAccounts } = useAppContext();
 
   // Get all account payments
   React.useEffect(() => {
     const getAccountPayments = async () => {
       setProcessing(true);
-      const api = new BillsApi(undefined, props.account.id);
-      const [payments, err] = await api.readItems();
+      const api = new BillsApi(props.account.id);
+      const [payments, err] = await api.readItems(userToken);
       if (payments) {
         const futurePayments = payments
           .filter((x) => new Date(x.dueDate) > new Date())
@@ -70,15 +64,15 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       setProcessing(false);
     };
     getAccountPayments().then();
-  }, [props.account]);
+  }, [props.account, userToken]);
 
   // Get all account users
   React.useEffect(() => {
-    if (user) {
+    if (userToken) {
       const getAccountUsers = async () => {
         setProcessing(true);
-        const api = new AccountUsersApi(user, props.account.id);
-        const [users, err] = await api.readItems();
+        const api = new AccountUsersApi(props.account.id);
+        const [users, err] = await api.readItems(userToken);
         if (users && users.length !== 0 && !err) {
           setAccountUsers(users);
         }
@@ -86,7 +80,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       };
       getAccountUsers().then();
     }
-  }, [user, props.account]);
+  }, [props.account, userToken]);
 
   const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 
@@ -98,21 +92,21 @@ export const PaymentOverview: React.FC<Props> = (props) => {
             <Grid item style={{ flexGrow: 1, margin: "auto" }}>
               <Typography variant="h5">{props.account.name}</Typography>
             </Grid>
-            {user && props.allowTracking && (
+            {userToken && props.allowTracking && (
               <Grid item>
                 <Tooltip title="Track account">
                   <IconButton
                     onClick={() => {
-                      if (user && !user.expired) {
+                      if (userToken) {
                         setProcessing(true);
                         const model = {
-                          userId: user.profile.sub,
+                          userId: userId,
                         } as AccountUserViewModel;
-                        const api = new AccountUsersApi(user, props.account.id);
+                        const api = new AccountUsersApi(props.account.id);
                         api
-                          .addItem(model)
+                          .addItem(userToken, model)
                           .then(() => {
-                            context.setTrackedAccounts([...context.trackedAccounts, props.account]);
+                            setTrackedAccounts([...trackedAccounts, props.account]);
                           })
                           .finally(() => setProcessing(false));
                       }
@@ -123,25 +117,24 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                 </Tooltip>
               </Grid>
             )}
-            {user && !props.allowTracking && (
+            {userToken && !props.allowTracking && (
               <Grid item>
                 <Tooltip title="Don't track account">
                   <IconButton
                     onClick={() => {
-                      if (user && !user.expired) {
+                      if (userToken) {
                         setProcessing(true);
-                        const userId = user.profile.sub;
                         const accountUser = accountUsers
                           .filter((x) => x.accountId === props.account.id)
                           .find((x) => x.userId === userId);
                         if (accountUser) {
-                          const api = new AccountUsersApi(user, props.account.id);
+                          const api = new AccountUsersApi(props.account.id);
                           api
-                            .deleteItem(accountUser)
+                            .deleteItem(userToken, accountUser)
                             .then(() => {
-                              context.setTrackedAccounts([
-                                ...context.trackedAccounts.slice(0, context.trackedAccounts.indexOf(props.account)),
-                                ...context.trackedAccounts.slice(context.trackedAccounts.indexOf(props.account) + 1),
+                              setTrackedAccounts([
+                                ...trackedAccounts.slice(0, trackedAccounts.indexOf(props.account)),
+                                ...trackedAccounts.slice(trackedAccounts.indexOf(props.account) + 1),
                               ]);
                             })
                             .finally(() => setProcessing(false));
