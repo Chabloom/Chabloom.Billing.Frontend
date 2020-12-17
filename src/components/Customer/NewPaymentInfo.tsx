@@ -4,7 +4,18 @@ import { User } from "oidc-client";
 
 import { Controller, useForm } from "react-hook-form";
 
-import { Button, ButtonGroup, createStyles, Grid, Hidden, InputAdornment, TextField, Theme } from "@material-ui/core";
+import {
+  Button,
+  ButtonGroup,
+  Checkbox,
+  createStyles,
+  FormControlLabel,
+  Grid,
+  Hidden,
+  InputAdornment,
+  TextField,
+  Theme,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
@@ -48,6 +59,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
 
   // Initialize state variables
   const [image, setImage] = React.useState("");
+  const [permanent, setPermanent] = React.useState(false);
 
   const { handleSubmit, errors, control } = useForm({
     mode: "onChange",
@@ -64,6 +76,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
         cardholderName: data.cardholderName,
         expirationMonth: data.expirationMonth,
         expirationYear: data.expirationYear,
+        permanent: permanent,
       } as PaymentCardViewModel;
       const api = new PaymentCardsApi(props.user);
       const [ret, err] = await api.addItem(item);
@@ -232,21 +245,27 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
             />
           }
         />
-        <Controller
-          name="cardName"
-          control={control}
-          defaultValue=""
-          as={
-            <TextField
-              className={classes.mt1}
-              fullWidth
-              required
-              disabled={props.processing}
-              label="Card friendly name"
-              error={!!errors.cardName}
-              helperText={errors.cardName ? errors.cardName.message : ""}
-            />
-          }
+        {permanent && (
+          <Controller
+            name="cardName"
+            control={control}
+            defaultValue=""
+            as={
+              <TextField
+                className={classes.mt1}
+                fullWidth
+                required={permanent}
+                disabled={props.processing}
+                label="Saved card name"
+                error={!!errors.cardName}
+                helperText={errors.cardName ? errors.cardName.message : ""}
+              />
+            }
+          />
+        )}
+        <FormControlLabel
+          control={<Checkbox checked={permanent} onChange={() => setPermanent(!permanent)} name="permanent" />}
+          label="Save payment information"
         />
         <ButtonGroup className={classes.mt1} fullWidth disabled={props.processing}>
           <Button variant="contained" color="primary" type="submit">

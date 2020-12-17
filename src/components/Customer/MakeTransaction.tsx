@@ -76,7 +76,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
         if (ret.length === 0) {
           setPaymentCardId("new");
         } else {
-          setSavedPayments(ret);
+          setSavedPayments(ret.filter((x) => x.permanent));
         }
       } else {
         console.log(err);

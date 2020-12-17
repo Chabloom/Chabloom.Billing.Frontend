@@ -8,4 +8,5 @@ export interface PaymentCardViewModel extends BaseViewModel {
   cardholderName: string;
   expirationMonth: string;
   expirationYear: string;
+  permanent: boolean;
 }
