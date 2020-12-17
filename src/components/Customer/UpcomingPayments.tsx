@@ -4,26 +4,26 @@ import { User } from "oidc-client";
 
 import { Grid } from "@material-ui/core";
 
-import { AccountViewModel } from "../../types";
-
 import { PaymentOverview } from "./PaymentOverview";
+import { useAppContext } from "../../AppContext";
 
-interface Props {
-  user: User | undefined;
-  trackedAccounts: Array<AccountViewModel>;
-  setTrackedAccounts: CallableFunction;
-}
+export const UpcomingPayments: React.FC = () => {
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
 
-export const UpcomingPayments: React.FC<Props> = (props) => {
-  if (!props.user) {
+  if (!user) {
     return null;
   }
+
   return (
     <Grid container spacing={2}>
-      {props.trackedAccounts.map((account) => {
+      {context.trackedAccounts.map((account) => {
         return (
           <Grid item xs={12}>
-            <PaymentOverview {...props} account={account} allowTracking={false} />
+            <PaymentOverview account={account} allowTracking={false} />
           </Grid>
         );
       })}

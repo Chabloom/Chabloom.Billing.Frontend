@@ -1,8 +1,6 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
 
-import { User, UserManager } from "oidc-client";
-
 import {
   AppBar,
   createStyles,
@@ -20,29 +18,13 @@ import {
 } from "@material-ui/core";
 import { AccountCircle, Business, Group, Home, Receipt, Schedule } from "@material-ui/icons";
 
-import { AccountViewModel, TenantViewModel } from "../../types";
-
 import { TenantSelection } from "./TenantSelection";
 import { ModeSelection } from "./ModeSelection";
 import { UserManagement } from "./UserManagement";
 
-import logo from "../../logo.svg";
+import { useAppContext, UserLevel } from "../../AppContext";
 
-interface Props {
-  user: User | undefined;
-  userManager: UserManager;
-  authorizedTenants: Array<TenantViewModel>;
-  selectedTenant: TenantViewModel | undefined;
-  setSelectedTenant: CallableFunction;
-  userLevel: "admin" | "manager" | undefined;
-  admin: boolean;
-  setAdmin: CallableFunction;
-  manager: boolean;
-  setManager: CallableFunction;
-  account: AccountViewModel | undefined;
-  darkMode: boolean;
-  setDarkMode: CallableFunction;
-}
+import logo from "../../logo.svg";
 
 const drawerWidth = 240;
 
@@ -77,7 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const Navigation: React.FC<Props> = (props) => {
+export const Navigation: React.FC = (props) => {
+  const context = useAppContext();
+
   const classes = useStyles();
 
   return (
@@ -88,16 +72,14 @@ export const Navigation: React.FC<Props> = (props) => {
           <div className={classes.flexGrow}>
             <img src={logo} className={classes.logo} alt="logo" />
           </div>
-          {(props.admin || props.manager) && (
-            <div className={classes.flexGrow}>
-              <TenantSelection {...props} />
-            </div>
-          )}
-          <ModeSelection {...props} />
-          <UserManagement {...props} />
+          <div className={classes.flexGrow}>
+            <TenantSelection />
+          </div>
+          <ModeSelection />
+          <UserManagement />
         </Toolbar>
       </AppBar>
-      {(props.admin || props.manager) && (
+      {context.selectedUserLevel !== UserLevel.Customer && (
         <Hidden smDown implementation="css">
           <nav className={classes.drawer}>
             <Drawer
@@ -120,38 +102,36 @@ export const Navigation: React.FC<Props> = (props) => {
                     </ListItem>
                   </List>
                 </div>
-                {(props.admin || props.manager) && (
-                  <div>
-                    <Divider />
-                    <List>
-                      {props.selectedTenant && (
-                        <ListItem button key="accounts" component={NavLink} to="/accounts">
-                          <ListItemIcon>
-                            <AccountCircle />
-                          </ListItemIcon>
-                          <ListItemText primary="Accounts" />
-                        </ListItem>
-                      )}
-                      {props.account && (
-                        <ListItem button key="bills" component={NavLink} to="/bills">
-                          <ListItemIcon>
-                            <Receipt />
-                          </ListItemIcon>
-                          <ListItemText primary="Bills" />
-                        </ListItem>
-                      )}
-                      {props.account && (
-                        <ListItem button key="billSchedules" component={NavLink} to="/billSchedules">
-                          <ListItemIcon>
-                            <Schedule />
-                          </ListItemIcon>
-                          <ListItemText primary="Bill Schedules" />
-                        </ListItem>
-                      )}
-                    </List>
-                  </div>
-                )}
-                {props.admin && (
+                <div>
+                  <Divider />
+                  <List>
+                    {context.selectedTenant && (
+                      <ListItem button key="accounts" component={NavLink} to="/accounts">
+                        <ListItemIcon>
+                          <AccountCircle />
+                        </ListItemIcon>
+                        <ListItemText primary="Accounts" />
+                      </ListItem>
+                    )}
+                    {context.selectedAccount && (
+                      <ListItem button key="bills" component={NavLink} to="/bills">
+                        <ListItemIcon>
+                          <Receipt />
+                        </ListItemIcon>
+                        <ListItemText primary="Bills" />
+                      </ListItem>
+                    )}
+                    {context.selectedAccount && (
+                      <ListItem button key="billSchedules" component={NavLink} to="/billSchedules">
+                        <ListItemIcon>
+                          <Schedule />
+                        </ListItemIcon>
+                        <ListItemText primary="Bill Schedules" />
+                      </ListItem>
+                    )}
+                  </List>
+                </div>
+                {context.selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>
@@ -164,7 +144,7 @@ export const Navigation: React.FC<Props> = (props) => {
                     </List>
                   </div>
                 )}
-                {props.admin && (
+                {context.selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>
@@ -177,7 +157,7 @@ export const Navigation: React.FC<Props> = (props) => {
                     </List>
                   </div>
                 )}
-                {props.admin && (
+                {context.selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>

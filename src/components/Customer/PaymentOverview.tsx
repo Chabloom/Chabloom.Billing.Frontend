@@ -21,13 +21,11 @@ import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, Bill
 
 import { MakeTransaction } from "./MakeTransaction";
 import { Status } from "../Status";
+import { useAppContext } from "../../AppContext";
 
 interface Props {
-  user: User | undefined;
   account: AccountViewModel;
   allowTracking: boolean;
-  trackedAccounts: Array<AccountViewModel>;
-  setTrackedAccounts: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,19 +39,25 @@ const useStyles = makeStyles((theme: Theme) =>
 const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
 export const PaymentOverview: React.FC<Props> = (props) => {
+  const classes = useStyles();
+
   const [selectedPayment, setSelectedPayment] = React.useState<BillViewModel>();
   const [accountPayments, setAccountPayments] = React.useState([] as Array<BillViewModel>);
   const [accountUsers, setAccountUsers] = React.useState([] as Array<AccountUserViewModel>);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  const classes = useStyles();
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
 
   // Get all account payments
   React.useEffect(() => {
     const getAccountPayments = async () => {
       setProcessing(true);
-      const api = new BillsApi(props.user, props.account.id);
+      const api = new BillsApi(undefined, props.account.id);
       const [payments, err] = await api.readItems();
       if (payments) {
         const futurePayments = payments
@@ -66,21 +70,23 @@ export const PaymentOverview: React.FC<Props> = (props) => {
       setProcessing(false);
     };
     getAccountPayments().then();
-  }, [props.user, props.account]);
+  }, [props.account]);
 
   // Get all account users
   React.useEffect(() => {
-    const getAccountUsers = async () => {
-      setProcessing(true);
-      const api = new AccountUsersApi(props.user, props.account.id);
-      const [users, err] = await api.readItems();
-      if (users && users.length !== 0 && !err) {
-        setAccountUsers(users);
-      }
-      setProcessing(false);
-    };
-    getAccountUsers().then();
-  }, [props.user, props.account]);
+    if (user) {
+      const getAccountUsers = async () => {
+        setProcessing(true);
+        const api = new AccountUsersApi(user, props.account.id);
+        const [users, err] = await api.readItems();
+        if (users && users.length !== 0 && !err) {
+          setAccountUsers(users);
+        }
+        setProcessing(false);
+      };
+      getAccountUsers().then();
+    }
+  }, [user, props.account]);
 
   const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 
@@ -92,21 +98,21 @@ export const PaymentOverview: React.FC<Props> = (props) => {
             <Grid item style={{ flexGrow: 1, margin: "auto" }}>
               <Typography variant="h5">{props.account.name}</Typography>
             </Grid>
-            {props.user && props.allowTracking && (
+            {user && props.allowTracking && (
               <Grid item>
                 <Tooltip title="Track account">
                   <IconButton
                     onClick={() => {
-                      if (props.user && !props.user.expired) {
+                      if (user && !user.expired) {
                         setProcessing(true);
                         const model = {
-                          userId: props.user?.profile.sub,
+                          userId: user.profile.sub,
                         } as AccountUserViewModel;
-                        const api = new AccountUsersApi(props.user, props.account.id);
+                        const api = new AccountUsersApi(user, props.account.id);
                         api
                           .addItem(model)
                           .then(() => {
-                            props.setTrackedAccounts([...props.trackedAccounts, props.account]);
+                            context.setTrackedAccounts([...context.trackedAccounts, props.account]);
                           })
                           .finally(() => setProcessing(false));
                       }
@@ -117,25 +123,25 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                 </Tooltip>
               </Grid>
             )}
-            {props.user && !props.allowTracking && (
+            {user && !props.allowTracking && (
               <Grid item>
                 <Tooltip title="Don't track account">
                   <IconButton
                     onClick={() => {
-                      if (props.user && !props.user.expired) {
+                      if (user && !user.expired) {
                         setProcessing(true);
-                        const userId = props.user.profile.sub;
+                        const userId = user.profile.sub;
                         const accountUser = accountUsers
                           .filter((x) => x.accountId === props.account.id)
                           .find((x) => x.userId === userId);
                         if (accountUser) {
-                          const api = new AccountUsersApi(props.user, props.account.id);
+                          const api = new AccountUsersApi(user, props.account.id);
                           api
                             .deleteItem(accountUser)
                             .then(() => {
-                              props.setTrackedAccounts([
-                                ...props.trackedAccounts.slice(0, props.trackedAccounts.indexOf(props.account)),
-                                ...props.trackedAccounts.slice(props.trackedAccounts.indexOf(props.account) + 1),
+                              context.setTrackedAccounts([
+                                ...context.trackedAccounts.slice(0, context.trackedAccounts.indexOf(props.account)),
+                                ...context.trackedAccounts.slice(context.trackedAccounts.indexOf(props.account) + 1),
                               ]);
                             })
                             .finally(() => setProcessing(false));

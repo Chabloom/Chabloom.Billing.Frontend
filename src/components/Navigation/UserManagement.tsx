@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { User, UserManager } from "oidc-client";
+import { User } from "oidc-client";
 
 import {
   Avatar,
@@ -16,12 +16,7 @@ import {
 } from "@material-ui/core";
 import { AccountCircleOutlined } from "@material-ui/icons";
 
-interface Props {
-  user: User | undefined;
-  userManager: UserManager;
-  darkMode: boolean;
-  setDarkMode: CallableFunction;
-}
+import { useAppContext } from "../../AppContext";
 
 const toggleDarkMode = (darkMode: boolean, setDarkMode: CallableFunction) => {
   if (darkMode) {
@@ -34,12 +29,14 @@ const toggleDarkMode = (darkMode: boolean, setDarkMode: CallableFunction) => {
   setDarkMode(!darkMode);
 };
 
-const UserManagementAnonymous: React.FC<Props> = (props) => {
+const UserManagementAnonymous: React.FC = () => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
 
+  const context = useAppContext();
+
   return (
-    <div>
+    <React.Fragment>
       <IconButton
         ref={anchorRef}
         aria-controls={open ? "menu-list-grow" : undefined}
@@ -63,9 +60,9 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={props.darkMode}
+                          checked={context.darkMode}
                           color="primary"
-                          onChange={() => toggleDarkMode(props.darkMode, props.setDarkMode)}
+                          onChange={() => toggleDarkMode(context.darkMode, context.setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -75,7 +72,7 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
                     onClick={() => {
                       setOpen(false);
                       localStorage.setItem("redirectUri", window.location.pathname);
-                      props.userManager.signinRedirect().then();
+                      context.userManager.signinRedirect().then();
                     }}
                   >
                     Sign In/Register
@@ -86,28 +83,34 @@ const UserManagementAnonymous: React.FC<Props> = (props) => {
           </Grow>
         )}
       </Popper>
-    </div>
+    </React.Fragment>
   );
 };
 
-const UserManagementSignedIn: React.FC<Props> = (props) => {
+const UserManagementSignedIn: React.FC = () => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
 
-  if (!props.user) {
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
+
+  if (!user) {
     return null;
   }
 
   return (
-    <div>
+    <React.Fragment>
       <IconButton
         ref={anchorRef}
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         onClick={() => setOpen(true)}
       >
-        {props.user.profile.name && <Avatar>{props.user.profile.name.substring(0, 1).toUpperCase()}</Avatar>}
-        {!props.user.profile.name && <AccountCircleOutlined />}
+        {user.profile.name && <Avatar>{user.profile.name.substring(0, 1).toUpperCase()}</Avatar>}
+        {!user.profile.name && <AccountCircleOutlined />}
       </IconButton>
       <Popper transition disablePortal open={open} anchorEl={anchorRef.current} placement="bottom-end">
         {({ TransitionProps, placement }) => (
@@ -120,14 +123,14 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
             <Paper>
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
-                  <MenuItem disabled>{props.user?.profile.name}</MenuItem>
+                  <MenuItem disabled>{user.profile.name}</MenuItem>
                   <MenuItem>
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={props.darkMode}
+                          checked={context.darkMode}
                           color="primary"
-                          onChange={() => toggleDarkMode(props.darkMode, props.setDarkMode)}
+                          onChange={() => toggleDarkMode(context.darkMode, context.setDarkMode)}
                         />
                       }
                       label="Dark Mode"
@@ -137,7 +140,7 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
                     onClick={() => {
                       setOpen(false);
                       localStorage.setItem("redirectUri", window.location.pathname);
-                      props.userManager.signoutRedirect().then();
+                      context.userManager.signoutRedirect().then();
                     }}
                   >
                     Logout
@@ -148,13 +151,16 @@ const UserManagementSignedIn: React.FC<Props> = (props) => {
           </Grow>
         )}
       </Popper>
-    </div>
+    </React.Fragment>
   );
 };
 
-export const UserManagement: React.FC<Props> = (props) => {
-  if (props.user) {
-    return <UserManagementSignedIn {...props} />;
+export const UserManagement: React.FC = () => {
+  const context = useAppContext();
+
+  if (context.userLoaded) {
+    return <UserManagementSignedIn />;
+  } else {
+    return <UserManagementAnonymous />;
   }
-  return <UserManagementAnonymous {...props} />;
 };

@@ -2,14 +2,10 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountViewModel, BillsApi } from "../../types";
+import { BillsApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-
-interface Props {
-  user: User | undefined;
-  account: AccountViewModel;
-}
+import { useAppContext } from "../../AppContext";
 
 const columns: Array<ChabloomTableColumn> = [
   {
@@ -29,32 +25,32 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-export const Bill: React.FC<Props> = (props) => {
+export const Bill: React.FC = () => {
   // Initialize state variables
-  const [api, setApi] = React.useState<BillsApi>(new BillsApi(props.user, props.account.id as string));
+  const [api, setApi] = React.useState<BillsApi>();
   const [title, setTitle] = React.useState("Bills");
+
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
 
   // Update the API
   React.useEffect(() => {
-    if (props.account.id) {
-      setApi(new BillsApi(props.user, props.account.id));
+    if (user) {
+      if (context.selectedAccount && context.selectedAccount.id) {
+        setApi(new BillsApi(user, context.selectedAccount.id));
+      }
     }
-  }, [props.user, props.account]);
+  }, [user, context.selectedAccount]);
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`${props.account.name} Bills`);
-  }, [props.account]);
+    if (context.selectedAccount) {
+      setTitle(`${context.selectedAccount.name} Bills`);
+    }
+  }, [context.selectedAccount]);
 
-  return (
-    <ChabloomTable
-      {...props}
-      api={api}
-      title={title}
-      columns={columns}
-      methods={["add", "edit", "delete"]}
-      tenant={undefined}
-      setAccount={() => {}}
-    />
-  );
+  return <ChabloomTable api={api} title={title} columns={columns} methods={["add", "edit", "delete"]} />;
 };

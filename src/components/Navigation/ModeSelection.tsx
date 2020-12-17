@@ -1,77 +1,63 @@
 import * as React from "react";
 
-import { FormControlLabel, FormGroup, Hidden, Switch } from "@material-ui/core";
+import { FormControlLabel, Hidden, RadioGroup, Switch } from "@material-ui/core";
 
-interface Props {
-  userLevel: "admin" | "manager" | undefined;
-  admin: boolean;
-  setAdmin: CallableFunction;
-  manager: boolean;
-  setManager: CallableFunction;
-}
+import { useAppContext, UserLevel } from "../../AppContext";
 
-export const ModeSelection: React.FC<Props> = (props) => {
-  React.useEffect(() => {
-    if (props.userLevel === "admin" || props.userLevel === "manager") {
-      const storedLevel = localStorage.getItem("UserLevel");
-      if (storedLevel === "admin") {
-        props.setAdmin(true);
-        props.setManager(true);
-      } else if (storedLevel === "manager") {
-        props.setManager(true);
-      }
-    }
-  }, [props]);
+export const ModeSelection: React.FC = () => {
+  const context = useAppContext();
+
+  if (context.userLevel === UserLevel.Customer) {
+    return null;
+  }
 
   return (
     <Hidden smDown implementation="css">
-      <FormGroup row>
-        {props.userLevel === "admin" && (
+      <RadioGroup row>
+        {context.userLevel === UserLevel.Admin && (
           <FormControlLabel
             control={
               <Switch
-                checked={props.admin}
+                checked={context.selectedUserLevel === UserLevel.Admin}
                 color="primary"
-                disabled={!props.manager}
                 onChange={() => {
-                  if (props.admin) {
+                  if (context.selectedUserLevel === UserLevel.Admin) {
                     // We are disabling admin mode
-                    localStorage.setItem("UserLevel", "manager");
+                    localStorage.setItem("UserLevel", "Manager");
+                    context.setSelectedUserLevel(UserLevel.Manager);
                   } else {
                     // We are enabling admin mode
-                    localStorage.setItem("UserLevel", "admin");
+                    localStorage.setItem("UserLevel", "Admin");
+                    context.setSelectedUserLevel(UserLevel.Admin);
                   }
-                  props.setAdmin(!props.admin);
                 }}
               />
             }
             label="Admin Mode"
           />
         )}
-        {(props.userLevel === "admin" || props.userLevel === "manager") && (
-          <FormControlLabel
-            control={
-              <Switch
-                checked={props.manager}
-                color="secondary"
-                onChange={() => {
-                  if (props.manager) {
-                    // We are disabling manager mode
-                    localStorage.removeItem("UserLevel");
-                    window.location.pathname = "/";
-                  } else {
-                    // We are enabling manager mode
-                    localStorage.setItem("UserLevel", "manager");
-                  }
-                  props.setAdmin(false);
-                  props.setManager(!props.manager);
-                }}
-              />
-            }
-            label="Manager Mode"
-          />
-        )}
-      </FormGroup>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={context.selectedUserLevel !== UserLevel.Customer}
+              color="secondary"
+              onChange={() => {
+                if (context.selectedUserLevel !== UserLevel.Customer) {
+                  // We are disabling manager mode
+                  localStorage.setItem("UserLevel", "Customer");
+                  context.setSelectedUserLevel(UserLevel.Customer);
+                  window.location.pathname = "/";
+                } else {
+                  // We are enabling manager mode
+                  localStorage.setItem("UserLevel", "Manager");
+                  context.setSelectedUserLevel(UserLevel.Manager);
+                }
+              }}
+            />
+          }
+          label="Manager Mode"
+        />
+      </RadioGroup>
     </Hidden>
   );
 };

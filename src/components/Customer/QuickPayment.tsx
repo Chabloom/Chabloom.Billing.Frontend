@@ -1,21 +1,13 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Autocomplete } from "@material-ui/lab";
 
 import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
 
 import { PaymentOverview } from "./PaymentOverview";
-import { Autocomplete } from "@material-ui/lab";
 import { Status } from "../Status";
-
-interface Props {
-  user: User | undefined;
-  trackedAccounts: Array<AccountViewModel>;
-  setTrackedAccounts: CallableFunction;
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const QuickPayment: React.FC<Props> = (props) => {
+export const QuickPayment: React.FC = () => {
   const [account, setAccount] = React.useState<AccountViewModel>();
   const [allTenants, setAllTenants] = React.useState<Array<TenantViewModel>>([]);
   const [tenant, setTenant] = React.useState("");
@@ -40,19 +32,20 @@ export const QuickPayment: React.FC<Props> = (props) => {
 
   // Get all available tenants
   React.useEffect(() => {
-    const getTenants = async () => {
-      setProcessing(true);
-      const api = new TenantsApi();
-      const [items, err] = await api.readItems();
-      if (items && !err) {
-        setAllTenants(items);
-      } else {
-        setError(err);
-      }
-      setProcessing(false);
-    };
-    getTenants().then();
-  }, [props.user]);
+    setProcessing(true);
+    setError("");
+    const api = new TenantsApi();
+    api
+      .readItems()
+      .then(([ret, err]) => {
+        if (ret) {
+          setAllTenants(ret);
+        } else {
+          setError(err);
+        }
+      })
+      .finally(() => setProcessing(false));
+  }, []);
 
   const getAccountPayments = async () => {
     setAccount(undefined);
@@ -125,7 +118,7 @@ export const QuickPayment: React.FC<Props> = (props) => {
       </Grid>
       {account && (
         <Grid item xs={12}>
-          <PaymentOverview {...props} account={account} allowTracking={true} />
+          <PaymentOverview account={account} allowTracking={true} />
         </Grid>
       )}
     </Grid>

@@ -5,6 +5,7 @@ import { Checkbox, TableBody, TableCell, TableRow, TextField } from "@material-u
 import { AccountViewModel, BaseViewModel } from "../../types";
 
 import { ChabloomTableColumn } from "./Column";
+import { useAppContext } from "../../AppContext";
 
 interface Props {
   columns: Array<ChabloomTableColumn>;
@@ -16,13 +17,15 @@ interface Props {
   setEditItem: CallableFunction;
   deleteIndex: number;
   processing: boolean;
-  setAccount: CallableFunction;
 }
 
 export const ChabloomTableBody: React.FC<Props> = (props) => {
+  const context = useAppContext();
+
   if (props.data === undefined || props.data.length === 0) {
     return null;
   }
+
   return (
     <TableBody>
       {props.data.map((row, index) => {
@@ -35,12 +38,12 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                 if (props.editIndex !== index && props.deleteIndex !== index) {
                   props.setSelectedIndex(-1);
                 }
-                props.setAccount(undefined);
+                context.setSelectedAccount(undefined);
               } else {
                 props.setSelectedIndex(index);
                 const account = row as AccountViewModel;
                 if (account) {
-                  props.setAccount(account);
+                  context.setSelectedAccount(account);
                 }
               }
             }}

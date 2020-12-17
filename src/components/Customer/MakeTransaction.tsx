@@ -18,6 +18,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
 import {
   BillViewModel,
@@ -32,10 +33,9 @@ import {
 import { Status } from "../Status";
 import { SavedPaymentInfo } from "./SavedPaymentInfo";
 import { NewPaymentInfo } from "./NewPaymentInfo";
-import { CancelOutlined, CheckCircle } from "@material-ui/icons";
+import { useAppContext } from "../../AppContext";
 
 interface Props {
-  user: User | undefined;
   payment: BillViewModel;
   selectedPayment: BillViewModel | undefined;
   setSelectedPayment: CallableFunction;
@@ -69,38 +69,48 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   const [paymentCardId, setPaymentCardId] = React.useState("");
   const [savedPayments, setSavedPayments] = React.useState<Array<PaymentCardViewModel>>([]);
 
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
   React.useEffect(() => {
-    var api = new PaymentCardsApi(props.user);
-    api.readItems().then(([ret, err]) => {
-      if (ret) {
-        if (ret.length === 0) {
-          setPaymentCardId("new");
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
+
+  React.useEffect(() => {
+    if (user) {
+      const api = new PaymentCardsApi(user);
+      api.readItems().then(([ret, err]) => {
+        if (ret) {
+          if (ret.length === 0) {
+            setPaymentCardId("new");
+          } else {
+            setSavedPayments(ret.filter((x) => x.permanent));
+          }
         } else {
-          setSavedPayments(ret.filter((x) => x.permanent));
+          console.log(err);
         }
-      } else {
-        console.log(err);
-      }
-    });
-  }, [props.user]);
+      });
+    }
+  }, [user]);
 
   const makeTransaction = async (paymentCardId: string) => {
-    setProcessing(true);
-    setError("");
-    const item = {
-      name: props.payment.name,
-      amount: props.payment.amount,
-      paymentCardId: paymentCardId,
-    } as TransactionViewModel;
-    const api = new TransactionsApi(props.user);
-    const [ret, err] = await api.addItem(item);
-    setProcessing(false);
-    if (ret) {
-      return ret.id;
-    } else {
-      setError(err);
+    if (user) {
+      setProcessing(true);
+      setError("");
+      const item = {
+        name: props.payment.name,
+        amount: props.payment.amount,
+        paymentCardId: paymentCardId,
+      } as TransactionViewModel;
+      const api = new TransactionsApi(user);
+      const [ret, err] = await api.addItem(item);
+      setProcessing(false);
+      if (ret) {
+        return ret.id;
+      } else {
+        setError(err);
+      }
+      return "";
     }
-    return "";
   };
   const makeQuickTransaction = async (transactionId: string) => {
     setProcessing(true);
@@ -153,7 +163,6 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                 {paymentCardId === "" && (
                   <SavedPaymentInfo
                     {...props}
-                    paymentCardId={paymentCardId}
                     setPaymentCardId={setPaymentCardId}
                     savedPayments={savedPayments}
                     processing={processing}

@@ -1,17 +1,13 @@
 import * as React from "react";
 
-import { UserManager } from "oidc-client";
-
 import { createStyles, Grid, Paper, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Status } from "../Status";
 
-import logo from "../../logo.svg";
+import { useAppContext } from "../../AppContext";
 
-interface Props {
-  userManager: UserManager;
-}
+import logo from "../../logo.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const SignOutCallback: React.FC<Props> = (props) => {
+export const SignOutCallback: React.FC = () => {
   // Initialize classes
   const classes = useStyles();
 
@@ -32,13 +28,15 @@ export const SignOutCallback: React.FC<Props> = (props) => {
   const [error, setError] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
 
+  const context = useAppContext();
+
   // Sign out and redirect to the specified redirect URI
   React.useEffect(() => {
     setProcessing(true);
     // Removed the signed in key
     localStorage.removeItem("SignedIn");
     const redirectUri = localStorage.getItem("redirectUri");
-    props.userManager.signoutRedirectCallback().then((value) => {
+    context.userManager.signoutRedirectCallback().then((value) => {
       if (value.error) {
         setError(value.error);
         return;
@@ -50,7 +48,7 @@ export const SignOutCallback: React.FC<Props> = (props) => {
       window.location.replace("/");
     });
     setProcessing(false);
-  }, [props.userManager]);
+  }, [context.userManager]);
 
   return (
     <div>

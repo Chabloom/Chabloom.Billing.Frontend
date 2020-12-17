@@ -1,10 +1,8 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import { BaseApiType, BaseViewModel, TenantViewModel } from "../../types";
+import { BaseApiType, BaseViewModel } from "../../types";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";
@@ -13,13 +11,10 @@ import { ChabloomTablePagination } from "./Pagination";
 import { ChabloomTableHeading } from "./Heading";
 
 interface Props {
-  user: User | undefined;
-  tenant: TenantViewModel | undefined;
-  api: BaseApiType<BaseViewModel>;
+  api: BaseApiType<BaseViewModel> | undefined;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
-  setAccount: CallableFunction;
 }
 
 export const ChabloomTable: React.FC<Props> = (props) => {
@@ -36,23 +31,25 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   React.useEffect(() => {
     const getTableData = async () => {
       setProcessing(true);
-      const [items, err] = await props.api.readItems();
-      if (items && !err) {
-        try {
-          const sortedData = items.sort((a, b) => a["name"].localeCompare(b["name"]));
-          setData([...sortedData]);
-          setError("");
-        } catch {
+      if (props.api) {
+        const [items, err] = await props.api.readItems();
+        if (items && !err) {
           try {
-            setData(items);
+            const sortedData = items.sort((a, b) => a["name"].localeCompare(b["name"]));
+            setData([...sortedData]);
             setError("");
           } catch {
-            setError("item read failed");
+            try {
+              setData(items);
+              setError("");
+            } catch {
+              setError("item read failed");
+            }
           }
+        } else {
+          setData([] as Array<BaseViewModel>);
+          setError(err);
         }
-      } else {
-        setData([] as Array<BaseViewModel>);
-        setError(err);
       }
       setProcessing(false);
     };

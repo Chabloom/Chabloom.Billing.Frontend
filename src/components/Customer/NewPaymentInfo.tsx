@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import { Controller, useForm } from "react-hook-form";
+
+import { User } from "oidc-client";
 
 import {
   Button,
@@ -22,6 +22,8 @@ import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 import Cleave from "cleave.js/react";
 
 import { PaymentCardsApi, PaymentCardViewModel } from "../../types";
+
+import { useAppContext } from "../../AppContext";
 
 import amex from "./images/amex.png";
 import discover from "./images/discover.png";
@@ -43,7 +45,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  user: User | undefined;
   paymentCardId: string | undefined;
   setPaymentCardId: CallableFunction;
   savedPayments: Array<PaymentCardViewModel>;
@@ -61,31 +62,39 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
   const [image, setImage] = React.useState("");
   const [permanent, setPermanent] = React.useState(false);
 
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
+
   const { handleSubmit, errors, control } = useForm({
     mode: "onChange",
   });
 
   const onSubmit = (data: any) => {
     const createPaymentCard = async () => {
-      props.setProcessing(true);
-      props.setError("");
-      const item = {
-        name: data.cardName,
-        cardNumber: data.cardNumber,
-        cardNumberLast4: "0000",
-        cardholderName: data.cardholderName,
-        expirationMonth: data.expirationMonth,
-        expirationYear: data.expirationYear,
-        permanent: permanent,
-      } as PaymentCardViewModel;
-      const api = new PaymentCardsApi(props.user);
-      const [ret, err] = await api.addItem(item);
-      props.setProcessing(false);
-      if (ret) {
-        props.setSavedPayments([...props.savedPayments, ret]);
-        return ret.id;
-      } else {
-        props.setError(err);
+      if (user) {
+        props.setProcessing(true);
+        props.setError("");
+        const item = {
+          name: data.cardName,
+          cardNumber: data.cardNumber,
+          cardNumberLast4: "0000",
+          cardholderName: data.cardholderName,
+          expirationMonth: data.expirationMonth,
+          expirationYear: data.expirationYear,
+          permanent: permanent,
+        } as PaymentCardViewModel;
+        const api = new PaymentCardsApi(user);
+        const [ret, err] = await api.addItem(item);
+        props.setProcessing(false);
+        if (ret) {
+          props.setSavedPayments([...props.savedPayments, ret]);
+          return ret.id;
+        } else {
+          props.setError(err);
+        }
       }
       return "";
     };

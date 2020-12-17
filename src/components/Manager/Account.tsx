@@ -2,15 +2,10 @@ import * as React from "react";
 
 import { User } from "oidc-client";
 
-import { AccountsApi, TenantViewModel } from "../../types";
+import { AccountsApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-
-interface Props {
-  user: User | undefined;
-  tenant: TenantViewModel;
-  setAccount: CallableFunction;
-}
+import { useAppContext } from "../../AppContext";
 
 const columns: Array<ChabloomTableColumn> = [
   {
@@ -30,39 +25,44 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-export const Account: React.FC<Props> = (props) => {
+export const Account: React.FC = () => {
   // Initialize state variables
-  const [api, setApi] = React.useState<AccountsApi>(new AccountsApi(props.user, props.tenant.id));
+  const [api, setApi] = React.useState<AccountsApi>();
   const [title, setTitle] = React.useState("Accounts");
+
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
 
   // Update the API
   React.useEffect(() => {
-    if (props.tenant.id) {
-      setApi(new AccountsApi(props.user, props.tenant.id));
+    if (user) {
+      if (context.selectedTenant && context.selectedTenant.id) {
+        setApi(new AccountsApi(user, context.selectedTenant.id));
+      }
     }
-  }, [props.user, props.tenant]);
+  }, [user, context.selectedTenant]);
 
   // Update the title
   React.useEffect(() => {
-    setTitle(`${props.tenant.name} Accounts`);
-  }, [props.tenant]);
+    if (context.selectedTenant) {
+      setTitle(`${context.selectedTenant.name} Accounts`);
+    }
+  }, [context.selectedTenant]);
 
-  // Workaround for eslint issue on the useEffect call below
-  const setAccount = props.setAccount;
-
-  // Update the title
+  // Unset the account
   React.useEffect(() => {
-    setAccount(undefined);
-  }, [setAccount]);
+    context.setSelectedAccount(undefined);
+  }, []);
 
   return (
     <ChabloomTable
-      {...props}
       api={api}
       title={title}
       columns={columns}
       methods={["add", "edit", "delete", "payment", "paymentSchedule"]}
-      setAccount={props.setAccount}
     />
   );
 };

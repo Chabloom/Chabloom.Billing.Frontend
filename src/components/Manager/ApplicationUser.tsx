@@ -5,10 +5,7 @@ import { User } from "oidc-client";
 import { ApplicationUsersApi } from "../../types";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
-
-interface Props {
-  user: User | undefined;
-}
+import { useAppContext } from "../../AppContext";
 
 const columns: Array<ChabloomTableColumn> = [
   {
@@ -18,30 +15,28 @@ const columns: Array<ChabloomTableColumn> = [
   },
 ];
 
-export const ApplicationUser: React.FC<Props> = (props) => {
+export const ApplicationUser: React.FC = () => {
   // Initialize state variables
-  const [api, setApi] = React.useState<ApplicationUsersApi>(new ApplicationUsersApi(props.user));
+  const [api, setApi] = React.useState<ApplicationUsersApi>();
   const [title, setTitle] = React.useState("Administrators");
+
+  const context = useAppContext();
+  const [user, setUser] = React.useState<User | null>(null);
+  React.useEffect(() => {
+    context.getUser().then((u) => setUser(u));
+  }, [context.userLoaded]);
 
   // Update the API
   React.useEffect(() => {
-    setApi(new ApplicationUsersApi(props.user));
-  }, [props.user]);
+    if (user) {
+      setApi(new ApplicationUsersApi(user));
+    }
+  }, [user]);
 
   // Update the title
   React.useEffect(() => {
     setTitle("Administrators");
   }, []);
 
-  return (
-    <ChabloomTable
-      {...props}
-      api={api}
-      title={title}
-      columns={columns}
-      methods={["add", "edit", "delete"]}
-      tenant={undefined}
-      setAccount={() => {}}
-    />
-  );
+  return <ChabloomTable api={api} title={title} columns={columns} methods={["add", "edit", "delete"]} />;
 };

@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { User } from "oidc-client";
-
 import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, CheckCircle } from "@material-ui/icons";
@@ -23,8 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  user: User | undefined;
-  paymentCardId: string | undefined;
   setPaymentCardId: CallableFunction;
   savedPayments: Array<PaymentCardViewModel>;
   processing: boolean;

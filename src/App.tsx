@@ -9,11 +9,20 @@ import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
 import { createBrowserHistory } from "history";
 
-import { AppInsightsInstrumentationKey, OidcSettings } from "./types";
+import {
+  AccountsApi,
+  AccountViewModel,
+  AppInsightsInstrumentationKey,
+  ApplicationUsersApi,
+  OidcSettings,
+  TenantsApi,
+  TenantViewModel,
+} from "./types";
 
 import { Routes } from "./components";
 
 import "./App.scss";
+import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 
 const browserHistory = createBrowserHistory({ basename: "" });
 const reactPlugin = new ReactPlugin();
@@ -29,38 +38,48 @@ const appInsights = new ApplicationInsights({
 appInsights.loadAppInsights();
 
 export const App: React.FC = () => {
-  const [user, setUser] = React.useState<User>();
-  const [darkMode, setDarkMode] = React.useState<boolean>(false);
+  const [userLoaded, setUserLoaded] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(false);
+  const [userLevel, setUserLevel] = React.useState(UserLevel.Customer);
+  const [selectedUserLevel, setSelectedUserLevel] = React.useState(UserLevel.Customer);
+  const [authorizedTenants, setAuthorizedTenants] = React.useState<Array<TenantViewModel>>([]);
+  const [selectedTenant, setSelectedTenant] = React.useState<TenantViewModel>();
+  const [selectedAccount, setSelectedAccount] = React.useState<AccountViewModel>();
+  const [trackedAccounts, setTrackedAccounts] = React.useState<Array<AccountViewModel>>([]);
 
   const userManager = React.useMemo(() => new UserManager(OidcSettings), []);
   React.useEffect(() => {
     userManager.events.addUserLoaded((user) => {
-      setUser(user);
+      console.log(user);
+      console.log("user loaded");
+      setUserLoaded(true);
     });
     userManager.events.addSilentRenewError((error) => {
       console.log(error);
     });
     userManager.events.addAccessTokenExpired(() => {
-      userManager.signinSilent().then((user) => setUser(user));
+      userManager.signinSilent().then();
     });
   }, [userManager]);
 
-  React.useEffect(() => {
-    const getUser = async () => {
-      if (localStorage.getItem("SignedIn") === "true") {
-        let user = await userManager.getUser();
-        if (user) {
-          console.debug("set existing user called");
-          setUser(user);
-          return;
-        }
-        console.debug("sign in silent called");
+  const getUser = async (): Promise<User | null> => {
+    const signedIn = localStorage.getItem("SignedIn") === "true";
+    if (signedIn) {
+      let user = await userManager.getUser();
+      if (user) {
+        console.log("returning loaded user");
+        setUserLoaded(true);
+        return user;
+      } else {
+        console.log("signing in silent");
         user = await userManager.signinSilent();
-        setUser(user);
+        setUserLoaded(true);
+        return user;
       }
-    };
-    getUser().then();
-  }, [userManager]);
+    }
+    console.log("not signed in");
+    return null;
+  };
 
   // Get dark mode setting
   const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -86,9 +105,125 @@ export const App: React.FC = () => {
     [darkMode]
   );
 
+  // Get the user's administrative level
+  React.useEffect(() => {
+    if (userLoaded) {
+      getUser().then((user) => {
+        if (user) {
+          const api = new ApplicationUsersApi(user);
+          api.readItem(user.profile.sub).then(([ret, err]) => {
+            if (ret && !err) {
+              setUserLevel(UserLevel.Admin);
+            } else {
+              if (authorizedTenants.length !== 0) {
+                setUserLevel(UserLevel.Manager);
+              }
+            }
+          });
+        }
+      });
+    }
+  }, [userLoaded, authorizedTenants]);
+
+  // Select the administrative level that was previously selected
+  React.useEffect(() => {
+    if (userLoaded) {
+      if (userLevel !== UserLevel.Customer) {
+        const storedLevel = localStorage.getItem("UserLevel");
+        if (storedLevel === "Admin") {
+          setSelectedUserLevel(UserLevel.Admin);
+        } else if (storedLevel === "Manager") {
+          setSelectedUserLevel(UserLevel.Manager);
+        }
+      }
+    }
+  }, [userLoaded, userLevel]);
+
+  // Get tenants that the user is authorized to select
+  React.useEffect(() => {
+    if (userLoaded) {
+      if (selectedUserLevel !== UserLevel.Customer) {
+        getUser().then((user) => {
+          if (user) {
+            const api = new TenantsApi(user);
+            api.readItemsAuthorized().then(([ret, err]) => {
+              if (ret) {
+                if (ret.length !== 0) {
+                  const sorted = ret.sort((a, b) => a.name.localeCompare(b.name));
+                  setAuthorizedTenants(sorted);
+                }
+              } else {
+                console.log(err);
+              }
+            });
+          }
+        });
+      }
+    }
+  }, [userLoaded, selectedUserLevel]);
+
+  // Select the tenant that was previously selected
+  React.useEffect(() => {
+    if (userLoaded) {
+      if (authorizedTenants && authorizedTenants.length !== 0) {
+        // Attempt to find the previously selected tenant
+        const oldTenantId = window.localStorage.getItem("TenantId");
+        if (oldTenantId) {
+          const newTenant = authorizedTenants.find((x) => x.id === oldTenantId);
+          if (newTenant) {
+            // Select the previously selected tenant
+            setSelectedTenant(newTenant);
+            return;
+          }
+        }
+        // Use the first available tenant
+        if (authorizedTenants[0] && authorizedTenants[0].id) {
+          window.localStorage.setItem("TenantId", authorizedTenants[0].id);
+          setSelectedTenant(authorizedTenants[0]);
+        }
+      }
+    }
+  }, [userLoaded, authorizedTenants]);
+
+  // Get all accounts the user is tracking
+  React.useEffect(() => {
+    getUser().then((user) => {
+      if (user) {
+        const api = new AccountsApi(user);
+        api.readItemsAuthorized().then(([ret, err]) => {
+          if (ret) {
+            setTrackedAccounts(ret);
+          } else {
+            console.log(err);
+          }
+        });
+      }
+    });
+  }, []);
+
+  const props = {
+    userManager: userManager,
+    getUser: getUser,
+    userLoaded: userLoaded,
+    darkMode: darkMode,
+    setDarkMode: setDarkMode,
+    userLevel: userLevel,
+    selectedUserLevel: selectedUserLevel,
+    setSelectedUserLevel: setSelectedUserLevel,
+    authorizedTenants: authorizedTenants,
+    selectedTenant: selectedTenant,
+    setSelectedTenant: setSelectedTenant,
+    selectedAccount: selectedAccount,
+    setSelectedAccount: setSelectedAccount,
+    trackedAccounts: trackedAccounts,
+    setTrackedAccounts: setTrackedAccounts,
+  } as AppContextProps;
+
   return (
     <ThemeProvider theme={theme}>
-      <Routes user={user} userManager={userManager} darkMode={darkMode} setDarkMode={setDarkMode} />
+      <AppContext.Provider value={props}>
+        <Routes />
+      </AppContext.Provider>
     </ThemeProvider>
   );
 };
