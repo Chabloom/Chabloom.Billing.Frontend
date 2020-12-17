@@ -27,6 +27,7 @@ interface Props {
   paymentCardId: string | undefined;
   setPaymentCardId: CallableFunction;
   savedPayments: Array<PaymentCardViewModel>;
+  processing: boolean;
 }
 
 export const SavedPaymentInfo: React.FC<Props> = (props) => {
@@ -45,6 +46,7 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
         className={classes.mt1}
         native
         fullWidth
+        disabled={props.processing}
         inputProps={{ id: "payment-select" }}
         onChange={(e) => {
           e.preventDefault();
@@ -56,7 +58,7 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
           return <option value={payment.id}>{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>;
         })}
       </Select>
-      <ButtonGroup className={classes.mt1} fullWidth>
+      <ButtonGroup className={classes.mt1} fullWidth disabled={props.processing}>
         {selectedPaymentCardId !== "" && (
           <Button
             variant="contained"

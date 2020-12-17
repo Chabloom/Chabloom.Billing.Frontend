@@ -38,6 +38,7 @@ interface Props {
   savedPayments: Array<PaymentCardViewModel>;
   setSavedPayments: CallableFunction;
   setError: CallableFunction;
+  processing: boolean;
   setProcessing: CallableFunction;
 }
 
@@ -94,6 +95,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              disabled={props.processing}
               autoFocus
               label="Card number"
               inputMode="numeric"
@@ -142,6 +144,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              disabled={props.processing}
               label="Name on card"
               autoComplete="cc-name"
               error={!!errors.cardholderName}
@@ -159,6 +162,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   required
+                  disabled={props.processing}
                   label="Expiration month (MM)"
                   inputMode="numeric"
                   autoComplete="cc-exp-month"
@@ -182,6 +186,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   required
+                  disabled={props.processing}
                   label="Expiration year (YY)"
                   inputMode="numeric"
                   autoComplete="cc-exp-year"
@@ -206,6 +211,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              disabled={props.processing}
               label={`Security code (${image === amex ? 4 : 3} digits)`}
               inputMode="numeric"
               autoComplete="cc-csc"
@@ -235,13 +241,14 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              disabled={props.processing}
               label="Card friendly name"
               error={!!errors.cardName}
               helperText={errors.cardName ? errors.cardName.message : ""}
             />
           }
         />
-        <ButtonGroup className={classes.mt1} fullWidth>
+        <ButtonGroup className={classes.mt1} fullWidth disabled={props.processing}>
           <Button variant="contained" color="primary" type="submit">
             <CheckCircle className={classes.mr1} />
             <Hidden smDown implementation="css">

@@ -73,7 +73,11 @@ export const MakeTransaction: React.FC<Props> = (props) => {
     var api = new PaymentCardsApi(props.user);
     api.readItems().then(([ret, err]) => {
       if (ret) {
-        setSavedPayments(ret);
+        if (ret.length === 0) {
+          setPaymentCardId("new");
+        } else {
+          setSavedPayments(ret);
+        }
       } else {
         console.log(err);
       }
@@ -152,6 +156,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                     paymentCardId={paymentCardId}
                     setPaymentCardId={setPaymentCardId}
                     savedPayments={savedPayments}
+                    processing={processing}
                   />
                 )}
                 {paymentCardId === "new" && (
@@ -162,6 +167,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                     savedPayments={savedPayments}
                     setSavedPayments={setSavedPayments}
                     setError={setError}
+                    processing={processing}
                     setProcessing={setProcessing}
                   />
                 )}
@@ -172,7 +178,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
               {paymentCardId !== "" && paymentCardId !== "new" && (
                 <CardActionArea>
                   <CardActions>
-                    <ButtonGroup fullWidth>
+                    <ButtonGroup fullWidth disabled={processing}>
                       <Button
                         variant="contained"
                         color="primary"
