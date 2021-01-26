@@ -19,10 +19,10 @@ export const ChabloomTablePagination: React.FC<Props> = (props) => {
       count={props.data.length}
       rowsPerPage={rowsPerPage}
       page={page}
-      onChangePage={(event, newPage) => {
+      onPageChange={(event, newPage) => {
         setPage(newPage);
       }}
-      onChangeRowsPerPage={(event) => {
+      onRowsPerPageChange={(event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
       }}

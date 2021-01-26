@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { UserManager } from "oidc-client";
 
-import { createMuiTheme, ThemeProvider, useMediaQuery } from "@material-ui/core";
+import { createMuiTheme, StylesProvider, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
 import { ApplicationInsights } from "@microsoft/applicationinsights-web";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
@@ -88,7 +88,7 @@ export const App: React.FC = () => {
     () =>
       createMuiTheme({
         palette: {
-          type: darkMode ? "dark" : "light",
+          mode: darkMode ? "dark" : "light",
         },
         typography: {
           fontFamily: ["Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif"].join(","),
@@ -232,10 +232,12 @@ export const App: React.FC = () => {
   } as AppContextProps;
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppContext.Provider value={props}>
-        <Routes />
-      </AppContext.Provider>
-    </ThemeProvider>
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <AppContext.Provider value={props}>
+          <Routes />
+        </AppContext.Provider>
+      </ThemeProvider>
+    </StylesProvider>
   );
 };

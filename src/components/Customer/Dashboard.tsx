@@ -7,7 +7,7 @@ import { UpcomingPayments } from "./UpcomingPayments";
 
 export const Dashboard: React.FC = () => {
   return (
-    <Grid container spacing={3} justify="center">
+    <Grid container spacing={3} justifyContent="center">
       <Grid item md={6} xs={12}>
         <QuickPayment />
       </Grid>

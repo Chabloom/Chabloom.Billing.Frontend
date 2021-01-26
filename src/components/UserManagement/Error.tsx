@@ -59,7 +59,7 @@ export const Error: React.FC = () => {
 
   return (
     <div>
-      <Grid container justify="center" style={{ minHeight: "100vh" }}>
+      <Grid container justifyContent="center" style={{ minHeight: "100vh" }}>
         <Grid item xs={12} sm={8} md={6}>
           <Paper className={classes.paper} elevation={3}>
             <img src={logo} className="logo" alt="logo" />

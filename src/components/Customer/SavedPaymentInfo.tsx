@@ -71,7 +71,6 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
         )}
         <Button
           variant="contained"
-          color="default"
           onClick={() => {
             props.setPaymentCardId("new");
           }}
