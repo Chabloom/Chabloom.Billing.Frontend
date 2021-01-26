@@ -9,7 +9,9 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Checkbox,
   createStyles,
+  FormControlLabel,
   Grid,
   Hidden,
   Theme,
@@ -66,6 +68,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
   const [paymentCardId, setPaymentCardId] = React.useState("");
   const [savedPayments, setSavedPayments] = React.useState<Array<PaymentCardViewModel>>([]);
+  const [agreed, setAgreed] = React.useState(false);
 
   const { userToken } = useAppContext();
 
@@ -184,6 +187,13 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                 {paymentCardId !== "" && paymentCardId !== "new" && (
                   <Typography variant="body1">{`Using payment method ending in ${getSavedPaymentCardLast4()}`}</Typography>
                 )}
+                {paymentCardId !== "" && paymentCardId !== "new" && (
+                  <FormControlLabel
+                    className={classes.mt1}
+                    control={<Checkbox checked={agreed} onChange={() => setAgreed(!agreed)} />}
+                    label="I agree to the terms and conditions"
+                  />
+                )}
               </CardContent>
               {paymentCardId !== "" && paymentCardId !== "new" && (
                 <CardActionArea>
@@ -195,6 +205,7 @@ export const MakeTransaction: React.FC<Props> = (props) => {
                         onClick={() => {
                           completeTransaction().then();
                         }}
+                        disabled={!agreed}
                       >
                         <CheckCircle className={classes.mr1} />
                         <Hidden smDown implementation="css">
