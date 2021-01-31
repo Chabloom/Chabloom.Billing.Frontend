@@ -89,6 +89,7 @@ export const SignIn: React.FC = () => {
               <FormGroup>
                 <TextField
                   required
+                  variant="standard"
                   name="email"
                   label="Email"
                   value={email}
@@ -98,6 +99,7 @@ export const SignIn: React.FC = () => {
                 />
                 <TextField
                   required
+                  variant="standard"
                   name="password"
                   label="Password"
                   value={password}

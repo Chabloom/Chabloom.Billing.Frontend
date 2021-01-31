@@ -85,6 +85,7 @@ export const Register: React.FC = () => {
               <FormGroup>
                 <TextField
                   required
+                  variant="standard"
                   name="name"
                   label="Name"
                   value={name}
@@ -93,6 +94,7 @@ export const Register: React.FC = () => {
                 />
                 <TextField
                   required
+                  variant="standard"
                   name="email"
                   label="Email"
                   value={email}
@@ -102,6 +104,7 @@ export const Register: React.FC = () => {
                 />
                 <TextField
                   required
+                  variant="standard"
                   name="phone"
                   label="Phone"
                   value={phone}
@@ -111,6 +114,7 @@ export const Register: React.FC = () => {
                 />
                 <TextField
                   required
+                  variant="standard"
                   name="password1"
                   label="Password"
                   value={password1}
@@ -120,6 +124,7 @@ export const Register: React.FC = () => {
                 />
                 <TextField
                   required
+                  variant="standard"
                   name="password2"
                   label="Password (confirm)"
                   value={password2}

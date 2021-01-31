@@ -84,6 +84,7 @@ export const QuickPayment: React.FC = () => {
                   <TextField
                     {...params}
                     required
+                    variant="standard"
                     name="tenant"
                     label="Tenant"
                     value={tenant}
@@ -95,6 +96,7 @@ export const QuickPayment: React.FC = () => {
               />
               <TextField
                 required
+                variant="standard"
                 name="account"
                 label="Account Number"
                 value={accountNumber}

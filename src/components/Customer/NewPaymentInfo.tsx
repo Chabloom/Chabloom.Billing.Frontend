@@ -111,6 +111,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              variant="standard"
               disabled={props.processing}
               autoFocus
               label="Card number"
@@ -160,6 +161,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              variant="standard"
               disabled={props.processing}
               label="Name on card"
               autoComplete="cc-name"
@@ -178,6 +180,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   required
+                  variant="standard"
                   disabled={props.processing}
                   label="Expiration month (MM)"
                   inputMode="numeric"
@@ -202,6 +205,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                 <TextField
                   fullWidth
                   required
+                  variant="standard"
                   disabled={props.processing}
                   label="Expiration year (YY)"
                   inputMode="numeric"
@@ -227,6 +231,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
               className={classes.mt1}
               fullWidth
               required
+              variant="standard"
               disabled={props.processing}
               label={`Security code (${image === amex ? 4 : 3} digits)`}
               inputMode="numeric"
@@ -258,6 +263,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
                 className={classes.mt1}
                 fullWidth
                 required={permanent}
+                variant="standard"
                 disabled={props.processing}
                 label="Saved card name"
                 error={!!errors.cardName}

@@ -57,7 +57,7 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                 return (
                   <TableCell key={column.accessor}>
                     <TextField
-                      variant="outlined"
+                      variant="standard"
                       name={column.accessor}
                       defaultValue={props.editItem[column.accessor]}
                       disabled={props.processing}
