@@ -1,8 +1,7 @@
 import * as React from "react";
 
-import { createStyles, LinearProgress, Theme } from "@material-ui/core";
+import { Alert, AlertTitle, createStyles, LinearProgress, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert, AlertTitle } from "@material-ui/lab";
 
 interface Props {
   processing: boolean;

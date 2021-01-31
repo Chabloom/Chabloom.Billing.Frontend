@@ -1,8 +1,17 @@
 import * as React from "react";
 
-import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
+import {
+  Autocomplete,
+  Button,
+  createStyles,
+  FormGroup,
+  Grid,
+  Paper,
+  TextField,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Autocomplete } from "@material-ui/lab";
 
 import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
 
