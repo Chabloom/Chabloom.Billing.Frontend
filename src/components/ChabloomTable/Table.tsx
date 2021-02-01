@@ -16,6 +16,7 @@ interface Props {
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
+  allowSetAccount: boolean;
 }
 
 export const ChabloomTable: React.FC<Props> = (props) => {

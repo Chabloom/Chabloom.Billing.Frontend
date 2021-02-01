@@ -28,5 +28,13 @@ export const Bill: React.FC = () => {
   const api = React.useMemo(() => new BillsApi(selectedAccount?.id as string), [selectedAccount?.id]);
   const title = React.useMemo(() => `${selectedAccount?.name as string} Bills`, [selectedAccount?.name]);
 
-  return <ChabloomTable api={api} title={title} columns={columns} methods={["add", "edit", "delete"]} />;
+  return (
+    <ChabloomTable
+      api={api}
+      title={title}
+      columns={columns}
+      methods={["add", "edit", "delete"]}
+      allowSetAccount={false}
+    />
+  );
 };

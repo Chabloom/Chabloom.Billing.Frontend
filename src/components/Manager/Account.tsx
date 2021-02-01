@@ -39,6 +39,7 @@ export const Account: React.FC = () => {
       title={title}
       columns={columns}
       methods={["add", "edit", "delete", "payment", "paymentSchedule"]}
+      allowSetAccount={true}
     />
   );
 };

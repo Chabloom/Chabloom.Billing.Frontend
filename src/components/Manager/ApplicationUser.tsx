@@ -16,5 +16,13 @@ export const ApplicationUser: React.FC = () => {
   const api = React.useMemo(() => new ApplicationUsersApi(), []);
   const title = React.useMemo(() => "Administrators", []);
 
-  return <ChabloomTable api={api} title={title} columns={columns} methods={["add", "edit", "delete"]} />;
+  return (
+    <ChabloomTable
+      api={api}
+      title={title}
+      columns={columns}
+      methods={["add", "edit", "delete"]}
+      allowSetAccount={false}
+    />
+  );
 };

@@ -17,6 +17,7 @@ interface Props {
   setEditItem: CallableFunction;
   deleteIndex: number;
   processing: boolean;
+  allowSetAccount: boolean;
 }
 
 export const ChabloomTableBody: React.FC<Props> = (props) => {
@@ -38,12 +39,16 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                 if (props.editIndex !== index && props.deleteIndex !== index) {
                   props.setSelectedIndex(-1);
                 }
-                context.setSelectedAccount(undefined);
+                if (props.allowSetAccount) {
+                  context.setSelectedAccount(undefined);
+                }
               } else {
                 props.setSelectedIndex(index);
-                const account = row as AccountViewModel;
-                if (account) {
-                  context.setSelectedAccount(account);
+                if (props.allowSetAccount) {
+                  const account = row as AccountViewModel;
+                  if (account) {
+                    context.setSelectedAccount(account);
+                  }
                 }
               }
             }}
