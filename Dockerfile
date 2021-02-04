@@ -1,0 +1,13 @@
+FROM node:lts AS build-env
+WORKDIR /app
+
+COPY package.json ./
+COPY yarn.lock ./
+RUN npx yarn install
+COPY . ./
+RUN NPX yarn build
+
+FROM nginx:stable
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
