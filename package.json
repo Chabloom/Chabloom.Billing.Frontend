@@ -1,5 +1,5 @@
 {
-  "name": "chabloom-payments-frontend",
+  "name": "chabloom-billing-frontend",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
