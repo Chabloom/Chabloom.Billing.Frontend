@@ -1,5 +1,5 @@
 apiVersion: v2
-name: Chabloom.Billing.Frontend
+name: chabloom-billing-frontend
 description: Chabloom Billing Frontend
 
 # A chart can be either an 'application' or a 'library' chart.
