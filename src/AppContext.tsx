@@ -37,17 +37,17 @@ export const AppContext = React.createContext<AppContextProps>({
   userName: "",
   userToken: "",
   darkMode: false,
-  setDarkMode: () => {},
+  setDarkMode: () => console.warn("setDarkMode not implemented"),
   userLevel: UserLevel.Customer,
   selectedUserLevel: UserLevel.Customer,
-  setSelectedUserLevel: () => {},
+  setSelectedUserLevel: () => console.warn("setSelectedUserLevel not implemented"),
   authorizedTenants: [],
   selectedTenant: undefined,
-  setSelectedTenant: () => {},
+  setSelectedTenant: () => console.warn("setSelectedTenant not implemented"),
   selectedAccount: undefined,
-  setSelectedAccount: () => {},
+  setSelectedAccount: () => console.warn("setSelectedAccount not implemented"),
   trackedAccounts: [],
-  setTrackedAccounts: () => {},
+  setTrackedAccounts: () => console.warn("setTrackedAccounts not implemented"),
 });
 
 export const useAppContext = () => React.useContext(AppContext);
