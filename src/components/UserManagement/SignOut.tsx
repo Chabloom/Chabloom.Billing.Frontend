@@ -33,8 +33,8 @@ export const SignOut: React.FC = () => {
     // Removed the signed in key
     localStorage.removeItem("SignedIn");
     // Get parameters and logout id
-    let params = new URLSearchParams(window.location.search);
-    let logoutId = params.get("logoutId");
+    const params = new URLSearchParams(window.location.search);
+    const logoutId = params.get("logoutId");
     const data = {
       id: logoutId,
     } as SignOutViewModel;

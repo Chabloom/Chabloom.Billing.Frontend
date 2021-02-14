@@ -68,7 +68,7 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
                       disabled={props.processing}
                       type={column.type}
                       onChange={(e) => {
-                        let newItem = props.editItem;
+                        const newItem = props.editItem;
                         if (column.type === "number") {
                           newItem[column.accessor] = parseFloat(e.target.value);
                         } else {
