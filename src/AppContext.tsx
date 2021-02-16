@@ -50,4 +50,4 @@ export const AppContext = React.createContext<AppContextProps>({
   setTrackedAccounts: () => console.warn("setTrackedAccounts not implemented"),
 });
 
-export const useAppContext = () => React.useContext(AppContext);
+export const useAppContext = (): AppContextProps => React.useContext(AppContext);
