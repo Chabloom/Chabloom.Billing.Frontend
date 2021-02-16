@@ -13,5 +13,3 @@ export * from "./Tenant";
 export * from "./TenantUser";
 export * from "./Transaction";
 export * from "./TransactionSchedule";
-
-export * from "./UserManagement";
