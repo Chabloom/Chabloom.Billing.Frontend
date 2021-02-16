@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 import { UserManager } from "oidc-client";
 
@@ -19,10 +19,12 @@ import {
   TenantViewModel,
 } from "./types";
 
-import { Routes } from "./components";
+import { Navigation } from "./components";
+
+import { AppContext, AppContextProps, UserLevel } from "./AppContext";
+import { AppRoutes } from "./AppRoutes";
 
 import "./App.scss";
-import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 
 const browserHistory = createBrowserHistory({ basename: "" });
 const reactPlugin = new ReactPlugin();
@@ -235,7 +237,9 @@ export const App: React.FC = () => {
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
         <AppContext.Provider value={props}>
-          <Routes />
+          <Navigation>
+            <AppRoutes />
+          </Navigation>
         </AppContext.Provider>
       </ThemeProvider>
     </StylesProvider>
