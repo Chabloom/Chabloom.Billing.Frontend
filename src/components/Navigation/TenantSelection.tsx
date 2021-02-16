@@ -64,6 +64,7 @@ export const TenantSelection: React.FC = () => {
                     {context.authorizedTenants.map((item) => {
                       return (
                         <MenuItem
+                          key={`tenant-${item.id}`}
                           onClick={() => {
                             if (item.id) {
                               context.setSelectedTenant(item);

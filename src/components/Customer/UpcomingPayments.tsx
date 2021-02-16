@@ -16,7 +16,7 @@ export const UpcomingPayments: React.FC = () => {
     <Grid container spacing={2}>
       {trackedAccounts.map((account) => {
         return (
-          <Grid item xs={12}>
+          <Grid item xs={12} key={`upcoming-account-${account.id}`}>
             <PaymentOverview account={account} allowTracking={false} />
           </Grid>
         );

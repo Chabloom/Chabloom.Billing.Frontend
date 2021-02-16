@@ -172,7 +172,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
               paymentAction = "Make payment";
             }
             return (
-              <Grid item xl={2} lg={3} md={4} sm={6} xs={12}>
+              <Grid item xl={2} lg={3} md={4} sm={6} xs={12} key={`account-payment-${payment.id}`}>
                 <Card elevation={3}>
                   <CardContent>
                     <Typography variant="h6">{payment.name}</Typography>

@@ -66,7 +66,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
     mode: "onChange",
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: PaymentCardViewModel) => {
     const createPaymentCard = async () => {
       if (userToken) {
         props.setProcessing(true);

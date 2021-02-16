@@ -51,7 +51,12 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
       >
         <option value="" />
         {props.savedPayments.map((payment) => {
-          return <option value={payment.id}>{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>;
+          return (
+            <option
+              key={`saved-payment-${payment.id}`}
+              value={payment.id}
+            >{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>
+          );
         })}
       </Select>
       <ButtonGroup className={classes.mt1} fullWidth disabled={props.processing}>
