@@ -8,7 +8,7 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/billSchedules`;
+    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/billSchedules`;
     this.accountId = accountId;
   }
 

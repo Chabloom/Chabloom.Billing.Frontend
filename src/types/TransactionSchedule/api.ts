@@ -9,7 +9,7 @@ export class TransactionSchedulesApi
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactionSchedules`;
+    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/transactionSchedules`;
   }
 
   readItems(token: string): Promise<[Array<TransactionScheduleViewModel> | undefined, string]> {

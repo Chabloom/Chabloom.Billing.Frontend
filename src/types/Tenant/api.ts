@@ -7,7 +7,7 @@ export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.paymentsApiPublicAddress}/api/tenants`;
+    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/tenants`;
   }
 
   readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {

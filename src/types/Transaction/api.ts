@@ -7,7 +7,7 @@ export class TransactionsApi extends BaseApi<TransactionViewModel> implements Ba
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.processingApiPublicAddress}/api/transactions`;
+    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/transactions`;
   }
 
   readItems(token: string): Promise<[Array<TransactionViewModel> | undefined, string]> {
