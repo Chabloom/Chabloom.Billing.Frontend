@@ -5,7 +5,7 @@ COPY package.json ./
 COPY yarn.lock ./
 RUN npx yarn install
 COPY . ./
-RUN NPX yarn build
+RUN npx yarn build
 
 FROM nginx:stable
 COPY --from=build /app/build /usr/share/nginx/html
