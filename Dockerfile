@@ -8,6 +8,6 @@ COPY . ./
 RUN npx yarn build
 
 FROM nginx:stable
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build-env /app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
