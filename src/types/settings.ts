@@ -3,9 +3,9 @@ import { UserManagerSettings } from "oidc-client";
 export const ApplicationConfig = {
   name: "chabloom-billing",
   displayName: "Chabloom Billing",
-  frontendPublicAddress: "http://localhost:3001",
-  backendPublicAddress: "https://billing-api-test.chabloom.com",
-  accountsBackendPublicAddress: "https://accounts-api-test.chabloom.com",
+  frontendPublicAddress: "http://billing-dev-1.chabloom.com",
+  backendPublicAddress: "https://billing-api-dev-1.chabloom.com",
+  accountsBackendPublicAddress: "https://accounts-api-dev-1.chabloom.com",
 };
 
 export const AppInsightsInstrumentationKey = "APPINSIGHTS_INSTRUMENTATIONKEY";
@@ -16,7 +16,7 @@ export const OidcSettings: UserManagerSettings = {
   redirect_uri: `${ApplicationConfig.frontendPublicAddress}/signin-oidc`,
   post_logout_redirect_uri: `${ApplicationConfig.frontendPublicAddress}/signout-oidc`,
   response_type: "code",
-  scope: "openid profile Chabloom.Billing",
+  scope: "openid profile Chabloom.Billing.Backend",
   filterProtocolClaims: true,
   loadUserInfo: true,
 };
