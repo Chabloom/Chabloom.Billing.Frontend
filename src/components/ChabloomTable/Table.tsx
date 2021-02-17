@@ -40,7 +40,7 @@ export const ChabloomTable: React.FC<Props> = (props) => {
         .then(([ret, err]) => {
           if (ret && !err) {
             try {
-              const sortedData = ret.sort((a, b) => a["name"].localeCompare(b["name"]));
+              const sortedData = ret.sort((a, b) => (a["name"] as string).localeCompare(b["name"] as string));
               setData([...sortedData]);
               setError("");
             } catch {

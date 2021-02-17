@@ -1,9 +1,10 @@
 import * as React from "react";
 
-import { Checkbox, TableBody, TableCell, TableRow, TextField } from "@material-ui/core";
+import { Checkbox, TableBody, TableCell, TableRow } from "@material-ui/core";
 
 import { AccountViewModel, BaseViewModel } from "../../types";
 
+import { ChabloomTableCell } from "./Cell";
 import { ChabloomTableColumn } from "./Column";
 import { useAppContext } from "../../AppContext";
 
@@ -33,7 +34,7 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
         return (
           <TableRow
             hover
-            key={row["id"]}
+            key={`item-${row["id"]}`}
             onClick={() => {
               if (props.selectedIndex === index) {
                 if (props.editIndex !== index && props.deleteIndex !== index) {
@@ -57,42 +58,15 @@ export const ChabloomTableBody: React.FC<Props> = (props) => {
             <TableCell padding="checkbox">
               <Checkbox checked={props.selectedIndex === index} />
             </TableCell>
-            {props.columns.map((column) => {
-              if (props.editIndex === index) {
-                return (
-                  <TableCell key={column.accessor}>
-                    <TextField
-                      variant="standard"
-                      name={column.accessor}
-                      defaultValue={props.editItem[column.accessor]}
-                      disabled={props.processing}
-                      type={column.type}
-                      onChange={(e) => {
-                        const newItem = props.editItem;
-                        if (column.type === "number") {
-                          newItem[column.accessor] = parseFloat(e.target.value);
-                        } else {
-                          newItem[column.accessor] = e.target.value;
-                        }
-                        props.setEditItem({
-                          ...newItem,
-                        });
-                      }}
-                    />
-                  </TableCell>
-                );
-              } else {
-                return (
-                  <TableCell key={column.accessor} align="left">
-                    {column.type === "date"
-                      ? new Date(row[column.accessor]).toLocaleDateString()
-                      : column.type === "currency"
-                      ? `$${parseFloat(row[column.accessor]).toFixed(2)}`
-                      : row[column.accessor]}
-                  </TableCell>
-                );
-              }
-            })}
+            {props.columns.map((column) => (
+              <ChabloomTableCell
+                {...props}
+                column={column}
+                row={row}
+                editing={props.editIndex === index}
+                key={`cell-${column.accessor}`}
+              />
+            ))}
           </TableRow>
         );
       })}

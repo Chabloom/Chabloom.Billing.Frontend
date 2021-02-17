@@ -49,10 +49,12 @@ export const ChabloomTableHead: React.FC<Props> = (props) => {
     setOrderBy(accessor);
     setDirection(direction === "asc" ? "desc" : "asc");
     if (direction === "desc") {
-      const sortedData = props.data.sort((a, b) => a[accessor].localeCompare(b[accessor])).reverse();
+      const sortedData = props.data
+        .sort((a, b) => (a[accessor] as string).localeCompare(b[accessor] as string))
+        .reverse();
       props.setData([...sortedData]);
     } else {
-      const sortedData = props.data.sort((a, b) => a[accessor].localeCompare(b[accessor]));
+      const sortedData = props.data.sort((a, b) => (a[accessor] as string).localeCompare(b[accessor] as string));
       props.setData([...sortedData]);
     }
   };
