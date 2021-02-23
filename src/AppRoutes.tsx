@@ -21,6 +21,12 @@ export const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Switch>
+        <Route exact={true} path="/signin-oidc">
+          <SignInCallback />
+        </Route>
+        <Route exact={true} path="/signout-oidc">
+          <SignOutCallback />
+        </Route>
         {selectedTenant && (
           <Route path="/accounts">
             <Account />
@@ -49,12 +55,6 @@ export const AppRoutes: React.FC = () => {
         </Route>
         <Route path="/">
           <Home />
-        </Route>
-        <Route exact={true} path="/signin-oidc">
-          <SignInCallback />
-        </Route>
-        <Route exact={true} path="/signout-oidc">
-          <SignOutCallback />
         </Route>
       </Switch>
     </Router>
