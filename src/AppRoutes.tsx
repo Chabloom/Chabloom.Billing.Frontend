@@ -1,7 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { Home, Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser } from "./components";
+import {
+  Home,
+  Account,
+  ApplicationUser,
+  Bill,
+  BillSchedule,
+  Tenant,
+  TenantUser,
+  SignOutCallback,
+  SignInCallback,
+} from "./components";
 
 import { useAppContext } from "./AppContext";
 
@@ -39,6 +49,12 @@ export const AppRoutes: React.FC = () => {
         </Route>
         <Route path="/">
           <Home />
+        </Route>
+        <Route exact={true} path="/signin-oidc">
+          <SignInCallback />
+        </Route>
+        <Route exact={true} path="/signout-oidc">
+          <SignOutCallback />
         </Route>
       </Switch>
     </Router>
