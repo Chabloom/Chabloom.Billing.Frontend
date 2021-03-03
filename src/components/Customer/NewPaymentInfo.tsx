@@ -72,14 +72,11 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
         props.setProcessing(true);
         props.setError("");
         const item = {
-          id: "",
           name: data.cardName,
           cardNumber: data.cardNumber,
-          cardNumberLast4: "0000",
           cardholderName: data.cardholderName,
           expirationMonth: data.expirationMonth,
           expirationYear: data.expirationYear,
-          permanent: permanent,
         } as PaymentCardViewModel;
         const api = new PaymentCardsApi();
         const [ret, err] = await api.addItem(userToken, item);
