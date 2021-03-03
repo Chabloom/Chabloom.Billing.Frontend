@@ -72,6 +72,7 @@ export const NewPaymentInfo: React.FC<Props> = (props) => {
         props.setProcessing(true);
         props.setError("");
         const item = {
+          id: "",
           name: data.cardName,
           cardNumber: data.cardNumber,
           cardNumberLast4: "0000",
