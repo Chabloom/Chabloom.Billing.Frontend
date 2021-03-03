@@ -131,9 +131,9 @@ export const MakePayment: React.FC<Props> = (props) => {
     }
   };
 
-  const getSavedPaymentCardLast4 = () => {
+  const getSavedPaymentCardLast4 = (): string => {
     const savedPaymentCard = savedPayments.find((x) => x.id === paymentCardId);
-    if (savedPaymentCard) {
+    if (savedPaymentCard && savedPaymentCard.cardNumberLast4) {
       return savedPaymentCard.cardNumberLast4;
     }
     return "0000";

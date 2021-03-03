@@ -33,6 +33,13 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
   // Initialize state variables
   const [selectedPaymentCardId, setSelectedPaymentCardId] = React.useState("");
 
+  const getSavedPaymentCardLast4 = (savedPaymentCard: PaymentCardViewModel): string => {
+    if (savedPaymentCard && savedPaymentCard.cardNumberLast4) {
+      return savedPaymentCard.cardNumberLast4;
+    }
+    return "0000";
+  };
+
   return (
     <React.Fragment>
       <InputLabel htmlFor="payment-select" className={classes.mt3}>
@@ -52,15 +59,14 @@ export const SavedPaymentInfo: React.FC<Props> = (props) => {
         <option value="" />
         {props.savedPayments.map((payment) => {
           return (
-            <option
-              key={`saved-payment-${payment.id}`}
-              value={payment.id}
-            >{`${payment.name} ending in ${payment.cardNumberLast4}`}</option>
+            <option key={`saved-payment-${payment.id}`} value={payment.id}>{`${
+              payment.name
+            } ending in ${getSavedPaymentCardLast4(payment)}`}</option>
           );
         })}
       </Select>
       <ButtonGroup className={classes.mt1} fullWidth disabled={props.processing}>
-        {selectedPaymentCardId !== "" && (
+        {selectedPaymentCardId && (
           <Button
             variant="contained"
             color="primary"
