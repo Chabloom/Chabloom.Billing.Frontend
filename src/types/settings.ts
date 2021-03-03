@@ -17,7 +17,7 @@ export const OidcSettings: UserManagerSettings = {
   redirect_uri: `${ApplicationConfig.frontendPublicAddress}/signin-oidc`,
   post_logout_redirect_uri: `${ApplicationConfig.frontendPublicAddress}/signout-oidc`,
   response_type: "code",
-  scope: "openid profile Chabloom.Billing.Backend",
+  scope: "openid profile Chabloom.Accounts.Backend Chabloom.Billing.Backend Chabloom.Transactions.Backend",
   filterProtocolClaims: true,
   loadUserInfo: true,
 };
