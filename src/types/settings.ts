@@ -6,6 +6,7 @@ export const ApplicationConfig = {
   frontendPublicAddress: "https://billing-dev-1.chabloom.com",
   backendPublicAddress: "https://billing-api-dev-1.chabloom.com",
   accountsBackendPublicAddress: "https://accounts-api-dev-1.chabloom.com",
+  transactionsBackendPublicAddress: "https://transactions-api-dev-1.chabloom.com",
 };
 
 export const AppInsightsInstrumentationKey = "APPINSIGHTS_INSTRUMENTATIONKEY";

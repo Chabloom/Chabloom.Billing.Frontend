@@ -1,10 +1,8 @@
 import { ApplicationConfig } from "../settings";
 import { BaseApi, BaseApiType } from "../apiBase";
-import { QuickTransactionViewModel } from "./model";
+import { QuickPaymentViewModel } from "./model";
 
-export class QuickTransactionApi
-  extends BaseApi<QuickTransactionViewModel>
-  implements BaseApiType<QuickTransactionViewModel> {
+export class QuickPaymentApi extends BaseApi<QuickPaymentViewModel> implements BaseApiType<QuickPaymentViewModel> {
   baseUrl: string;
 
   constructor() {
@@ -12,19 +10,19 @@ export class QuickTransactionApi
     this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/quickTransaction`;
   }
 
-  readItems(): Promise<[Array<QuickTransactionViewModel> | undefined, string]> {
+  readItems(): Promise<[Array<QuickPaymentViewModel> | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  readItem(): Promise<[QuickTransactionViewModel | undefined, string]> {
+  readItem(): Promise<[QuickPaymentViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 
-  addItem(token: string, item: QuickTransactionViewModel): Promise<[QuickTransactionViewModel | undefined, string]> {
+  addItem(token: string, item: QuickPaymentViewModel): Promise<[QuickPaymentViewModel | undefined, string]> {
     return this._addItem(`${this.baseUrl}`, "", item, false);
   }
 
-  editItem(): Promise<[QuickTransactionViewModel | undefined, string]> {
+  editItem(): Promise<[QuickPaymentViewModel | undefined, string]> {
     throw new Error("Not implemented");
   }
 

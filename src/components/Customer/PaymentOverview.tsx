@@ -17,7 +17,7 @@ import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icon
 
 import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../types";
 
-import { MakeTransaction } from "./MakeTransaction";
+import { MakePayment } from "./MakePayment";
 import { Status } from "../Status";
 import { useAppContext } from "../../AppContext";
 
@@ -195,7 +195,7 @@ export const PaymentOverview: React.FC<Props> = (props) => {
                   </CardActions>
                 </Card>
                 {selectedPayment === payment && !billComplete(payment) && (
-                  <MakeTransaction
+                  <MakePayment
                     {...props}
                     payment={payment}
                     selectedPayment={selectedPayment}

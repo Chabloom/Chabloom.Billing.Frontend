@@ -7,9 +7,10 @@ export * from "./AccountUser";
 export * from "./ApplicationUser";
 export * from "./Bill";
 export * from "./BillSchedule";
-export * from "./PaymentCard";
-export * from "./QuickTransaction";
+export * from "./QuickPayment";
 export * from "./Tenant";
 export * from "./TenantUser";
-export * from "./Transaction";
-export * from "./TransactionSchedule";
+
+export * from "./Payment";
+export * from "./PaymentAccount";
+export * from "./PaymentCard";

@@ -1,11 +1,11 @@
 import { BaseViewModel } from "../modelBase";
 
-export interface TransactionViewModel extends BaseViewModel {
+export interface PaymentViewModel extends BaseViewModel {
   readonly id: string;
   name: string;
   amount: number;
   currency: string;
-  complete: boolean;
-  referenceId: string;
+  paymentAccountId: string;
   paymentCardId: string;
+  readonly complete: boolean;
 }

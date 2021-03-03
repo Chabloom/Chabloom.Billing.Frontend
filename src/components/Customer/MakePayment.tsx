@@ -24,10 +24,10 @@ import {
   BillViewModel,
   PaymentCardsApi,
   PaymentCardViewModel,
-  QuickTransactionApi,
-  QuickTransactionViewModel,
-  TransactionsApi,
-  TransactionViewModel,
+  QuickPaymentApi,
+  QuickPaymentViewModel,
+  PaymentsApi,
+  PaymentViewModel,
 } from "../../types";
 
 import { Status } from "../Status";
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const MakeTransaction: React.FC<Props> = (props) => {
+export const MakePayment: React.FC<Props> = (props) => {
   // Initialize classes
   const classes = useStyles();
 
@@ -99,8 +99,8 @@ export const MakeTransaction: React.FC<Props> = (props) => {
       name: props.payment.name,
       amount: props.payment.amount,
       paymentCardId: paymentCardId,
-    } as TransactionViewModel;
-    const api = new TransactionsApi();
+    } as PaymentViewModel;
+    const api = new PaymentsApi();
     const [ret, err] = await api.addItem(userToken, item);
     setProcessing(false);
     if (ret) {
@@ -116,8 +116,8 @@ export const MakeTransaction: React.FC<Props> = (props) => {
     const item = {
       paymentId: props.payment.id,
       transactionId: transactionId,
-    } as QuickTransactionViewModel;
-    const api = new QuickTransactionApi();
+    } as QuickPaymentViewModel;
+    const api = new QuickPaymentApi();
     await api.addItem(userToken, item);
     setProcessing(false);
   };
