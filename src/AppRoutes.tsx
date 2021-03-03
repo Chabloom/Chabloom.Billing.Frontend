@@ -11,6 +11,7 @@ import {
   TenantUser,
   SignOutCallback,
   SignInCallback,
+  Navigation,
 } from "./components";
 
 import { useAppContext } from "./AppContext";
@@ -20,43 +21,45 @@ export const AppRoutes: React.FC = () => {
 
   return (
     <Router>
-      <Switch>
-        <Route exact={true} path="/signin-oidc">
-          <SignInCallback />
-        </Route>
-        <Route exact={true} path="/signout-oidc">
-          <SignOutCallback />
-        </Route>
-        {selectedTenant && (
-          <Route path="/accounts">
-            <Account />
+      <Navigation>
+        <Switch>
+          <Route exact={true} path="/signin-oidc">
+            <SignInCallback />
           </Route>
-        )}
-        {selectedAccount && (
-          <Route path="/bills">
-            <Bill />
+          <Route exact={true} path="/signout-oidc">
+            <SignOutCallback />
           </Route>
-        )}
-        {selectedAccount && (
-          <Route path="/billSchedules">
-            <BillSchedule />
+          {selectedTenant && (
+            <Route path="/accounts">
+              <Account />
+            </Route>
+          )}
+          {selectedAccount && (
+            <Route path="/bills">
+              <Bill />
+            </Route>
+          )}
+          {selectedAccount && (
+            <Route path="/billSchedules">
+              <BillSchedule />
+            </Route>
+          )}
+          <Route path="/tenants">
+            <Tenant />
           </Route>
-        )}
-        <Route path="/tenants">
-          <Tenant />
-        </Route>
-        {selectedTenant && (
-          <Route path="/managers">
-            <TenantUser />
+          {selectedTenant && (
+            <Route path="/managers">
+              <TenantUser />
+            </Route>
+          )}
+          <Route path="/administrators">
+            <ApplicationUser />
           </Route>
-        )}
-        <Route path="/administrators">
-          <ApplicationUser />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Navigation>
     </Router>
   );
 };

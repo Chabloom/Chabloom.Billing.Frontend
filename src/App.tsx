@@ -19,8 +19,6 @@ import {
   TenantViewModel,
 } from "./types";
 
-import { Navigation } from "./components";
-
 import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 import { AppRoutes } from "./AppRoutes";
 
@@ -237,9 +235,7 @@ export const App: React.FC = () => {
     <StylesProvider injectFirst>
       <ThemeProvider theme={theme}>
         <AppContext.Provider value={props}>
-          <Navigation>
-            <AppRoutes />
-          </Navigation>
+          <AppRoutes />
         </AppContext.Provider>
       </ThemeProvider>
     </StylesProvider>
