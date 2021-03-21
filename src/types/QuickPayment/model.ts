@@ -1,6 +1,6 @@
 import { BaseViewModel } from "../modelBase";
 
 export interface QuickPaymentViewModel extends BaseViewModel {
-  paymentId: string;
+  billId: string;
   transactionId: string;
 }
