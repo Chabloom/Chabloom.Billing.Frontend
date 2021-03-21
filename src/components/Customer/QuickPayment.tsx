@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
 
-import { PaymentOverview } from "./PaymentOverview";
+import { BillOverview } from "./BillOverview";
 import { Status } from "../Status";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -129,7 +129,7 @@ export const QuickPayment: React.FC = () => {
       </Grid>
       {account && (
         <Grid item xs={12}>
-          <PaymentOverview account={account} allowTracking={true} />
+          <BillOverview account={account} allowTracking={true} />
         </Grid>
       )}
     </Grid>

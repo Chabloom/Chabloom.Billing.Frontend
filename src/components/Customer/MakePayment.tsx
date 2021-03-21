@@ -36,9 +36,9 @@ import { NewPaymentInfo } from "./NewPaymentInfo";
 import { useAppContext } from "../../AppContext";
 
 interface Props {
-  payment: BillViewModel;
-  selectedPayment: BillViewModel | undefined;
-  setSelectedPayment: CallableFunction;
+  bill: BillViewModel;
+  selectedBill: BillViewModel | undefined;
+  setSelectedBill: CallableFunction;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -96,8 +96,8 @@ export const MakePayment: React.FC<Props> = (props) => {
     setProcessing(true);
     setError("");
     const item = {
-      name: props.payment.name,
-      amount: props.payment.amount,
+      name: props.bill.name,
+      amount: props.bill.amount,
       paymentCardId: paymentCardId,
     } as PaymentViewModel;
     const api = new PaymentsApi();
@@ -114,7 +114,7 @@ export const MakePayment: React.FC<Props> = (props) => {
     setProcessing(true);
     setError("");
     const item = {
-      paymentId: props.payment.id,
+      billId: props.bill.id,
       transactionId: transactionId,
     } as QuickPaymentViewModel;
     const api = new QuickPaymentApi();
@@ -126,7 +126,7 @@ export const MakePayment: React.FC<Props> = (props) => {
       const transactionId = await makeTransaction(paymentCardId);
       if (transactionId) {
         await makeQuickTransaction(transactionId);
-        props.setSelectedPayment(undefined);
+        props.setSelectedBill(undefined);
       }
     }
   };
@@ -139,16 +139,16 @@ export const MakePayment: React.FC<Props> = (props) => {
     return "0000";
   };
 
-  const paymentAmount = `$${props.payment.amount.toFixed(2)}`;
-  const paymentDueDate = new Date(props.payment.dueDate);
-  const dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
+  const billAmount = `$${props.bill.amount.toFixed(2)}`;
+  const billDueDate = new Date(props.bill.dueDate);
+  const dueDate = `Due ${billDueDate.toLocaleDateString()}`;
 
   return (
     <React.Fragment>
       <Backdrop
         className={classes.backdrop}
-        open={props.selectedPayment === props.payment}
-        onClick={() => props.setSelectedPayment(undefined)}
+        open={props.selectedBill === props.bill}
+        onClick={() => props.setSelectedBill(undefined)}
       >
         <Grid
           container
@@ -161,9 +161,9 @@ export const MakePayment: React.FC<Props> = (props) => {
             <Card onClick={(e) => e.stopPropagation()}>
               <CardHeader title="Manage payment" />
               <CardContent>
-                <Typography variant="h6">{props.payment.name}</Typography>
+                <Typography variant="h6">{props.bill.name}</Typography>
                 <Typography variant="body1">{dueDate}</Typography>
-                <Typography variant="body1">{paymentAmount}</Typography>
+                <Typography variant="body1">{billAmount}</Typography>
                 {paymentCardId === "" && (
                   <SavedPaymentInfo
                     {...props}

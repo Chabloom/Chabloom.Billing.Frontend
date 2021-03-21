@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { Grid } from "@material-ui/core";
 
-import { PaymentOverview } from "./PaymentOverview";
+import { BillOverview } from "./BillOverview";
 import { useAppContext } from "../../AppContext";
 
-export const UpcomingPayments: React.FC = () => {
+export const UpcomingBills: React.FC = () => {
   const { userToken, trackedAccounts } = useAppContext();
 
   if (!userToken) {
@@ -17,7 +17,7 @@ export const UpcomingPayments: React.FC = () => {
       {trackedAccounts.map((account) => {
         return (
           <Grid item xs={12} key={`upcoming-account-${account.id}`}>
-            <PaymentOverview account={account} allowTracking={false} />
+            <BillOverview account={account} allowTracking={false} />
           </Grid>
         );
       })}

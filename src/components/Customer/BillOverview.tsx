@@ -36,34 +36,34 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
-export const PaymentOverview: React.FC<Props> = (props) => {
+export const BillOverview: React.FC<Props> = (props) => {
   const classes = useStyles();
 
-  const [selectedPayment, setSelectedPayment] = React.useState<BillViewModel>();
-  const [accountPayments, setAccountPayments] = React.useState([] as Array<BillViewModel>);
+  const [selectedBill, setSelectedBill] = React.useState<BillViewModel>();
+  const [accountBills, setAccountBills] = React.useState([] as Array<BillViewModel>);
   const [accountUsers, setAccountUsers] = React.useState([] as Array<AccountUserViewModel>);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const { userId, userToken, trackedAccounts, setTrackedAccounts } = useAppContext();
 
-  // Get all account payments
+  // Get all account bills
   React.useEffect(() => {
-    const getAccountPayments = async () => {
+    const getAccountBills = async () => {
       setProcessing(true);
       const api = new BillsApi(props.account.id);
-      const [payments, err] = await api.readItems(userToken);
-      if (payments) {
-        const futurePayments = payments
+      const [bills, err] = await api.readItems(userToken);
+      if (bills && bills.length > 0) {
+        const futureBills = bills
           .filter((x) => new Date(x.dueDate) > new Date())
           .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
-        setAccountPayments(futurePayments);
+        setAccountBills(futureBills);
       } else {
         setError(err);
       }
       setProcessing(false);
     };
-    getAccountPayments().then();
+    getAccountBills().then();
   }, [props.account, userToken]);
 
   // Get all account users
@@ -149,57 +149,57 @@ export const PaymentOverview: React.FC<Props> = (props) => {
             )}
           </Grid>
         </Grid>
-        {accountPayments.length === 0 && (
+        {accountBills.length === 0 && (
           <Grid item xs={12}>
             <Card elevation={3}>
               <CardContent>
-                <Typography variant="h6">No upcoming payments found</Typography>
+                <Typography variant="h6">No upcoming bills found</Typography>
               </CardContent>
             </Card>
           </Grid>
         )}
-        {accountPayments.length !== 0 &&
-          accountPayments.map((payment) => {
-            const paymentAmount = `$${payment.amount.toFixed(2)}`;
-            const paymentDueDate = new Date(payment.dueDate);
+        {accountBills.length !== 0 &&
+          accountBills.map((bill) => {
+            const billAmount = `$${bill.amount.toFixed(2)}`;
+            const billDueDate = new Date(bill.dueDate);
             let dueDate;
-            let paymentAction;
-            if (billComplete(payment)) {
+            let billAction;
+            if (billComplete(bill)) {
               dueDate = "Paid";
-              paymentAction = "";
+              billAction = "";
             } else {
-              dueDate = `Due ${paymentDueDate.toLocaleDateString()}`;
-              paymentAction = "Make payment";
+              dueDate = `Due ${billDueDate.toLocaleDateString()}`;
+              billAction = "Make bill";
             }
             return (
-              <Grid item xl={2} lg={3} md={4} sm={6} xs={12} key={`account-payment-${payment.id}`}>
+              <Grid item xl={2} lg={3} md={4} sm={6} xs={12} key={`account-bill-${bill.id}`}>
                 <Card elevation={3}>
                   <CardContent>
-                    <Typography variant="h6">{payment.name}</Typography>
+                    <Typography variant="h6">{bill.name}</Typography>
                     <Typography variant="body1">{dueDate}</Typography>
-                    <Typography variant="body1">{paymentAmount}</Typography>
+                    <Typography variant="body1">{billAmount}</Typography>
                   </CardContent>
                   <CardActions>
-                    <Tooltip title={paymentAction}>
+                    <Tooltip title={billAction}>
                       <IconButton
                         onClick={() => {
-                          if (!billComplete(payment)) {
-                            setSelectedPayment(selectedPayment === undefined ? payment : undefined);
+                          if (!billComplete(bill)) {
+                            setSelectedBill(selectedBill === undefined ? bill : undefined);
                           }
                         }}
                       >
-                        {billComplete(payment) && <CheckCircle />}
-                        {!billComplete(payment) && <Payment />}
+                        {billComplete(bill) && <CheckCircle />}
+                        {!billComplete(bill) && <Payment />}
                       </IconButton>
                     </Tooltip>
                   </CardActions>
                 </Card>
-                {selectedPayment === payment && !billComplete(payment) && (
+                {selectedBill === bill && !billComplete(bill) && (
                   <MakePayment
                     {...props}
-                    payment={payment}
-                    selectedPayment={selectedPayment}
-                    setSelectedPayment={setSelectedPayment}
+                    bill={bill}
+                    selectedBill={selectedBill}
+                    setSelectedBill={setSelectedBill}
                   />
                 )}
               </Grid>
