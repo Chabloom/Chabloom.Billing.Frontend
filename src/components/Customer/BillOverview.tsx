@@ -63,8 +63,10 @@ export const BillOverview: React.FC<Props> = (props) => {
       }
       setProcessing(false);
     };
-    getAccountBills().then();
-  }, [props.account, userToken]);
+    if (!selectedBill) {
+      getAccountBills().then();
+    }
+  }, [props.account, userToken, selectedBill]);
 
   // Get all account users
   React.useEffect(() => {
