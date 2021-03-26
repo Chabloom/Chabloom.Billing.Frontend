@@ -8,7 +8,7 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
 
   constructor(tenantId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/tenantUsers`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/tenantUsers`;
     this.tenantId = tenantId;
   }
 

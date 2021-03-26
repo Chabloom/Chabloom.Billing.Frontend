@@ -8,7 +8,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
 
   constructor(tenantId = "") {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/accounts`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/accounts`;
     this.tenantId = tenantId;
   }
 

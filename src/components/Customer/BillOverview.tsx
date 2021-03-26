@@ -197,12 +197,7 @@ export const BillOverview: React.FC<Props> = (props) => {
                   </CardActions>
                 </Card>
                 {selectedBill === bill && !billComplete(bill) && (
-                  <MakePayment
-                    {...props}
-                    bill={bill}
-                    selectedBill={selectedBill}
-                    setSelectedBill={setSelectedBill}
-                  />
+                  <MakePayment {...props} bill={bill} selectedBill={selectedBill} setSelectedBill={setSelectedBill} />
                 )}
               </Grid>
             );

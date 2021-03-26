@@ -8,7 +8,7 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/bills`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/bills`;
     this.accountId = accountId;
   }
 

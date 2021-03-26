@@ -10,10 +10,10 @@ steps:
       filePath: "scripts/config.sh"
   - task: Docker@2
     inputs:
-      containerRegistry: 'docker-registry-chb-dev-1'
-      repository: 'chabloom-billing-frontend'
-      command: 'buildAndPush'
-      Dockerfile: '**/Dockerfile'
+      containerRegistry: "docker-registry-chb-dev-1"
+      repository: "chabloom-billing-frontend"
+      command: "buildAndPush"
+      Dockerfile: "**/Dockerfile"
       tags: |
         $(Build.BuildId)
         latest

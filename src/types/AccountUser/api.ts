@@ -8,7 +8,7 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/accountUsers`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/accountUsers`;
     this.accountId = accountId;
   }
 

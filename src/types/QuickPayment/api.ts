@@ -7,7 +7,7 @@ export class QuickPaymentApi extends BaseApi<QuickPaymentViewModel> implements B
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/quickTransaction`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/quickTransaction`;
   }
 
   readItems(): Promise<[Array<QuickPaymentViewModel> | undefined, string]> {

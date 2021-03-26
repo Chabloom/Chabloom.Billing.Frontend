@@ -9,7 +9,7 @@ export class ApplicationUsersApi
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.backendPublicAddress}/api/applicationUsers`;
+    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/applicationUsers`;
   }
 
   readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {
