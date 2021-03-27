@@ -71,7 +71,7 @@ export const App: React.FC = () => {
         }
       });
     });
-  }, [userManager]);
+  }, []);
 
   // Get dark mode setting
   const cssDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -119,8 +119,9 @@ export const App: React.FC = () => {
             setUserToken(user.access_token);
           }
         }
+      } else {
+        console.log("not signed in");
       }
-      console.log("not signed in");
     };
     getUser().then();
   }, [userManager]);
