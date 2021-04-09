@@ -13,10 +13,11 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { Status } from "../../common";
+
 import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
 
 import { BillOverview } from "./BillOverview";
-import { Status } from "../Status";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

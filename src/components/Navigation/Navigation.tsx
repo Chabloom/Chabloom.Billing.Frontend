@@ -24,7 +24,7 @@ import { UserManagement } from "./UserManagement";
 
 import { useAppContext, UserLevel } from "../../AppContext";
 
-import logo from "../../logo.svg";
+import icon from "../../common/images/chabloom-icon.svg";
 
 const drawerWidth = 240;
 
@@ -70,7 +70,7 @@ export const Navigation: React.FC = (props) => {
       <AppBar position="fixed" color="inherit" className={classes.appBar}>
         <Toolbar>
           <div className={classes.flexGrow}>
-            <img src={logo} className={classes.logo} alt="logo" />
+            <img src={icon} className={classes.logo} alt="logo" />
           </div>
           <div className={classes.flexGrow}>
             <TenantSelection />

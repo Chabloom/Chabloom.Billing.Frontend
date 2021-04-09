@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TablePagination } from "@material-ui/core";
 
-import { BaseViewModel } from "../../types";
+import { BaseViewModel } from "../../common";
 
 interface Props {
   data: Array<BaseViewModel>;

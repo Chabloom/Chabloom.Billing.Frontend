@@ -1,5 +1,5 @@
 import { ApplicationConfig } from "../settings";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../../common";
 import { AccountViewModel } from "./model";
 
 export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiType<AccountViewModel> {

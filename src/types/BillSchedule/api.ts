@@ -1,5 +1,5 @@
 import { ApplicationConfig } from "../settings";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../../common";
 import { BillScheduleViewModel } from "./model";
 
 export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {

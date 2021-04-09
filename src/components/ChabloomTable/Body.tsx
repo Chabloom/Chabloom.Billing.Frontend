@@ -2,7 +2,9 @@ import * as React from "react";
 
 import { Checkbox, TableBody, TableCell, TableRow } from "@material-ui/core";
 
-import { AccountViewModel, BaseViewModel } from "../../types";
+import { BaseViewModel } from "../../common";
+
+import { AccountViewModel } from "../../types";
 
 import { ChabloomTableCell } from "./Cell";
 import { ChabloomTableColumn } from "./Column";

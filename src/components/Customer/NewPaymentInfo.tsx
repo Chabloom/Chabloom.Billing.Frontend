@@ -19,14 +19,14 @@ import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
 import Cleave from "cleave.js/react";
 
-import { PaymentCardsApi, PaymentCardViewModel } from "../../types";
+import { PaymentCardsApi, PaymentCardViewModel } from "../../common";
 
 import { useAppContext } from "../../AppContext";
 
-import amex from "./images/amex.png";
-import discover from "./images/discover.png";
-import mastercard from "./images/mastercard.png";
-import visa from "./images/visa.png";
+import amex from "../../common/images/networks/amex.png";
+import discover from "../../common/images/networks/discover.png";
+import mastercard from "../../common/images/networks/mastercard.png";
+import visa from "../../common/images/networks/visa.png";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

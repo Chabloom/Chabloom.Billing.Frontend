@@ -15,10 +15,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icons";
 
+import { Status } from "../../common";
+
 import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../types";
 
 import { MakePayment } from "./MakePayment";
-import { Status } from "../Status";
 import { useAppContext } from "../../AppContext";
 
 interface Props {

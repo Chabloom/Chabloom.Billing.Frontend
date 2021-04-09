@@ -1,6 +1,6 @@
-import { BaseApi, BaseApiType } from "../apiBase";
-import { PaymentViewModel } from "./model";
 import { ApplicationConfig } from "../settings";
+import { BaseApi, BaseApiType } from "../../common";
+import { PaymentViewModel } from "./model";
 
 export class PaymentsApi extends BaseApi<PaymentViewModel> implements BaseApiType<PaymentViewModel> {
   baseUrl: string;

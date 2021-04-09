@@ -1,5 +1,5 @@
 import { ApplicationConfig } from "../settings";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../../common";
 import { QuickPaymentViewModel } from "./model";
 
 export class QuickPaymentApi extends BaseApi<QuickPaymentViewModel> implements BaseApiType<QuickPaymentViewModel> {

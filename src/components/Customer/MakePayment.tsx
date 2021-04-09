@@ -20,17 +20,10 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
-import {
-  BillViewModel,
-  PaymentCardsApi,
-  PaymentCardViewModel,
-  QuickPaymentApi,
-  QuickPaymentViewModel,
-  PaymentsApi,
-  PaymentViewModel,
-} from "../../types";
+import { Status, PaymentCardsApi, PaymentCardViewModel } from "../../common";
 
-import { Status } from "../Status";
+import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../types";
+
 import { SavedPaymentInfo } from "./SavedPaymentInfo";
 import { NewPaymentInfo } from "./NewPaymentInfo";
 import { useAppContext } from "../../AppContext";

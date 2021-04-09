@@ -1,5 +1,5 @@
 import { ApplicationConfig } from "../settings";
-import { BaseApi, BaseApiType } from "../apiBase";
+import { BaseApi, BaseApiType } from "../../common";
 import { TenantUserViewModel } from "./model";
 
 export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements BaseApiType<TenantUserViewModel> {

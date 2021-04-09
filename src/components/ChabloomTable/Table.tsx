@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import { BaseApiType, BaseViewModel } from "../../types";
+import { BaseApiType, BaseViewModel } from "../../common";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";

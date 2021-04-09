@@ -15,7 +15,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Cancel, Delete, Edit, FilterList, Receipt, Save, Schedule } from "@material-ui/icons";
 
-import { BaseApiType, BaseViewModel } from "../../types";
+import { BaseApiType, BaseViewModel } from "../../common";
 
 import { ChabloomTableColumn } from "./Column";
 import { useAppContext } from "../../AppContext";
