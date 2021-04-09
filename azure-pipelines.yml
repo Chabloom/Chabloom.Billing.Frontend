@@ -5,6 +5,8 @@ pool:
   vmImage: "ubuntu-latest"
 
 steps:
+  - checkout: self
+    submodules: true
   - task: Bash@3
     inputs:
       filePath: "scripts/config.sh"
