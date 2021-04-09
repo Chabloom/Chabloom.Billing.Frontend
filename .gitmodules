@@ -1,3 +1,4 @@
 [submodule "src/common"]
 	path = src/common
 	url = https://chabloom@dev.azure.com/chabloom/Chabloom.React.Common/_git/Chabloom.React.Common
+	branch = master
