@@ -28,6 +28,10 @@ export interface AppContextProps {
   setSelectedAccount: (account: AccountViewModel | undefined) => void;
   trackedAccounts: Array<AccountViewModel>;
   setTrackedAccounts: (accounts: Array<AccountViewModel>) => void;
+  productCounts: Map<string, number>;
+  setProductCounts: React.Dispatch<React.SetStateAction<Map<string, number>>>;
+  pickupMethod: string;
+  setPickupMethod: (pickupMethod: string) => void;
 }
 
 export const AppContext = React.createContext<AppContextProps>({
@@ -48,6 +52,10 @@ export const AppContext = React.createContext<AppContextProps>({
   setSelectedAccount: () => console.warn("setSelectedAccount not implemented"),
   trackedAccounts: [],
   setTrackedAccounts: () => console.warn("setTrackedAccounts not implemented"),
+  productCounts: new Map<string, number>(),
+  setProductCounts: () => console.warn("setProductCounts not implemented"),
+  pickupMethod: "Shipping",
+  setPickupMethod: () => console.warn("setPickupMethod not implemented"),
 });
 
 export const useAppContext = (): AppContextProps => React.useContext(AppContext);
