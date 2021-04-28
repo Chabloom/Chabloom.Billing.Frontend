@@ -25,7 +25,6 @@ import { Status, PaymentCardsApi, PaymentCardViewModel } from "../../common";
 import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../types";
 
 import { SavedPaymentInfo } from "./SavedPaymentInfo";
-import { NewPaymentInfo } from "./NewPaymentInfo";
 import { useAppContext } from "../../AppContext";
 
 interface Props {
@@ -163,18 +162,6 @@ export const MakePayment: React.FC<Props> = (props) => {
                     setPaymentCardId={setPaymentCardId}
                     savedPayments={savedPayments}
                     processing={processing}
-                  />
-                )}
-                {paymentCardId === "new" && (
-                  <NewPaymentInfo
-                    {...props}
-                    paymentCardId={paymentCardId}
-                    setPaymentCardId={setPaymentCardId}
-                    savedPayments={savedPayments}
-                    setSavedPayments={setSavedPayments}
-                    setError={setError}
-                    processing={processing}
-                    setProcessing={setProcessing}
                   />
                 )}
                 {paymentCardId !== "" && paymentCardId !== "new" && (
