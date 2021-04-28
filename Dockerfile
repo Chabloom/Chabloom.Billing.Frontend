@@ -1,10 +1,8 @@
 FROM node:lts AS build-env
 WORKDIR /app
 
-COPY package.json ./
-COPY yarn.lock ./
-RUN npx yarn install
 COPY . ./
+RUN npx yarn install
 RUN npx yarn build
 
 FROM nginx:stable
