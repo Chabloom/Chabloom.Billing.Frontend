@@ -270,9 +270,10 @@ __pycache__/
 *.pyc
 
 # Yarn cache
-.yarn/
-/.pnp
-.pnp.js
-
-# ESLint cache
-.eslintcache
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
