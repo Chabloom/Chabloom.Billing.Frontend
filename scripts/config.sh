@@ -10,6 +10,5 @@ sed -i "s/https:\/\/ecommerce-dev-1.chabloom.com/$ECOMMERCE_FRONTEND_ADDRESS/g" 
 sed -i "s/https:\/\/ecommerce-api-dev-1.chabloom.com/$ECOMMERCE_BACKEND_ADDRESS/g" types/settings.ts
 sed -i "s/https:\/\/transactions-dev-1.chabloom.com/$TRANSACTIONS_FRONTEND_ADDRESS/g" types/settings.ts
 sed -i "s/https:\/\/transactions-api-dev-1.chabloom.com/$TRANSACTIONS_BACKEND_ADDRESS/g" types/settings.ts
-sed -i "s/APPINSIGHTS_INSTRUMENTATIONKEY/$APPINSIGHTS_INSTRUMENTATIONKEY/g" types/settings.ts
 
 popd

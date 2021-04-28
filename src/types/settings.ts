@@ -13,8 +13,6 @@ export const ApplicationConfig = {
   transactionsBackendPublicAddress: "https://transactions-api-dev-1.chabloom.com",
 };
 
-export const AppInsightsInstrumentationKey = "APPINSIGHTS_INSTRUMENTATIONKEY";
-
 export const OidcSettings: UserManagerSettings = {
   authority: ApplicationConfig.accountsBackendPublicAddress,
   client_id: "Chabloom.Billing.Frontend",

@@ -4,15 +4,9 @@ import { UserManager } from "oidc-client";
 
 import { createMuiTheme, StylesProvider, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
-import { ApplicationInsights } from "@microsoft/applicationinsights-web";
-import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
-
-import { createBrowserHistory } from "history";
-
 import {
   AccountsApi,
   AccountViewModel,
-  AppInsightsInstrumentationKey,
   ApplicationUsersApi,
   OidcSettings,
   TenantsApi,
@@ -23,19 +17,6 @@ import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 import { AppRoutes } from "./AppRoutes";
 
 import "./App.scss";
-
-const browserHistory = createBrowserHistory({ basename: "" });
-const reactPlugin = new ReactPlugin();
-const appInsights = new ApplicationInsights({
-  config: {
-    instrumentationKey: AppInsightsInstrumentationKey,
-    extensions: [reactPlugin],
-    extensionConfig: {
-      [reactPlugin.identifier]: { history: browserHistory },
-    },
-  },
-});
-appInsights.loadAppInsights();
 
 export const App: React.FC = () => {
   const [userLoaded, setUserLoaded] = React.useState(false);
