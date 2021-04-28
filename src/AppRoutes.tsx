@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { SignInCallback, SignOutCallback } from "./common";
+import { Checkout, SignInCallback, SignOutCallback } from "./common";
 
 import { Home, Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser, Navigation } from "./components";
 
@@ -48,6 +48,9 @@ export const AppRoutes: React.FC = () => {
           </Route>
           <Route path="/">
             <Home />
+          </Route>
+          <Route exact={true} path="/checkout">
+            <Checkout />
           </Route>
         </Switch>
       </Navigation>
