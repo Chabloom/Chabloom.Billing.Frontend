@@ -46,7 +46,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="/administrators">
             <ApplicationUser />
           </Route>
-          <Route path="/">
+          <Route exact={true} path="/">
             <Home />
           </Route>
           <Route exact={true} path="/checkout">
