@@ -4,14 +4,7 @@ import { UserManager } from "oidc-client";
 
 import { createMuiTheme, StylesProvider, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
-import {
-  AccountsApi,
-  AccountViewModel,
-  ApplicationUsersApi,
-  OidcSettings,
-  TenantsApi,
-  TenantViewModel,
-} from "./types";
+import { AccountsApi, AccountViewModel, ApplicationUsersApi, OidcSettings, TenantsApi, TenantViewModel } from "./types";
 
 import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 import { AppRoutes } from "./AppRoutes";
