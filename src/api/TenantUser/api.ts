@@ -1,4 +1,4 @@
-import { ApplicationConfig } from "../settings";
+import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { TenantUserViewModel } from "./model";
 
@@ -8,7 +8,7 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
 
   constructor(tenantId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/tenantUsers`;
+    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/tenantUsers`;
     this.tenantId = tenantId;
   }
 

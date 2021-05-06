@@ -1,4 +1,4 @@
-import { ApplicationConfig } from "../settings";
+import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { AccountUserViewModel } from "./model";
 
@@ -8,7 +8,7 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/accountUsers`;
+    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/accountUsers`;
     this.accountId = accountId;
   }
 

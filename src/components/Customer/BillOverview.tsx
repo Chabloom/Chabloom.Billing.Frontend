@@ -17,7 +17,7 @@ import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icon
 
 import { Status } from "../../common";
 
-import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../types";
+import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../api";
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";

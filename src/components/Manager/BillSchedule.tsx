@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BillSchedulesApi } from "../../types";
+import { BillSchedulesApi } from "../../api";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 import { useAppContext } from "../../AppContext";

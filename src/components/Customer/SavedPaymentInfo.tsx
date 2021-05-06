@@ -1,10 +1,9 @@
 import * as React from "react";
-
 import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, CheckCircle } from "@material-ui/icons";
 
-import { PaymentCardViewModel } from "../../common";
+import { PaymentCardViewModel } from "../../checkout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

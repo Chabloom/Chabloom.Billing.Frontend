@@ -1,4 +1,4 @@
-import { ApplicationConfig } from "../settings";
+import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { BillViewModel } from "./model";
 
@@ -8,7 +8,7 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/bills`;
+    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/bills`;
     this.accountId = accountId;
   }
 

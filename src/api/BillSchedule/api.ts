@@ -1,4 +1,4 @@
-import { ApplicationConfig } from "../settings";
+import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { BillScheduleViewModel } from "./model";
 
@@ -8,7 +8,7 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/billSchedules`;
+    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/billSchedules`;
     this.accountId = accountId;
   }
 

@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://cra.link/PWA
 
-import { ApplicationConfig } from "./types";
+import { AppConfiguration } from "./config";
 
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
@@ -28,7 +28,7 @@ type Config = {
 export const register = (config?: Config): void => {
   if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
     // The URL constructor is available in all browsers that support SW.
-    const publicUrl = new URL(ApplicationConfig.billingFrontendPublicAddress, window.location.href);
+    const publicUrl = new URL(AppConfiguration.billingFrontendPublicAddress, window.location.href);
     if (publicUrl.origin !== window.location.origin) {
       // Our service worker won't work if PUBLIC_URL is on a different origin
       // from what our page is served on. This might happen if a CDN is used to
@@ -37,7 +37,7 @@ export const register = (config?: Config): void => {
     }
 
     window.addEventListener("load", () => {
-      const swUrl = `${ApplicationConfig.billingFrontendPublicAddress}/service-worker.js`;
+      const swUrl = `${AppConfiguration.billingFrontendPublicAddress}/service-worker.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.

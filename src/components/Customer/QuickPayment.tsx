@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Status } from "../../common";
 
-import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../types";
+import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
 

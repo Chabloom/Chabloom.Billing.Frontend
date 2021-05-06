@@ -4,7 +4,7 @@ import { Checkbox, TableBody, TableCell, TableRow } from "@material-ui/core";
 
 import { BaseViewModel } from "../../common";
 
-import { AccountViewModel } from "../../types";
+import { AccountViewModel } from "../../api";
 
 import { ChabloomTableCell } from "./Cell";
 import { ChabloomTableColumn } from "./Column";

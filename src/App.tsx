@@ -1,10 +1,9 @@
 import React from "react";
-
 import { UserManager } from "oidc-client";
-
 import { createMuiTheme, StylesProvider, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
-import { AccountsApi, AccountViewModel, ApplicationUsersApi, OidcSettings, TenantsApi, TenantViewModel } from "./types";
+import { AccountsApi, AccountViewModel, ApplicationUsersApi, TenantsApi, TenantViewModel } from "./api";
+import { OidcConfiguration } from "./config";
 
 import { AppContext, AppContextProps, UserLevel } from "./AppContext";
 import { AppRoutes } from "./AppRoutes";
@@ -24,7 +23,7 @@ export const App: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = React.useState<AccountViewModel>();
   const [trackedAccounts, setTrackedAccounts] = React.useState<Array<AccountViewModel>>([]);
 
-  const userManager = React.useMemo(() => new UserManager(OidcSettings), []);
+  const userManager = React.useMemo(() => new UserManager(OidcConfiguration), []);
   React.useEffect(() => {
     userManager.events.addUserLoaded((user) => {
       setUserLoaded(true);

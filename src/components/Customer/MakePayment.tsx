@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {
   Backdrop,
   Button,
@@ -20,9 +19,10 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
-import { Status, PaymentCardsApi, PaymentCardViewModel } from "../../common";
-
-import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../types";
+import { PaymentCardsApi, PaymentCardViewModel } from "../../checkout";
+import { Status } from "../../common";
+import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../api";
+import { AppConfiguration } from "../../config";
 
 import { SavedPaymentInfo } from "./SavedPaymentInfo";
 import { useAppContext } from "../../AppContext";
@@ -67,7 +67,7 @@ export const MakePayment: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setProcessing(true);
     setError("");
-    const api = new PaymentCardsApi();
+    const api = new PaymentCardsApi(AppConfiguration);
     api
       .readItems(userToken)
       .then(([ret, err]) => {

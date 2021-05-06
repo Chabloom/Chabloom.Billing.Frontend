@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ApplicationUsersApi } from "../../types";
+import { ApplicationUsersApi } from "../../api";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 

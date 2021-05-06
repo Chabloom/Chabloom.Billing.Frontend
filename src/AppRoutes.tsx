@@ -1,24 +1,32 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { Checkout, SignInCallback, SignOutCallback } from "./common";
-
+import { Checkout } from "./checkout";
+import { SignInCallback, SignOutCallback } from "./common";
 import { Home, Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser, Navigation } from "./components";
+import { AppConfiguration } from "./config";
 
 import { useAppContext } from "./AppContext";
 
 export const AppRoutes: React.FC = () => {
-  const { selectedTenant, selectedAccount } = useAppContext();
+  const {
+    userManager,
+    selectedTenant,
+    selectedAccount,
+    productCounts,
+    setProductCounts,
+    pickupMethod,
+  } = useAppContext();
 
   return (
     <Router>
       <Navigation>
         <Switch>
           <Route exact={true} path="/signin-oidc">
-            <SignInCallback />
+            <SignInCallback userManager={userManager} />
           </Route>
           <Route exact={true} path="/signout-oidc">
-            <SignOutCallback />
+            <SignOutCallback userManager={userManager} />
           </Route>
           {selectedTenant && (
             <Route path="/accounts">
@@ -50,7 +58,12 @@ export const AppRoutes: React.FC = () => {
             <Home />
           </Route>
           <Route exact={true} path="/checkout">
-            <Checkout />
+            <Checkout
+              config={AppConfiguration}
+              productCounts={productCounts}
+              setProductCounts={setProductCounts}
+              pickupMethod={pickupMethod}
+            />
           </Route>
         </Switch>
       </Navigation>

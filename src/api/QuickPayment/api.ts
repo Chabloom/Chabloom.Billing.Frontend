@@ -1,4 +1,4 @@
-import { ApplicationConfig } from "../settings";
+import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { QuickPaymentViewModel } from "./model";
 
@@ -7,7 +7,7 @@ export class QuickPaymentApi extends BaseApi<QuickPaymentViewModel> implements B
 
   constructor() {
     super();
-    this.baseUrl = `${ApplicationConfig.billingBackendPublicAddress}/api/quickTransaction`;
+    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/quickTransaction`;
   }
 
   readItems(): Promise<[Array<QuickPaymentViewModel> | undefined, string]> {

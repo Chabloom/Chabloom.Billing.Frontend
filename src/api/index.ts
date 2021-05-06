@@ -8,5 +8,3 @@ export * from "./Tenant";
 export * from "./TenantUser";
 
 export * from "./Payment";
-
-export * from "./settings";
