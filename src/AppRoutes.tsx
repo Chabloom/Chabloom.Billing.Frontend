@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Checkout } from "./checkout";
 import { SignInCallback, SignOutCallback } from "./common";
 import { Home, Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser, Navigation } from "./components";
-import { AppConfiguration } from "./config";
 
 import { useAppContext } from "./AppContext";
 
@@ -58,12 +57,7 @@ export const AppRoutes: React.FC = () => {
             <Home />
           </Route>
           <Route exact={true} path="/checkout">
-            <Checkout
-              config={AppConfiguration}
-              productCounts={productCounts}
-              setProductCounts={setProductCounts}
-              pickupMethod={pickupMethod}
-            />
+            <Checkout productCounts={productCounts} setProductCounts={setProductCounts} pickupMethod={pickupMethod} />
           </Route>
         </Switch>
       </Navigation>

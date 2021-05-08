@@ -1,4 +1,3 @@
-import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { ApplicationUserViewModel } from "./model";
 
@@ -9,7 +8,7 @@ export class ApplicationUsersApi
 
   constructor() {
     super();
-    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/applicationUsers`;
+    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`;
   }
 
   readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {

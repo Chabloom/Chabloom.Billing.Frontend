@@ -1,4 +1,3 @@
-import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { AccountViewModel } from "./model";
 
@@ -8,7 +7,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
 
   constructor(tenantId = "") {
     super();
-    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/accounts`;
+    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accounts`;
     this.tenantId = tenantId;
   }
 

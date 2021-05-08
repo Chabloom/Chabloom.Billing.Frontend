@@ -1,4 +1,3 @@
-import { AppConfiguration } from "../../config";
 import { BaseApi, BaseApiType } from "../../common";
 import { TenantViewModel } from "./model";
 
@@ -7,7 +6,7 @@ export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<
 
   constructor() {
     super();
-    this.baseUrl = `${AppConfiguration.billingBackendPublicAddress}/api/tenants`;
+    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`;
   }
 
   readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {
