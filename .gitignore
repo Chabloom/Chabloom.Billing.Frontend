@@ -279,3 +279,4 @@ __pycache__/
 .pnp.*
 
 env-config.js
+!public/env-config.js
