@@ -23,7 +23,11 @@ export const App: React.FC = () => {
   const [selectedAccount, setSelectedAccount] = React.useState<AccountViewModel>();
   const [trackedAccounts, setTrackedAccounts] = React.useState<Array<AccountViewModel>>([]);
 
-  const userManager = React.useMemo(() => new UserManager(OidcConfiguration), []);
+  const oidcConfiguration = OidcConfiguration;
+  const envConfig = 'env-config';
+  import(envConfig)
+      .then(x => oidcConfiguration.authority = x.config.REACT_APP_ACCOUNTS_BACKEND_ADDRESS);
+  const userManager = React.useMemo(() => new UserManager(oidcConfiguration), []);
   React.useEffect(() => {
     userManager.events.addUserLoaded((user) => {
       setUserLoaded(true);
