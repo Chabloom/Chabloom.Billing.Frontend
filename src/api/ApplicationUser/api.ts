@@ -4,11 +4,13 @@ import { ApplicationUserViewModel } from "./model";
 export class ApplicationUsersApi
   extends BaseApi<ApplicationUserViewModel>
   implements BaseApiType<ApplicationUserViewModel> {
-  baseUrl: string;
+  baseUrl = "";
 
   constructor() {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`);
   }
 
   readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {

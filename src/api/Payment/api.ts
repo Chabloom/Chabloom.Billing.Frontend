@@ -2,11 +2,13 @@ import { BaseApi, BaseApiType } from "../../common";
 import { PaymentViewModel } from "./model";
 
 export class PaymentsApi extends BaseApi<PaymentViewModel> implements BaseApiType<PaymentViewModel> {
-  baseUrl: string;
+  baseUrl = "";
 
   constructor() {
     super();
-    this.baseUrl = `${process.env.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`);
   }
 
   readItems(token: string): Promise<[Array<PaymentViewModel> | undefined, string]> {

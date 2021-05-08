@@ -2,11 +2,13 @@ import { BaseApi, BaseApiType } from "../../common";
 import { QuickPaymentViewModel } from "./model";
 
 export class QuickPaymentApi extends BaseApi<QuickPaymentViewModel> implements BaseApiType<QuickPaymentViewModel> {
-  baseUrl: string;
+  baseUrl = "";
 
   constructor() {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/quickTransaction`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/quickTransaction`);
   }
 
   readItems(): Promise<[Array<QuickPaymentViewModel> | undefined, string]> {

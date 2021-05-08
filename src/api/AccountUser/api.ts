@@ -2,12 +2,14 @@ import { BaseApi, BaseApiType } from "../../common";
 import { AccountUserViewModel } from "./model";
 
 export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements BaseApiType<AccountUserViewModel> {
-  baseUrl: string;
+  baseUrl = "";
   accountId: string;
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accountUsers`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accountUsers`);
     this.accountId = accountId;
   }
 

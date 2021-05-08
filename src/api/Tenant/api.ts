@@ -2,11 +2,13 @@ import { BaseApi, BaseApiType } from "../../common";
 import { TenantViewModel } from "./model";
 
 export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<TenantViewModel> {
-  baseUrl: string;
+  baseUrl = "";
 
   constructor() {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`);
   }
 
   readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {

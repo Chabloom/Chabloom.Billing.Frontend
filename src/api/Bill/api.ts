@@ -2,12 +2,14 @@ import { BaseApi, BaseApiType } from "../../common";
 import { BillViewModel } from "./model";
 
 export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<BillViewModel> {
-  baseUrl: string;
+  baseUrl = "";
   accountId: string;
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`);
     this.accountId = accountId;
   }
 

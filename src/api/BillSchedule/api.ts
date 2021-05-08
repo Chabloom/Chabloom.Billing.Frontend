@@ -2,12 +2,14 @@ import { BaseApi, BaseApiType } from "../../common";
 import { BillScheduleViewModel } from "./model";
 
 export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {
-  baseUrl: string;
+  baseUrl = "";
   accountId: string;
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${process.env.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
+    const envConfig = 'env-config';
+    import(envConfig)
+        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`);
     this.accountId = accountId;
   }
 
