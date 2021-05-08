@@ -22,7 +22,6 @@ import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 import { PaymentCardsApi, PaymentCardViewModel } from "../../checkout";
 import { Status } from "../../common";
 import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../api";
-import { AppConfiguration } from "../../config";
 
 import { SavedPaymentInfo } from "./SavedPaymentInfo";
 import { useAppContext } from "../../AppContext";
@@ -67,7 +66,7 @@ export const MakePayment: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setProcessing(true);
     setError("");
-    const api = new PaymentCardsApi(AppConfiguration);
+    const api = new PaymentCardsApi();
     api
       .readItems(userToken)
       .then(([ret, err]) => {
