@@ -88,11 +88,11 @@ tolerations: []
 
 affinity: {}
 
-accountsFrontendAddress=https://accounts-dev-1.chabloom.com
-billingFrontendAddress=https://billing-dev-1.chabloom.com
-ecommerceFrontendAddress=https://ecommerce-dev-1.chabloom.com
-transactionsFrontendAddress=https://transactions-dev-1.chabloom.com
-accountsBackendAddress=https://accounts-api-dev-1.chabloom.com
-billingBackendAddress=https://billing-api-dev-1.chabloom.com
-ecommerceBackendAddress=https://ecommerce-api-dev-1.chabloom.com
-transactionsBackendAddress=https://transactions-api-dev-1.chabloom.com
+accountsFrontendAddress: https://accounts-dev-1.chabloom.com
+billingFrontendAddress: https://billing-dev-1.chabloom.com
+ecommerceFrontendAddress: https://ecommerce-dev-1.chabloom.com
+transactionsFrontendAddress: https://transactions-dev-1.chabloom.com
+accountsBackendAddress: https://accounts-api-dev-1.chabloom.com
+billingBackendAddress: https://billing-api-dev-1.chabloom.com
+ecommerceBackendAddress: https://ecommerce-api-dev-1.chabloom.com
+transactionsBackendAddress: https://transactions-api-dev-1.chabloom.com
