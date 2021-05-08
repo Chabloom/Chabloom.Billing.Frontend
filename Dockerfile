@@ -13,4 +13,4 @@ COPY nginx/env.sh /usr/share/nginx/html
 RUN chmod +x /usr/share/nginx/html/env.sh
 WORKDIR /usr/share/nginx/html
 EXPOSE 80
-CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
