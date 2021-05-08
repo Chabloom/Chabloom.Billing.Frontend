@@ -9,8 +9,8 @@ FROM nginx:stable
 COPY --from=build-env /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
-RUN chmod +x nginx/env.sh
-COPY nginx/env.sh /usr/share/nginx/html/
+COPY nginx/env.sh /usr/share/nginx/html
+RUN chmod +x /usr/share/nginx/html/env.sh
 WORKDIR /usr/share/nginx/html
 EXPOSE 80
 CMD ["/bin/bash", "-c", "./env.sh && nginx -g \"daemon off;\""]
