@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: chbprod.azurecr.io/chabloom-billing-frontend
+  repository: mdcasey/chabloom-billing-frontend
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
