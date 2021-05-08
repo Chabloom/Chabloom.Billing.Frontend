@@ -277,3 +277,5 @@ __pycache__/
 !.yarn/sdks
 !.yarn/versions
 .pnp.*
+
+env-config.js

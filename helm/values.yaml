@@ -87,3 +87,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+accountsFrontendAddress=https://accounts.chabloom.com
+billingFrontendAddress=https://billing.chabloom.com
+ecommerceFrontendAddress=https://ecommerce.chabloom.com
+transactionsFrontendAddress=https://transactions.chabloom.com
+accountsBackendAddress=https://accounts-api.chabloom.com
+billingBackendAddress=https://billing-api.chabloom.com
+ecommerceBackendAddress=https://ecommerce-api.chabloom.com
+transactionsBackendAddress=https://transactions-api.chabloom.com

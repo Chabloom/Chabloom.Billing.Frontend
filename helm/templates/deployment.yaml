@@ -29,6 +29,23 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          env:
+            - name: REACT_APP_ACCOUNTS_FRONTEND_ADDRESS
+              value: {{ .Values.accountsFrontendAddress }}
+            - name: REACT_APP_BILLING_FRONTEND_ADDRESS
+              value: {{ .Values.billingFrontendAddress }}
+            - name: REACT_APP_ECOMMERCE_FRONTEND_ADDRESS
+              value: {{ .Values.ecommerceFrontendAddress }}
+            - name: REACT_APP_TRANSACTIONS_FRONTEND_ADDRESS
+              value: {{ .Values.transactionsFrontendAddress }}
+            - name: REACT_APP_ACCOUNTS_BACKEND_ADDRESS
+              value: {{ .Values.accountsBackendAddress }}
+            - name: REACT_APP_BILLING_BACKEND_ADDRESS
+              value: {{ .Values.billingBackendAddress }}
+            - name: REACT_APP_ECOMMERCE_BACKEND_ADDRESS
+              value: {{ .Values.ecommerceBackendAddress }}
+            - name: REACT_APP_TRANSACTIONS_BACKEND_ADDRESS
+              value: {{ .Values.transactionsBackendAddress }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
