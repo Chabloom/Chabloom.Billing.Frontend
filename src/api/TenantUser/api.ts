@@ -7,7 +7,7 @@ export class TenantUsersApi extends BaseApi<TenantUserViewModel> implements Base
 
   constructor(tenantId: string) {
     super();
-    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenantUsers`;
+    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenantUsers`;
     this.tenantId = tenantId;
   }
 

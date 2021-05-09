@@ -8,7 +8,7 @@ export class ApplicationUsersApi
 
   constructor() {
     super();
-    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`;
+    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`;
   }
 
   readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {

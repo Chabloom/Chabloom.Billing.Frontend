@@ -7,7 +7,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
 
   constructor(tenantId = "") {
     super();
-    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/accounts`;
+    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accounts`;
     this.tenantId = tenantId;
   }
 

@@ -7,7 +7,7 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
+    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
     this.accountId = accountId;
   }
 
