@@ -1,4 +1,4 @@
-export const config = {
+window._env_ = {
   REACT_APP_ACCOUNTS_FRONTEND_ADDRESS: "https://localhost:3000",
   REACT_APP_BILLING_FRONTEND_ADDRESS: "https://localhost:3001",
   REACT_APP_ECOMMERCE_FRONTEND_ADDRESS: "https://localhost:3003",

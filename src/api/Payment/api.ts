@@ -6,9 +6,7 @@ export class PaymentsApi extends BaseApi<PaymentViewModel> implements BaseApiTyp
 
   constructor() {
     super();
-    const envConfig = 'env-config';
-    import(envConfig)
-        .then(x => this.baseUrl = `${x.config.REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`);
+    this.baseUrl = `${(window as any).REACT_APP_TRANSACTIONS_BACKEND_ADDRESS}/api/payments`;
   }
 
   readItems(token: string): Promise<[Array<PaymentViewModel> | undefined, string]> {

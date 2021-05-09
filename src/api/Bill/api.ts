@@ -7,9 +7,7 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
 
   constructor(accountId: string) {
     super();
-    const envConfig = 'env-config';
-    import(envConfig)
-        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`);
+    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
     this.accountId = accountId;
   }
 

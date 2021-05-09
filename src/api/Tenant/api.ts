@@ -6,9 +6,7 @@ export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<
 
   constructor() {
     super();
-    const envConfig = 'env-config';
-    import(envConfig)
-        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`);
+    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`;
   }
 
   readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {

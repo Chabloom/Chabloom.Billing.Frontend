@@ -5,7 +5,7 @@ rm -rf ./env-config.js
 touch ./env-config.js
 
 # Add assignment 
-echo "export const config = {" >> ./env-config.js
+echo "window.__env__ = {" >> ./env-config.js
 
 # Read each line in .env file
 # Each line represents key=value pairs

@@ -8,9 +8,7 @@ export class ApplicationUsersApi
 
   constructor() {
     super();
-    const envConfig = 'env-config';
-    import(envConfig)
-        .then(x => this.baseUrl = `${x.config.REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`);
+    this.baseUrl = `${(window as any).REACT_APP_BILLING_BACKEND_ADDRESS}/api/applicationUsers`;
   }
 
   readItems(token: string): Promise<[Array<ApplicationUserViewModel> | undefined, string]> {
