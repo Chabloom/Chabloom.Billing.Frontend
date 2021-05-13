@@ -43,6 +43,11 @@
     "sass": "^1.32.11",
     "typescript": "^4.2.4"
   },
+  "dependenciesMeta": {
+    "webpack-dev-server": {
+      "unplugged": true
+    }
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
