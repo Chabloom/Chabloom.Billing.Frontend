@@ -7,7 +7,7 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
+    this.baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
     this.accountId = accountId;
   }
 

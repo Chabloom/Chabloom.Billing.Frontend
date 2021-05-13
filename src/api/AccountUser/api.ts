@@ -7,7 +7,7 @@ export class AccountUsersApi extends BaseApi<AccountUserViewModel> implements Ba
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${(window as any).__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accountUsers`;
+    this.baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accountUsers`;
     this.accountId = accountId;
   }
 
