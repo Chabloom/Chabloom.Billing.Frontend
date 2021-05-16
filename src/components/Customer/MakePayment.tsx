@@ -19,12 +19,12 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
-import { PaymentCardsApi, PaymentCardViewModel } from "../../checkout";
+import { PaymentCardViewModel } from "../../checkout";
 import { Status } from "../../common";
 import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../api";
 
-import { SavedPaymentInfo } from "./SavedPaymentInfo";
 import { useAppContext } from "../../AppContext";
+import { InlineCheckout } from "../InlineCheckout";
 
 interface Props {
   bill: BillViewModel;
@@ -55,41 +55,20 @@ export const MakePayment: React.FC<Props> = (props) => {
   const classes = useStyles();
 
   // Initialize state variables
-  const [error, setError] = React.useState("");
-  const [processing, setProcessing] = React.useState(false);
-  const [paymentCardId, setPaymentCardId] = React.useState("");
-  const [savedPayments, setSavedPayments] = React.useState<Array<PaymentCardViewModel>>([]);
   const [agreed, setAgreed] = React.useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentCardViewModel>();
+  const [processing, setProcessing] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   const { userToken } = useAppContext();
 
-  React.useEffect(() => {
-    setProcessing(true);
-    setError("");
-    const api = new PaymentCardsApi();
-    api
-      .readItems(userToken)
-      .then(([ret, err]) => {
-        if (ret) {
-          if (ret.length === 0) {
-            setPaymentCardId("new");
-          } else {
-            setSavedPayments(ret);
-          }
-        } else {
-          setError(err);
-        }
-      })
-      .finally(() => setProcessing(false));
-  }, [userToken]);
-
-  const makeTransaction = async (paymentCardId: string) => {
+  const makeTransaction = async () => {
     setProcessing(true);
     setError("");
     const item = {
       name: props.bill.name,
       amount: props.bill.amount,
-      paymentCardId: paymentCardId,
+      paymentCardId: selectedPaymentMethod?.id,
     } as PaymentViewModel;
     const api = new PaymentsApi();
     const [ret, err] = await api.addItem(userToken, item);
@@ -113,21 +92,13 @@ export const MakePayment: React.FC<Props> = (props) => {
     setProcessing(false);
   };
   const completeTransaction = async () => {
-    if (paymentCardId) {
-      const transactionId = await makeTransaction(paymentCardId);
+    if (selectedPaymentMethod) {
+      const transactionId = await makeTransaction();
       if (transactionId) {
         await makeQuickTransaction(transactionId);
         props.setSelectedBill(undefined);
       }
     }
-  };
-
-  const getSavedPaymentCardLast4 = (): string => {
-    const savedPaymentCard = savedPayments.find((x) => x.id === paymentCardId);
-    if (savedPaymentCard && savedPaymentCard.cardNumberLast4) {
-      return savedPaymentCard.cardNumberLast4;
-    }
-    return "0000";
   };
 
   const billAmount = `$${props.bill.amount.toFixed(2)}`;
@@ -155,18 +126,11 @@ export const MakePayment: React.FC<Props> = (props) => {
                 <Typography variant="h6">{props.bill.name}</Typography>
                 <Typography variant="body1">{dueDate}</Typography>
                 <Typography variant="body1">{billAmount}</Typography>
-                {paymentCardId === "" && (
-                  <SavedPaymentInfo
-                    {...props}
-                    setPaymentCardId={setPaymentCardId}
-                    savedPayments={savedPayments}
-                    processing={processing}
-                  />
-                )}
-                {paymentCardId !== "" && paymentCardId !== "new" && (
-                  <Typography variant="body1">{`Using payment method ending in ${getSavedPaymentCardLast4()}`}</Typography>
-                )}
-                {paymentCardId !== "" && paymentCardId !== "new" && (
+                <InlineCheckout
+                  selectedPaymentMethod={selectedPaymentMethod}
+                  setSelectedPaymentMethod={setSelectedPaymentMethod}
+                />
+                {selectedPaymentMethod && (
                   <FormControlLabel
                     className={classes.mt1}
                     control={<Checkbox checked={agreed} onChange={() => setAgreed(!agreed)} />}
@@ -174,7 +138,7 @@ export const MakePayment: React.FC<Props> = (props) => {
                   />
                 )}
               </CardContent>
-              {paymentCardId !== "" && paymentCardId !== "new" && (
+              {selectedPaymentMethod && (
                 <CardActionArea>
                   <CardActions>
                     <ButtonGroup fullWidth disabled={processing}>
@@ -191,13 +155,7 @@ export const MakePayment: React.FC<Props> = (props) => {
                           Complete
                         </Hidden>
                       </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                          setPaymentCardId("");
-                        }}
-                      >
+                      <Button variant="contained" color="secondary" onClick={() => setSelectedPaymentMethod(undefined)}>
                         <CancelOutlined className={classes.mr1} />
                         <Hidden smDown implementation="css">
                           Cancel
