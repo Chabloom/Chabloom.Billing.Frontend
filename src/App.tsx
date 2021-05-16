@@ -61,10 +61,26 @@ export const App: React.FC = () => {
     () =>
       createMuiTheme({
         palette: {
+          primary: {
+            light: "#5b91fc",
+            main: "#0064c8",
+            dark: "#003b96",
+            contrastText: "#ffffff",
+          },
           mode: darkMode ? "dark" : "light",
         },
         typography: {
           fontFamily: ["Open Sans", "Roboto", "Helvetica", "Arial", "sans-serif"].join(","),
+        },
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                borderRadius: 2,
+                textTransform: "none",
+              },
+            },
+          },
         },
       }),
     [darkMode]
