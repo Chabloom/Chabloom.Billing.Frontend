@@ -6,10 +6,15 @@ import { PaymentCardsApi, PaymentCardViewModel, useAppContext } from "../../chec
 import { ExistingPaymentMethod } from "./ExistingPaymentMethod";
 import { NewPaymentMethod } from "./NewPaymentMethod";
 
-export const InlineCheckout: React.FC = () => {
+export interface Props {
+  selectedPaymentMethod: PaymentCardViewModel | undefined;
+  setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<PaymentCardViewModel | undefined>>;
+}
+
+export const InlineCheckout: React.FC<Props> = ({ selectedPaymentMethod, setSelectedPaymentMethod }) => {
   const { userId, userToken } = useAppContext();
   const [savedPaymentMethods, setSavedPaymentMethods] = React.useState<Array<PaymentCardViewModel>>();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentCardViewModel>();
+  const [forceNewPaymentMethod, setForceNewPaymentMethod] = React.useState(false);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -31,19 +36,23 @@ export const InlineCheckout: React.FC = () => {
 
   return (
     <React.Fragment>
-      {savedPaymentMethods && (
+      {!forceNewPaymentMethod && savedPaymentMethods && (
         <ExistingPaymentMethod
           paymentMethods={savedPaymentMethods}
           selectedPaymentMethod={selectedPaymentMethod}
           setSelectedPaymentMethod={setSelectedPaymentMethod}
+          setForceNewPaymentMethod={setForceNewPaymentMethod}
           processing={processing}
         />
       )}
-      {!savedPaymentMethods && (
+      {(forceNewPaymentMethod || !savedPaymentMethods) && (
         <NewPaymentMethod
-          paymentMethods={savedPaymentMethods}
           setPaymentMethods={setSavedPaymentMethods}
+          setSelectedPaymentMethod={setSelectedPaymentMethod}
+          setForceNewPaymentMethod={setForceNewPaymentMethod}
           processing={processing}
+          setProcessing={setProcessing}
+          setError={setError}
         />
       )}
       <Status processing={processing} error={error} />

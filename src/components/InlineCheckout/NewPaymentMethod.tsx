@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, createStyles, InputAdornment, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentCardViewModel } from "../../checkout";
+import { PaymentCardsApi, PaymentCardViewModel, useAppContext } from "../../checkout";
 
 import amex from "../../checkout/images/amex.png";
 import visa from "../../checkout/images/visa.png";
@@ -16,6 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
         margin: theme.spacing(1),
       },
     },
+    mt1: {
+      marginTop: theme.spacing(1),
+    },
+    mt3: {
+      marginTop: theme.spacing(3),
+    },
     flex: {
       display: "flex",
     },
@@ -27,29 +33,71 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  paymentMethods: Array<PaymentCardViewModel> | undefined;
   setPaymentMethods: React.Dispatch<React.SetStateAction<PaymentCardViewModel[] | undefined>>;
+  setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<PaymentCardViewModel | undefined>>;
+  setForceNewPaymentMethod: React.Dispatch<React.SetStateAction<boolean>>;
   processing: boolean;
+  setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
+  setError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMethods, processing }) => {
+export const NewPaymentMethod: React.FC<Props> = ({
+  setPaymentMethods,
+  setSelectedPaymentMethod,
+  setForceNewPaymentMethod,
+  processing,
+  setProcessing,
+  setError,
+}) => {
   const classes = useStyles();
-
+  const { userId, userToken } = useAppContext();
   const [cardType, setCardType] = React.useState("");
   const [cardNumber, setCardNumber] = React.useState("");
-  const [cardName, setCardName] = React.useState("");
+  const [cardholderName, setCardholderName] = React.useState("");
   const [cardExpiration, setCardExpiration] = React.useState("");
   const [cardSecurityCode, setCardSecurityCode] = React.useState("");
   const [cardImage, setCardImage] = React.useState("");
 
+  const createPaymentMethod = async (paymentMethod: PaymentCardViewModel) => {
+    setProcessing(true);
+    setError("");
+    const api = new PaymentCardsApi();
+    const [ret, err] = await api.addItem(userToken, paymentMethod);
+    if (ret && !err) {
+      setPaymentMethods([paymentMethod]);
+      setSelectedPaymentMethod(paymentMethod);
+    } else {
+      setError(err);
+    }
+    setProcessing(false);
+  };
+
   return (
-    <React.Fragment>
+    <div className={classes.mt3}>
       <Typography variant="h6">New Payment Method</Typography>
       <Typography variant="subtitle1">All payments are secure and encrypted</Typography>
       <form
         className={classes.root}
         onSubmit={(e) => {
           e.preventDefault();
+          const exp = cardExpiration.split("/");
+          const expMonth = exp[0].trim();
+          const expYear = exp[1].trim();
+          const paymentMethod = {
+            id: "tempPaymentMethod",
+            name: cardType.toUpperCase(),
+            cardNumber: cardNumber,
+            cardNumberLast4: cardNumber.substring(cardNumber.length - 4),
+            cardholderName: cardholderName,
+            expirationMonth: expMonth,
+            expirationYear: expYear,
+          } as PaymentCardViewModel;
+          if (userId) {
+            createPaymentMethod(paymentMethod).then();
+          }
+          setPaymentMethods([paymentMethod]);
+          setSelectedPaymentMethod(paymentMethod);
+          setForceNewPaymentMethod(false);
         }}
       >
         <div>
@@ -59,6 +107,7 @@ export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMe
             inputMode="numeric"
             autoComplete="cc-number"
             value={cardNumber}
+            disabled={processing}
             onChange={(e) => {
               const number = e.target.value.replaceAll(/[^0-9]+/g, "");
               if (number.startsWith("34") || number.startsWith("37")) {
@@ -142,8 +191,9 @@ export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMe
             fullWidth
             required
             autoComplete="cc-name"
-            value={cardName}
-            onChange={(e) => setCardName(e.target.value)}
+            value={cardholderName}
+            disabled={processing}
+            onChange={(e) => setCardholderName(e.target.value)}
             inputProps={{ maxLength: 255 }}
             label="Name on card"
           />
@@ -156,6 +206,7 @@ export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMe
               inputMode="numeric"
               autoComplete="cc-exp"
               value={cardExpiration}
+              disabled={processing}
               onChange={(e) => {
                 const expiration = e.target.value.replaceAll("/", "").replaceAll(/[^0-9]+/g, "");
                 const sub1 = `${expiration.substring(0, 1)}${expiration.substring(1, 2)}`;
@@ -174,6 +225,7 @@ export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMe
               inputMode="numeric"
               autoComplete="cc-csc"
               value={cardSecurityCode}
+              disabled={processing}
               onChange={(e) => {
                 const code = e.target.value.replaceAll(/[^0-9]+/g, "");
                 setCardSecurityCode(code);
@@ -195,6 +247,6 @@ export const NewPaymentMethod: React.FC<Props> = ({ paymentMethods, setPaymentMe
           </ButtonGroup>
         </div>
       </form>
-    </React.Fragment>
+    </div>
   );
 };

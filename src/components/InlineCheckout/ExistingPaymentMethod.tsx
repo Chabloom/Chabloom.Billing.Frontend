@@ -1,11 +1,15 @@
 import React from "react";
-import { createStyles, InputLabel, Select, Theme } from "@material-ui/core";
+import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { CancelOutlined } from "@material-ui/icons";
 
 import { PaymentCardViewModel } from "../../checkout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    mr1: {
+      marginRight: theme.spacing(1),
+    },
     mt1: {
       marginTop: theme.spacing(1),
     },
@@ -19,6 +23,7 @@ interface Props {
   paymentMethods: Array<PaymentCardViewModel>;
   selectedPaymentMethod: PaymentCardViewModel | undefined;
   setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<PaymentCardViewModel | undefined>>;
+  setForceNewPaymentMethod: React.Dispatch<React.SetStateAction<boolean>>;
   processing: boolean;
 }
 
@@ -26,18 +31,20 @@ export const ExistingPaymentMethod: React.FC<Props> = ({
   paymentMethods,
   selectedPaymentMethod,
   setSelectedPaymentMethod,
+  setForceNewPaymentMethod,
   processing,
 }) => {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <div className={classes.mt3}>
       <InputLabel htmlFor="payment-select" className={classes.mt3}>
-        Select saved payment method
+        Select payment method
       </InputLabel>
       <Select
         className={classes.mt1}
         fullWidth
+        native
         disabled={processing}
         inputProps={{ id: "payment-select" }}
         onChange={(e) => {
@@ -55,6 +62,23 @@ export const ExistingPaymentMethod: React.FC<Props> = ({
           );
         })}
       </Select>
-    </React.Fragment>
+      <div className={classes.mt1}>
+        <ButtonGroup fullWidth disabled={processing}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setForceNewPaymentMethod(true);
+              setSelectedPaymentMethod(undefined);
+            }}
+          >
+            <CancelOutlined className={classes.mr1} />
+            <Hidden smDown implementation="css">
+              Use new payment method
+            </Hidden>
+          </Button>
+        </ButtonGroup>
+      </div>
+    </div>
   );
 };
