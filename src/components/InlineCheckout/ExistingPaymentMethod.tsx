@@ -3,7 +3,7 @@ import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } 
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined } from "@material-ui/icons";
 
-import { PaymentCardViewModel } from "../../checkout";
+import { PaymentMethodViewModel } from "../../checkout";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  paymentMethods: Array<PaymentCardViewModel>;
-  selectedPaymentMethod: PaymentCardViewModel | undefined;
-  setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<PaymentCardViewModel | undefined>>;
+  paymentMethods: Array<PaymentMethodViewModel>;
+  selectedPaymentMethod: PaymentMethodViewModel | undefined;
+  setSelectedPaymentMethod: React.Dispatch<React.SetStateAction<PaymentMethodViewModel | undefined>>;
   setForceNewPaymentMethod: React.Dispatch<React.SetStateAction<boolean>>;
   processing: boolean;
 }

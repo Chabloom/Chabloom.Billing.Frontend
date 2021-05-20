@@ -19,9 +19,9 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
-import { PaymentCardViewModel } from "../../checkout";
+import { PaymentsApi, PaymentViewModel, PaymentMethodViewModel } from "../../checkout";
 import { Status } from "../../common";
-import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel, PaymentsApi, PaymentViewModel } from "../../api";
+import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel } from "../../api";
 
 import { useAppContext } from "../../AppContext";
 import { InlineCheckout } from "../InlineCheckout";
@@ -56,22 +56,37 @@ export const MakePayment: React.FC<Props> = (props) => {
 
   // Initialize state variables
   const [agreed, setAgreed] = React.useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentCardViewModel>();
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<PaymentMethodViewModel>();
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const { userToken } = useAppContext();
 
   const makeTransaction = async () => {
+    if (!selectedPaymentMethod) {
+      setError("No payment method selected");
+      return;
+    }
+
     setProcessing(true);
     setError("");
-    const item = {
+    const payment = {
       name: props.bill.name,
       amount: props.bill.amount,
-      paymentCardId: selectedPaymentMethod?.id,
+      currencyId: "USD",
     } as PaymentViewModel;
+    if (selectedPaymentMethod.id) {
+      payment.paymentCardId = selectedPaymentMethod.id;
+    } else {
+      payment.cardHolderName = selectedPaymentMethod.cardHolderName;
+      payment.cardType = selectedPaymentMethod.cardType;
+      payment.cardNumber = selectedPaymentMethod.cardNumber;
+      payment.cardExpirationMonth = selectedPaymentMethod.cardExpirationMonth;
+      payment.cardExpirationYear = selectedPaymentMethod.cardExpirationYear;
+      payment.cardSecurityCode = "";
+    }
     const api = new PaymentsApi();
-    const [ret, err] = await api.addItem(userToken, item);
+    const [ret, err] = await api.addItem(userToken, payment);
     setProcessing(false);
     if (ret) {
       return ret.id;
