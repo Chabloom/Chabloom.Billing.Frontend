@@ -2,36 +2,35 @@ import { BaseApi, BaseApiType } from "../../common";
 import { BillViewModel } from "./model";
 
 export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<BillViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
   accountId: string;
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/bills`;
     this.accountId = accountId;
   }
 
-  readItems(token: string): Promise<[Array<BillViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<BillViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}?accountId=${this.accountId}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[BillViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  read(token: string, id: string): Promise<[Response | undefined, BillViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${id}`, token);
   }
 
-  addItem(token: string, item: BillViewModel): Promise<[BillViewModel | undefined, string]> {
-    item.accountId = this.accountId;
-    item.currency = "USD";
-    return this._addItem(`${this.baseUrl}`, token, item);
+  create(token: string, viewModel: BillViewModel): Promise<[Response | undefined, BillViewModel | undefined, string]> {
+    viewModel.accountId = this.accountId;
+    viewModel.currencyId = "USD";
+    return this._post(`${this.baseUrl}`, token, viewModel);
   }
 
-  editItem(token: string, item: BillViewModel): Promise<[BillViewModel | undefined, string]> {
-    item.accountId = this.accountId;
-    item.currency = "USD";
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+  edit(token: string, viewModel: BillViewModel): Promise<[Response | undefined, BillViewModel | undefined, string]> {
+    viewModel.accountId = this.accountId;
+    viewModel.currencyId = "USD";
+    return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  deleteItem(token: string, item: BillViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, id: string): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${id}`, token);
   }
 }

@@ -4,7 +4,7 @@ export interface BillScheduleViewModel extends BaseViewModel {
   readonly id: string;
   name: string;
   amount: number;
-  currency: string;
+  currencyId: string;
   day: number;
   monthInterval: number;
   beginDate: string;

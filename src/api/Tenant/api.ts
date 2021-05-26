@@ -2,34 +2,31 @@ import { BaseApi, BaseApiType } from "../../common";
 import { TenantViewModel } from "./model";
 
 export class TenantsApi extends BaseApi<TenantViewModel> implements BaseApiType<TenantViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`;
 
-  constructor() {
-    super();
-    this.baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/tenants`;
+  readAll(): Promise<[Response | undefined, Array<TenantViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}`);
   }
 
-  readItems(): Promise<[Array<TenantViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}`, "", false);
+  read(token: string, id: string): Promise<[Response | undefined, TenantViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${id}`, token);
   }
 
-  readItemsAuthorized(token: string): Promise<[Array<TenantViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}/Authorized`, token);
+  create(
+    token: string,
+    viewModel: TenantViewModel
+  ): Promise<[Response | undefined, TenantViewModel | undefined, string]> {
+    return this._post(`${this.baseUrl}`, token, viewModel);
   }
 
-  readItem(token: string, itemId: string): Promise<[TenantViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  edit(
+    token: string,
+    viewModel: TenantViewModel
+  ): Promise<[Response | undefined, TenantViewModel | undefined, string]> {
+    return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  addItem(token: string, item: TenantViewModel): Promise<[TenantViewModel | undefined, string]> {
-    return this._addItem(`${this.baseUrl}`, token, item);
-  }
-
-  editItem(token: string, item: TenantViewModel): Promise<[TenantViewModel | undefined, string]> {
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
-  }
-
-  deleteItem(token: string, item: TenantViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, id: string): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${id}`, token);
   }
 }

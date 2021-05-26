@@ -2,36 +2,41 @@ import { BaseApi, BaseApiType } from "../../common";
 import { BillScheduleViewModel } from "./model";
 
 export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {
-  baseUrl = "";
+  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
   accountId: string;
 
   constructor(accountId: string) {
     super();
-    this.baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
     this.accountId = accountId;
   }
 
-  readItems(token: string): Promise<[Array<BillScheduleViewModel> | undefined, string]> {
-    return this._readItems(`${this.baseUrl}?accountId=${this.accountId}`, token);
+  readAll(token: string): Promise<[Response | undefined, Array<BillScheduleViewModel> | undefined, string]> {
+    return this._getAll(`${this.baseUrl}?accountId=${this.accountId}`, token);
   }
 
-  readItem(token: string, itemId: string): Promise<[BillScheduleViewModel | undefined, string]> {
-    return this._readItem(`${this.baseUrl}/${itemId}`, token);
+  read(token: string, id: string): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
+    return this._get(`${this.baseUrl}/${id}`, token);
   }
 
-  addItem(token: string, item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
-    item.accountId = this.accountId;
-    item.currency = "USD";
-    return this._addItem(`${this.baseUrl}`, token, item);
+  create(
+    token: string,
+    viewModel: BillScheduleViewModel
+  ): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
+    viewModel.accountId = this.accountId;
+    viewModel.currencyId = "USD";
+    return this._post(`${this.baseUrl}`, token, viewModel);
   }
 
-  editItem(token: string, item: BillScheduleViewModel): Promise<[BillScheduleViewModel | undefined, string]> {
-    item.accountId = this.accountId;
-    item.currency = "USD";
-    return this._editItem(`${this.baseUrl}/${item.id}`, token, item);
+  edit(
+    token: string,
+    viewModel: BillScheduleViewModel
+  ): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
+    viewModel.accountId = this.accountId;
+    viewModel.currencyId = "USD";
+    return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  deleteItem(token: string, item: BillScheduleViewModel): Promise<string | undefined> {
-    return this._deleteItem(`${this.baseUrl}/${item.id}`, token);
+  delete(token: string, id: string): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${id}`, token);
   }
 }
