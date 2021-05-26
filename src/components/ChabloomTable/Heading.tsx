@@ -69,11 +69,11 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const addItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const [newItem, err] = await props.api.addItem(userToken, props.editItem);
+      const [_, ret, err] = await props.api.create(userToken, props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
-          { ...newItem },
+          { ...ret },
           ...props.data.slice(props.selectedIndex + 1),
         ]);
         props.setSelectedIndex(-1);
@@ -90,11 +90,11 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const editItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const [newItem, err] = await props.api.editItem(userToken, props.editItem);
+      const [_, ret, err] = await props.api.edit(userToken, props.editItem);
       if (!err) {
         props.setData([
           ...props.data.slice(0, props.selectedIndex),
-          { ...newItem },
+          { ...ret },
           ...props.data.slice(props.selectedIndex + 1),
         ]);
         props.setSelectedIndex(-1);
@@ -110,7 +110,7 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
   const deleteItem = async () => {
     props.setProcessing(true);
     if (props.api) {
-      const err = await props.api.deleteItem(userToken, props.editItem);
+      const [_, err] = await props.api.delete(userToken, props.editItem);
       if (!err) {
         props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
         props.setSelectedIndex(-1);
