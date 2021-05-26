@@ -17,7 +17,7 @@ import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icon
 
 import { Status } from "../../common";
 
-import { AccountUsersApi, AccountUserViewModel, AccountViewModel, BillsApi, BillViewModel } from "../../api";
+import { AccountViewModel, BillsApi, BillViewModel, UserAccountsApi, UserAccountViewModel } from "../../api";
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
@@ -37,25 +37,24 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
-export const BillOverview: React.FC<Props> = (props) => {
+export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
   const classes = useStyles();
 
   const [selectedBill, setSelectedBill] = React.useState<BillViewModel>();
   const [accountBills, setAccountBills] = React.useState([] as Array<BillViewModel>);
-  const [accountUsers, setAccountUsers] = React.useState([] as Array<AccountUserViewModel>);
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  const { userId, userToken, trackedAccounts, setTrackedAccounts } = useAppContext();
+  const { userId, userToken, tenant, userAccounts, setUserAccounts } = useAppContext();
 
   // Get all account bills
   React.useEffect(() => {
     const getAccountBills = async () => {
       setProcessing(true);
-      const api = new BillsApi(props.account.id);
-      const [bills, err] = await api.readItems(userToken);
-      if (bills && bills.length > 0) {
-        const futureBills = bills
+      const api = new BillsApi(account.id);
+      const [_, ret, err] = await api.readAll(userToken);
+      if (ret && ret.length > 0) {
+        const futureBills = ret
           .filter((x) => new Date(x.dueDate) > new Date())
           .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
         setAccountBills(futureBills);
@@ -67,23 +66,7 @@ export const BillOverview: React.FC<Props> = (props) => {
     if (!selectedBill) {
       getAccountBills().then();
     }
-  }, [props.account, userToken, selectedBill]);
-
-  // Get all account users
-  React.useEffect(() => {
-    if (userToken) {
-      const getAccountUsers = async () => {
-        setProcessing(true);
-        const api = new AccountUsersApi(props.account.id);
-        const [users, err] = await api.readItems(userToken);
-        if (users && users.length !== 0 && !err) {
-          setAccountUsers(users);
-        }
-        setProcessing(false);
-      };
-      getAccountUsers().then();
-    }
-  }, [props.account, userToken]);
+  }, [account, userToken, selectedBill]);
 
   const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 
@@ -93,23 +76,24 @@ export const BillOverview: React.FC<Props> = (props) => {
         <Grid item xs={12}>
           <Grid container>
             <Grid item style={{ flexGrow: 1, margin: "auto" }}>
-              <Typography variant="h5">{props.account.name}</Typography>
+              <Typography variant="h5">{account.name}</Typography>
             </Grid>
-            {userToken && props.allowTracking && (
+            {userToken && allowTracking && (
               <Grid item>
                 <Tooltip title="Track account">
                   <IconButton
                     onClick={() => {
-                      if (userToken) {
+                      if (userToken && tenant && userAccounts) {
                         setProcessing(true);
-                        const model = {
+                        const viewModel = {
                           userId: userId,
-                        } as AccountUserViewModel;
-                        const api = new AccountUsersApi(props.account.id);
+                          accountId: account.id,
+                        } as UserAccountViewModel;
+                        const api = new UserAccountsApi(tenant.id);
                         api
-                          .addItem(userToken, model)
+                          .create(userToken, viewModel)
                           .then(() => {
-                            setTrackedAccounts([...trackedAccounts, props.account]);
+                            setUserAccounts([...userAccounts, viewModel]);
                           })
                           .finally(() => setProcessing(false));
                       }
@@ -120,24 +104,24 @@ export const BillOverview: React.FC<Props> = (props) => {
                 </Tooltip>
               </Grid>
             )}
-            {userToken && !props.allowTracking && (
+            {userToken && !allowTracking && (
               <Grid item>
                 <Tooltip title="Don't track account">
                   <IconButton
                     onClick={() => {
-                      if (userToken) {
+                      if (userToken && tenant && userAccounts) {
                         setProcessing(true);
-                        const accountUser = accountUsers
-                          .filter((x) => x.accountId === props.account.id)
+                        const userAccount = userAccounts
+                          .filter((x) => x.accountId === account.id)
                           .find((x) => x.userId === userId);
-                        if (accountUser) {
-                          const api = new AccountUsersApi(props.account.id);
+                        if (userAccount) {
+                          const api = new UserAccountsApi(tenant.id);
                           api
-                            .deleteItem(userToken, accountUser)
+                            .delete(userToken, userAccount)
                             .then(() => {
-                              setTrackedAccounts([
-                                ...trackedAccounts.slice(0, trackedAccounts.indexOf(props.account)),
-                                ...trackedAccounts.slice(trackedAccounts.indexOf(props.account) + 1),
+                              setUserAccounts([
+                                ...userAccounts.slice(0, userAccounts.indexOf(userAccount)),
+                                ...userAccounts.slice(userAccounts.indexOf(userAccount) + 1),
                               ]);
                             })
                             .finally(() => setProcessing(false));
@@ -198,7 +182,7 @@ export const BillOverview: React.FC<Props> = (props) => {
                   </CardActions>
                 </Card>
                 {selectedBill === bill && !billComplete(bill) && (
-                  <MakePayment {...props} bill={bill} selectedBill={selectedBill} setSelectedBill={setSelectedBill} />
+                  <MakePayment bill={bill} selectedBill={selectedBill} setSelectedBill={setSelectedBill} />
                 )}
               </Grid>
             );
