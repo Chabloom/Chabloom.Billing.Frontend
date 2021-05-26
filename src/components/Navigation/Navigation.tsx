@@ -18,7 +18,6 @@ import {
 } from "@material-ui/core";
 import { AccountCircle, Business, Group, Home, Receipt, Schedule } from "@material-ui/icons";
 
-import { TenantSelection } from "./TenantSelection";
 import { ModeSelection } from "./ModeSelection";
 import { UserManagement } from "./UserManagement";
 
@@ -60,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Navigation: React.FC = (props) => {
-  const context = useAppContext();
+  const { tenant, selectedAccount, selectedUserLevel } = useAppContext();
 
   const classes = useStyles();
 
@@ -72,14 +71,11 @@ export const Navigation: React.FC = (props) => {
           <div className={classes.flexGrow}>
             <img src={icon} className={classes.logo} alt="logo" />
           </div>
-          <div className={classes.flexGrow}>
-            <TenantSelection />
-          </div>
           <ModeSelection />
           <UserManagement />
         </Toolbar>
       </AppBar>
-      {context.selectedUserLevel !== UserLevel.Customer && (
+      {selectedUserLevel !== UserLevel.Customer && (
         <Hidden smDown implementation="css">
           <nav className={classes.drawer}>
             <Drawer
@@ -105,7 +101,7 @@ export const Navigation: React.FC = (props) => {
                 <div>
                   <Divider />
                   <List>
-                    {context.selectedTenant && (
+                    {tenant && (
                       <ListItem button key="accounts" component={NavLink} to="/accounts">
                         <ListItemIcon>
                           <AccountCircle />
@@ -113,7 +109,7 @@ export const Navigation: React.FC = (props) => {
                         <ListItemText primary="Accounts" />
                       </ListItem>
                     )}
-                    {context.selectedAccount && (
+                    {selectedAccount && (
                       <ListItem button key="bills" component={NavLink} to="/bills">
                         <ListItemIcon>
                           <Receipt />
@@ -121,7 +117,7 @@ export const Navigation: React.FC = (props) => {
                         <ListItemText primary="Bills" />
                       </ListItem>
                     )}
-                    {context.selectedAccount && (
+                    {selectedAccount && (
                       <ListItem button key="billSchedules" component={NavLink} to="/billSchedules">
                         <ListItemIcon>
                           <Schedule />
@@ -131,7 +127,7 @@ export const Navigation: React.FC = (props) => {
                     )}
                   </List>
                 </div>
-                {context.selectedUserLevel === UserLevel.Admin && (
+                {selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>
@@ -144,7 +140,7 @@ export const Navigation: React.FC = (props) => {
                     </List>
                   </div>
                 )}
-                {context.selectedUserLevel === UserLevel.Admin && (
+                {selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>
@@ -157,7 +153,7 @@ export const Navigation: React.FC = (props) => {
                     </List>
                   </div>
                 )}
-                {context.selectedUserLevel === UserLevel.Admin && (
+                {selectedUserLevel === UserLevel.Admin && (
                   <div>
                     <Divider />
                     <List>
