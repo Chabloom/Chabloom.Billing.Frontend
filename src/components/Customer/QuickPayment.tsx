@@ -1,23 +1,14 @@
 import * as React from "react";
 
-import {
-  Autocomplete,
-  Button,
-  createStyles,
-  FormGroup,
-  Grid,
-  Paper,
-  TextField,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Status } from "../../common";
 
-import { AccountsApi, AccountViewModel, TenantsApi, TenantViewModel } from "../../api";
+import { AccountsApi, AccountViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
+import { useAppContext } from "../../AppContext";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,41 +23,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const QuickPayment: React.FC = () => {
   const [account, setAccount] = React.useState<AccountViewModel>();
-  const [allTenants, setAllTenants] = React.useState<Array<TenantViewModel>>([]);
-  const [tenant, setTenant] = React.useState("");
   const [accountNumber, setAccountNumber] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const classes = useStyles();
 
-  // Get all available tenants
-  React.useEffect(() => {
-    setProcessing(true);
-    setError("");
-    const api = new TenantsApi();
-    api
-      .readItems()
-      .then(([ret, err]) => {
-        if (ret) {
-          setAllTenants(ret);
-        } else {
-          setError(err);
-        }
-      })
-      .finally(() => setProcessing(false));
-  }, []);
+  const { tenant } = useAppContext();
 
   const getAccountPayments = async () => {
     setAccount(undefined);
     setError("");
     setProcessing(true);
-    const selectedTenant = allTenants.find((x) => x.name === tenant);
-    if (selectedTenant) {
-      const accountsApi = new AccountsApi(selectedTenant.id);
-      const [account, err] = await accountsApi.readItemReference("", accountNumber);
-      if (account) {
-        setAccount(account);
+    if (tenant) {
+      const accountsApi = new AccountsApi(tenant.id);
+      const [_, ret, err] = await accountsApi.read("", accountNumber);
+      if (ret && !err) {
+        setAccount(ret);
       } else {
         setError(err);
       }
@@ -86,24 +59,6 @@ export const QuickPayment: React.FC = () => {
             }}
           >
             <FormGroup>
-              <Autocomplete
-                freeSolo
-                disableClearable
-                options={allTenants.map((t) => t.name)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    required
-                    variant="standard"
-                    name="tenant"
-                    label="Tenant"
-                    value={tenant}
-                    disabled={processing}
-                    onChange={(e) => setTenant(e.target.value)}
-                  />
-                )}
-                onChange={(event, value) => setTenant(value)}
-              />
               <TextField
                 required
                 variant="standard"
