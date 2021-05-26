@@ -30,7 +30,7 @@ export class BillsApi extends BaseApi<BillViewModel> implements BaseApiType<Bill
     return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  delete(token: string, id: string): Promise<[Response | undefined, string]> {
-    return this._delete(`${this.baseUrl}/${id}`, token);
+  delete(token: string, viewModel: BillViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${viewModel.id}`, token);
   }
 }

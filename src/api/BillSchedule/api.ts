@@ -36,7 +36,7 @@ export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements 
     return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  delete(token: string, id: string): Promise<[Response | undefined, string]> {
-    return this._delete(`${this.baseUrl}/${id}`, token);
+  delete(token: string, viewModel: BillScheduleViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${viewModel.id}`, token);
   }
 }

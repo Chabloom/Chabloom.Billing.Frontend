@@ -34,7 +34,7 @@ export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiTyp
     return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
   }
 
-  delete(token: string, id: string): Promise<[Response | undefined, string]> {
-    return this._delete(`${this.baseUrl}/${id}`, token);
+  delete(token: string, viewModel: AccountViewModel): Promise<[Response | undefined, string]> {
+    return this._delete(`${this.baseUrl}/${viewModel.id}`, token);
   }
 }
