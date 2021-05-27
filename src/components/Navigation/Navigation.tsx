@@ -16,12 +16,12 @@ import {
   Theme,
   Toolbar,
 } from "@material-ui/core";
-import { AccountCircle, Business, Group, Home, Receipt, Schedule } from "@material-ui/icons";
+import { AccountCircle, Business, Home, Receipt, Schedule } from "@material-ui/icons";
 
 import { ModeSelection } from "./ModeSelection";
 import { UserManagement } from "./UserManagement";
 
-import { useAppContext, UserLevel } from "../../AppContext";
+import { useAppContext } from "../../AppContext";
 
 import icon from "../../common/images/chabloom-icon.svg";
 
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Navigation: React.FC = (props) => {
-  const { tenant, selectedAccount, selectedUserLevel } = useAppContext();
+  const { tenant, selectedAccount, selectedRole } = useAppContext();
 
   const classes = useStyles();
 
@@ -75,7 +75,7 @@ export const Navigation: React.FC = (props) => {
           <UserManagement />
         </Toolbar>
       </AppBar>
-      {selectedUserLevel !== UserLevel.Customer && (
+      {selectedRole && (
         <Hidden smDown implementation="css">
           <nav className={classes.drawer}>
             <Drawer
@@ -127,33 +127,7 @@ export const Navigation: React.FC = (props) => {
                     )}
                   </List>
                 </div>
-                {selectedUserLevel === UserLevel.Admin && (
-                  <div>
-                    <Divider />
-                    <List>
-                      <ListItem button key="managers" component={NavLink} to="/managers">
-                        <ListItemIcon>
-                          <Group />
-                        </ListItemIcon>
-                        <ListItemText primary="Managers" />
-                      </ListItem>
-                    </List>
-                  </div>
-                )}
-                {selectedUserLevel === UserLevel.Admin && (
-                  <div>
-                    <Divider />
-                    <List>
-                      <ListItem button key="administrators" component={NavLink} to="/administrators">
-                        <ListItemIcon>
-                          <Group />
-                        </ListItemIcon>
-                        <ListItemText primary="Administrators" />
-                      </ListItem>
-                    </List>
-                  </div>
-                )}
-                {selectedUserLevel === UserLevel.Admin && (
+                {selectedRole === "Admin" && (
                   <div>
                     <Divider />
                     <List>

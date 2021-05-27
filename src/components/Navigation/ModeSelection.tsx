@@ -2,33 +2,33 @@ import * as React from "react";
 
 import { FormControlLabel, Hidden, RadioGroup, Switch } from "@material-ui/core";
 
-import { useAppContext, UserLevel } from "../../AppContext";
+import { useAppContext } from "../../AppContext";
 
 export const ModeSelection: React.FC = () => {
-  const { userLevel, selectedUserLevel, setSelectedUserLevel } = useAppContext();
+  const { tenantRoles, selectedRole, setSelectedRole } = useAppContext();
 
-  if (userLevel === UserLevel.Customer) {
+  if (!tenantRoles || tenantRoles.length === 0) {
     return null;
   }
 
   return (
     <Hidden smDown implementation="css">
       <RadioGroup row>
-        {userLevel === UserLevel.Admin && (
+        {tenantRoles.find((x) => x === "Admin") && (
           <FormControlLabel
             control={
               <Switch
-                checked={selectedUserLevel === UserLevel.Admin}
+                checked={selectedRole === "Admin"}
                 color="primary"
                 onChange={() => {
-                  if (selectedUserLevel === UserLevel.Admin) {
+                  if (selectedRole === "Admin") {
                     // We are disabling admin mode
                     localStorage.setItem("UserLevel", "Manager");
-                    setSelectedUserLevel(UserLevel.Manager);
+                    setSelectedRole("Manager");
                   } else {
                     // We are enabling admin mode
                     localStorage.setItem("UserLevel", "Admin");
-                    setSelectedUserLevel(UserLevel.Admin);
+                    setSelectedRole("Admin");
                   }
                 }}
               />
@@ -39,18 +39,18 @@ export const ModeSelection: React.FC = () => {
         <FormControlLabel
           control={
             <Switch
-              checked={selectedUserLevel !== UserLevel.Customer}
+              checked={selectedRole !== ""}
               color="secondary"
               onChange={() => {
-                if (selectedUserLevel !== UserLevel.Customer) {
+                if (selectedRole !== "") {
                   // We are disabling manager mode
                   localStorage.setItem("UserLevel", "Customer");
-                  setSelectedUserLevel(UserLevel.Customer);
+                  setSelectedRole("");
                   window.location.pathname = "/";
                 } else {
                   // We are enabling manager mode
                   localStorage.setItem("UserLevel", "Manager");
-                  setSelectedUserLevel(UserLevel.Manager);
+                  setSelectedRole("Manager");
                 }
               }}
             />

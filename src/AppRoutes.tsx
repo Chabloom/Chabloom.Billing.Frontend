@@ -3,19 +3,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Checkout } from "./checkout";
 import { SignInCallback, SignOutCallback } from "./common";
-import { Home, Account, ApplicationUser, Bill, BillSchedule, Tenant, TenantUser, Navigation } from "./components";
+import { Home, Account, Bill, BillSchedule, Tenant, Navigation } from "./components";
 
 import { useAppContext } from "./AppContext";
 
 export const AppRoutes: React.FC = () => {
-  const {
-    userManager,
-    selectedTenant,
-    selectedAccount,
-    productCounts,
-    setProductCounts,
-    pickupMethod,
-  } = useAppContext();
+  const { userManager, selectedAccount, productCounts, setProductCounts, pickupMethod } = useAppContext();
 
   return (
     <Router>
@@ -27,11 +20,9 @@ export const AppRoutes: React.FC = () => {
           <Route exact={true} path="/signout-oidc">
             <SignOutCallback userManager={userManager} />
           </Route>
-          {selectedTenant && (
-            <Route path="/accounts">
-              <Account />
-            </Route>
-          )}
+          <Route path="/accounts">
+            <Account />
+          </Route>
           {selectedAccount && (
             <Route path="/bills">
               <Bill />
@@ -44,14 +35,6 @@ export const AppRoutes: React.FC = () => {
           )}
           <Route path="/tenants">
             <Tenant />
-          </Route>
-          {selectedTenant && (
-            <Route path="/managers">
-              <TenantUser />
-            </Route>
-          )}
-          <Route path="/administrators">
-            <ApplicationUser />
           </Route>
           <Route exact={true} path="/">
             <Home />

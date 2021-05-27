@@ -3,12 +3,12 @@ import * as React from "react";
 import { Dashboard as CustomerDashboard } from "./Customer";
 import { Dashboard as ManagerDashboard } from "./Manager";
 
-import { useAppContext, UserLevel } from "../AppContext";
+import { useAppContext } from "../AppContext";
 
 export const Home: React.FC = () => {
-  const context = useAppContext();
+  const { selectedRole } = useAppContext();
 
-  if (context.selectedUserLevel === UserLevel.Admin || context.selectedUserLevel === UserLevel.Manager) {
+  if (selectedRole === "Admin" || selectedRole === "Manager") {
     return <ManagerDashboard />;
   } else {
     return <CustomerDashboard />;
