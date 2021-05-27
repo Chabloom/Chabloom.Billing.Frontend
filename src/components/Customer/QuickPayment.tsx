@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Status } from "../../common";
 
-import { AccountsApi, AccountViewModel } from "../../api";
+import { UserAccountsApi, UserAccountViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
 import { useAppContext } from "../../AppContext";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const QuickPayment: React.FC = () => {
-  const [account, setAccount] = React.useState<AccountViewModel>();
+  const [account, setAccount] = React.useState<UserAccountViewModel>();
   const [accountNumber, setAccountNumber] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
@@ -36,10 +36,13 @@ export const QuickPayment: React.FC = () => {
     setError("");
     setProcessing(true);
     if (tenant) {
-      const accountsApi = new AccountsApi(tenant.id);
-      const [_, ret, err] = await accountsApi.read("", accountNumber);
+      const api = new UserAccountsApi(tenant.id);
+      const [_, ret, err] = await api.readAll("");
       if (ret && !err) {
-        setAccount(ret);
+        const acc = ret.find((x) => x.accountId == accountNumber);
+        if (acc) {
+          setAccount(acc);
+        }
       } else {
         setError(err);
       }

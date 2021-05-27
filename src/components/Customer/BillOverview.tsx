@@ -17,13 +17,13 @@ import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icon
 
 import { Status } from "../../common";
 
-import { AccountViewModel, BillsApi, BillViewModel, UserAccountsApi, UserAccountViewModel } from "../../api";
+import { BillsApi, BillViewModel, UserAccountsApi, UserAccountViewModel } from "../../api";
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
 
 interface Props {
-  account: AccountViewModel;
+  account: UserAccountViewModel;
   allowTracking: boolean;
 }
 
@@ -51,7 +51,7 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
   React.useEffect(() => {
     const getAccountBills = async () => {
       setProcessing(true);
-      const api = new BillsApi(account.id);
+      const api = new BillsApi(account.accountId);
       const [_, ret, err] = await api.readAll(userToken);
       if (ret && ret.length > 0) {
         const futureBills = ret

@@ -21,7 +21,7 @@ import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
 import { PaymentsApi, PaymentViewModel, PaymentMethodViewModel } from "../../checkout";
 import { Status } from "../../common";
-import { BillViewModel, QuickPaymentApi, QuickPaymentViewModel } from "../../api";
+import { BillViewModel } from "../../api";
 
 import { useAppContext } from "../../AppContext";
 import { InlineCheckout } from "../InlineCheckout";
@@ -86,7 +86,7 @@ export const MakePayment: React.FC<Props> = (props) => {
       payment.cardSecurityCode = "";
     }
     const api = new PaymentsApi();
-    const [ret, err] = await api.addItem(userToken, payment);
+    const [_, ret, err] = await api.create(userToken, payment);
     setProcessing(false);
     if (ret) {
       return ret.id;
@@ -95,22 +95,11 @@ export const MakePayment: React.FC<Props> = (props) => {
     }
     return "";
   };
-  const makeQuickTransaction = async (transactionId: string) => {
-    setProcessing(true);
-    setError("");
-    const item = {
-      billId: props.bill.id,
-      transactionId: transactionId,
-    } as QuickPaymentViewModel;
-    const api = new QuickPaymentApi();
-    await api.addItem(userToken, item);
-    setProcessing(false);
-  };
   const completeTransaction = async () => {
     if (selectedPaymentMethod) {
       const transactionId = await makeTransaction();
       if (transactionId) {
-        await makeQuickTransaction(transactionId);
+        //await makeQuickTransaction(transactionId);
         props.setSelectedBill(undefined);
       }
     }

@@ -23,7 +23,7 @@ export const InlineCheckout: React.FC<Props> = ({ selectedPaymentMethod, setSele
       setProcessing(true);
       setError("");
       const api = new PaymentMethodsApi();
-      const [ret, err] = await api.readItems(userToken);
+      const [_, ret, err] = await api.readAll(userToken);
       if (ret && !err) {
         setSavedPaymentMethods(ret);
       } else {

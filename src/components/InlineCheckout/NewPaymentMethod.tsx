@@ -62,7 +62,7 @@ export const NewPaymentMethod: React.FC<Props> = ({
     setProcessing(true);
     setError("");
     const api = new PaymentMethodsApi();
-    const [ret, err] = await api.addItem(userToken, paymentMethod);
+    const [_, ret, err] = await api.create(userToken, paymentMethod);
     if (ret && !err) {
       setPaymentMethods([paymentMethod]);
       setSelectedPaymentMethod(paymentMethod);

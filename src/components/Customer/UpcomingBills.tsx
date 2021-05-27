@@ -6,15 +6,15 @@ import { BillOverview } from "./BillOverview";
 import { useAppContext } from "../../AppContext";
 
 export const UpcomingBills: React.FC = () => {
-  const { userToken, trackedAccounts } = useAppContext();
+  const { userToken, userAccounts } = useAppContext();
 
-  if (!userToken) {
+  if (!userToken || !userAccounts) {
     return null;
   }
 
   return (
     <Grid container spacing={2}>
-      {trackedAccounts.map((account) => {
+      {userAccounts.map((account) => {
         return (
           <Grid item xs={12} key={`upcoming-account-${account.id}`}>
             <BillOverview account={account} allowTracking={false} />
