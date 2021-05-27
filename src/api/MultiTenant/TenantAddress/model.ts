@@ -1,4 +1,4 @@
-import { BaseViewModel } from "../../common";
+import { BaseViewModel } from "../../../common";
 
 export interface TenantAddressViewModel extends BaseViewModel {
   address: string;

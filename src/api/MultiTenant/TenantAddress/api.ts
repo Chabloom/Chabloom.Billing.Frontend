@@ -1,4 +1,4 @@
-import { BaseApi } from "../../common";
+import { BaseApi } from "../../../common";
 import { TenantAddressViewModel } from "./model";
 
 export class TenantAddressesApi extends BaseApi<TenantAddressViewModel> {
