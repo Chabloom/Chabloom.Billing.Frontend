@@ -52,14 +52,15 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
     const getAccountBills = async () => {
       setProcessing(true);
       const api = new BillsAPI(account.accountId);
-      const [_, ret, err] = await api.readAll(userToken);
-      if (ret && ret.length > 0) {
+      const success = await api.readAll(userToken);
+      if (success) {
+        const ret = api.data() as Array<BillViewModel>;
         const futureBills = ret
           .filter((x) => new Date(x.dueDate) > new Date())
           .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime());
         setAccountBills(futureBills);
       } else {
-        setError(err);
+        setError(api.lastError());
       }
       setProcessing(false);
     };
@@ -89,9 +90,9 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
                           userId: userId,
                           accountId: account.id,
                         } as UserAccountViewModel;
-                        const api = new UserAccountsAPI(tenant.id);
+                        const api = new UserAccountsAPI();
                         api
-                          .create(userToken, viewModel)
+                          .create(viewModel, userToken)
                           .then(() => {
                             setUserAccounts([...userAccounts, viewModel]);
                           })
@@ -115,9 +116,9 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
                           .filter((x) => x.accountId === account.id)
                           .find((x) => x.userId === userId);
                         if (userAccount) {
-                          const api = new UserAccountsAPI(tenant.id);
+                          const api = new UserAccountsAPI();
                           api
-                            .delete(userToken, userAccount)
+                            .delete(userAccount, userToken)
                             .then(() => {
                               setUserAccounts([
                                 ...userAccounts.slice(0, userAccounts.indexOf(userAccount)),

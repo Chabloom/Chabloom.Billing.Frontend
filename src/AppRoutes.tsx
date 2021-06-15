@@ -1,14 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { Checkout } from "./checkout";
 import { SignInCallback, SignOutCallback } from "./common";
 import { Home, Account, Bill, BillSchedule, Tenant, Navigation } from "./components";
 
 import { useAppContext } from "./AppContext";
 
 export const AppRoutes: React.FC = () => {
-  const { userManager, selectedAccount, productCounts, setProductCounts, pickupMethod } = useAppContext();
+  const { userManager, selectedAccount } = useAppContext();
 
   return (
     <Router>
@@ -38,9 +37,6 @@ export const AppRoutes: React.FC = () => {
           </Route>
           <Route exact={true} path="/">
             <Home />
-          </Route>
-          <Route exact={true} path="/checkout">
-            <Checkout productCounts={productCounts} setProductCounts={setProductCounts} pickupMethod={pickupMethod} />
           </Route>
         </Switch>
       </Navigation>

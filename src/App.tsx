@@ -119,11 +119,12 @@ export const App: React.FC = () => {
   React.useEffect(() => {
     const getCurrentTenant = async () => {
       const api = new TenantsAPI();
-      const [_, ret, err] = await api.getCurrent();
-      if (ret && !err) {
+      const success = await api.current();
+      if (success) {
+        const ret = api.data() as TenantViewModel;
         setTenant(ret);
       } else {
-        console.error(err);
+        console.error(api.lastError());
       }
     };
     getCurrentTenant().then();
@@ -133,12 +134,8 @@ export const App: React.FC = () => {
   React.useEffect(() => {
     const getCurrentTenantRoles = async () => {
       const api = new TenantsAPI();
-      const [_, ret, err] = await api.getRoles(userToken);
-      if (ret && !err) {
-        setTenantRoles(ret);
-      } else {
-        console.error(err);
-      }
+      const roles = await api.roles(userToken);
+      setTenantRoles(roles);
     };
     getCurrentTenantRoles().then();
   }, [userToken, tenant]);
@@ -161,12 +158,13 @@ export const App: React.FC = () => {
       if (!tenant) {
         return;
       }
-      const api = new UserAccountsAPI(tenant.id);
-      const [_, ret, err] = await api.readAll(userToken);
-      if (ret && !err) {
+      const api = new UserAccountsAPI();
+      const success = await api.readAll(userToken);
+      if (success) {
+        const ret = api.data() as Array<UserAccountViewModel>;
         setUserAccounts(ret);
       } else {
-        console.error(err);
+        console.error(api.lastError());
       }
     };
     if (userToken) {

@@ -36,15 +36,16 @@ export const QuickPayment: React.FC = () => {
     setError("");
     setProcessing(true);
     if (tenant) {
-      const api = new UserAccountsAPI(tenant.id);
-      const [_, ret, err] = await api.readAll("");
-      if (ret && !err) {
+      const api = new UserAccountsAPI();
+      const success = await api.readAll("");
+      if (success) {
+        const ret = api.data() as Array<UserAccountViewModel>;
         const acc = ret.find((x) => x.accountId == accountNumber);
         if (acc) {
           setAccount(acc);
         }
       } else {
-        setError(err);
+        setError(api.lastError());
       }
     }
     setProcessing(false);

@@ -86,9 +86,10 @@ export const MakePayment: React.FC<Props> = (props) => {
       payment.cardSecurityCode = "";
     }
     const api = new PaymentsApi();
-    const [_, ret, err] = await api.create(userToken, payment);
+    const success = await api.create(payment, userToken);
     setProcessing(false);
-    if (ret) {
+    if (success) {
+      const ret = api.data();
       return ret.id;
     } else {
       setError(err);

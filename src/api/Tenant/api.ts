@@ -18,7 +18,29 @@ export class TenantsAPI extends FullAPI<TenantViewModel> {
     return this._read(`${this._baseUrl}/current`);
   };
 
-  roles = (): Promise<boolean> => {
-    return this._read(`${this._baseUrl}/roles`);
+  roles = async (token: string): Promise<Array<string>> => {
+    // Reset data and any errors
+    this._data = undefined;
+    this._lastError = "";
+
+    // Setup request
+    const requestInit: RequestInit = {
+      method: "GET",
+      referrerPolicy: "origin",
+      credentials: token ? "include" : "omit",
+    };
+
+    try {
+      // Make the request
+      const response = await fetch(`${this._baseUrl}/roles`, requestInit);
+      // Check if the request was successful
+      if (response.status in [200, 201]) {
+        // Set the returned data
+        return await response.json();
+      }
+    } catch (e) {
+      this.lastError = e.message;
+    }
+    return [];
   };
 }
