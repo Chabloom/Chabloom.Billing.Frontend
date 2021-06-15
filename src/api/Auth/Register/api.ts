@@ -1,10 +1,12 @@
-import { BaseApi } from "../../../common";
+import { BaseAPI } from "../../api";
 import { RegisterViewModel } from "./model";
 
-export class RegisterApi extends BaseApi<RegisterViewModel> {
-  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/register`;
+export class RegisterAPI extends BaseAPI<RegisterViewModel> {
+  constructor() {
+    super(`${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/register`);
+  }
 
-  register(viewModel: RegisterViewModel): Promise<[Response | undefined, RegisterViewModel | undefined, string]> {
-    return this._post(`${this.baseUrl}`, undefined, viewModel);
+  register(viewModel: RegisterViewModel): Promise<boolean> {
+    return this._create(`${this._baseUrl}`, viewModel);
   }
 }

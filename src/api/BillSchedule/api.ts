@@ -1,42 +1,23 @@
-import { BaseApi, BaseApiType } from "../../common";
+import { FullAPI } from "../api";
 import { BillScheduleViewModel } from "./model";
 
-export class BillSchedulesApi extends BaseApi<BillScheduleViewModel> implements BaseApiType<BillScheduleViewModel> {
-  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`;
+export class BillSchedulesAPI extends FullAPI<BillScheduleViewModel> {
   accountId: string;
 
   constructor(accountId: string) {
-    super();
+    super(`${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/billSchedules`);
     this.accountId = accountId;
   }
 
-  readAll(token: string): Promise<[Response | undefined, Array<BillScheduleViewModel> | undefined, string]> {
-    return this._getAll(`${this.baseUrl}?accountId=${this.accountId}`, token);
+  readAll(token: string | undefined = undefined): Promise<boolean> {
+    return this._read(`${this._baseUrl}?accountId=${this.accountId}`, token);
   }
 
-  read(token: string, id: string): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
-    return this._get(`${this.baseUrl}/${id}`, token);
+  deleteViewModel(viewModel: BillScheduleViewModel, token: string): Promise<boolean> {
+    return this._delete(`${this._baseUrl}/${viewModel.id}`, token);
   }
 
-  create(
-    token: string,
-    viewModel: BillScheduleViewModel
-  ): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
-    viewModel.accountId = this.accountId;
-    viewModel.currencyId = "USD";
-    return this._post(`${this.baseUrl}`, token, viewModel);
-  }
-
-  edit(
-    token: string,
-    viewModel: BillScheduleViewModel
-  ): Promise<[Response | undefined, BillScheduleViewModel | undefined, string]> {
-    viewModel.accountId = this.accountId;
-    viewModel.currencyId = "USD";
-    return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
-  }
-
-  delete(token: string, viewModel: BillScheduleViewModel): Promise<[Response | undefined, string]> {
-    return this._delete(`${this.baseUrl}/${viewModel.id}`, token);
+  updateViewModel(viewModel: BillScheduleViewModel, token: string): Promise<boolean> {
+    return this._update(`${this._baseUrl}/${viewModel.id}`, viewModel, token);
   }
 }

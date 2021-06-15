@@ -1,10 +1,12 @@
-import { BaseApi } from "../../../common";
+import { BaseAPI } from "../../api";
 import { ErrorViewModel } from "./model";
 
-export class ErrorApi extends BaseApi<ErrorViewModel> {
-  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/error`;
+export class ErrorAPI extends BaseAPI<ErrorViewModel> {
+  constructor() {
+    super(`${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/error`);
+  }
 
-  getError(id: string): Promise<[Response | undefined, ErrorViewModel | undefined, string]> {
-    return this._get(`${this.baseUrl}/${id}`);
+  getError(id: string): Promise<boolean> {
+    return this._read(`${this._baseUrl}/${id}`);
   }
 }

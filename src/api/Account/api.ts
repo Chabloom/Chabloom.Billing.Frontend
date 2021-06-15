@@ -1,40 +1,16 @@
-import { BaseApi, BaseApiType } from "../../common";
+import { FullAPI } from "../api";
 import { AccountViewModel } from "./model";
 
-export class AccountsApi extends BaseApi<AccountViewModel> implements BaseApiType<AccountViewModel> {
-  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accounts`;
-  tenantId: string;
-
-  constructor(tenantId: string) {
-    super();
-    this.tenantId = tenantId;
+export class AccountsAPI extends FullAPI<AccountViewModel> {
+  constructor() {
+    super(`${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/accounts`);
   }
 
-  readAll(token: string): Promise<[Response | undefined, Array<AccountViewModel> | undefined, string]> {
-    return this._getAll(`${this.baseUrl}?tenantId=${this.tenantId}`, token);
+  deleteViewModel(viewModel: AccountViewModel, token: string): Promise<boolean> {
+    return this._delete(`${this._baseUrl}/${viewModel.id}`, token);
   }
 
-  read(token: string, id: string): Promise<[Response | undefined, AccountViewModel | undefined, string]> {
-    return this._get(`${this.baseUrl}/${id}`, token);
-  }
-
-  create(
-    token: string,
-    viewModel: AccountViewModel
-  ): Promise<[Response | undefined, AccountViewModel | undefined, string]> {
-    viewModel.tenantId = this.tenantId;
-    return this._post(`${this.baseUrl}`, token, viewModel);
-  }
-
-  edit(
-    token: string,
-    viewModel: AccountViewModel
-  ): Promise<[Response | undefined, AccountViewModel | undefined, string]> {
-    viewModel.tenantId = this.tenantId;
-    return this._put(`${this.baseUrl}/${viewModel.id}`, token, viewModel);
-  }
-
-  delete(token: string, viewModel: AccountViewModel): Promise<[Response | undefined, string]> {
-    return this._delete(`${this.baseUrl}/${viewModel.id}`, token);
+  updateViewModel(viewModel: AccountViewModel, token: string): Promise<boolean> {
+    return this._update(`${this._baseUrl}/${viewModel.id}`, viewModel, token);
   }
 }

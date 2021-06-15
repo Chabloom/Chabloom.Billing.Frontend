@@ -17,7 +17,7 @@ import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icon
 
 import { Status } from "../../common";
 
-import { BillsApi, BillViewModel, UserAccountsApi, UserAccountViewModel } from "../../api";
+import { BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "../../api";
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
@@ -51,7 +51,7 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
   React.useEffect(() => {
     const getAccountBills = async () => {
       setProcessing(true);
-      const api = new BillsApi(account.accountId);
+      const api = new BillsAPI(account.accountId);
       const [_, ret, err] = await api.readAll(userToken);
       if (ret && ret.length > 0) {
         const futureBills = ret
@@ -89,7 +89,7 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
                           userId: userId,
                           accountId: account.id,
                         } as UserAccountViewModel;
-                        const api = new UserAccountsApi(tenant.id);
+                        const api = new UserAccountsAPI(tenant.id);
                         api
                           .create(userToken, viewModel)
                           .then(() => {
@@ -115,7 +115,7 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
                           .filter((x) => x.accountId === account.id)
                           .find((x) => x.userId === userId);
                         if (userAccount) {
-                          const api = new UserAccountsApi(tenant.id);
+                          const api = new UserAccountsAPI(tenant.id);
                           api
                             .delete(userToken, userAccount)
                             .then(() => {

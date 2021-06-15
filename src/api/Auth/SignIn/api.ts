@@ -1,14 +1,16 @@
-import { BaseApi } from "../../../common";
+import { BaseAPI } from "../../api";
 import { SignInViewModel } from "./model";
 
-export class SignInApi extends BaseApi<SignInViewModel> {
-  baseUrl = `${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/signIn`;
-
-  signIn(viewModel: SignInViewModel): Promise<[Response | undefined, SignInViewModel | undefined, string]> {
-    return this._post(`${this.baseUrl}`, undefined, viewModel);
+export class SignInAPI extends BaseAPI<SignInViewModel> {
+  constructor() {
+    super(`${window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS}/api/auth/signIn`);
   }
 
-  signOut(id: string): Promise<[Response | undefined, SignInViewModel | undefined, string]> {
-    return this._post(`${this.baseUrl}/${id}`);
+  signIn(viewModel: SignInViewModel): Promise<boolean> {
+    return this._create(`${this._baseUrl}`, viewModel);
+  }
+
+  signOut(id: string): Promise<boolean> {
+    return this._create(`${this._baseUrl}/${id}`);
   }
 }

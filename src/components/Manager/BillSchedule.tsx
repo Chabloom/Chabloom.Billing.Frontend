@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BillSchedulesApi } from "../../api";
+import { BillSchedulesAPI } from "../../api";
 
 import { ChabloomTable, ChabloomTableColumn } from "../ChabloomTable";
 import { useAppContext } from "../../AppContext";
@@ -30,7 +30,7 @@ const columns: Array<ChabloomTableColumn> = [
 
 export const BillSchedule: React.FC = () => {
   const { selectedAccount } = useAppContext();
-  const api = React.useMemo(() => new BillSchedulesApi(selectedAccount?.id as string), [selectedAccount?.id]);
+  const api = React.useMemo(() => new BillSchedulesAPI(selectedAccount?.id as string), [selectedAccount?.id]);
   const title = React.useMemo(() => `${selectedAccount?.name as string} Bill Schedules`, [selectedAccount?.name]);
 
   return (

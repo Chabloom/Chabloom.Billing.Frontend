@@ -2,7 +2,7 @@ import React from "react";
 import { UserManager } from "oidc-client";
 import { createMuiTheme, StylesProvider, ThemeProvider, useMediaQuery } from "@material-ui/core";
 
-import { AccountViewModel, TenantsApi, TenantViewModel, UserAccountsApi, UserAccountViewModel } from "./api";
+import { AccountViewModel, TenantsAPI, TenantViewModel, UserAccountsAPI, UserAccountViewModel } from "./api";
 import { OidcConfiguration } from "./config";
 
 import { AppContext, AppContextProps } from "./AppContext";
@@ -118,7 +118,7 @@ export const App: React.FC = () => {
   // Get the current tenant
   React.useEffect(() => {
     const getCurrentTenant = async () => {
-      const api = new TenantsApi();
+      const api = new TenantsAPI();
       const [_, ret, err] = await api.getCurrent();
       if (ret && !err) {
         setTenant(ret);
@@ -132,7 +132,7 @@ export const App: React.FC = () => {
   // Get the current tenant roles
   React.useEffect(() => {
     const getCurrentTenantRoles = async () => {
-      const api = new TenantsApi();
+      const api = new TenantsAPI();
       const [_, ret, err] = await api.getRoles(userToken);
       if (ret && !err) {
         setTenantRoles(ret);
@@ -161,7 +161,7 @@ export const App: React.FC = () => {
       if (!tenant) {
         return;
       }
-      const api = new UserAccountsApi(tenant.id);
+      const api = new UserAccountsAPI(tenant.id);
       const [_, ret, err] = await api.readAll(userToken);
       if (ret && !err) {
         setUserAccounts(ret);
