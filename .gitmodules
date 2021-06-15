@@ -1,8 +1,0 @@
-[submodule "src/common"]
-	path = src/common
-	url = https://chabloom@dev.azure.com/chabloom/Chabloom.React.Common/_git/Chabloom.React.Common
-	branch = master
-[submodule "src/checkout"]
-	path = src/checkout
-	url = https://chabloom@dev.azure.com/chabloom/Chabloom.React.Checkout/_git/Chabloom.React.Checkout
-	branch = master
