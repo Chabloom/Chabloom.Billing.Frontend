@@ -1,6 +1,6 @@
-import { BaseViewModel } from "../../common";
+import { BaseViewModel } from "../model";
 
 export interface TenantHostViewModel extends BaseViewModel {
-  address: string;
+  hostname: string;
   tenantId: string;
 }
