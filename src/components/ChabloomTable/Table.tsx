@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Paper, Table, TableContainer } from "@material-ui/core";
 
-import { BaseApiType, BaseViewModel } from "../../common";
+import { BaseViewModel, FullAPIType } from "../../api";
 
 import { ChabloomTableBody } from "./Body";
 import { ChabloomTableHead } from "./Head";
@@ -12,7 +12,7 @@ import { ChabloomTableHeading } from "./Heading";
 import { useAppContext } from "../../AppContext";
 
 interface Props {
-  api: BaseApiType<BaseViewModel>;
+  api: FullAPIType<BaseViewModel>;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
@@ -29,16 +29,18 @@ export const ChabloomTable: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
+  const { api } = props;
   const { userToken } = useAppContext();
 
   // Get the table data
   React.useEffect(() => {
     if (userToken) {
       setProcessing(true);
-      props.api
+      api
         .readAll(userToken)
-        .then(([_, ret, err]) => {
-          if (ret && !err) {
+        .then((success) => {
+          if (success) {
+            const ret = api.data() as Array<BaseViewModel>;
             try {
               const sortedData = ret.sort((a, b) => (a["name"] as string).localeCompare(b["name"] as string));
               setData([...sortedData]);
@@ -53,12 +55,12 @@ export const ChabloomTable: React.FC<Props> = (props) => {
             }
           } else {
             setData([] as Array<BaseViewModel>);
-            setError(err);
+            setError(api.lastError());
           }
         })
         .finally(() => setProcessing(false));
     }
-  }, [props.api, props.title, userToken]);
+  }, [api, userToken]);
 
   return (
     <TableContainer component={Paper}>

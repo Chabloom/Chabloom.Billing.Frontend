@@ -15,13 +15,13 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { Cancel, Delete, Edit, FilterList, Receipt, Save, Schedule } from "@material-ui/icons";
 
-import { BaseApiType, BaseViewModel } from "../../common";
+import { BaseViewModel, FullAPIType } from "../../api";
 
 import { ChabloomTableColumn } from "./Column";
 import { useAppContext } from "../../AppContext";
 
 interface Props {
-  api: BaseApiType<BaseViewModel> | undefined;
+  api: FullAPIType<BaseViewModel> | undefined;
   title: string;
   columns: Array<ChabloomTableColumn>;
   methods: Array<"add" | "edit" | "delete" | "payment" | "paymentSchedule">;
@@ -64,74 +64,86 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ChabloomTableActionButtons: React.FC<Props> = (props) => {
+  const {
+    api,
+    methods,
+    data,
+    setData,
+    adding,
+    setAdding,
+    selectedIndex,
+    setSelectedIndex,
+    editIndex,
+    setEditIndex,
+    editItem,
+    setEditItem,
+    deleteIndex,
+    setDeleteIndex,
+    setProcessing,
+    setError,
+  } = props;
   const { userToken } = useAppContext();
 
   const addItem = async () => {
-    props.setProcessing(true);
-    if (props.api) {
-      const [_, ret, err] = await props.api.create(userToken, props.editItem);
-      if (!err) {
-        props.setData([
-          ...props.data.slice(0, props.selectedIndex),
-          { ...ret },
-          ...props.data.slice(props.selectedIndex + 1),
-        ]);
-        props.setSelectedIndex(-1);
-        props.setEditIndex(-1);
-        props.setEditItem({} as BaseViewModel);
-        props.setAdding(false);
-        props.setError("");
+    setProcessing(true);
+    if (api) {
+      const success = await api.create(editItem, userToken);
+      if (success) {
+        const ret = api.data();
+        setData([...data.slice(0, selectedIndex), { ...ret }, ...data.slice(selectedIndex + 1)]);
+        setSelectedIndex(-1);
+        setEditIndex(-1);
+        setEditItem({} as BaseViewModel);
+        setAdding(false);
+        setError("");
       } else {
-        props.setError(err);
+        setError(api.lastError());
       }
     }
-    props.setProcessing(false);
+    setProcessing(false);
   };
-  const editItem = async () => {
-    props.setProcessing(true);
-    if (props.api) {
-      const [_, ret, err] = await props.api.edit(userToken, props.editItem);
-      if (!err) {
-        props.setData([
-          ...props.data.slice(0, props.selectedIndex),
-          { ...ret },
-          ...props.data.slice(props.selectedIndex + 1),
-        ]);
-        props.setSelectedIndex(-1);
-        props.setEditIndex(-1);
-        props.setEditItem({} as BaseViewModel);
-        props.setError("");
+  const updateItem = async () => {
+    setProcessing(true);
+    if (api) {
+      const success = await api.updateViewModel(editItem, userToken);
+      if (success) {
+        const ret = api.data();
+        setData([...data.slice(0, selectedIndex), { ...ret }, ...data.slice(selectedIndex + 1)]);
+        setSelectedIndex(-1);
+        setEditIndex(-1);
+        setEditItem({} as BaseViewModel);
+        setError("");
       } else {
-        props.setError(err);
+        setError(api.lastError());
       }
     }
-    props.setProcessing(false);
+    setProcessing(false);
   };
   const deleteItem = async () => {
-    props.setProcessing(true);
-    if (props.api) {
-      const [_, err] = await props.api.delete(userToken, props.editItem);
-      if (!err) {
-        props.setData([...props.data.slice(0, props.selectedIndex), ...props.data.slice(props.selectedIndex + 1)]);
-        props.setSelectedIndex(-1);
-        props.setDeleteIndex(-1);
+    setProcessing(true);
+    if (api) {
+      const success = await api.deleteViewModel(editItem, userToken);
+      if (success) {
+        setData([...data.slice(0, selectedIndex), ...data.slice(selectedIndex + 1)]);
+        setSelectedIndex(-1);
+        setDeleteIndex(-1);
       } else {
-        props.setError(err);
+        setError(api.lastError());
       }
     }
-    props.setProcessing(false);
+    setProcessing(false);
   };
 
-  if (props.selectedIndex !== -1) {
-    if (props.editIndex === props.selectedIndex) {
+  if (selectedIndex !== -1) {
+    if (editIndex === selectedIndex) {
       return (
         <ButtonGroup>
           <IconButton
             onClick={() => {
-              if (props.adding) {
+              if (adding) {
                 addItem().then();
               } else {
-                editItem().then();
+                updateItem().then();
               }
             }}
           >
@@ -139,27 +151,24 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              props.setProcessing(true);
-              if (props.adding) {
-                props.setData([
-                  ...props.data.slice(0, props.selectedIndex),
-                  ...props.data.slice(props.selectedIndex + 1),
-                ]);
+              setProcessing(true);
+              if (adding) {
+                setData([...data.slice(0, selectedIndex), ...data.slice(selectedIndex + 1)]);
               } else {
-                props.setData([...props.data]);
+                setData([...data]);
               }
-              props.setSelectedIndex(-1);
-              props.setEditIndex(-1);
-              props.setAdding(false);
-              props.setProcessing(false);
-              props.setError("");
+              setSelectedIndex(-1);
+              setEditIndex(-1);
+              setAdding(false);
+              setProcessing(false);
+              setError("");
             }}
           >
             <Cancel />
           </IconButton>
         </ButtonGroup>
       );
-    } else if (props.deleteIndex === props.selectedIndex) {
+    } else if (deleteIndex === selectedIndex) {
       return (
         <ButtonGroup>
           <IconButton
@@ -171,9 +180,9 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
           </IconButton>
           <IconButton
             onClick={() => {
-              props.setSelectedIndex(-1);
-              props.setDeleteIndex(-1);
-              props.setError("");
+              setSelectedIndex(-1);
+              setDeleteIndex(-1);
+              setError("");
             }}
           >
             <Cancel />
@@ -183,37 +192,37 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
     } else {
       return (
         <ButtonGroup>
-          {props.methods.includes("payment") && (
+          {methods.includes("payment") && (
             <Tooltip title="Manage account payments">
               <IconButton component={NavLink} to="/payments">
                 <Receipt />
               </IconButton>
             </Tooltip>
           )}
-          {props.methods.includes("paymentSchedule") && (
+          {methods.includes("paymentSchedule") && (
             <Tooltip title="Manage account payment schedules">
               <IconButton component={NavLink} to="/paymentSchedules">
                 <Schedule />
               </IconButton>
             </Tooltip>
           )}
-          {props.methods.includes("edit") && (
+          {methods.includes("edit") && (
             <Tooltip title="Edit account">
               <IconButton
                 onClick={() => {
-                  props.setEditItem({
-                    ...props.data[props.selectedIndex],
+                  setEditItem({
+                    ...data[selectedIndex],
                   });
-                  props.setEditIndex(props.selectedIndex);
+                  setEditIndex(selectedIndex);
                 }}
               >
                 <Edit />
               </IconButton>
             </Tooltip>
           )}
-          {props.methods.includes("delete") && (
+          {methods.includes("delete") && (
             <Tooltip title="Delete account">
-              <IconButton onClick={() => props.setDeleteIndex(props.selectedIndex)}>
+              <IconButton onClick={() => setDeleteIndex(selectedIndex)}>
                 <Delete />
               </IconButton>
             </Tooltip>
@@ -233,13 +242,14 @@ const ChabloomTableActionButtons: React.FC<Props> = (props) => {
 
 export const ChabloomTableHeading: React.FC<Props> = (props) => {
   const classes = useStyles();
+  const { title, selectedIndex, processing, error } = props;
 
   return (
     <div>
-      <Toolbar className={props.selectedIndex === -1 ? classes.root : classes.highlight}>
-        {props.selectedIndex === -1 ? (
+      <Toolbar className={selectedIndex === -1 ? classes.root : classes.highlight}>
+        {selectedIndex === -1 ? (
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            {props.title}
+            {title}
           </Typography>
         ) : (
           <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
@@ -248,11 +258,11 @@ export const ChabloomTableHeading: React.FC<Props> = (props) => {
         )}
         <ChabloomTableActionButtons {...props} />
       </Toolbar>
-      {props.processing && <LinearProgress />}
-      {props.error && (
+      {processing && <LinearProgress />}
+      {error && (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>
-          {props.error}
+          {error}
         </Alert>
       )}
     </div>

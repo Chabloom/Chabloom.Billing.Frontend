@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { TableCell, TextField } from "@material-ui/core";
 
-import { BaseViewModel } from "../../common";
+import { BaseViewModel } from "../../api";
 
 import { ChabloomTableColumn } from "./Column";
 

@@ -4,7 +4,7 @@ import { Fab, TableCell, TableHead, TableRow, TableSortLabel } from "@material-u
 import { makeStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 
-import { BaseViewModel } from "../../common";
+import { BaseViewModel } from "../../api";
 
 import { ChabloomTableColumn } from "./Column";
 
