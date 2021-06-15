@@ -1,7 +1,7 @@
-import { BaseViewModel } from "../../../common";
+import { BaseViewModel } from "../../model";
 
 export interface ErrorViewModel extends BaseViewModel {
   readonly error: string;
-  readonly description: number;
+  readonly errorDescription: string;
   readonly redirectUri: string;
 }
