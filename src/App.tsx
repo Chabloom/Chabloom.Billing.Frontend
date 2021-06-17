@@ -14,6 +14,7 @@ export const App: React.FC = () => {
   const [userLoaded, setUserLoaded] = React.useState(false);
   const [userId, setUserId] = React.useState("");
   const [userName, setUserName] = React.useState("");
+  const [userEmail, setUserEmail] = React.useState("");
   const [userToken, setUserToken] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(false);
   const [selectedAccount, setSelectedAccount] = React.useState<AccountViewModel>();
@@ -29,6 +30,7 @@ export const App: React.FC = () => {
       setUserLoaded(true);
       setUserId(user.profile.sub);
       setUserName(user.profile.name as string);
+      setUserEmail(user.profile.preferred_username as string);
       setUserToken(user.access_token);
     });
     userManager.events.addSilentRenewError((error) => {
@@ -40,6 +42,7 @@ export const App: React.FC = () => {
         if (user) {
           setUserId(user.profile.sub);
           setUserName(user.profile.name as string);
+          setUserEmail(user.profile.preferred_username as string);
           setUserToken(user.access_token);
         }
       });
@@ -97,6 +100,7 @@ export const App: React.FC = () => {
           setUserLoaded(true);
           setUserId(user.profile.sub);
           setUserName(user.profile.name as string);
+          setUserEmail(user.profile.preferred_username as string);
           setUserToken(user.access_token);
         } else {
           console.log("signing in silent");
@@ -105,6 +109,7 @@ export const App: React.FC = () => {
           if (user) {
             setUserId(user.profile.sub);
             setUserName(user.profile.name as string);
+            setUserEmail(user.profile.preferred_username as string);
             setUserToken(user.access_token);
           }
         }
@@ -177,6 +182,7 @@ export const App: React.FC = () => {
     userLoaded: userLoaded,
     userId: userId,
     userName: userName,
+    userEmail: userEmail,
     userToken: userToken,
     darkMode: darkMode,
     setDarkMode: setDarkMode,

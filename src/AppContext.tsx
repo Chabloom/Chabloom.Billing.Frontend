@@ -1,10 +1,17 @@
 import * as React from "react";
 import { UserManager } from "oidc-client";
 
-import { AppContextCheckoutProps } from "./checkout";
 import { AccountViewModel, TenantViewModel, UserAccountViewModel } from "./api";
 
-export interface AppContextProps extends AppContextCheckoutProps {
+export interface AppContextProps {
+  userManager: UserManager;
+  userLoaded: boolean;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  userToken: string;
+  darkMode: boolean;
+  setDarkMode: (darkMode: boolean) => void;
   tenant: TenantViewModel | undefined;
   tenantRoles: string[] | undefined;
   selectedRole: string;
@@ -20,13 +27,10 @@ export const AppContext = React.createContext<AppContextProps>({
   userLoaded: false,
   userId: "",
   userName: "",
+  userEmail: "",
   userToken: "",
   darkMode: false,
   setDarkMode: () => console.warn("setDarkMode not implemented"),
-  productCounts: new Map<string, number>(),
-  setProductCounts: () => console.warn("setProductCounts not implemented"),
-  pickupMethod: "Shipping",
-  setPickupMethod: () => console.warn("setPickupMethod not implemented"),
   tenant: undefined,
   tenantRoles: undefined,
   selectedRole: "",

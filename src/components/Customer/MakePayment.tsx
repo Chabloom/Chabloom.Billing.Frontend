@@ -19,12 +19,11 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
-import { PaymentsApi, PaymentViewModel, PaymentMethodViewModel } from "../../checkout";
-import { Status } from "../../common";
 import { BillViewModel } from "../../api";
 
 import { useAppContext } from "../../AppContext";
 import { InlineCheckout } from "../InlineCheckout";
+import {Status} from "../Status";
 
 interface Props {
   bill: BillViewModel;
@@ -85,7 +84,7 @@ export const MakePayment: React.FC<Props> = (props) => {
       payment.cardExpirationYear = selectedPaymentMethod.cardExpirationYear;
       payment.cardSecurityCode = "";
     }
-    const api = new PaymentsApi();
+    const api = new PaymentsAPI();
     const success = await api.create(payment, userToken);
     setProcessing(false);
     if (success) {

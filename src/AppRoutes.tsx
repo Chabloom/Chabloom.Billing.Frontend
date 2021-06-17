@@ -1,8 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { SignInCallback, SignOutCallback } from "./common";
-import { Home, Account, Bill, BillSchedule, Tenant, Navigation } from "./components";
+import {Home, Account, Bill, BillSchedule, Tenant, Navigation, SignOutCallback, SignInCallback} from "./components";
 
 import { useAppContext } from "./AppContext";
 

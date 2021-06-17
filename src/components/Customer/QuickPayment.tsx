@@ -3,12 +3,11 @@ import * as React from "react";
 import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Status } from "../../common";
-
 import { UserAccountsAPI, UserAccountViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
 import { useAppContext } from "../../AppContext";
+import {Status} from "../Status";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

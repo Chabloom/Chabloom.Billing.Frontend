@@ -15,15 +15,14 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icons";
 
-import { Status } from "../../common";
-
 import { BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "../../api";
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
+import {Status} from "../Status";
 
 interface Props {
-  account: UserAccountViewModel;
+  userAccount: UserAccountViewModel;
   allowTracking: boolean;
 }
 
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
-export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
+export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) => {
   const classes = useStyles();
 
   const [selectedBill, setSelectedBill] = React.useState<BillViewModel>();
@@ -47,11 +46,12 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
 
   const { userId, userToken, tenant, userAccounts, setUserAccounts } = useAppContext();
 
+  
   // Get all account bills
   React.useEffect(() => {
     const getAccountBills = async () => {
       setProcessing(true);
-      const api = new BillsAPI(account.accountId);
+      const api = new BillsAPI(userAccount.accountId);
       const success = await api.readAll(userToken);
       if (success) {
         const ret = api.data() as Array<BillViewModel>;
@@ -67,7 +67,7 @@ export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
     if (!selectedBill) {
       getAccountBills().then();
     }
-  }, [account, userToken, selectedBill]);
+  }, [userAccount, userToken, selectedBill]);
 
   const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 

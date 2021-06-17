@@ -14,10 +14,10 @@ export const UpcomingBills: React.FC = () => {
 
   return (
     <Grid container spacing={2}>
-      {userAccounts.map((account) => {
+      {userAccounts.map((userAccount) => {
         return (
-          <Grid item xs={12} key={`upcoming-account-${account.id}`}>
-            <BillOverview account={account} allowTracking={false} />
+          <Grid item xs={12} key={`upcoming-account-${userAccount.accountId}`}>
+            <BillOverview userAccount={userAccount} allowTracking={false} />
           </Grid>
         );
       })}
