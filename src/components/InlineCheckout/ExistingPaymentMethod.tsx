@@ -3,8 +3,6 @@ import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } 
 import { makeStyles } from "@material-ui/core/styles";
 import { CancelOutlined } from "@material-ui/icons";
 
-import { PaymentMethodViewModel } from "../../checkout";
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mr1: {

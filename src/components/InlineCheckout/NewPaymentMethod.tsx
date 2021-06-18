@@ -2,12 +2,12 @@ import React from "react";
 import { Button, ButtonGroup, createStyles, InputAdornment, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { PaymentMethodsApi, PaymentMethodViewModel, useAppContext } from "../../checkout";
+import {useAppContext} from "../../AppContext";
 
-import amex from "../../checkout/images/amex.png";
-import visa from "../../checkout/images/visa.png";
-import mastercard from "../../checkout/images/mastercard.png";
-import discover from "../../checkout/images/discover.png";
+import amex from "../../images/amex.png";
+import visa from "../../images/visa.png";
+import mastercard from "../../images/mastercard.png";
+import discover from "../../images/discover.png";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

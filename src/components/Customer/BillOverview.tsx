@@ -46,7 +46,7 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
 
   const { userId, userToken, tenant, userAccounts, setUserAccounts } = useAppContext();
 
-  
+
   // Get all account bills
   React.useEffect(() => {
     const getAccountBills = async () => {

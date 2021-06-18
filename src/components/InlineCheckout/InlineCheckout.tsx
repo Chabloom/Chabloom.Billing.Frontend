@@ -1,10 +1,9 @@
 import React from "react";
 
-import { Status } from "../../common";
-import { PaymentMethodsApi, PaymentMethodViewModel, useAppContext } from "../../checkout";
-
 import { ExistingPaymentMethod } from "./ExistingPaymentMethod";
 import { NewPaymentMethod } from "./NewPaymentMethod";
+import {Status} from "../Status";
+import {useAppContext} from "../../AppContext";
 
 export interface Props {
   selectedPaymentMethod: PaymentMethodViewModel | undefined;
