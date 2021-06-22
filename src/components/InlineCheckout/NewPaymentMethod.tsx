@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, createStyles, InputAdornment, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {useAppContext} from "../../AppContext";
+import { useAppContext } from "../../AppContext";
 
 import amex from "../../images/amex.png";
 import visa from "../../images/visa.png";

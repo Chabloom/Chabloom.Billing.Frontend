@@ -23,7 +23,7 @@ import { BillViewModel } from "../../api";
 
 import { useAppContext } from "../../AppContext";
 import { InlineCheckout } from "../InlineCheckout";
-import {Status} from "../Status";
+import { Status } from "../Status";
 
 interface Props {
   bill: BillViewModel;

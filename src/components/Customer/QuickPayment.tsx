@@ -7,7 +7,7 @@ import { UserAccountsAPI, UserAccountViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
 import { useAppContext } from "../../AppContext";
-import {Status} from "../Status";
+import { Status } from "../Status";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

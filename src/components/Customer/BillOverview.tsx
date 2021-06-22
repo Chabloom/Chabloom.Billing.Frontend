@@ -19,7 +19,7 @@ import { BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "
 
 import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
-import {Status} from "../Status";
+import { Status } from "../Status";
 
 interface Props {
   userAccount: UserAccountViewModel;
@@ -45,7 +45,6 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
   const [error, setError] = React.useState("");
 
   const { userId, userToken, tenant, userAccounts, setUserAccounts } = useAppContext();
-
 
   // Get all account bills
   React.useEffect(() => {
