@@ -31,7 +31,6 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
   _baseUrl: string;
   _data: T | Array<T> | undefined;
   _lastError: string;
-  _successResponses: Array<number> = [200, 201, 204];
 
   constructor(baseUrl: string) {
     this._baseUrl = baseUrl;
@@ -68,17 +67,10 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
 
       // Make the request
       const response = await fetch(url, requestInit);
-      // Check if the request was successful
-      if (!(response.status in this._successResponses)) {
-        // Set the last error message
-        this._lastError = response.statusText;
-      } else if (response.status in [200, 201]) {
-        // Set the returned data
-        this._data = await response.json();
-      }
-      // Return true if the response status code indicated success
-      return response.status in this._successResponses;
+      // Handle the response
+      return await this._responseHandler(response);
     } catch (e) {
+      console.debug(`exception: ${e.message}`);
       this.lastError = e.message;
     }
     return false;
@@ -99,13 +91,10 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     try {
       // Make the request
       const response = await fetch(url, requestInit);
-      // Check if the request was successful
-      if (!(response.status in this._successResponses)) {
-        this._lastError = response.statusText;
-      }
-      // Return true if the response status code indicated success
-      return response.status in this._successResponses;
+      // Handle the response
+      return await this._responseHandler(response);
     } catch (e) {
+      console.debug(`exception: ${e.message}`);
       this.lastError = e.message;
     }
     return false;
@@ -126,17 +115,10 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     try {
       // Make the request
       const response = await fetch(url, requestInit);
-      // Check if the request was successful
-      if (!(response.status in this._successResponses)) {
-        // Set the last error message
-        this._lastError = response.statusText;
-      } else if (response.status in [200, 201]) {
-        // Set the returned data
-        this._data = await response.json();
-      }
-      // Return true if the response status code indicated success
-      return response.status in this._successResponses;
+      // Handle the response
+      return await this._responseHandler(response);
     } catch (e) {
+      console.debug(`exception: ${e.message}`);
       this.lastError = e.message;
     }
     return false;
@@ -169,18 +151,28 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
 
       // Make the request
       const response = await fetch(url, requestInit);
-      // Check if the request was successful
-      if (!(response.status in this._successResponses)) {
-        // Set the last error message
-        this._lastError = response.statusText;
-      } else if (response.status in [200, 201]) {
+      // Handle the response
+      return await this._responseHandler(response);
+    } catch (e) {
+      console.debug(`exception: ${e.message}`);
+      this.lastError = e.message;
+    }
+    return false;
+  };
+
+  _responseHandler = async (response: Response): Promise<boolean> => {
+    // Check if the request was successful
+    if ([200, 201, 204].includes(response.status)) {
+      // Check if the response status indicates it includes data
+      if ([200, 201].includes(response.status)) {
         // Set the returned data
         this._data = await response.json();
       }
-      // Return true if the response status code indicated success
-      return response.status in this._successResponses;
-    } catch (e) {
-      this.lastError = e.message;
+      return true;
+    } else {
+      // Set the last error message
+      this._lastError = response.statusText;
+      console.debug(`error: ${this._lastError}`);
     }
     return false;
   };
