@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 
 import {
   AppBar,
-  createStyles,
   CssBaseline,
   Divider,
   Drawer,
@@ -12,11 +11,11 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  makeStyles,
   Theme,
   Toolbar,
 } from "@material-ui/core";
 import { AccountCircle, Business, Home, Receipt, Schedule } from "@material-ui/icons";
+import { makeStyles, createStyles } from "@material-ui/styles";
 
 import { ModeSelection } from "./ModeSelection";
 import { UserManagement } from "./UserManagement";

@@ -1,4 +1,5 @@
 import { UserManagerSettings } from "oidc-client";
+import { Theme } from "@material-ui/core/styles";
 
 export interface Configuration {
   REACT_APP_ACCOUNTS_FRONTEND_ADDRESS: string;
@@ -18,6 +19,10 @@ declare global {
 }
 
 window.__env__ = window.__env__ || {};
+
+declare module "@material-ui/styles" {
+  type DefaultTheme = Theme;
+}
 
 export const OidcConfiguration: UserManagerSettings = {
   authority: window.__env__.REACT_APP_BILLING_BACKEND_ADDRESS,

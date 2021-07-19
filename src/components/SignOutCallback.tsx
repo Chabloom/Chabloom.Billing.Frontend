@@ -1,7 +1,7 @@
 import * as React from "react";
 import { UserManager } from "oidc-client";
-import { createStyles, Grid, Paper, Theme, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Theme, Typography } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/styles";
 
 import { Status } from "./Status";
 

@@ -1,4 +1,4 @@
-import { BaseViewModel } from "../../common";
+import { BaseViewModel } from "../model";
 
 export interface BillScheduleViewModel extends BaseViewModel {
   readonly id: string;

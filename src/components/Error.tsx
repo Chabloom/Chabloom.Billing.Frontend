@@ -1,6 +1,6 @@
 import * as React from "react";
-import { createStyles, Grid, Paper, Theme, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Paper, Theme, Typography } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/styles";
 
 import { ErrorAPI, ErrorViewModel } from "../api";
 import { Status } from "./Status";

@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, ButtonGroup, createStyles, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, ButtonGroup, Hidden, InputLabel, Select, Theme } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/styles";
 import { CancelOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { Button, createStyles, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/styles";
 
 import { UserAccountsAPI, UserAccountViewModel } from "../../api";
 

@@ -9,14 +9,13 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
-  createStyles,
   FormControlLabel,
   Grid,
   Hidden,
   Theme,
   Typography,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/styles";
 import { CancelOutlined, CheckCircle } from "@material-ui/icons";
 
 import { BillViewModel } from "../../api";

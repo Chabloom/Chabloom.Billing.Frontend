@@ -8,11 +8,12 @@ import {
   IconButton,
   lighten,
   LinearProgress,
+  Theme,
   Toolbar,
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import { Cancel, Delete, Edit, FilterList, Receipt, Save, Schedule } from "@material-ui/icons";
 
 import { BaseViewModel, FullAPIType } from "../../api";
@@ -43,7 +44,7 @@ interface Props {
   setError: CallableFunction;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),

@@ -1,18 +1,7 @@
 import * as React from "react";
 
-import {
-  Card,
-  CardActions,
-  CardContent,
-  createStyles,
-  Grid,
-  IconButton,
-  Paper,
-  Theme,
-  Tooltip,
-  Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Card, CardActions, CardContent, Grid, IconButton, Paper, Theme, Tooltip, Typography } from "@material-ui/core";
+import { makeStyles, createStyles } from "@material-ui/styles";
 import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icons";
 
 import { BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "../../api";
