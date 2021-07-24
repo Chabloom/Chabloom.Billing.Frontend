@@ -13,4 +13,8 @@ export class AccountsAPI extends FullAPI<AccountViewModel> {
   updateViewModel(viewModel: AccountViewModel, token: string): Promise<boolean> {
     return this._update(`${this._baseUrl}/${viewModel.id}`, viewModel, token);
   }
+
+  lookup = (tenantLookupId: string): Promise<boolean> => {
+    return this._read(`${this._baseUrl}/lookup/${tenantLookupId}`);
+  };
 }
