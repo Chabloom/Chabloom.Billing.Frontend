@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Fab, TableCell, TableHead, TableRow, TableSortLabel } from "@material-ui/core";
-import { makeStyles, createStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import { Add } from "@material-ui/icons";
 
 import { BaseViewModel } from "../../api";
