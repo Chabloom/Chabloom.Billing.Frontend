@@ -1,7 +1,7 @@
 import * as React from "react";
 import { UserManager } from "oidc-client";
 
-import { AccountViewModel, TenantViewModel, UserAccountViewModel } from "./api";
+import { AccountViewModel, UserAccountViewModel } from "./api";
 
 export interface AppContextProps {
   userManager: UserManager;
@@ -12,7 +12,6 @@ export interface AppContextProps {
   userToken: string;
   darkMode: boolean;
   setDarkMode: (darkMode: boolean) => void;
-  tenant: TenantViewModel | undefined;
   tenantRoles: string[] | undefined;
   selectedRole: string;
   setSelectedRole: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -31,7 +30,6 @@ export const AppContext = React.createContext<AppContextProps>({
   userToken: "",
   darkMode: false,
   setDarkMode: () => console.warn("setDarkMode not implemented"),
-  tenant: undefined,
   tenantRoles: undefined,
   selectedRole: "",
   setSelectedRole: () => console.warn("setSelectedRole not implemented"),

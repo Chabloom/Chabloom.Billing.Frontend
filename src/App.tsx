@@ -3,7 +3,7 @@ import { UserManager } from "oidc-client";
 import { createTheme, ThemeProvider, useMediaQuery } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/styles";
 
-import { AccountViewModel, TenantsAPI, TenantViewModel, UserAccountsAPI, UserAccountViewModel } from "./api";
+import { AccountViewModel, TenantsAPI, UserAccountsAPI, UserAccountViewModel } from "./api";
 import { OidcConfiguration } from "./config";
 
 import { AppContext, AppContextProps } from "./AppContext";
@@ -19,8 +19,6 @@ export const App: React.FC = () => {
   const [userToken, setUserToken] = React.useState("");
   const [darkMode, setDarkMode] = React.useState(false);
   const [selectedAccount, setSelectedAccount] = React.useState<AccountViewModel>();
-
-  const [tenant, setTenant] = React.useState<TenantViewModel>();
   const [tenantRoles, setTenantRoles] = React.useState<string[]>();
   const [selectedRole, setSelectedRole] = React.useState<string>("");
   const [userAccounts, setUserAccounts] = React.useState<Array<UserAccountViewModel>>();
@@ -121,21 +119,6 @@ export const App: React.FC = () => {
     getUser().then();
   }, [userManager]);
 
-  // Get the current tenant
-  React.useEffect(() => {
-    const getCurrentTenant = async () => {
-      const api = new TenantsAPI();
-      const success = await api.current();
-      if (success) {
-        const ret = api.data() as TenantViewModel;
-        setTenant(ret);
-      } else {
-        console.error(api.lastError());
-      }
-    };
-    getCurrentTenant().then();
-  }, []);
-
   // Get the current tenant roles
   React.useEffect(() => {
     const getCurrentTenantRoles = async () => {
@@ -144,7 +127,7 @@ export const App: React.FC = () => {
       setTenantRoles(roles);
     };
     getCurrentTenantRoles().then();
-  }, [userToken, tenant]);
+  }, [userToken]);
 
   // Select the administrative level that was previously selected
   React.useEffect(() => {
@@ -161,9 +144,6 @@ export const App: React.FC = () => {
   // Get all accounts the user is tracking
   React.useEffect(() => {
     const getUserAccounts = async () => {
-      if (!tenant) {
-        return;
-      }
       const api = new UserAccountsAPI();
       const success = await api.readAll(userToken);
       if (success) {
@@ -176,7 +156,7 @@ export const App: React.FC = () => {
     if (userToken) {
       getUserAccounts().then();
     }
-  }, [userToken, tenant]);
+  }, [userToken]);
 
   const props = {
     userManager: userManager,
@@ -187,7 +167,6 @@ export const App: React.FC = () => {
     userToken: userToken,
     darkMode: darkMode,
     setDarkMode: setDarkMode,
-    tenant: tenant,
     tenantRoles: tenantRoles,
     selectedRole: selectedRole,
     setSelectedRole: setSelectedRole,
