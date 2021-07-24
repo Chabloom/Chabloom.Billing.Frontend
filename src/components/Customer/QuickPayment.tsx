@@ -3,10 +3,9 @@ import * as React from "react";
 import { Button, FormGroup, Grid, Paper, TextField, Theme, Typography } from "@material-ui/core";
 import { makeStyles, createStyles } from "@material-ui/styles";
 
-import { UserAccountsAPI, UserAccountViewModel } from "../../api";
+import { AccountsAPI, AccountViewModel } from "../../api";
 
 import { BillOverview } from "./BillOverview";
-import { useAppContext } from "../../AppContext";
 import { Status } from "../Status";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,31 +20,26 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const QuickPayment: React.FC = () => {
-  const [account, setAccount] = React.useState<UserAccountViewModel>();
-  const [accountNumber, setAccountNumber] = React.useState("");
+  const [account, setAccount] = React.useState<AccountViewModel>();
+  const [tenantLookupId, setTenantLookupId] = React.useState("");
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
   const classes = useStyles();
 
-  const { tenant } = useAppContext();
-
-  const getAccountPayments = async () => {
+  const lookupAccount = async () => {
     setAccount(undefined);
     setError("");
     setProcessing(true);
-    if (tenant) {
-      const api = new UserAccountsAPI();
-      const success = await api.readAll("");
-      if (success) {
-        const ret = api.data() as Array<UserAccountViewModel>;
-        const acc = ret.find((x) => x.accountId == accountNumber);
-        if (acc) {
-          setAccount(acc);
-        }
-      } else {
-        setError(api.lastError());
+    const api = new AccountsAPI();
+    const success = await api.lookup(tenantLookupId);
+    if (success) {
+      const ret = api.data() as AccountViewModel;
+      if (ret) {
+        setAccount(ret);
       }
+    } else {
+      setError(api.lastError());
     }
     setProcessing(false);
   };
@@ -58,7 +52,7 @@ export const QuickPayment: React.FC = () => {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              getAccountPayments().then();
+              lookupAccount().then();
             }}
           >
             <FormGroup>
@@ -67,9 +61,9 @@ export const QuickPayment: React.FC = () => {
                 variant="standard"
                 name="account"
                 label="Account Number"
-                value={accountNumber}
+                value={tenantLookupId}
                 disabled={processing}
-                onChange={(e) => setAccountNumber(e.target.value)}
+                onChange={(e) => setTenantLookupId(e.target.value)}
               />
             </FormGroup>
             <Button

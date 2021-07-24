@@ -4,14 +4,13 @@ import { Card, CardActions, CardContent, Grid, IconButton, Paper, Theme, Tooltip
 import { makeStyles, createStyles } from "@material-ui/styles";
 import { AddCircle, CheckCircle, Payment, RemoveCircle } from "@material-ui/icons";
 
-import { BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "../../api";
+import { AccountViewModel, BillsAPI, BillViewModel, UserAccountsAPI, UserAccountViewModel } from "../../api";
 
-import { MakePayment } from "./MakePayment";
 import { useAppContext } from "../../AppContext";
 import { Status } from "../Status";
 
 interface Props {
-  userAccount: UserAccountViewModel;
+  account: AccountViewModel;
   allowTracking: boolean;
 }
 
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const guidEmpty = "00000000-0000-0000-0000-000000000000";
 
-export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) => {
+export const BillOverview: React.FC<Props> = ({ account, allowTracking }) => {
   const classes = useStyles();
 
   const [selectedBill, setSelectedBill] = React.useState<BillViewModel>();
@@ -33,13 +32,13 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
   const [processing, setProcessing] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  const { userId, userToken, tenant, userAccounts, setUserAccounts } = useAppContext();
+  const { userId, userToken, userAccounts, setUserAccounts } = useAppContext();
 
   // Get all account bills
   React.useEffect(() => {
     const getAccountBills = async () => {
       setProcessing(true);
-      const api = new BillsAPI(userAccount.accountId);
+      const api = new BillsAPI(account.id);
       const success = await api.readAll(userToken);
       if (success) {
         const ret = api.data() as Array<BillViewModel>;
@@ -55,7 +54,7 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
     if (!selectedBill) {
       getAccountBills().then();
     }
-  }, [userAccount, userToken, selectedBill]);
+  }, [account, userToken, selectedBill]);
 
   const billComplete = (bill: BillViewModel) => bill.transactionId && bill.transactionId !== guidEmpty;
 
@@ -72,7 +71,7 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
                 <Tooltip title="Track account">
                   <IconButton
                     onClick={() => {
-                      if (userToken && tenant && userAccounts) {
+                      if (userToken && userAccounts) {
                         setProcessing(true);
                         const viewModel = {
                           userId: userId,
@@ -98,7 +97,7 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
                 <Tooltip title="Don't track account">
                   <IconButton
                     onClick={() => {
-                      if (userToken && tenant && userAccounts) {
+                      if (userToken && userAccounts) {
                         setProcessing(true);
                         const userAccount = userAccounts
                           .filter((x) => x.accountId === account.id)
@@ -170,9 +169,6 @@ export const BillOverview: React.FC<Props> = ({ userAccount, allowTracking }) =>
                     </Tooltip>
                   </CardActions>
                 </Card>
-                {selectedBill === bill && !billComplete(bill) && (
-                  <MakePayment bill={bill} selectedBill={selectedBill} setSelectedBill={setSelectedBill} />
-                )}
               </Grid>
             );
           })}
