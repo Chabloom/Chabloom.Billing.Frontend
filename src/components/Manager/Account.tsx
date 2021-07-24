@@ -24,9 +24,9 @@ const columns: Array<ChabloomTableColumn> = [
 ];
 
 export const Account: React.FC = () => {
-  const { tenant, setSelectedAccount } = useAppContext();
+  const { setSelectedAccount } = useAppContext();
   const api = React.useMemo(() => new AccountsAPI(), []);
-  const title = React.useMemo(() => `${tenant?.name as string} Accounts`, [tenant?.name]);
+  const title = React.useMemo(() => "Accounts", []);
 
   // Unset the account
   React.useEffect(() => {

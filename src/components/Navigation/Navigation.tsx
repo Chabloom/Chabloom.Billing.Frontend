@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const Navigation: React.FC = (props) => {
-  const { tenant, selectedAccount, selectedRole } = useAppContext();
+  const { selectedAccount, selectedRole } = useAppContext();
 
   const classes = useStyles();
 
@@ -100,14 +100,12 @@ export const Navigation: React.FC = (props) => {
                 <div>
                   <Divider />
                   <List>
-                    {tenant && (
-                      <ListItem button key="accounts" component={NavLink} to="/accounts">
-                        <ListItemIcon>
-                          <AccountCircle />
-                        </ListItemIcon>
-                        <ListItemText primary="Accounts" />
-                      </ListItem>
-                    )}
+                    <ListItem button key="accounts" component={NavLink} to="/accounts">
+                      <ListItemIcon>
+                        <AccountCircle />
+                      </ListItemIcon>
+                      <ListItemText primary="Accounts" />
+                    </ListItem>
                     {selectedAccount && (
                       <ListItem button key="bills" component={NavLink} to="/bills">
                         <ListItemIcon>
