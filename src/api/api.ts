@@ -53,18 +53,22 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     const requestInit: RequestInit = {
       method: "POST",
       referrerPolicy: "origin",
-      credentials: token ? "include" : "omit",
+      credentials: "include",
     };
 
+    const headers = new Headers();
     try {
       // Add body and headers if request data was supplied
       if (viewModel) {
         requestInit.body = JSON.stringify(viewModel);
-        requestInit.headers = new Headers({
-          "Content-Type": "application/json",
-        });
+        headers.append("Content-Type", "application/json");
       }
-
+      // Add authorization header if token was supplied
+      if (token) {
+        headers.append("Authorization", `Bearer ${token}`);
+      }
+      // Set request headers
+      requestInit.headers = headers;
       // Make the request
       const response = await fetch(url, requestInit);
       // Handle the response
@@ -85,10 +89,17 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     const requestInit: RequestInit = {
       method: "DELETE",
       referrerPolicy: "origin",
-      credentials: token ? "include" : "omit",
+      credentials: "include",
     };
 
+    const headers = new Headers();
     try {
+      // Add authorization header if token was supplied
+      if (token) {
+        headers.append("Authorization", `Bearer ${token}`);
+      }
+      // Set request headers
+      requestInit.headers = headers;
       // Make the request
       const response = await fetch(url, requestInit);
       // Handle the response
@@ -109,10 +120,17 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     const requestInit: RequestInit = {
       method: "GET",
       referrerPolicy: "origin",
-      credentials: token ? "include" : "omit",
+      credentials: "include",
     };
 
+    const headers = new Headers();
     try {
+      // Add authorization header if token was supplied
+      if (token) {
+        headers.append("Authorization", `Bearer ${token}`);
+      }
+      // Set request headers
+      requestInit.headers = headers;
       // Make the request
       const response = await fetch(url, requestInit);
       // Handle the response
@@ -137,18 +155,22 @@ export class BaseAPI<T extends BaseViewModel> implements BaseAPIType<T> {
     const requestInit: RequestInit = {
       method: "PUT",
       referrerPolicy: "origin",
-      credentials: token ? "include" : "omit",
+      credentials: "include",
     };
 
+    const headers = new Headers();
     try {
       // Add body and headers if request data was supplied
       if (viewModel) {
         requestInit.body = JSON.stringify(viewModel);
-        requestInit.headers = new Headers({
-          "Content-Type": "application/json",
-        });
+        headers.append("Content-Type", "application/json");
       }
-
+      // Add authorization header if token was supplied
+      if (token) {
+        headers.append("Authorization", `Bearer ${token}`);
+      }
+      // Set request headers
+      requestInit.headers = headers;
       // Make the request
       const response = await fetch(url, requestInit);
       // Handle the response
